@@ -468,10 +468,10 @@
   
   <entry>
     <title>从0到1搭建移动App功能自动化测试平台（3）：编写iOS自动化测试脚本</title>
-    <link href="http://debugtalk.com/post/build-app-AutomationTest-platform-from-0-to-1-write-iOS-testcase-scripts/"/>
-    <id>http://debugtalk.com/post/build-app-AutomationTest-platform-from-0-to-1-write-iOS-testcase-scripts/</id>
+    <link href="http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-write-iOS-testcase-scripts/"/>
+    <id>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-write-iOS-testcase-scripts/</id>
     <published>2016-05-29T16:00:00.000Z</published>
-    <updated>2016-07-23T07:40:48.000Z</updated>
+    <updated>2016-07-23T07:59:02.000Z</updated>
     
     <content type="html"><![CDATA[<p>通过前面三篇文章，我们已经将iOS自动化功能测试的开发环境全部准备就绪，也学习了iOS UI控件交互操作的一般性方法，接下来，就可以开始编写自动化测试脚本了。</p>
 <p>在本文中，我将在M项目中挑选一个功能点，对其编写自动化测试脚本，演示编写自动化测试用例的整个流程。</p>
@@ -565,10 +565,10 @@
   
   <entry>
     <title>从0到1搭建移动App功能自动化测试平台（2）：操作iOS应用的控件</title>
-    <link href="http://debugtalk.com/post/build-app-AutomationTest-platform-from-0-to-1-Appium-interrogate-iOS-UI/"/>
-    <id>http://debugtalk.com/post/build-app-AutomationTest-platform-from-0-to-1-Appium-interrogate-iOS-UI/</id>
+    <link href="http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-Appium-interrogate-iOS-UI/"/>
+    <id>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-Appium-interrogate-iOS-UI/</id>
     <published>2016-05-28T16:00:00.000Z</published>
-    <updated>2016-07-23T07:41:05.000Z</updated>
+    <updated>2016-07-23T07:58:57.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>前两天微信突然发来一条系统消息，提示<code>DebugTalk</code>可以开通原创标识了（同时也有了评论功能），虽然一直在期待，但没想到来得这么快，着实是个不小的惊喜。</p>
 <p>另外，最近在公众号后台也收到好几个朋友的信息，有的是询问某某部分什么时候能发布，有的是希望能加快更新速度。说实话，收到这样的信息虽然会有压力，但真的挺开心的，因为这说明<code>DebugTalk</code>至少能给一部分人带去价值，这说明这件事本身还是值得坚持去做的。</p>
@@ -677,10 +677,10 @@
   
   <entry>
     <title>从0到1搭建移动App功能自动化测试平台（1）：模拟器中运行iOS应用</title>
-    <link href="http://debugtalk.com/post/build-app-AutomationTest-platform-from-0-to-1-Appium-inspector-iOS-simulator/"/>
-    <id>http://debugtalk.com/post/build-app-AutomationTest-platform-from-0-to-1-Appium-inspector-iOS-simulator/</id>
+    <link href="http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-Appium-inspector-iOS-simulator/"/>
+    <id>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-Appium-inspector-iOS-simulator/</id>
     <published>2016-05-20T16:00:00.000Z</published>
-    <updated>2016-07-23T07:27:32.000Z</updated>
+    <updated>2016-07-23T07:58:52.000Z</updated>
     
     <content type="html"><![CDATA[<p>在上一篇文章中，我对本系列教程的项目背景进行了介绍，并对自动化测试平台的建设进行了规划。</p>
 <p>在本文中，我将在已准备就绪的iOS自动化测试环境的基础上，通过Appium调用模拟器运行iOS应用。内容很是基础，熟悉的同学可直接略过。</p>
@@ -768,10 +768,10 @@
   
   <entry>
     <title>从0到1搭建移动App功能自动化测试平台（0）：背景介绍和平台规划</title>
-    <link href="http://debugtalk.com/post/build-app-AutomationTest-platform-from-0-to-1-backgroud-introduction/"/>
-    <id>http://debugtalk.com/post/build-app-AutomationTest-platform-from-0-to-1-backgroud-introduction/</id>
+    <link href="http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-backgroud-introduction/"/>
+    <id>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-backgroud-introduction/</id>
     <published>2016-05-19T16:00:00.000Z</published>
-    <updated>2016-07-23T07:27:59.000Z</updated>
+    <updated>2016-07-23T07:58:47.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>最近新加入DJI的某项目组（以下均已M指代），需要从零开始搭建功能自动化测试平台。</p>
 <p>简单地说，M是一个典型的移动互联网产品，客户端包括iOS和Android，并在app中通过WebView嵌入了H5，后端基于Ruby on Rails实现。</p>
