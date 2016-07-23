@@ -54,7 +54,7 @@
 				<h1 class="site-name"><a href="/" title="DebugTalk">DebugTalk</a></h1>
 				<h2 class="blog-motto">探索一个软件工程师的无限可能</h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -70,7 +70,7 @@
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
 						<input type="hidden" name="q" value="site:debugtalk.com">
 					</form>
 					
@@ -93,7 +93,7 @@
 		<a href="/about" title="九毫" target="_blank" itemprop="author">九毫</a>
 		 -->
   <p class="article-time">
-    <time datetime="2015-07-12T16:00:00.000Z" itemprop="datePublished"> Published 2015-07-13</time>
+    <time datetime="2015-07-12T16:00:00.000Z" itemprop="datePublished"> 發表於 2015-07-13</time>
     
     <span id="busuanzi_container_page_pv">
       | 本文总阅读量<span id="busuanzi_value_page_pv"></span>次
@@ -105,7 +105,7 @@
 	<div class="article-content">
 		
 		<div id="toc" class="toc-article">
-			<strong class="toc-title">Contents</strong>
+			<strong class="toc-title">文章目錄</strong>
 		
 			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景描述"><span class="toc-number">1.</span> <span class="toc-text">背景描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#远程调试的工作原理"><span class="toc-number">2.</span> <span class="toc-text">远程调试的工作原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#远程调试的配置方法"><span class="toc-number">3.</span> <span class="toc-text">远程调试的配置方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、在远程计算机上安装pydevd模块"><span class="toc-number">3.1.</span> <span class="toc-text">1、在远程计算机上安装pydevd模块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、在本地开发环境的PyCharm中进行监听配置"><span class="toc-number">3.2.</span> <span class="toc-text">2、在本地开发环境的PyCharm中进行监听配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、在本地开发环境的PyCharm中配置Mapping映射"><span class="toc-number">3.3.</span> <span class="toc-text">3、在本地开发环境的PyCharm中配置Mapping映射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、在远程计算机的应用程序中插入代码"><span class="toc-number">3.4.</span> <span class="toc-text">4、在远程计算机的应用程序中插入代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5、在PyCharm中启动Debug-Server"><span class="toc-number">3.5.</span> <span class="toc-text">5、在PyCharm中启动Debug Server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6、在远程计算机中启动应用程序"><span class="toc-number">3.6.</span> <span class="toc-text">6、在远程计算机中启动应用程序</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考链接"><span class="toc-number">4.</span> <span class="toc-text">参考链接</span></a></li></ol>
 		
@@ -200,22 +200,22 @@
 </section>
 
 </div>  
-      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
 
   <div id="toc" class="toc-aside">
-  <strong class="toc-title">Contents</strong>
+  <strong class="toc-title">文章目錄</strong>
  
  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景描述"><span class="toc-number">1.</span> <span class="toc-text">背景描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#远程调试的工作原理"><span class="toc-number">2.</span> <span class="toc-text">远程调试的工作原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#远程调试的配置方法"><span class="toc-number">3.</span> <span class="toc-text">远程调试的配置方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、在远程计算机上安装pydevd模块"><span class="toc-number">3.1.</span> <span class="toc-text">1、在远程计算机上安装pydevd模块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、在本地开发环境的PyCharm中进行监听配置"><span class="toc-number">3.2.</span> <span class="toc-text">2、在本地开发环境的PyCharm中进行监听配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、在本地开发环境的PyCharm中配置Mapping映射"><span class="toc-number">3.3.</span> <span class="toc-text">3、在本地开发环境的PyCharm中配置Mapping映射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、在远程计算机的应用程序中插入代码"><span class="toc-number">3.4.</span> <span class="toc-text">4、在远程计算机的应用程序中插入代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5、在PyCharm中启动Debug-Server"><span class="toc-number">3.5.</span> <span class="toc-text">5、在PyCharm中启动Debug Server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6、在远程计算机中启动应用程序"><span class="toc-number">3.6.</span> <span class="toc-text">6、在远程计算机中启动应用程序</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考链接"><span class="toc-number">4.</span> <span class="toc-text">参考链接</span></a></li></ol>
  
   </div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
 <aside class="clearfix">
 
   
 <div class="github-card">
-<p class="asidetitle">Github Card</p>
+<p class="asidetitle">Github 名片</p>
 <div class="github-card" data-github="debugtalk" data-width="220" data-height="119" data-theme="medium">
 <script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
 </div>
@@ -227,7 +227,7 @@
 
   
 <div class="tagslist">
-	<p class="asidetitle">Tags</p>
+	<p class="asidetitle">標簽</p>
 		<ul class="clearfix">
 		
 			
@@ -239,7 +239,7 @@
 			
 		
 			
-				<li><a href="/tags/AutomationTest/" title="AutomationTest">AutomationTest<sup>5</sup></a></li>
+				<li><a href="/tags/环境搭建/" title="环境搭建">环境搭建<sup>5</sup></a></li>
 			
 		
 			
@@ -247,7 +247,7 @@
 			
 		
 			
-				<li><a href="/tags/环境搭建/" title="环境搭建">环境搭建<sup>5</sup></a></li>
+				<li><a href="/tags/AutomationTest/" title="AutomationTest">AutomationTest<sup>5</sup></a></li>
 			
 		
 			
@@ -255,11 +255,11 @@
 			
 		
 			
-				<li><a href="/tags/Appium/" title="Appium">Appium<sup>4</sup></a></li>
+				<li><a href="/tags/F0T1/" title="F0T1">F0T1<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/F0T1/" title="F0T1">F0T1<sup>4</sup></a></li>
+				<li><a href="/tags/Appium/" title="Appium">Appium<sup>4</sup></a></li>
 			
 		
 			
@@ -275,15 +275,27 @@
 			
 		
 			
+				<li><a href="/tags/Simulator/" title="Simulator">Simulator<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/SSH/" title="SSH">SSH<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/流量测试/" title="流量测试">流量测试<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Jenkins/" title="Jenkins">Jenkins<sup>2</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/性能指标/" title="性能指标">性能指标<sup>2</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/Pelican/" title="Pelican">Pelican<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/Jenkins/" title="Jenkins">Jenkins<sup>2</sup></a></li>
 			
 		
 			
@@ -298,24 +310,12 @@
 				<li><a href="/tags/测试用例设计/" title="测试用例设计">测试用例设计<sup>2</sup></a></li>
 			
 		
-			
-				<li><a href="/tags/流量测试/" title="流量测试">流量测试<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/脚本开发/" title="脚本开发">脚本开发<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/Simulator/" title="Simulator">Simulator<sup>2</sup></a></li>
-			
-		
 		</ul>
 </div>
 
 
   <div class="linkslist">
-  <p class="asidetitle">Recent GitHub Projects</p>
+  <p class="asidetitle">友情鏈接</p>
     <ul>
         
           <li>
@@ -358,7 +358,7 @@
 
 
   <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
 </div>
 
 </aside>
@@ -563,7 +563,7 @@ var disqus_shortname = 'debugtalk';
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	<a title="返回頂部"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 
