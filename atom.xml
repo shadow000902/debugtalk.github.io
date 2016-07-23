@@ -147,9 +147,9 @@
     
       <category term="Android" scheme="http://debugtalk.com/tags/Android/"/>
     
-      <category term="Jenkins" scheme="http://debugtalk.com/tags/Jenkins/"/>
-    
       <category term="iOS" scheme="http://debugtalk.com/tags/iOS/"/>
+    
+      <category term="Jenkins" scheme="http://debugtalk.com/tags/Jenkins/"/>
     
       <category term="CI" scheme="http://debugtalk.com/tags/CI/"/>
     
@@ -160,7 +160,7 @@
     <link href="http://debugtalk.com/post/head-first-git-authority-verification/"/>
     <id>http://debugtalk.com/post/head-first-git-authority-verification/</id>
     <published>2016-06-14T16:00:00.000Z</published>
-    <updated>2016-07-22T11:07:58.000Z</updated>
+    <updated>2016-07-23T07:25:06.000Z</updated>
     
     <content type="html"><![CDATA[<p>借助上次“掉坑”的经历，我对Git权限校验的两种方式重头进行了梳理，形成了这篇总结记录。</p>
 <p>在本地计算机与GitHub（或GitLab）进行通信时，传输主要基于两种协议，<code>HTTPS</code>和<code>SSH</code>，对应的仓库地址就是<code>HTTPS URLs</code>和<code>SSH URLs</code>。</p>
@@ -265,6 +265,8 @@
     
       <category term="HTTPS" scheme="http://debugtalk.com/tags/HTTPS/"/>
     
+      <category term="权限校验" scheme="http://debugtalk.com/tags/%E6%9D%83%E9%99%90%E6%A0%A1%E9%AA%8C/"/>
+    
   </entry>
   
   <entry>
@@ -272,7 +274,7 @@
     <link href="http://debugtalk.com/post/trap-in-GitHub-authority-verification/"/>
     <id>http://debugtalk.com/post/trap-in-GitHub-authority-verification/</id>
     <published>2016-06-13T16:00:00.000Z</published>
-    <updated>2016-07-22T11:07:58.000Z</updated>
+    <updated>2016-07-23T07:25:16.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="背景描述"><a href="#背景描述" class="headerlink" title="背景描述"></a>背景描述</h2><p>众所周知，在GitHub中，每个仓库都有两个地址，分别基于<code>HTTPS</code>协议和<code>SSH</code>协议，两个协议对应的URL地址（repository_url）形式如下所示：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># HTTPS</span></div><div class="line">https://github.com/DJIXY/MobileStore.git</div><div class="line"><span class="comment"># SSH</span></div><div class="line">git@github.com:DJIXY/MobileStore.git</div></pre></td></tr></table></figure>
@@ -334,7 +336,7 @@
     
       <category term="SSH" scheme="http://debugtalk.com/tags/SSH/"/>
     
-      <category term="HTTPS" scheme="http://debugtalk.com/tags/HTTPS/"/>
+      <category term="HTTPS，权限校验" scheme="http://debugtalk.com/tags/HTTPS%EF%BC%8C%E6%9D%83%E9%99%90%E6%A0%A1%E9%AA%8C/"/>
     
   </entry>
   
@@ -343,7 +345,7 @@
     <link href="http://debugtalk.com/post/promotion-page-test/"/>
     <id>http://debugtalk.com/post/promotion-page-test/</id>
     <published>2016-06-08T16:00:00.000Z</published>
-    <updated>2016-07-22T11:07:58.000Z</updated>
+    <updated>2016-07-23T07:26:06.000Z</updated>
     
     <content type="html"><![CDATA[<p>这篇文章来说说促销活动页面测试的那些事儿。</p>
 <h2 id="什么是促销活动页面？"><a href="#什么是促销活动页面？" class="headerlink" title="什么是促销活动页面？"></a>什么是促销活动页面？</h2><p>通常电商平台在节假日会做一些促销活动，而活动的宣传方式，主要会采用H5静态页面的形式，也就是本文中要讲的促销活动页面。</p>
@@ -390,6 +392,8 @@
     
       <category term="promotion" scheme="http://debugtalk.com/tags/promotion/"/>
     
+      <category term="H5" scheme="http://debugtalk.com/tags/H5/"/>
+    
       <category term="test" scheme="http://debugtalk.com/tags/test/"/>
     
   </entry>
@@ -399,7 +403,7 @@
     <link href="http://debugtalk.com/post/confluence-simple-tutorial/"/>
     <id>http://debugtalk.com/post/confluence-simple-tutorial/</id>
     <published>2016-06-06T16:00:00.000Z</published>
-    <updated>2016-07-22T11:07:58.000Z</updated>
+    <updated>2016-07-23T07:26:22.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="0、Confluence简介"><a href="#0、Confluence简介" class="headerlink" title="0、Confluence简介"></a>0、Confluence简介</h2><p>Confluence是一个企业级的Wiki软件，可用于在企业、部门、团队内部进行信息共享和协同编辑。</p>
 <h2 id="1、基础概念"><a href="#1、基础概念" class="headerlink" title="1、基础概念"></a>1、基础概念</h2><p>Confluence的使用并不复杂，只需掌握如下几个基础概念。</p>
@@ -458,14 +462,16 @@
     
       <category term="Confluence" scheme="http://debugtalk.com/tags/Confluence/"/>
     
+      <category term="敏捷团队" scheme="http://debugtalk.com/tags/%E6%95%8F%E6%8D%B7%E5%9B%A2%E9%98%9F/"/>
+    
   </entry>
   
   <entry>
     <title>从0到1搭建移动App功能自动化测试平台（3）：编写iOS自动化测试脚本</title>
-    <link href="http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-write-iOS-testcase-scripts/"/>
-    <id>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-write-iOS-testcase-scripts/</id>
+    <link href="http://debugtalk.com/post/build-app-AutomationTest-platform-from-0-to-1-write-iOS-testcase-scripts/"/>
+    <id>http://debugtalk.com/post/build-app-AutomationTest-platform-from-0-to-1-write-iOS-testcase-scripts/</id>
     <published>2016-05-29T16:00:00.000Z</published>
-    <updated>2016-07-22T11:07:58.000Z</updated>
+    <updated>2016-07-23T07:40:48.000Z</updated>
     
     <content type="html"><![CDATA[<p>通过前面三篇文章，我们已经将iOS自动化功能测试的开发环境全部准备就绪，也学习了iOS UI控件交互操作的一般性方法，接下来，就可以开始编写自动化测试脚本了。</p>
 <p>在本文中，我将在M项目中挑选一个功能点，对其编写自动化测试脚本，演示编写自动化测试用例的整个流程。</p>
@@ -543,20 +549,26 @@
     </summary>
     
     
-      <category term="Automated-Test" scheme="http://debugtalk.com/tags/Automated-Test/"/>
+      <category term="Python" scheme="http://debugtalk.com/tags/Python/"/>
+    
+      <category term="AutomationTest" scheme="http://debugtalk.com/tags/AutomationTest/"/>
     
       <category term="Appium" scheme="http://debugtalk.com/tags/Appium/"/>
     
       <category term="iOS" scheme="http://debugtalk.com/tags/iOS/"/>
     
+      <category term="F0T1" scheme="http://debugtalk.com/tags/F0T1/"/>
+    
+      <category term="Ruby" scheme="http://debugtalk.com/tags/Ruby/"/>
+    
   </entry>
   
   <entry>
     <title>从0到1搭建移动App功能自动化测试平台（2）：操作iOS应用的控件</title>
-    <link href="http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-Appium-interrogate-iOS-UI/"/>
-    <id>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-Appium-interrogate-iOS-UI/</id>
+    <link href="http://debugtalk.com/post/build-app-AutomationTest-platform-from-0-to-1-Appium-interrogate-iOS-UI/"/>
+    <id>http://debugtalk.com/post/build-app-AutomationTest-platform-from-0-to-1-Appium-interrogate-iOS-UI/</id>
     <published>2016-05-28T16:00:00.000Z</published>
-    <updated>2016-07-22T11:07:58.000Z</updated>
+    <updated>2016-07-23T07:41:05.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>前两天微信突然发来一条系统消息，提示<code>DebugTalk</code>可以开通原创标识了（同时也有了评论功能），虽然一直在期待，但没想到来得这么快，着实是个不小的惊喜。</p>
 <p>另外，最近在公众号后台也收到好几个朋友的信息，有的是询问某某部分什么时候能发布，有的是希望能加快更新速度。说实话，收到这样的信息虽然会有压力，但真的挺开心的，因为这说明<code>DebugTalk</code>至少能给一部分人带去价值，这说明这件事本身还是值得坚持去做的。</p>
@@ -649,7 +661,7 @@
     </summary>
     
     
-      <category term="Automated-Test" scheme="http://debugtalk.com/tags/Automated-Test/"/>
+      <category term="AutomationTest" scheme="http://debugtalk.com/tags/AutomationTest/"/>
     
       <category term="Appium" scheme="http://debugtalk.com/tags/Appium/"/>
     
@@ -657,14 +669,18 @@
     
       <category term="Simulator" scheme="http://debugtalk.com/tags/Simulator/"/>
     
+      <category term="F0T1" scheme="http://debugtalk.com/tags/F0T1/"/>
+    
+      <category term="Ruby" scheme="http://debugtalk.com/tags/Ruby/"/>
+    
   </entry>
   
   <entry>
     <title>从0到1搭建移动App功能自动化测试平台（1）：模拟器中运行iOS应用</title>
-    <link href="http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-Appium-inspector-iOS-simulator/"/>
-    <id>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-Appium-inspector-iOS-simulator/</id>
+    <link href="http://debugtalk.com/post/build-app-AutomationTest-platform-from-0-to-1-Appium-inspector-iOS-simulator/"/>
+    <id>http://debugtalk.com/post/build-app-AutomationTest-platform-from-0-to-1-Appium-inspector-iOS-simulator/</id>
     <published>2016-05-20T16:00:00.000Z</published>
-    <updated>2016-07-22T11:07:58.000Z</updated>
+    <updated>2016-07-23T07:27:32.000Z</updated>
     
     <content type="html"><![CDATA[<p>在上一篇文章中，我对本系列教程的项目背景进行了介绍，并对自动化测试平台的建设进行了规划。</p>
 <p>在本文中，我将在已准备就绪的iOS自动化测试环境的基础上，通过Appium调用模拟器运行iOS应用。内容很是基础，熟悉的同学可直接略过。</p>
@@ -738,7 +754,7 @@
     </summary>
     
     
-      <category term="Automated-Test" scheme="http://debugtalk.com/tags/Automated-Test/"/>
+      <category term="AutomationTest" scheme="http://debugtalk.com/tags/AutomationTest/"/>
     
       <category term="Appium" scheme="http://debugtalk.com/tags/Appium/"/>
     
@@ -746,14 +762,16 @@
     
       <category term="Simulator" scheme="http://debugtalk.com/tags/Simulator/"/>
     
+      <category term="F0T1" scheme="http://debugtalk.com/tags/F0T1/"/>
+    
   </entry>
   
   <entry>
     <title>从0到1搭建移动App功能自动化测试平台（0）：背景介绍和平台规划</title>
-    <link href="http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-backgroud-introduction/"/>
-    <id>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-backgroud-introduction/</id>
+    <link href="http://debugtalk.com/post/build-app-AutomationTest-platform-from-0-to-1-backgroud-introduction/"/>
+    <id>http://debugtalk.com/post/build-app-AutomationTest-platform-from-0-to-1-backgroud-introduction/</id>
     <published>2016-05-19T16:00:00.000Z</published>
-    <updated>2016-07-22T11:07:58.000Z</updated>
+    <updated>2016-07-23T07:27:59.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>最近新加入DJI的某项目组（以下均已M指代），需要从零开始搭建功能自动化测试平台。</p>
 <p>简单地说，M是一个典型的移动互联网产品，客户端包括iOS和Android，并在app中通过WebView嵌入了H5，后端基于Ruby on Rails实现。</p>
@@ -822,7 +840,53 @@
     </summary>
     
     
-      <category term="Automated-Test" scheme="http://debugtalk.com/tags/Automated-Test/"/>
+      <category term="AutomationTest" scheme="http://debugtalk.com/tags/AutomationTest/"/>
+    
+      <category term="Appium" scheme="http://debugtalk.com/tags/Appium/"/>
+    
+      <category term="F0T1" scheme="http://debugtalk.com/tags/F0T1/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Android App持续集成性能测试：启动流量（1）</title>
+    <link href="http://debugtalk.com/post/Android-performance-test-start-traffic-uid-stat/"/>
+    <id>http://debugtalk.com/post/Android-performance-test-start-traffic-uid-stat/</id>
+    <published>2016-05-02T16:00:00.000Z</published>
+    <updated>2016-07-23T07:39:25.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>本文对Android App的启动流量测试进行介绍。这里的启动流量指的是网络流量，即App在启动时发起网络请求和接收网络响应时传输的网络数据量。</p>
+<p>说起流量，也许大家的第一反应就是tcpdump/wireshark这类网络抓包工具。的确，Android系统确实也支持<code>tcpdump</code>工具，通过<code>tcpdump</code>，我们可以实现非常精准的流量测试。但<code>tcpdump</code>也有个问题，就是它捕捉到的流量是系统层面的，我们很难区分捕捉得到的流量数据是否都是当前apk产生的。</p>
+<p>其实，对于特定apk的整体流量数据，在Android系统中都会存储到对应文件中，我们完全可以通过读取对应文件来获得当前apk的流量信息。</p>
+<h2 id="get-app-UID"><a href="#get-app-UID" class="headerlink" title="get app UID"></a>get app UID</h2><p>与流量相关的状态数据存储在<code>/proc/uid_stat/&lt;UID&gt;/</code>目录下，其中，<code>&lt;UID&gt;</code>表示apk对应的UID。</p>
+<p>关于UID，简单地进行下说明。在Linux系统中，UID表示的是User Identifier，主要用于表示是哪位用户运行了该程序。但在Android系统中，由于Android系统本身就为单用户系统，这时UID就被赋予了新的使命，主要用于实现数据共享。具体地，Android系统为每个应用都分配了一个UID，不同apk的UID几乎都是互不相同的，而对于不同UID的apk，不能共享数据资源。之所以用“几乎”，是因为有时候同一厂家会存在多个产品，并且希望能在多个apk之间实现数据共享，这个时候，便可通过在menifest配置文件中指定相同的sharedUserId，然后在Android系统中安装应用时便会分配相同的UID。</p>
+<p>获取app UID的方式有多种，最简单的方式应该还是从<code>/data/system/packages.list</code>中读取，并通过apk的<code>&lt;PKGNAME&gt;</code>找到对应的UID。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">root@hammerhead:/ # cat /data/system/packages.list | grep com.UCMobile.trunk</div><div class="line">com.UCMobile.trunk 10084 0 /data/data/com.UCMobile.trunk default 3003,1028,1015</div></pre></td></tr></table></figure>
+<p>在这里，10084即是<code>com.UCMobile.trunk</code>的UID。</p>
+<h2 id="获取流量数据"><a href="#获取流量数据" class="headerlink" title="获取流量数据"></a>获取流量数据</h2><p>流量数据分为接收流量（tcp_rcv）和发送流量（tcp_snd）两部分，这两个状态数值我们可以通过读取<code>/proc/uid_stat/&lt;UID&gt;</code>目录下的两个文件得到。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">shell@hammerhead:/ $ cat /proc/uid_stat/10084/tcp_rcv</div><div class="line">3446837</div><div class="line">shell@hammerhead:/ $ cat /proc/uid_stat/10084/tcp_snd</div><div class="line">134366</div></pre></td></tr></table></figure>
+<p>通过这种方式，我们就可以读取得到指定apk在当前时刻的累计流量数值。</p>
+<h2 id="获得启动流量数据"><a href="#获得启动流量数据" class="headerlink" title="获得启动流量数据"></a>获得启动流量数据</h2><p>有了前面的基础，我们要测试启动流量就很好实现了。只需要在启动前采集下累计流量数值，然后启动应用，完成启动后再采集一次累计流量数值，前后两次累计数值的差值便是当次启动耗费的流量数。需要注意的是，由于很多时候apk在启动后，会在系统后台异步加载一些数据资源，因此为了保证我们采集到当次启动耗费的全部流量数值，我们在启动应用后最好能等待一段时间。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">root@hammerhead:/ # cat /proc/uid_stat/10084/tcp_snd</div><div class="line">15068</div><div class="line">root@hammerhead:/ # cat /proc/uid_stat/10084/tcp_rcv</div><div class="line">98021</div><div class="line"></div><div class="line"># start app activity, sleep 10s</div><div class="line"></div><div class="line">root@hammerhead:/ # cat /proc/uid_stat/10142/tcp_snd</div><div class="line">23268</div><div class="line">root@hammerhead:/ # cat /proc/uid_stat/10142/tcp_rcv</div><div class="line">965651</div></pre></td></tr></table></figure>
+<p>采集到前后两次流量数值后，即可计算得到当次启动耗费的总流量。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">当次启动总流量 = (23268 + 965651) - (15068 + 98021) = 875830 bytes</div></pre></td></tr></table></figure>
+<p>当然，这里的启动还分为好几种，包括首次安装启动、非首次安装启动、覆盖安装启动等。具体的启动方式可根据实际场景来定，但在统计流量的方法方面都是相同的。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文讲解了Android App启动流量测试的一种方法。然而，本次介绍的方法也存在一定局限性，因为<code>/proc/uid_stat/&lt;UID&gt;/</code>目录下的<code>tcp_rcv</code>和<code>tcp_snd</code>文件中都只记录了总值，如果我们只关注总体的流量数值还好，但要是我们希望能测试得到更细化的数据，该方法就没法满足我们的测试需求了。</p>
+<p>举个例子，UC浏览器国际版在启动后，会和美国的服务器进行通讯交互。现在，我们想测试UC浏览器国际版在启动后与美国服务器的通讯流量。</p>
+<p>显然，本文中介绍的方法是没法实现上述例子中的测试需求的。那例子中的场景要怎么测呢？这就还是得用到<code>tcpdump</code>，在下一篇文章中我会再详细进行介绍。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本文对Android App的启动流量测试进行介绍。这里的启动流量指的是网络流量，即App在启动时发起网络请求和接收网络响应时传输的网络数据量。&lt;/p&gt;
+&lt;p&gt;说起流量，也许大家的第一反应就是tcpdump/wireshark这类网络抓包工具。的确，Android系统确实也
+    
+    </summary>
+    
+    
+      <category term="Android" scheme="http://debugtalk.com/tags/Android/"/>
+    
+      <category term="流量测试" scheme="http://debugtalk.com/tags/%E6%B5%81%E9%87%8F%E6%B5%8B%E8%AF%95/"/>
     
   </entry>
   
@@ -831,7 +895,7 @@
     <link href="http://debugtalk.com/post/Android-performance-test-start-traffic-tcpdump-wireshark/"/>
     <id>http://debugtalk.com/post/Android-performance-test-start-traffic-tcpdump-wireshark/</id>
     <published>2016-05-02T16:00:00.000Z</published>
-    <updated>2016-07-22T11:07:58.000Z</updated>
+    <updated>2016-07-23T07:39:33.000Z</updated>
     
     <content type="html"><![CDATA[<p>在上一篇文章中，介绍了一种测试Android App启动流量的方法。当时也提到了，通过读取<code>/proc/uid_stat/&lt;UID&gt;/</code>目录下的<code>tcp_rcv</code>和<code>tcp_snd</code>文件，只能得到App的流量总值，无法得到更细化的数据。</p>
 <p>例如，UC浏览器国际版在启动后，会和美国的服务器进行通讯交互，如果我们想测试浏览器在启动后与美国服务器的通讯流量，要怎么实现呢？。</p>
@@ -891,53 +955,11 @@
     
       <category term="Android" scheme="http://debugtalk.com/tags/Android/"/>
     
-      <category term="traffic" scheme="http://debugtalk.com/tags/traffic/"/>
+      <category term="流量测试" scheme="http://debugtalk.com/tags/%E6%B5%81%E9%87%8F%E6%B5%8B%E8%AF%95/"/>
     
       <category term="tcpdump" scheme="http://debugtalk.com/tags/tcpdump/"/>
     
       <category term="wireshark" scheme="http://debugtalk.com/tags/wireshark/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Android App持续集成性能测试：启动流量（1）</title>
-    <link href="http://debugtalk.com/post/Android-performance-test-start-traffic-uid-stat/"/>
-    <id>http://debugtalk.com/post/Android-performance-test-start-traffic-uid-stat/</id>
-    <published>2016-05-02T16:00:00.000Z</published>
-    <updated>2016-07-22T11:07:58.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>本文对Android App的启动流量测试进行介绍。这里的启动流量指的是网络流量，即App在启动时发起网络请求和接收网络响应时传输的网络数据量。</p>
-<p>说起流量，也许大家的第一反应就是tcpdump/wireshark这类网络抓包工具。的确，Android系统确实也支持<code>tcpdump</code>工具，通过<code>tcpdump</code>，我们可以实现非常精准的流量测试。但<code>tcpdump</code>也有个问题，就是它捕捉到的流量是系统层面的，我们很难区分捕捉得到的流量数据是否都是当前apk产生的。</p>
-<p>其实，对于特定apk的整体流量数据，在Android系统中都会存储到对应文件中，我们完全可以通过读取对应文件来获得当前apk的流量信息。</p>
-<h2 id="get-app-UID"><a href="#get-app-UID" class="headerlink" title="get app UID"></a>get app UID</h2><p>与流量相关的状态数据存储在<code>/proc/uid_stat/&lt;UID&gt;/</code>目录下，其中，<code>&lt;UID&gt;</code>表示apk对应的UID。</p>
-<p>关于UID，简单地进行下说明。在Linux系统中，UID表示的是User Identifier，主要用于表示是哪位用户运行了该程序。但在Android系统中，由于Android系统本身就为单用户系统，这时UID就被赋予了新的使命，主要用于实现数据共享。具体地，Android系统为每个应用都分配了一个UID，不同apk的UID几乎都是互不相同的，而对于不同UID的apk，不能共享数据资源。之所以用“几乎”，是因为有时候同一厂家会存在多个产品，并且希望能在多个apk之间实现数据共享，这个时候，便可通过在menifest配置文件中指定相同的sharedUserId，然后在Android系统中安装应用时便会分配相同的UID。</p>
-<p>获取app UID的方式有多种，最简单的方式应该还是从<code>/data/system/packages.list</code>中读取，并通过apk的<code>&lt;PKGNAME&gt;</code>找到对应的UID。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">root@hammerhead:/ # cat /data/system/packages.list | grep com.UCMobile.trunk</div><div class="line">com.UCMobile.trunk 10084 0 /data/data/com.UCMobile.trunk default 3003,1028,1015</div></pre></td></tr></table></figure>
-<p>在这里，10084即是<code>com.UCMobile.trunk</code>的UID。</p>
-<h2 id="获取流量数据"><a href="#获取流量数据" class="headerlink" title="获取流量数据"></a>获取流量数据</h2><p>流量数据分为接收流量（tcp_rcv）和发送流量（tcp_snd）两部分，这两个状态数值我们可以通过读取<code>/proc/uid_stat/&lt;UID&gt;</code>目录下的两个文件得到。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">shell@hammerhead:/ $ cat /proc/uid_stat/10084/tcp_rcv</div><div class="line">3446837</div><div class="line">shell@hammerhead:/ $ cat /proc/uid_stat/10084/tcp_snd</div><div class="line">134366</div></pre></td></tr></table></figure>
-<p>通过这种方式，我们就可以读取得到指定apk在当前时刻的累计流量数值。</p>
-<h2 id="获得启动流量数据"><a href="#获得启动流量数据" class="headerlink" title="获得启动流量数据"></a>获得启动流量数据</h2><p>有了前面的基础，我们要测试启动流量就很好实现了。只需要在启动前采集下累计流量数值，然后启动应用，完成启动后再采集一次累计流量数值，前后两次累计数值的差值便是当次启动耗费的流量数。需要注意的是，由于很多时候apk在启动后，会在系统后台异步加载一些数据资源，因此为了保证我们采集到当次启动耗费的全部流量数值，我们在启动应用后最好能等待一段时间。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">root@hammerhead:/ # cat /proc/uid_stat/10084/tcp_snd</div><div class="line">15068</div><div class="line">root@hammerhead:/ # cat /proc/uid_stat/10084/tcp_rcv</div><div class="line">98021</div><div class="line"></div><div class="line"># start app activity, sleep 10s</div><div class="line"></div><div class="line">root@hammerhead:/ # cat /proc/uid_stat/10142/tcp_snd</div><div class="line">23268</div><div class="line">root@hammerhead:/ # cat /proc/uid_stat/10142/tcp_rcv</div><div class="line">965651</div></pre></td></tr></table></figure>
-<p>采集到前后两次流量数值后，即可计算得到当次启动耗费的总流量。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">当次启动总流量 = (23268 + 965651) - (15068 + 98021) = 875830 bytes</div></pre></td></tr></table></figure>
-<p>当然，这里的启动还分为好几种，包括首次安装启动、非首次安装启动、覆盖安装启动等。具体的启动方式可根据实际场景来定，但在统计流量的方法方面都是相同的。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文讲解了Android App启动流量测试的一种方法。然而，本次介绍的方法也存在一定局限性，因为<code>/proc/uid_stat/&lt;UID&gt;/</code>目录下的<code>tcp_rcv</code>和<code>tcp_snd</code>文件中都只记录了总值，如果我们只关注总体的流量数值还好，但要是我们希望能测试得到更细化的数据，该方法就没法满足我们的测试需求了。</p>
-<p>举个例子，UC浏览器国际版在启动后，会和美国的服务器进行通讯交互。现在，我们想测试UC浏览器国际版在启动后与美国服务器的通讯流量。</p>
-<p>显然，本文中介绍的方法是没法实现上述例子中的测试需求的。那例子中的场景要怎么测呢？这就还是得用到<code>tcpdump</code>，在下一篇文章中我会再详细进行介绍。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;本文对Android App的启动流量测试进行介绍。这里的启动流量指的是网络流量，即App在启动时发起网络请求和接收网络响应时传输的网络数据量。&lt;/p&gt;
-&lt;p&gt;说起流量，也许大家的第一反应就是tcpdump/wireshark这类网络抓包工具。的确，Android系统确实也
-    
-    </summary>
-    
-    
-      <category term="Android" scheme="http://debugtalk.com/tags/Android/"/>
-    
-      <category term="traffic" scheme="http://debugtalk.com/tags/traffic/"/>
     
   </entry>
   
@@ -1104,7 +1126,7 @@
     <link href="http://debugtalk.com/post/Android-CPU-lock-frequency/"/>
     <id>http://debugtalk.com/post/Android-CPU-lock-frequency/</id>
     <published>2016-04-17T16:00:00.000Z</published>
-    <updated>2016-07-22T11:07:58.000Z</updated>
+    <updated>2016-07-23T07:29:54.000Z</updated>
     
     <content type="html"><![CDATA[<p>本文对Android设备CPU的状态查看方法和锁频（lock frequency）方法进行详细介绍。这有什么用？作为测试工程师，你值得了解。</p>
 <h2 id="CPU频率"><a href="#CPU频率" class="headerlink" title="CPU频率"></a>CPU频率</h2><p>首先说下CPU的频率。我们都知道，CPU的工作频率越高，运算就越快，但能耗也更高。然而很多时候，设备并不需要那么高的计算性能，这个时候，我们就希望能降低CPU的工作频率，追求较低的能耗，以此实现更长的待机时间。</p>
@@ -1185,8 +1207,6 @@
     
       <category term="CPU" scheme="http://debugtalk.com/tags/CPU/"/>
     
-      <category term="frequency" scheme="http://debugtalk.com/tags/frequency/"/>
-    
   </entry>
   
   <entry>
@@ -1194,7 +1214,7 @@
     <link href="http://debugtalk.com/post/Android-performance-test-UI-Automation-with-Python/"/>
     <id>http://debugtalk.com/post/Android-performance-test-UI-Automation-with-Python/</id>
     <published>2016-04-16T16:00:00.000Z</published>
-    <updated>2016-07-22T11:07:58.000Z</updated>
+    <updated>2016-07-23T07:30:12.000Z</updated>
     
     <content type="html"><![CDATA[<p>在进行Android App持续集成性能测试的时候，需要自动化实现UI层面的一些操作，常见的几种场景包括：</p>
 <ul>
@@ -1310,7 +1330,7 @@
     
       <category term="UI" scheme="http://debugtalk.com/tags/UI/"/>
     
-      <category term="Automation" scheme="http://debugtalk.com/tags/Automation/"/>
+      <category term="AutomationTest" scheme="http://debugtalk.com/tags/AutomationTest/"/>
     
   </entry>
   
@@ -1319,7 +1339,7 @@
     <link href="http://debugtalk.com/post/python-functional-programming-getting-started/"/>
     <id>http://debugtalk.com/post/python-functional-programming-getting-started/</id>
     <published>2016-04-07T16:00:00.000Z</published>
-    <updated>2016-07-22T11:07:58.000Z</updated>
+    <updated>2016-07-23T07:30:41.000Z</updated>
     
     <content type="html"><![CDATA[<p>很早以前就听说过了函数式编程，印象中是一种很晦涩难懂的编程模式，但却一直没有去进行了解。</p>
 <p>恰好这周组内的周会轮到我主持，一时也没想到要分享什么。灵光一闪，就选定函数式编程这个主题吧，反正组里的同事都没有学过，只需要讲解入门方面的知识就好，也正好可以借这个机会逼迫自己去学习下这种新的编程方式。</p>
@@ -1447,7 +1467,7 @@
     
       <category term="Python" scheme="http://debugtalk.com/tags/Python/"/>
     
-      <category term="Functional Programming" scheme="http://debugtalk.com/tags/Functional-Programming/"/>
+      <category term="函数式编程" scheme="http://debugtalk.com/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
     
   </entry>
   
@@ -1456,7 +1476,7 @@
     <link href="http://debugtalk.com/post/cheat-in-wechat-moments-voting-activity/"/>
     <id>http://debugtalk.com/post/cheat-in-wechat-moments-voting-activity/</id>
     <published>2016-04-03T16:00:00.000Z</published>
-    <updated>2016-07-22T11:07:58.000Z</updated>
+    <updated>2016-07-23T07:31:27.000Z</updated>
     
     <content type="html"><![CDATA[<p>现阶段，在微信朋友圈举办的投票活动层出不穷，相信已经有不少同学对此不胜其烦，因为总会时不时地冒出个人（亲戚、朋友、or whatever）来请你帮TA投票。</p>
 <p>本文倒没有打算从道德或者情感层面来探讨这个问题，我所感兴趣的是，当前大多数投票活动其实都是存在明显漏洞的，通过简单的技术手段就可以实现“刷票”。</p>
@@ -1507,7 +1527,9 @@
     </summary>
     
     
-      <category term="web" scheme="http://debugtalk.com/tags/web/"/>
+      <category term="案例分析" scheme="http://debugtalk.com/tags/%E6%A1%88%E4%BE%8B%E5%88%86%E6%9E%90/"/>
+    
+      <category term="security" scheme="http://debugtalk.com/tags/security/"/>
     
   </entry>
   
@@ -1516,7 +1538,7 @@
     <link href="http://debugtalk.com/post/render-multi-level-table-in-webpage/"/>
     <id>http://debugtalk.com/post/render-multi-level-table-in-webpage/</id>
     <published>2016-03-19T16:00:00.000Z</published>
-    <updated>2016-07-22T11:07:58.000Z</updated>
+    <updated>2016-07-23T07:32:13.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="背景描述"><a href="#背景描述" class="headerlink" title="背景描述"></a>背景描述</h2><p>在Android性能测试中，每一个测试任务都对应了1个测试用例、1台测试设备、一个测试包，并且在测试结果中包含了多个指标项。通常，我们希望能对两个不同版本测试包的测试结果进行对比，并能在Web页面上以表格的形式进行展现。</p>
 <p>很自然地，我们会想到采用如下形式展现对比结果。</p>
@@ -1559,7 +1581,9 @@
     </summary>
     
     
-      <category term="web" scheme="http://debugtalk.com/tags/web/"/>
+      <category term="报表" scheme="http://debugtalk.com/tags/%E6%8A%A5%E8%A1%A8/"/>
+    
+      <category term="Javascript" scheme="http://debugtalk.com/tags/Javascript/"/>
     
   </entry>
   
