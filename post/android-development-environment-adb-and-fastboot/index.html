@@ -1,13 +1,13 @@
 
  <!DOCTYPE HTML>
-<html >
+<html lang="en-us">
 <head>
   <meta charset="UTF-8">
   
     <title>Android开发环境配置0：adb和fastboot | DebugTalk</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
-    <meta name="author" content="Leo Lee">
+    <meta name="author" content="九毫">
     
 
     
@@ -54,7 +54,7 @@ Install Android SDKadb和fastboot包含在Android SDK的Platform-tools package�
 				<h1 class="site-name"><a href="/" title="DebugTalk">DebugTalk</a></h1>
 				<h2 class="blog-motto">探索一个软件工程师的无限可能</h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -70,7 +70,7 @@ Install Android SDKadb和fastboot包含在Android SDK的Platform-tools package�
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
 						<input type="hidden" name="q" value="site:debugtalk.com">
 					</form>
 					
@@ -90,17 +90,17 @@ Install Android SDKadb和fastboot包含在Android SDK的Platform-tools package�
   </h1>
   <p class="article-author">By
        
-		<a href="/about" title="Leo Lee" target="_blank" itemprop="author">Leo Lee</a>
+		<a href="/about" title="九毫" target="_blank" itemprop="author">九毫</a>
 		
   <p class="article-time">
-    <time datetime="2015-07-01T16:00:00.000Z" itemprop="datePublished"> 發表於 2015-07-02</time>
+    <time datetime="2015-07-01T16:00:00.000Z" itemprop="datePublished"> Published 2015-07-02</time>
     
   </p>
 </header>
 	<div class="article-content">
 		
 		<div id="toc" class="toc-article">
-			<strong class="toc-title">文章目錄</strong>
+			<strong class="toc-title">Contents</strong>
 		
 			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1、安装adb和fastboot"><span class="toc-number">1.</span> <span class="toc-text">1、安装adb和fastboot</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Install-Android-SDK"><span class="toc-number">1.1.</span> <span class="toc-text">Install Android SDK</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Install-from-the-command-line"><span class="toc-number">1.2.</span> <span class="toc-text">Install from the command line</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2、开启USB调试模式（USB-debugging）"><span class="toc-number">2.</span> <span class="toc-text">2、开启USB调试模式（USB debugging）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3、建立手机与电脑之间的USB调试连接"><span class="toc-number">3.</span> <span class="toc-text">3、建立手机与电脑之间的USB调试连接</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#创建并配置51-android-rules文件"><span class="toc-number">3.1.</span> <span class="toc-text">创建并配置51-android.rules文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置用户组"><span class="toc-number">3.2.</span> <span class="toc-text">配置用户组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RSA指纹密钥认证"><span class="toc-number">3.3.</span> <span class="toc-text">RSA指纹密钥认证</span></a></li></ol></li></ol>
 		
@@ -201,27 +201,34 @@ Install Android SDKadb和fastboot包含在Android SDK的Platform-tools package�
 </section>
 
 </div>  
-      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
 
   <div id="toc" class="toc-aside">
-  <strong class="toc-title">文章目錄</strong>
+  <strong class="toc-title">Contents</strong>
  
  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1、安装adb和fastboot"><span class="toc-number">1.</span> <span class="toc-text">1、安装adb和fastboot</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Install-Android-SDK"><span class="toc-number">1.1.</span> <span class="toc-text">Install Android SDK</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Install-from-the-command-line"><span class="toc-number">1.2.</span> <span class="toc-text">Install from the command line</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2、开启USB调试模式（USB-debugging）"><span class="toc-number">2.</span> <span class="toc-text">2、开启USB调试模式（USB debugging）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3、建立手机与电脑之间的USB调试连接"><span class="toc-number">3.</span> <span class="toc-text">3、建立手机与电脑之间的USB调试连接</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#创建并配置51-android-rules文件"><span class="toc-number">3.1.</span> <span class="toc-text">创建并配置51-android.rules文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置用户组"><span class="toc-number">3.2.</span> <span class="toc-text">配置用户组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RSA指纹密钥认证"><span class="toc-number">3.3.</span> <span class="toc-text">RSA指纹密钥认证</span></a></li></ol></li></ol>
  
   </div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
 <aside class="clearfix">
 
   
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="debugtalk" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
 
 
   
 
   
 <div class="tagslist">
-	<p class="asidetitle">標簽</p>
+	<p class="asidetitle">Tags</p>
 		<ul class="clearfix">
 		
 			
@@ -237,19 +244,11 @@ Install Android SDKadb和fastboot包含在Android SDK的Platform-tools package�
 			
 		
 			
-				<li><a href="/tags/Automated-Test/" title="Automated-Test">Automated-Test<sup>4</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/iOS/" title="iOS">iOS<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/SOAP/" title="SOAP">SOAP<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/WSDL/" title="WSDL">WSDL<sup>3</sup></a></li>
+				<li><a href="/tags/Automated-Test/" title="Automated-Test">Automated-Test<sup>4</sup></a></li>
 			
 		
 			
@@ -261,27 +260,11 @@ Install Android SDKadb和fastboot包含在Android SDK的Platform-tools package�
 			
 		
 			
-				<li><a href="/tags/性能指标/" title="性能指标">性能指标<sup>2</sup></a></li>
+				<li><a href="/tags/WSDL/" title="WSDL">WSDL<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/HTTPS/" title="HTTPS">HTTPS<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/脚本开发/" title="脚本开发">脚本开发<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/Jenkins/" title="Jenkins">Jenkins<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/traffic/" title="traffic">traffic<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/Pelican/" title="Pelican">Pelican<sup>2</sup></a></li>
+				<li><a href="/tags/SOAP/" title="SOAP">SOAP<sup>3</sup></a></li>
 			
 		
 			
@@ -293,6 +276,30 @@ Install Android SDKadb和fastboot包含在Android SDK的Platform-tools package�
 			
 		
 			
+				<li><a href="/tags/web/" title="web">web<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Jenkins/" title="Jenkins">Jenkins<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/traffic/" title="traffic">traffic<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/性能指标/" title="性能指标">性能指标<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Pelican/" title="Pelican">Pelican<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/脚本开发/" title="脚本开发">脚本开发<sup>2</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/Simulator/" title="Simulator">Simulator<sup>2</sup></a></li>
 			
 		
@@ -301,7 +308,7 @@ Install Android SDKadb和fastboot包含在Android SDK的Platform-tools package�
 			
 		
 			
-				<li><a href="/tags/web/" title="web">web<sup>2</sup></a></li>
+				<li><a href="/tags/HTTPS/" title="HTTPS">HTTPS<sup>2</sup></a></li>
 			
 		
 		</ul>
@@ -309,7 +316,7 @@ Install Android SDKadb和fastboot包含在Android SDK的Platform-tools package�
 
 
   <div class="linkslist">
-  <p class="asidetitle">友情鏈接</p>
+  <p class="asidetitle">Recent GitHub Projects</p>
     <ul>
         
           <li>
@@ -336,8 +343,8 @@ Install Android SDKadb和fastboot包含在Android SDK的Platform-tools package�
   <div class="weixin">
   <br />
   <p class="asidetitle">微信公众号</p>
-  <p>欢迎关注「DebugTalk」，与本站同步推送最新文章。</p>
-  <img src="images/wechat_qrcode.png" width="230px" />
+  <p>欢迎关注「DebugTalk」，获取本站最新内容。</p>
+  <img src="/images/wechat_qrcode.png" width="230px" />
 </div>
 
 
@@ -352,7 +359,7 @@ Install Android SDKadb和fastboot包含在Android SDK的Platform-tools package�
 
 
   <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
 </div>
 
 </aside>
@@ -363,6 +370,8 @@ Install Android SDKadb和fastboot包含在Android SDK的Platform-tools package�
 	
 	<div class="social-font" class="clearfix">
 		
+		
+		<a href="https://github.com/debugtalk" target="_blank" class="icon-github" title="github"></a>
 		
 		
 		
@@ -376,12 +385,22 @@ Install Android SDKadb和fastboot包含在Android SDK的Platform-tools package�
 			
 		
 
-		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		<p class="copyright" style="margin-top: 8px;">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016
 		
-		<a href="/about" target="_blank" title="Leo Lee">Leo Lee</a>
-		
-		
+		<a href="/about" target="_blank" title="九毫">九毫</a>
+		 #
+
+    <!-- Analytics Begin -->
+    
+
+
+
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1257477005'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s23.cnzz.com/z_stat.php%3Fid%3D1257477005' type='text/javascript'%3E%3C/script%3E"));</script>
+
+    <!-- Analytics End -->
+
 		</p>
 </div>
 </footer>
@@ -391,7 +410,7 @@ Install Android SDKadb和fastboot包含在Android SDK的Platform-tools package�
 <script src="/js/jquery.qrcode-0.12.0.min.js"></script>
 
 <script type="text/javascript">
-$(document).ready(function(){ 
+$(document).ready(function(){
   $('.navbar').click(function(){
     $('header nav').toggleClass('shownav');
   });
@@ -414,7 +433,7 @@ $(document).ready(function(){
   });
   o.click(function(){
     o.css('display', 'none').removeClass('beforeFadeIn');
-    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');
     m.removeClass('moveMain');
   });
   $(window).scroll(function(){
@@ -422,7 +441,7 @@ $(document).ready(function(){
   });
   
   $(window).resize(function(){
-    getSize(); 
+    getSize();
     if (myWidth >= 1024) {
       $('header nav').removeClass('shownav');
     }else{
@@ -431,14 +450,14 @@ $(document).ready(function(){
       o.css('display', 'none');
       
       $('#toc.toc-aside').css('display', 'none');
-        
+      
     }
   });
 });
 </script>
 
 <script type="text/javascript">
-$(document).ready(function(){ 
+$(document).ready(function(){
   var ai = $('.article-content>iframe'),
       ae = $('.article-content>embed'),
       t  = $('#toc'),
@@ -465,7 +484,7 @@ $(document).ready(function(){
 
 
 <script type="text/javascript">
-$(document).ready(function(){ 
+$(document).ready(function(){
   var $this = $('.share'),
       url = $this.attr('data-url'),
       encodedUrl = encodeURIComponent(url),
@@ -510,7 +529,7 @@ $(document).ready(function(){
   $('.article-share-qrcode').hover(function(){}, function(){
       $('.hoverqrcode').hide();
   });
-});   
+});
 </script>
 
 
@@ -543,20 +562,10 @@ var disqus_shortname = 'debugtalk';
 
 
 
-<!-- Analytics Begin -->
-
-
-
-
-
-<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1257477005'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s23.cnzz.com/z_stat.php%3Fid%3D1257477005' type='text/javascript'%3E%3C/script%3E"));</script>
-
-<!-- Analytics End -->
-
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="返回頂部"><img src="/img/scrollup.png"/></a>
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 
