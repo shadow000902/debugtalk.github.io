@@ -4,6 +4,27 @@
 
     
   <url>
+    <loc>http://debugtalk.com/post/Introduction-to-AppiumBooster/</loc>
+    <lastmod>2016-07-23T15:46:24.000Z</lastmod>
+    <data>
+        <display>
+        <title>Introduction to AppiumBooster</title>
+        <pubTime>2016-07-19T16:00:00.000Z</pubTime>
+        
+        <tag>AutomationTest</tag>
+         
+        <tag>Appium</tag>
+         
+        <tag>AppiumBooster</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-write-iOS-testcase-scripts/</loc>
     <lastmod>2016-07-23T07:59:02.000Z</lastmod>
     <data>
@@ -590,27 +611,6 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/LoadRunner-SOAP-WebService/</loc>
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    <data>
-        <display>
-        <title>LoadRunner基于SOAP的WebService测试方法</title>
-        <pubTime>2013-08-05T16:00:00.000Z</pubTime>
-        
-        <tag>LoadRunner</tag>
-         
-        <tag>WebService</tag>
-         
-        <tag>SOAP</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://debugtalk.com/post/Using-DuoShuo-in-Pelican/</loc>
     <lastmod>2016-07-22T11:07:58.000Z</lastmod>
     <data>
@@ -640,6 +640,27 @@
         <tag>WebService</tag>
          
         <tag>WSDL</tag>
+         
+        <tag>SOAP</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/LoadRunner-SOAP-WebService/</loc>
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    <data>
+        <display>
+        <title>LoadRunner基于SOAP的WebService测试方法</title>
+        <pubTime>2013-08-05T16:00:00.000Z</pubTime>
+        
+        <tag>LoadRunner</tag>
+         
+        <tag>WebService</tag>
          
         <tag>SOAP</tag>
          
@@ -689,16 +710,33 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/performance-index-concurrent-users/</loc>
+    <loc>http://debugtalk.com/post/developing-idea-production-data-picker/</loc>
     <lastmod>2016-07-22T11:07:58.000Z</lastmod>
     <data>
         <display>
-        <title>性能指标--并发用户数（Concurrent Users）</title>
-        <pubTime>2013-07-30T16:00:00.000Z</pubTime>
+        <title>【灵感】线上数据采摘工具（ProductionDataPicker）</title>
+        <pubTime>2016-03-07T16:00:00.000Z</pubTime>
         
-        <tag>性能指标</tag>
+        <tag>Development</tag>
          
-        <tag>并发用户数</tag>
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/scenario-design-scripts-percent-controll/</loc>
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    <data>
+        <display>
+        <title>性能测试场景设计--混合业务场景下的脚本比例控制</title>
+        <pubTime>2013-07-21T16:00:00.000Z</pubTime>
+        
+        <tag>LoadRunner</tag>
+         
+        <tag>场景设计</tag>
          
          
            
@@ -752,16 +790,16 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/scenario-design-scripts-percent-controll/</loc>
+    <loc>http://debugtalk.com/post/performance-index-concurrent-users/</loc>
     <lastmod>2016-07-22T11:07:58.000Z</lastmod>
     <data>
         <display>
-        <title>性能测试场景设计--混合业务场景下的脚本比例控制</title>
-        <pubTime>2013-07-21T16:00:00.000Z</pubTime>
+        <title>性能指标--并发用户数（Concurrent Users）</title>
+        <pubTime>2013-07-30T16:00:00.000Z</pubTime>
         
-        <tag>LoadRunner</tag>
+        <tag>性能指标</tag>
          
-        <tag>场景设计</tag>
+        <tag>并发用户数</tag>
          
          
            
@@ -771,18 +809,14 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/Evaluate-Largest-Online-Users/</loc>
+    <loc>http://debugtalk.com/post/traps-in-sql-null/</loc>
     <lastmod>2016-07-22T11:07:58.000Z</lastmod>
     <data>
         <display>
-        <title>测试最大在线用户数</title>
-        <pubTime>2013-08-21T16:00:00.000Z</pubTime>
+        <title>SQL语句中关于NULL的那些坑</title>
+        <pubTime>2016-04-24T16:00:00.000Z</pubTime>
         
-        <tag>LoadRunner</tag>
-         
-        <tag>性能指标</tag>
-         
-        <tag>最大在线用户数</tag>
+        <tag>SQL</tag>
          
          
            
@@ -813,31 +847,18 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/traps-in-sql-null/</loc>
+    <loc>http://debugtalk.com/post/Evaluate-Largest-Online-Users/</loc>
     <lastmod>2016-07-22T11:07:58.000Z</lastmod>
     <data>
         <display>
-        <title>SQL语句中关于NULL的那些坑</title>
-        <pubTime>2016-04-24T16:00:00.000Z</pubTime>
+        <title>测试最大在线用户数</title>
+        <pubTime>2013-08-21T16:00:00.000Z</pubTime>
         
-        <tag>SQL</tag>
+        <tag>性能指标</tag>
          
+        <tag>LoadRunner</tag>
          
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/developing-idea-production-data-picker/</loc>
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    <data>
-        <display>
-        <title>【灵感】线上数据采摘工具（ProductionDataPicker）</title>
-        <pubTime>2016-03-07T16:00:00.000Z</pubTime>
-        
-        <tag>Development</tag>
+        <tag>最大在线用户数</tag>
          
          
            

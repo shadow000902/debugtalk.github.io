@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://debugtalk.com/post/Introduction-to-AppiumBooster/</loc>
+    
+    <lastmod>2016-07-23T15:46:24.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-write-iOS-testcase-scripts/</loc>
     
     <lastmod>2016-07-23T07:59:02.000Z</lastmod>
@@ -212,13 +219,6 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/LoadRunner-SOAP-WebService/</loc>
-    
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://debugtalk.com/post/Using-DuoShuo-in-Pelican/</loc>
     
     <lastmod>2016-07-22T11:07:58.000Z</lastmod>
@@ -227,6 +227,13 @@
   
   <url>
     <loc>http://debugtalk.com/post/concept-about-webservice/</loc>
+    
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/LoadRunner-SOAP-WebService/</loc>
     
     <lastmod>2016-07-22T11:07:58.000Z</lastmod>
     
@@ -247,7 +254,14 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/performance-index-concurrent-users/</loc>
+    <loc>http://debugtalk.com/post/developing-idea-production-data-picker/</loc>
+    
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/scenario-design-scripts-percent-controll/</loc>
     
     <lastmod>2016-07-22T11:07:58.000Z</lastmod>
     
@@ -268,21 +282,7 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/scenario-design-scripts-percent-controll/</loc>
-    
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/Evaluate-Largest-Online-Users/</loc>
-    
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/LoadRunner-WSDL-WebService/</loc>
+    <loc>http://debugtalk.com/post/performance-index-concurrent-users/</loc>
     
     <lastmod>2016-07-22T11:07:58.000Z</lastmod>
     
@@ -296,7 +296,14 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/developing-idea-production-data-picker/</loc>
+    <loc>http://debugtalk.com/post/LoadRunner-WSDL-WebService/</loc>
+    
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/Evaluate-Largest-Online-Users/</loc>
     
     <lastmod>2016-07-22T11:07:58.000Z</lastmod>
     

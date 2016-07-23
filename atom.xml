@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://debugtalk.com/"/>
-  <updated>2016-07-22T16:12:29.000Z</updated>
+  <updated>2016-07-23T15:46:24.000Z</updated>
   <id>http://debugtalk.com/</id>
   
   <author>
@@ -14,6 +14,43 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Introduction to AppiumBooster</title>
+    <link href="http://debugtalk.com/post/Introduction-to-AppiumBooster/"/>
+    <id>http://debugtalk.com/post/Introduction-to-AppiumBooster/</id>
+    <published>2016-07-19T16:00:00.000Z</published>
+    <updated>2016-07-23T15:46:24.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="AppiumBooster"><a href="#AppiumBooster" class="headerlink" title="AppiumBooster"></a>AppiumBooster</h2><p>AppiumBooster helps you to write automation testcases in tables, without writing a snippet of code.</p>
+<h2 id="write-testcases"><a href="#write-testcases" class="headerlink" title="write testcases"></a>write testcases</h2><p>You can write testcases in any table tools, including MS Excel and iWork Numbers, and even in plain CSV format.</p>
+<p>Take DJI+ Discover’s login and logout function as an example.</p>
+<p><img src="/images/preview_login_and_logout.png" alt=""></p>
+<p>In order to test these functions above, you can write testcases in tables like this.</p>
+<p><img src="/images/testcase_login_and_logout.png" alt=""></p>
+<p>After the testcases are finished, export to CSV format, and put the csv files under <code>ios/testcases/</code> directory.</p>
+<p>That’s all you need to do, and now you are ready to run automation test on your app.</p>
+<h2 id="run"><a href="#run" class="headerlink" title="run"></a>run</h2><p>Run the automation testcases is very easy. Just execute <code>ruby run.rb</code> in the project root directory.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">➜  AppiumBooster git:(master) ✗ ruby run.rb</div></pre></td></tr></table></figure>
+<p>AppiumBooster will load all the csv test suites and then excute each suite sequentially.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line">➜  AppiumBooster git:(master) ✗ ruby run.rb</div><div class="line">initialize appium driver ...</div><div class="line">start appium driver ...</div><div class="line">alert accepted!</div><div class="line">======= start to run testcase suite: ./ios/testcases/Account-Login and Logout.csv =======</div><div class="line">load csv testcase file: ./ios/testcases/Account-Login and Logout.csv ...</div><div class="line">B------ Start to run testcase: Login with valid account</div><div class="line">step_1: Enter My Account Page</div><div class="line">control_element.click    ...    ✓</div><div class="line">uiviewMyAccount exsits?    ...    ✓</div><div class="line">step_2: Enter Login Page</div><div class="line">control_element.click    ...    ✓</div><div class="line">uiviewLogIn exsits?    ...    ✓</div><div class="line">step_3: Input Email Address</div><div class="line">control_element.type &apos;leo.lee@dji.com&apos;    ...    ✓</div><div class="line">step_4: Input Password</div><div class="line">control_element.type &apos;123456&apos;    ...    ✓</div><div class="line">step_5: Login</div><div class="line">control_element.click    ...    ✓</div><div class="line">tablecellMyMessage exsits?    ...    ✓</div><div class="line">step_6: Check if coupon popup window exists</div><div class="line">inner_screen.has_control &apos;btnViewMyCoupons&apos;    ...    ✓</div><div class="line">btnClose exsits?    ...    ✓</div><div class="line">step_7: Close coupon popup window</div><div class="line">control_element.click    ...    ✓</div><div class="line">!btnClose no longer exsits?    ...    ✓</div><div class="line">E------ Login with valid account</div><div class="line"></div><div class="line">B------ Start to run testcase: Logout</div><div class="line">step_1: Enter My Account Page</div><div class="line">control_element.click    ...    ✓</div><div class="line">uiviewMyAccount exsits?    ...    ✓</div><div class="line">step_2: Enter System Settings</div><div class="line">control_element.click    ...    ✓</div><div class="line">btnLogout exsits?    ...    ✓</div><div class="line">step_3: Click Logout</div><div class="line">control_element.click    ...    ✓</div><div class="line">Do you want to log out? exsits?    ...    ✓</div><div class="line">step_4: Confirm logout alert</div><div class="line">alert accepted!</div><div class="line">alert_accept    ...    ✓</div><div class="line">tablecellMyAccountLogin exsits?    ...    ✓</div><div class="line">E------ Logout</div><div class="line"></div><div class="line">============ all testcases have been executed. ============</div><div class="line">quit appium driver.</div></pre></td></tr></table></figure>
+<h2 id="Source-Code"><a href="#Source-Code" class="headerlink" title="Source Code"></a>Source Code</h2><p>GitHub: <a href="https://github.com/debugtalk/AppiumBooster" target="_blank" rel="external">https://github.com/debugtalk/AppiumBooster</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;AppiumBooster&quot;&gt;&lt;a href=&quot;#AppiumBooster&quot; class=&quot;headerlink&quot; title=&quot;AppiumBooster&quot;&gt;&lt;/a&gt;AppiumBooster&lt;/h2&gt;&lt;p&gt;AppiumBooster helps you to
+    
+    </summary>
+    
+    
+      <category term="AutomationTest" scheme="http://debugtalk.com/tags/AutomationTest/"/>
+    
+      <category term="Appium" scheme="http://debugtalk.com/tags/Appium/"/>
+    
+      <category term="AppiumBooster" scheme="http://debugtalk.com/tags/AppiumBooster/"/>
+    
+  </entry>
   
   <entry>
     <title>使用Jenkins搭建iOS/Android持续集成打包平台</title>
@@ -1631,59 +1668,6 @@
     
     
       <category term="Development" scheme="http://debugtalk.com/tags/Development/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>利用PyCharm进行Python远程调试</title>
-    <link href="http://debugtalk.com/post/remote-debugging-with-pycharm/"/>
-    <id>http://debugtalk.com/post/remote-debugging-with-pycharm/</id>
-    <published>2015-07-12T16:00:00.000Z</published>
-    <updated>2016-07-22T11:07:58.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="背景描述"><a href="#背景描述" class="headerlink" title="背景描述"></a>背景描述</h2><p>有时候Python应用的代码在本地开发环境运行十分正常，但是放到线上以后却出现了莫名其妙的异常，经过再三排查以后还是找不到问题原因，于是就在想，要是可以在服务器环境中进行单步跟踪调试就好了。</p>
-<p>然而，在服务器系统上安装一个IDE肯定是不现实的；通过SSH远程到服务器端，采用<code>pdb</code>进行调试虽然可行，但是操作还是较为繁琐，而且也不够直观。</p>
-<p>那么，是否可以将开发环境中的IDE与服务器环境相连，实现利用开发环境的IDE调试服务器环境中运行的程序呢？<br>答案是肯定的，这就是远程调试（Remote Debug）。</p>
-<h2 id="远程调试的工作原理"><a href="#远程调试的工作原理" class="headerlink" title="远程调试的工作原理"></a>远程调试的工作原理</h2><p>远程调试的功能在Eclipse、IntelliJ IDEA等大型IDE中均有支持，实现原理都基本相同，这里采用PyCharm进行说明。</p>
-<p>在远程调试的模式下，PyCharm（IDE）扮演服务端（Server）的角色，而运行在远程计算机上的应用程序扮演客户端（Client）的角色。正因如此，进行远程调试时，需要先在本地开发环境中设定端口并启动IDE，IDE会对设定的端口开始监听，等待客户端的连接请求；那远程计算机中的应用程序又是怎样与IDE建立通讯连接的呢？</p>
-<p>针对远程调试功能，PyCharm提供了<code>pydevd</code>模块，该模块以<code>pycharm-debug.egg</code>的形式存在于PyCharm的安装路径中。远程计算机安装该库文件后，然后就可以调用<code>pydevd.settrace</code>方法，该方法会指定IDE所在机器的IP地址和监听的端口号，用于与IDE建立连接；建立连接后，便可在IDE中对远程在远程计算机中的程序进行单步调试。</p>
-<h2 id="远程调试的配置方法"><a href="#远程调试的配置方法" class="headerlink" title="远程调试的配置方法"></a>远程调试的配置方法</h2><h3 id="1、在远程计算机上安装pydevd模块"><a href="#1、在远程计算机上安装pydevd模块" class="headerlink" title="1、在远程计算机上安装pydevd模块"></a>1、在远程计算机上安装<code>pydevd</code>模块</h3><p>首先，在本地开发环境的PyCharm安装路径中找到<code>pycharm-debug.egg</code>文件（若远程计算机运行的是Python3，则需要<code>pycharm-debug-py3k.egg</code>）；</p>
-<p>然后，将<code>pycharm-debug.egg</code>文件拷贝至远程计算机，在远程计算机中将<code>pycharm-debug.egg</code>添加至引用路径，可以采用多种方式：</p>
-<ul>
-<li>采用<code>easy_install pycharm-debug.egg</code>命令进行安装（pip命令无法安装，只能使用easy_install）</li>
-<li>将<code>pycharm-debug.egg</code>添加至<code>PYTHONPATH</code>或<code>sys.path</code>: <code>import sys; sys.path.append(&#39;/home/leo/app-dependancies/pycharm-debug.egg&#39;)</code></li>
-<li>解压<code>pycharm-debug.egg</code>，将其中的<code>pydev</code>文件夹拷贝至远程应用程序目录下</li>
-</ul>
-<p>最后，在远程计算机的Python命令行中输入<code>import pydevd</code>，若没有报错则说明<code>pydevd</code>模块安装成功。</p>
-<h3 id="2、在本地开发环境的PyCharm中进行监听配置"><a href="#2、在本地开发环境的PyCharm中进行监听配置" class="headerlink" title="2、在本地开发环境的PyCharm中进行监听配置"></a>2、在本地开发环境的PyCharm中进行监听配置</h3><p>在PyCharm中配置说明如下：</p>
-<ul>
-<li>【Run】-&gt;【Edit Configurations】</li>
-<li>【Add New Configuration】-&gt;【Python Remote Debug】</li>
-<li>填写<code>Local host name</code>和<code>Port</code>，其中<code>Local host name</code>指的是本机开发环境的IP地址，而<code>Port</code>则随便填写一个10000以上的即可；需要注意的是，由于远程计算机需要连接至本地开发环境，因此本地IP地址应该保证远程可以访问得到</li>
-<li>【Apply】and【OK】</li>
-</ul>
-<h3 id="3、在本地开发环境的PyCharm中配置Mapping映射"><a href="#3、在本地开发环境的PyCharm中配置Mapping映射" class="headerlink" title="3、在本地开发环境的PyCharm中配置Mapping映射"></a>3、在本地开发环境的PyCharm中配置Mapping映射</h3><h3 id="4、在远程计算机的应用程序中插入代码"><a href="#4、在远程计算机的应用程序中插入代码" class="headerlink" title="4、在远程计算机的应用程序中插入代码"></a>4、在远程计算机的应用程序中插入代码</h3><p>将如下代码插入至远程计算机的应用程序中。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> pydevd</div><div class="line">pydevd.settrace(<span class="string">'100.84.48.156'</span>, port=<span class="number">31235</span>, stdoutToServer=<span class="keyword">True</span>, stderrToServer=<span class="keyword">True</span>)</div></pre></td></tr></table></figure>
-<p>其中，IP地址和端口号要与PyCharm中的监听配置保持一致。</p>
-<h3 id="5、在PyCharm中启动Debug-Server"><a href="#5、在PyCharm中启动Debug-Server" class="headerlink" title="5、在PyCharm中启动Debug Server"></a>5、在PyCharm中启动<code>Debug Server</code></h3><p>【Run】-&gt;【Debug…】，选择刚创建的远程调试配置项，在<code>Debug Console</code>中会显示如下信息：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Starting debug server at port 31235</div><div class="line">Waiting <span class="keyword">for</span> process connection...</div><div class="line">Use the following code to connect to the debugger:</div><div class="line">import pydevd</div><div class="line">pydevd.settrace(<span class="string">'100.84.48.156'</span>, port=31235, stdoutToServer=True, stderrToServer=True)</div></pre></td></tr></table></figure>
-<p>这说明<code>Debug Server</code>已经启动并处于监听状态。</p>
-<h3 id="6、在远程计算机中启动应用程序"><a href="#6、在远程计算机中启动应用程序" class="headerlink" title="6、在远程计算机中启动应用程序"></a>6、在远程计算机中启动应用程序</h3><p>在远程计算机中启动应用程序，当执行到<code>pydevd.settrace</code>语句时，便会与本地开发环境中的PyCharm建立通讯连接，接下来便可以在本地IDE中进行单步调试了。</p>
-<p>需要注意的是，本地开发环境必须保证IP地址和端口号可从远程计算机访问得到，否则会无法建立连接。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">$ telnet 100.84.48.156 31235</div><div class="line">Trying 100.84.48.156...</div><div class="line">telnet: Unable to connect to remote host: Connection refused</div><div class="line"></div><div class="line">$ python devicedectector.py</div><div class="line">Could not connect to 100.84.48.156: 31236</div><div class="line">Traceback (most recent call last):</div><div class="line">  File <span class="string">"/usr/local/lib/python2.7/dist-packages/pycharm-debug.egg/pydevd_comm.py"</span>, line 478, <span class="keyword">in</span> StartClient</div><div class="line">    s.connect((host, port))</div><div class="line">  File <span class="string">"/usr/lib/python2.7/socket.py"</span>, line 224, <span class="keyword">in</span> meth</div><div class="line">    <span class="built_in">return</span> getattr(self._sock,name)(*args)</div><div class="line">error: [Errno 111] Connection refused</div></pre></td></tr></table></figure>
-<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p><a href="http://stackoverflow.com/questions/6989965/how-do-i-start-up-remote-debugging-with-pycharm" target="_blank" rel="external">http://stackoverflow.com/questions/6989965/how-do-i-start-up-remote-debugging-with-pycharm</a><br><a href="https://www.jetbrains.com/pycharm/help/remote-debugging.html" target="_blank" rel="external">https://www.jetbrains.com/pycharm/help/remote-debugging.html</a></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;背景描述&quot;&gt;&lt;a href=&quot;#背景描述&quot; class=&quot;headerlink&quot; title=&quot;背景描述&quot;&gt;&lt;/a&gt;背景描述&lt;/h2&gt;&lt;p&gt;有时候Python应用的代码在本地开发环境运行十分正常，但是放到线上以后却出现了莫名其妙的异常，经过再三排查以后还是找不到问
-    
-    </summary>
-    
-    
-      <category term="pycharm" scheme="http://debugtalk.com/tags/pycharm/"/>
-    
-      <category term="Python" scheme="http://debugtalk.com/tags/Python/"/>
     
   </entry>
   
