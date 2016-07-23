@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://debugtalk.com//about/index.html</loc>
+    
+    <lastmod>2016-07-23T07:44:36.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://debugtalk.com/post/build-app-AutomationTest-platform-from-0-to-1-Appium-interrogate-iOS-UI/</loc>
     
     <lastmod>2016-07-23T07:41:05.000Z</lastmod>
@@ -184,13 +191,6 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com//about/index.html</loc>
-    
-    <lastmod>2016-07-23T07:20:53.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://debugtalk.com/post/iOS-Android-Packing-with-Jenkins/</loc>
     
     <lastmod>2016-07-22T16:12:29.000Z</lastmod>
@@ -205,77 +205,7 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/Using-DuoShuo-in-Pelican/</loc>
-    
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/performance-index-concurrent-users/</loc>
-    
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/Introspection-on-WebService-Test/</loc>
-    
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/LoadRunner-WSDL-WebService/</loc>
-    
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/manage-Jenkins-via-remote-api/</loc>
-    
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/remote-debugging-with-pycharm/</loc>
-    
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/concept-about-webservice/</loc>
-    
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/SIPp-IP-Telephone-Server-Performance-Testing/</loc>
-    
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/Evaluate-Largest-Online-Users/</loc>
-    
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/WebService-Test-Based-On-HTTP/</loc>
-    
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/scenario-design-scripts-percent-controll/</loc>
+    <loc>http://debugtalk.com/post/developing-idea-production-data-picker/</loc>
     
     <lastmod>2016-07-22T11:07:58.000Z</lastmod>
     
@@ -296,7 +226,77 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/developing-idea-production-data-picker/</loc>
+    <loc>http://debugtalk.com/post/Evaluate-Largest-Online-Users/</loc>
+    
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/Introspection-on-WebService-Test/</loc>
+    
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/remote-debugging-with-pycharm/</loc>
+    
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/LoadRunner-WSDL-WebService/</loc>
+    
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/SIPp-IP-Telephone-Server-Performance-Testing/</loc>
+    
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/WebService-Test-Based-On-HTTP/</loc>
+    
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/performance-index-concurrent-users/</loc>
+    
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/scenario-design-scripts-percent-controll/</loc>
+    
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/Using-DuoShuo-in-Pelican/</loc>
+    
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/manage-Jenkins-via-remote-api/</loc>
+    
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/concept-about-webservice/</loc>
     
     <lastmod>2016-07-22T11:07:58.000Z</lastmod>
     
