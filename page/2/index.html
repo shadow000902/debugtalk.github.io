@@ -44,7 +44,7 @@
 				<h1 class="site-name"><a href="/" title="DebugTalk">DebugTalk</a></h1>
 				<h2 class="blog-motto">探索一个软件工程师的无限可能</h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -60,7 +60,7 @@
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
 						<input type="hidden" name="q" value="site:debugtalk.com">
 					</form>
 					
@@ -75,13 +75,13 @@
   
 <section class="post" itemscope itemprop="blogitem">
   
-    <a href="/post/Android-performance-test-start-traffic-uid-stat/" title="Android App持续集成性能测试：启动流量（1）" itemprop="url">
+    <a href="/post/Android-performance-test-start-traffic-tcpdump-wireshark/" title="Android App持续集成性能测试：启动流量（2）" itemprop="url">
   
-    <h1 itemprop="name">Android App持续集成性能测试：启动流量（1）</h1>
+    <h1 itemprop="name">Android App持续集成性能测试：启动流量（2）</h1>
     
      
-           <p itemprop="description" >本文对Android App的启动流量测试进行介绍。这里的启动流量指的是网络流量，即App在启动时发起网络请求和接收网络响应时传输的网络数据量。
-说起流量，也许大家的第一反应就是tcpdump/wireshark这类网络抓包工具。的确，Android系统确实也支持tcpdump工</p>
+           <p itemprop="description" >在上一篇文章中，介绍了一种测试Android App启动流量的方法。当时也提到了，通过读取/proc/uid_stat/&amp;lt;UID&amp;gt;/目录下的tcp_rcv和tcp_snd文件，只能得到App的流量总值，无法得到更细化的数据。
+例如，UC浏览器国际版在启动后，会和美国的</p>
         
     
     <time datetime="2016-05-02T16:00:00.000Z" itemprop="datePublished">2016-05-03</time>
@@ -96,13 +96,13 @@
   
 <section class="post" itemscope itemprop="blogitem">
   
-    <a href="/post/Android-performance-test-start-traffic-tcpdump-wireshark/" title="Android App持续集成性能测试：启动流量（2）" itemprop="url">
+    <a href="/post/Android-performance-test-start-traffic-uid-stat/" title="Android App持续集成性能测试：启动流量（1）" itemprop="url">
   
-    <h1 itemprop="name">Android App持续集成性能测试：启动流量（2）</h1>
+    <h1 itemprop="name">Android App持续集成性能测试：启动流量（1）</h1>
     
      
-           <p itemprop="description" >在上一篇文章中，介绍了一种测试Android App启动流量的方法。当时也提到了，通过读取/proc/uid_stat/&amp;lt;UID&amp;gt;/目录下的tcp_rcv和tcp_snd文件，只能得到App的流量总值，无法得到更细化的数据。
-例如，UC浏览器国际版在启动后，会和美国的</p>
+           <p itemprop="description" >本文对Android App的启动流量测试进行介绍。这里的启动流量指的是网络流量，即App在启动时发起网络请求和接收网络响应时传输的网络数据量。
+说起流量，也许大家的第一反应就是tcpdump/wireshark这类网络抓包工具。的确，Android系统确实也支持tcpdump工</p>
         
     
     <time datetime="2016-05-02T16:00:00.000Z" itemprop="datePublished">2016-05-03</time>
@@ -288,15 +288,15 @@ CPU频率首先说下CPU的频率。我们都知道，CPU的工作频率越高�
   </nav>
 
 </div>
-      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
 <aside class="clearfix">
 
   
 <div class="github-card">
-<p class="asidetitle">Github 名片</p>
+<p class="asidetitle">Github Card</p>
 <div class="github-card" data-github="debugtalk" data-width="220" data-height="119" data-theme="medium">
 <script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
 </div>
@@ -308,7 +308,7 @@ CPU频率首先说下CPU的频率。我们都知道，CPU的工作频率越高�
 
   
 <div class="tagslist">
-	<p class="asidetitle">標簽</p>
+	<p class="asidetitle">Tags</p>
 		<ul class="clearfix">
 		
 			
@@ -320,10 +320,6 @@ CPU频率首先说下CPU的频率。我们都知道，CPU的工作频率越高�
 			
 		
 			
-				<li><a href="/tags/环境搭建/" title="环境搭建">环境搭建<sup>5</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/WebService/" title="WebService">WebService<sup>5</sup></a></li>
 			
 		
@@ -332,11 +328,11 @@ CPU频率首先说下CPU的频率。我们都知道，CPU的工作频率越高�
 			
 		
 			
-				<li><a href="/tags/Python/" title="Python">Python<sup>4</sup></a></li>
+				<li><a href="/tags/环境搭建/" title="环境搭建">环境搭建<sup>5</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/F0T1/" title="F0T1">F0T1<sup>4</sup></a></li>
+				<li><a href="/tags/Python/" title="Python">Python<sup>4</sup></a></li>
 			
 		
 			
@@ -344,11 +340,11 @@ CPU频率首先说下CPU的频率。我们都知道，CPU的工作频率越高�
 			
 		
 			
-				<li><a href="/tags/iOS/" title="iOS">iOS<sup>4</sup></a></li>
+				<li><a href="/tags/F0T1/" title="F0T1">F0T1<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/SOAP/" title="SOAP">SOAP<sup>3</sup></a></li>
+				<li><a href="/tags/iOS/" title="iOS">iOS<sup>4</sup></a></li>
 			
 		
 			
@@ -356,19 +352,7 @@ CPU频率首先说下CPU的频率。我们都知道，CPU的工作频率越高�
 			
 		
 			
-				<li><a href="/tags/Simulator/" title="Simulator">Simulator<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/SSH/" title="SSH">SSH<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/流量测试/" title="流量测试">流量测试<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/Jenkins/" title="Jenkins">Jenkins<sup>2</sup></a></li>
+				<li><a href="/tags/SOAP/" title="SOAP">SOAP<sup>3</sup></a></li>
 			
 		
 			
@@ -376,11 +360,19 @@ CPU频率首先说下CPU的频率。我们都知道，CPU的工作频率越高�
 			
 		
 			
+				<li><a href="/tags/Git/" title="Git">Git<sup>2</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/Pelican/" title="Pelican">Pelican<sup>2</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Git/" title="Git">Git<sup>2</sup></a></li>
+				<li><a href="/tags/Jenkins/" title="Jenkins">Jenkins<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/流量测试/" title="流量测试">流量测试<sup>2</sup></a></li>
 			
 		
 			
@@ -391,12 +383,20 @@ CPU频率首先说下CPU的频率。我们都知道，CPU的工作频率越高�
 				<li><a href="/tags/测试用例设计/" title="测试用例设计">测试用例设计<sup>2</sup></a></li>
 			
 		
+			
+				<li><a href="/tags/脚本开发/" title="脚本开发">脚本开发<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Simulator/" title="Simulator">Simulator<sup>2</sup></a></li>
+			
+		
 		</ul>
 </div>
 
 
   <div class="linkslist">
-  <p class="asidetitle">友情鏈接</p>
+  <p class="asidetitle">Recent GitHub Projects</p>
     <ul>
         
           <li>
@@ -439,7 +439,7 @@ CPU频率首先说下CPU的频率。我们都知道，CPU的工作频率越高�
 
 
   <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
 </div>
 
 </aside>
@@ -547,7 +547,7 @@ $(document).ready(function(){
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="返回頂部"><img src="/img/scrollup.png"/></a>
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 
