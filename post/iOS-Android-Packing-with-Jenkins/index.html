@@ -21,7 +21,7 @@
 该需求具有一定的普遍性，基本上所有开发APP的团队都可能会用到，因此我将整个需求实现的过程整理后形成此文，并且真正地做到了零基础上手，到手即飞、开箱即用，希">
 <meta property="og:image" content="http://debugtalk.com/images/Jenkins_Job_Overview.jpg">
 <meta property="og:image" content="http://debugtalk.com/images/Jenkins_Job_Build_View.jpg">
-<meta property="og:updated_time" content="2016-07-22T16:12:29.000Z">
+<meta property="og:updated_time" content="2016-07-26T11:12:14.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用Jenkins搭建iOS/Android持续集成打包平台">
 <meta name="twitter:description" content="背景描述根据项目需求，现要在团队内部搭建一个统一的打包平台，实现对iOS和Android项目的打包。而且为了方便团队内部的测试包分发，希望在打包完成后能生成一个二维码，体验用户（产品、运营、测试等人员）通过手机扫描二维码后就能直接安装测试包。
@@ -154,7 +154,7 @@
 <li>如果<code>Repository URL</code>是<code>HTTPS URL</code>形式的，那么<code>Credentials</code>就要采用GitHub用户名密码的校验方式；而且，如果在GitHub中开启了<code>2FA（two-factor authentication）</code>，那么还需要在GitHub中创建一个<code>Personal access token</code>，输入密码时将这个<code>Personal access token</code>作为密码进行输入。</li>
 <li>如果<code>Repository URL</code>是<code>SSH URL</code>形式的，那么就需要先在Jenkins所在的服务器上创建一个<code>SSH</code>秘钥对，并将公钥添加到GitHub的<code>SSH keys</code>中，然后在填写<code>Credentials</code>时，选择<code>SSH Username with private key</code>的校验方式，填入GitHub Username、SSH私钥、以及创建<code>SSH</code>秘钥对时设置的<code>Passphrase</code>。</li>
 </ul>
-<p>如果对Git权限校验的概念还比较模糊，可以参考《深入浅出Git权限校验》。</p>
+<p>如果对Git权限校验的概念还比较模糊，可以参考<a href="/post/head-first-git-authority-verification">《深入浅出Git权限校验》</a>。</p>
 <p>在配置<code>Branches to build</code>时，可以采用多种形式，包括分支名称（<code>branchName</code>）、<code>tagName</code>、<code>commitId</code>等。其中分支名称的形式用的最多，例如，若是构建<code>master</code>分支，则填写<code>refs/heads/master</code>，若是构建<code>develop</code>分支，则填写<code>refs/heads/develop</code>。</p>
 <p>除了以上关于Git的必填配置项，有时根据项目的实际情况，可能还需要对Jenkins的默认配置项进行修改。</p>
 <p>比较常见的一种情况就是对<code>clone</code>的配置进行修改。</p>
@@ -211,20 +211,20 @@
 <p>Jenkins成功完成安装包上传后，<code>pgyer/fir.im</code>平台会生成一个二维码图片，并在响应中将图片的URL链接地址进行返回。</p>
 <h3 id="展示二维码图片"><a href="#展示二维码图片" class="headerlink" title="展示二维码图片"></a>展示二维码图片</h3><p>二维码图片的URL链接有了，那要怎样才能将二维码图片展示在Jenkins项目的历史构建列表中呢？</p>
 <p>这里需要用到另外一个插件，<code>description setter plugin</code>。安装该插件后，在<code>【Post-build Actions】</code>栏目中会多出<code>description setter</code>功能，可以实现构建完成后设置当次build的描述信息。这个描述信息不仅会显示在build页面中，同时也会显示在历史构建列表中。</p>
-<p>有了这个前提，要将二维码图片展示在历史构建列表中貌似就可以实现了，能直观想到的方式就是采用<code>HTML</code>的<code>img</code>标签，将<code>&lt;img url=&#39;qr_code_url&#39;&gt;</code>写入到build描述信息中。</p>
+<p>有了这个前提，要将二维码图片展示在历史构建列表中貌似就可以实现了，能直观想到的方式就是采用<code>HTML</code>的<code>img</code>标签，将<code>&lt;img src=&#39;qr_code_url&#39;&gt;</code>写入到build描述信息中。</p>
 <p>这个方法的思路是正确的，不过这么做以后并不会实现我们预期的效果。</p>
 <p>这是因为Jenkins出于安全的考虑，所有描述信息的<code>Markup Formatter</code>默认都是采用<code>Plain text</code>模式，在这种模式下是不会对build描述信息中的HTML编码进行解析的。</p>
 <p>要改变也很容易，<code>Manage Jenkins</code> -&gt; <code>Configure Global Security</code>，将<code>Markup Formatter</code>的设置更改为<code>Safe HTML</code>即可。</p>
 <p>更改配置后，我们就可以在build描述信息中采用<code>HTML</code>的<code>img</code>标签插入图片了。</p>
 <p>另外还需要补充一个点。如果是使用<code>蒲公英（pyger）</code>平台，会发现每次上传安装包后返回的二维码图片是一个短链接，神奇的是这个短连接居然是固定的（对同一个账号而言）。这个短连接总是指向最近生成的二维码图片，但是对于二维码图片的唯一URL地址，平台并没有在响应中进行返回。在这种情况下，我们每次构建完成后保存二维码图片的URL链接就没有意义了。</p>
-<p>应对的做法是，每次上传完安装包后，通过返回的二维码图片短链接将二维码图片下载并保存到本地，然后在build描述信息中引用该图片的Jenkins地址即可。</p>
+<p>应对的做法是，每次上传完安装包后，通过返回的二维码图片短链接将二维码图片下载并保存到本地，然后在build描述信息中引用该图片在Jenkins中的地址即可。</p>
 <h3 id="收集编译成果物（Artifacts）"><a href="#收集编译成果物（Artifacts）" class="headerlink" title="收集编译成果物（Artifacts）"></a>收集编译成果物（Artifacts）</h3><p>每次完成构建后，编译生成的文件较多，但是并不是所有的文件都是我们需要的。</p>
 <p>通常情况下，我们可能只需要其中的部分文件，例如<code>.ipa/.app/.plist/.apk</code>等，这时我们可以将这部分文件单独收集起来，并在构建页面中展示出来，以便在需要时进行下载。</p>
 <p>要实现这样一个功能，需要在<code>【Post-build Actions】</code>栏目中新增<code>Archive the artifacts</code>，然后在<code>Files to archive</code>中通过正则表达式指定成果物文件的路径。</p>
 <p>设置完毕后，每次构建完成后，Jenkins会在<code>Console Output</code>中采用设定的正则表达式进行搜索匹配，如果能成功匹配到文件，则会将文件收集起来。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文主要是对如何使用Jenkins搭建iOS/Android持续集成打包平台的基础概念和实施流程进行了介绍。对于其中涉及到的执行命令、构建脚本（build.py），以及Jenkins的详细配置，出于篇幅长度和阅读体验的考虑，并没有在文中进行详细展开。</p>
 <p>为了实现真正的<code>开箱即用</code>，我将Jenkins的配置文件和构建脚本抽离出来形成一套模板，只需要导入到Jenkins中，然后针对具体的项目修改少量配置信息，即可将这一套持续集成打包平台运行起来，实现和文章开头插图中完全相同的功能效果。</p>
-<p>详细内容请阅读《关于持续集成打包平台的Jenkins配置和构建脚本实现细节》。</p>
+<p>详细内容请阅读<a href="/post/iOS-Android-Packing-with-Jenkins-details">《关于持续集成打包平台的Jenkins配置和构建脚本实现细节》</a>。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -314,7 +314,7 @@
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/Android/" title="Android">Android<sup>10</sup></a></li>
+				<li><a href="/tags/Android/" title="Android">Android<sup>11</sup></a></li>
 			
 		
 			
@@ -326,11 +326,15 @@
 			
 		
 			
-				<li><a href="/tags/环境搭建/" title="环境搭建">环境搭建<sup>5</sup></a></li>
+				<li><a href="/tags/iOS/" title="iOS">iOS<sup>5</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/Appium/" title="Appium">Appium<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/环境搭建/" title="环境搭建">环境搭建<sup>5</sup></a></li>
 			
 		
 			
@@ -346,7 +350,7 @@
 			
 		
 			
-				<li><a href="/tags/iOS/" title="iOS">iOS<sup>4</sup></a></li>
+				<li><a href="/tags/Jenkins/" title="Jenkins">Jenkins<sup>3</sup></a></li>
 			
 		
 			
@@ -358,23 +362,15 @@
 			
 		
 			
-				<li><a href="/tags/脚本开发/" title="脚本开发">脚本开发<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/Pelican/" title="Pelican">Pelican<sup>2</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/Git/" title="Git">Git<sup>2</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/流量测试/" title="流量测试">流量测试<sup>2</sup></a></li>
+				<li><a href="/tags/脚本开发/" title="脚本开发">脚本开发<sup>2</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Jenkins/" title="Jenkins">Jenkins<sup>2</sup></a></li>
+				<li><a href="/tags/流量测试/" title="流量测试">流量测试<sup>2</sup></a></li>
 			
 		
 			
@@ -383,6 +379,10 @@
 		
 			
 				<li><a href="/tags/测试用例设计/" title="测试用例设计">测试用例设计<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Pelican/" title="Pelican">Pelican<sup>2</sup></a></li>
 			
 		
 			
