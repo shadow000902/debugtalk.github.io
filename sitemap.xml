@@ -4,7 +4,7 @@
   <url>
     <loc>http://debugtalk.com/post/iOS-Android-Packing-with-Jenkins-details/</loc>
     
-    <lastmod>2016-07-26T11:15:19.000Z</lastmod>
+    <lastmod>2016-07-26T12:08:40.000Z</lastmod>
     
   </url>
   
@@ -219,20 +219,6 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/LoadRunner-WSDL-WebService/</loc>
-    
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/concept-about-webservice/</loc>
-    
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://debugtalk.com/post/LoadRunner-SOAP-WebService/</loc>
     
     <lastmod>2016-07-22T11:07:58.000Z</lastmod>
@@ -240,7 +226,14 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/SIPp-IP-Telephone-Server-Performance-Testing/</loc>
+    <loc>http://debugtalk.com/post/traps-in-sql-null/</loc>
+    
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/LoadRunner-WSDL-WebService/</loc>
     
     <lastmod>2016-07-22T11:07:58.000Z</lastmod>
     
@@ -261,14 +254,14 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/performance-index-concurrent-users/</loc>
+    <loc>http://debugtalk.com/post/WebService-Test-Based-On-HTTP/</loc>
     
     <lastmod>2016-07-22T11:07:58.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/WebService-Test-Based-On-HTTP/</loc>
+    <loc>http://debugtalk.com/post/SIPp-IP-Telephone-Server-Performance-Testing/</loc>
     
     <lastmod>2016-07-22T11:07:58.000Z</lastmod>
     
@@ -282,7 +275,21 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/traps-in-sql-null/</loc>
+    <loc>http://debugtalk.com/post/manage-Jenkins-via-remote-api/</loc>
+    
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/concept-about-webservice/</loc>
+    
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/Using-DuoShuo-in-Pelican/</loc>
     
     <lastmod>2016-07-22T11:07:58.000Z</lastmod>
     
@@ -303,14 +310,7 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/Using-DuoShuo-in-Pelican/</loc>
-    
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/manage-Jenkins-via-remote-api/</loc>
+    <loc>http://debugtalk.com/post/performance-index-concurrent-users/</loc>
     
     <lastmod>2016-07-22T11:07:58.000Z</lastmod>
     

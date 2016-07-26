@@ -24,7 +24,7 @@
 <meta property="og:image" content="http://debugtalk.com/images/Jenkins_set_build_description.jpg">
 <meta property="og:image" content="http://debugtalk.com/images/Jenkins_archive_the_artifacts.jpg">
 <meta property="og:image" content="http://debugtalk.com/images/Jenkins_show_artifacts.jpg">
-<meta property="og:updated_time" content="2016-07-26T11:15:19.000Z">
+<meta property="og:updated_time" content="2016-07-26T12:08:40.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于持续集成打包平台的Jenkins配置和构建脚本实现细节">
 <meta name="twitter:description" content="在《使用Jenkins搭建iOS/Android持续集成打包平台》一文中，我对如何使用Jenkins搭建iOS/Android持续集成打包平台的基础概念和实施流程进行了介绍。本文作为配套，对搭建持续集成打包平台中涉及到的执行命令、构建脚本（build.py），以及Jenkins的配置进行详细的补充说明。
@@ -142,23 +142,23 @@
 <li><code>-v</code>：指定<code>.app</code>文件的路径</li>
 <li><code>-o</code>：指定生成<code>.ipa</code>文件的路径</li>
 </ul>
-<h3 id="补充说明"><a href="#补充说明" class="headerlink" title="补充说明"></a>补充说明</h3><p>1、获取Targets、Schemes、Configurations参数</p>
+<h3 id="补充说明"><a href="#补充说明" class="headerlink" title="补充说明"></a>补充说明</h3><p><strong>1、获取Targets、Schemes、Configurations参数</strong></p>
 <p>在填写<code>target</code>/<code>workspace</code>/<code>scheme</code>/<code>configuration</code>等参数时，如果不知道该怎么填写，可以在项目根目录下执行<code>xcodebuild -list</code>命令，它会列出当前项目的所有可选参数。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">➜  Store_iOS git:(NPED) ✗ xcodebuild -list</div><div class="line">Information about project <span class="string">"Store"</span>:</div><div class="line">    Targets:</div><div class="line">        Store</div><div class="line">        StoreCI</div><div class="line"></div><div class="line">    Build Configurations:</div><div class="line">        Debug</div><div class="line">        Release</div><div class="line"></div><div class="line">    If no build configuration is specified and -scheme is not passed <span class="keyword">then</span> <span class="string">"Release"</span> is used.</div><div class="line"></div><div class="line">    Schemes:</div><div class="line">        Store</div><div class="line">        StoreCI</div></pre></td></tr></table></figure>
-<p>2、清除缓存文件</p>
+<p><strong>2、清除缓存文件</strong></p>
 <p>在每次build之后，工程目录下会遗留一些缓存文件，以便下次build时减少编译时间。然而，若因为工程配置错误等问题造成编译失败后，下次再编译时就可能会受到缓存的影响。</p>
 <p>因此，在持续集成构建脚本中，比较好的做法是在每次build之前都清理一下上一次编译遗留的缓存文件。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># clean before build</span></div><div class="line">xctool \</div><div class="line">  -workspace <span class="variable">$&#123;WORKSPACE_PATH&#125;</span> \</div><div class="line">  -scheme <span class="variable">$&#123;SCHEME&#125;</span> \</div><div class="line">  -configuration <span class="variable">$&#123;CONFIGURATION&#125;</span> \</div><div class="line">  clean</div></pre></td></tr></table></figure>
 <p><code>clean</code>：清除编译产生的问题，下次编译就是全新的编译了</p>
-<p>3、处理Cocoapod依赖库</p>
+<p><strong>3、处理Cocoapod依赖库</strong></p>
 <p>另外一个需要注意的是，若项目是采用Cocoapod管理项目依赖，每次拉取最新代码后直接编译可能会报错。这往往是因为其他同事更新了依赖库（新增了第三方库或升级了某些库），而本地还采用之前的第三方库进行编译，从而会出现依赖库缺失或版本不匹配等问题。</p>
 <p>应对的做法是，在每次build之前都更新一下Cocoapod。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Update pod repository</span></div><div class="line">pod repo update</div><div class="line"><span class="comment"># Install pod dependencies</span></div><div class="line">pod install</div></pre></td></tr></table></figure>
-<p>4、修改编译包的版本号</p>
+<p><strong>4、修改编译包的版本号</strong></p>
 <p>通过持续集成打包，我们会得到大量的安装包。为了便于区分，比较好的做法是在App中显示版本号，并将版本号与Jenkins的<code>BUILD_NUMBER</code>关联起来。</p>
 <p>例如，当前项目的主版本号为<code>2.6.0</code>，本次构建的<code>BUILD_NUMBER</code>为130，那么我们就可以将本次构建的App版本号设置为<code>2.6.0.130</code>。通过这种方式，我们可以通过App中显示的版本号快速定位到具体到构建历史，从而对应到具体的代码提交记录。</p>
 <p>要实现对App版本号的设置，只需要在打包前对<code>Info.plist</code>文件中的<code>CFBundleVersion</code>和<code>CFBundleShortVersionString</code>进行修改即可。在Python中，利用<code>plistlib</code>库可以很方便地实现对<code>Info.plist</code>文件的读写。</p>
-<p>5、模拟器运行</p>
+<p><strong>5、模拟器运行</strong></p>
 <p>如果持续集成测试是要运行在iOS模拟器上，那么就需要构建生成<code>.app</code>文件。</p>
 <p>在前面讲解的两种构建方式中，中间产物都包含了<code>.app</code>文件。对于以<code>.xcarchive</code>为中间产物的方式，生成的<code>.app</code>文件位于<code>output_dir/StoreCI_Release.xcarchive/Products/Applications/</code>目录中。</p>
 <p>不过，这个<code>.app</code>文件在模拟器中还无法直接运行，还需要在Xcode中修改<code>Supported Platforms</code>，例如，将<code>iphoneos</code>更改为<code>iOS</code>。详细原因请参考<a href="/post/build-app-automated-test-platform-from-0-to-1-Appium-inspector-iOS-simulator/">《从0到1搭建移动App功能自动化测试平台（1）：模拟器中运行iOS应用》</a></p>
@@ -174,7 +174,7 @@
 <p>需要说明的是，对于构建任务中常用的可配置参数，例如<code>BRANCH</code>/<code>SCHEME</code>/<code>CONFIGURATION</code>/<code>OUTPUT_FOLDER</code>等，需要在构建脚本中通过<code>OptionParser</code>的方式实现可传参数机制。这样我们不仅可以命令行中通过传参的方式灵活地调用构建脚本，也可以在Jenkins中实现参数传递。</p>
 <p>之所以强调<code>常用的</code>可配置参数，这是为了尽可能减少参数数目，降低脚本调用的复杂度。像<code>PROVISIONING_PROFILE</code>和<code>pgyer/fir.im</code>账号这种比较固定的配置参数，就可以写死在脚本中。因此，在使用构建脚本（build.py）之前，需要先在脚本中配置下<code>PROVISIONING_PROFILE</code>和<code>pgyer/fir.im</code>账号。</p>
 <p>另外还想多说一句，<code>pyger</code>/<code>fir.im</code>这类第三方平台在为我们提供便利的同时，稳定性不可控也是一个不得不考虑的问题。在我使用<code>pgyer</code>平台期间，就遇到了平台服务变动、接口时而不稳定出现502等问题。因此，最好的方式还是自行搭建一套类似的服务，反正我是打算这么做了。</p>
-<h2 id="Jenkins的详细配置"><a href="#Jenkins的详细配置" class="headerlink" title="Jenkins的详细配置"></a>Jenkins的详细配置</h2><p>对于Jenkins的详细配置，需要补充说明的有三点。</p>
+<h2 id="Jenkins的详细配置"><a href="#Jenkins的详细配置" class="headerlink" title="Jenkins的详细配置"></a>Jenkins的详细配置</h2><p>对于Jenkins的详细配置，需要补充说明的有四点。</p>
 <h3 id="1、参数的传递"><a href="#1、参数的传递" class="headerlink" title="1、参数的传递"></a>1、参数的传递</h3><p>在构建脚本中，我们已经对常用的可配置参数实现了可传参机制。例如，在Terminal中可以通过如下形式调用构建脚本。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ python build.py --scheme SCHEME --workspace Store.xcworkspace --configuration CONFIGURATION --output OUTPUT_FOLDER</div></pre></td></tr></table></figure>
 <p>那么我们在Jenkins中要怎样才能指定参数呢？</p>
@@ -337,7 +337,7 @@
 			
 		
 			
-				<li><a href="/tags/iOS/" title="iOS">iOS<sup>5</sup></a></li>
+				<li><a href="/tags/环境搭建/" title="环境搭建">环境搭建<sup>5</sup></a></li>
 			
 		
 			
@@ -345,7 +345,7 @@
 			
 		
 			
-				<li><a href="/tags/环境搭建/" title="环境搭建">环境搭建<sup>5</sup></a></li>
+				<li><a href="/tags/iOS/" title="iOS">iOS<sup>5</sup></a></li>
 			
 		
 			
@@ -353,19 +353,19 @@
 			
 		
 			
-				<li><a href="/tags/Python/" title="Python">Python<sup>4</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/F0T1/" title="F0T1">F0T1<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Jenkins/" title="Jenkins">Jenkins<sup>3</sup></a></li>
+				<li><a href="/tags/Python/" title="Python">Python<sup>4</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/SOAP/" title="SOAP">SOAP<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Jenkins/" title="Jenkins">Jenkins<sup>3</sup></a></li>
 			
 		
 			
@@ -377,11 +377,7 @@
 			
 		
 			
-				<li><a href="/tags/脚本开发/" title="脚本开发">脚本开发<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/流量测试/" title="流量测试">流量测试<sup>2</sup></a></li>
+				<li><a href="/tags/性能指标/" title="性能指标">性能指标<sup>2</sup></a></li>
 			
 		
 			
@@ -389,15 +385,19 @@
 			
 		
 			
+				<li><a href="/tags/流量测试/" title="流量测试">流量测试<sup>2</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/测试用例设计/" title="测试用例设计">测试用例设计<sup>2</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Pelican/" title="Pelican">Pelican<sup>2</sup></a></li>
+				<li><a href="/tags/脚本开发/" title="脚本开发">脚本开发<sup>2</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/性能指标/" title="性能指标">性能指标<sup>2</sup></a></li>
+				<li><a href="/tags/Pelican/" title="Pelican">Pelican<sup>2</sup></a></li>
 			
 		
 			
