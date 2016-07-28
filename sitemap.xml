@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-refactor-testcase-scripts/</loc>
+    
+    <lastmod>2016-07-28T16:00:08.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-write-iOS-testcase-scripts/</loc>
+    
+    <lastmod>2016-07-27T14:39:41.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://debugtalk.com/post/iOS-Android-Packing-with-Jenkins-details/</loc>
     
     <lastmod>2016-07-27T02:12:22.000Z</lastmod>
@@ -19,13 +33,6 @@
     <loc>http://debugtalk.com/post/Introduction-to-AppiumBooster/</loc>
     
     <lastmod>2016-07-23T15:46:24.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-write-iOS-testcase-scripts/</loc>
-    
-    <lastmod>2016-07-23T07:59:02.000Z</lastmod>
     
   </url>
   
@@ -226,7 +233,35 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/Using-DuoShuo-in-Pelican/</loc>
+    <loc>http://debugtalk.com/post/remote-debugging-with-pycharm/</loc>
+    
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/Evaluate-Largest-Online-Users/</loc>
+    
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/Introspection-on-WebService-Test/</loc>
+    
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/developing-idea-production-data-picker/</loc>
+    
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/WebService-Test-Based-On-HTTP/</loc>
     
     <lastmod>2016-07-22T11:07:58.000Z</lastmod>
     
@@ -247,20 +282,6 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/remote-debugging-with-pycharm/</loc>
-    
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/developing-idea-production-data-picker/</loc>
-    
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://debugtalk.com/post/performance-index-concurrent-users/</loc>
     
     <lastmod>2016-07-22T11:07:58.000Z</lastmod>
@@ -268,28 +289,7 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/Introspection-on-WebService-Test/</loc>
-    
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/WebService-Test-Based-On-HTTP/</loc>
-    
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://debugtalk.com/post/LoadRunner-SOAP-WebService/</loc>
-    
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/Evaluate-Largest-Online-Users/</loc>
     
     <lastmod>2016-07-22T11:07:58.000Z</lastmod>
     
@@ -304,6 +304,13 @@
   
   <url>
     <loc>http://debugtalk.com/post/manage-Jenkins-via-remote-api/</loc>
+    
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/Using-DuoShuo-in-Pelican/</loc>
     
     <lastmod>2016-07-22T11:07:58.000Z</lastmod>
     

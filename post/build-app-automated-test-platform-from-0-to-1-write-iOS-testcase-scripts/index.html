@@ -22,7 +22,7 @@
 在本文中，我将在M项目中挑选一个功能点，对其编写自动化测试脚本，演示编写自动化测试用例的整个流程。
 语言的选择：Python or Ruby？之前介绍Appium的时候也提到，Appium采用Client-Server的架构设计，并采用标准">
 <meta property="og:image" content="http://debugtalk.com/images/DJI_Plus_Login.jpg">
-<meta property="og:updated_time" content="2016-07-23T07:59:02.000Z">
+<meta property="og:updated_time" content="2016-07-27T14:39:41.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从0到1搭建移动App功能自动化测试平台（3）：编写iOS自动化测试脚本">
 <meta name="twitter:description" content="通过前面三篇文章，我们已经将iOS自动化功能测试的开发环境全部准备就绪，也学习了iOS UI控件交互操作的一般性方法，接下来，就可以开始编写自动化测试脚本了。
@@ -154,7 +154,7 @@
 <p>在上一篇文章中有介绍过，通过<code>arc</code>启动虚拟机时，会从<code>appium.txt</code>中读取虚拟机的配置信息。类似的，我们在脚本中执行自动化测试时，也会加载虚拟机，因此同样需要在脚本中指定虚拟机的配置信息，并初始化<code>Appium Driver</code>的实例。</p>
 <p>初始化代码可以通过<code>Appium Inspector</code>生成，基本上为固定模式，我们暂时不用深究。</p>
 <p>添加初始化部分的代码后，测试脚本如下所示。</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">require</span> <span class="string">'rubygems'</span></div><div class="line"><span class="keyword">require</span> <span class="string">'appium_lib'</span></div><div class="line"></div><div class="line">capabilities = &#123;</div><div class="line">true<span class="string">'appium-version'</span> =&gt; <span class="string">'1.0'</span>,</div><div class="line">true<span class="string">'platformName'</span> =&gt; <span class="string">'iOS'</span>,</div><div class="line">true<span class="string">'platformVersion'</span> =&gt; <span class="string">'9.3'</span>,</div><div class="line">&#125;</div><div class="line">server_url = <span class="string">"http://0.0.0.0:4723/wd/hub"</span></div><div class="line">Appium::Driver.new(<span class="symbol">caps:</span> capabilities).start_driver</div><div class="line">Appium.promote_appium_methods Object</div><div class="line"></div><div class="line"><span class="comment"># testcase: login</span></div><div class="line">button_exact(<span class="string">'My Account'</span>).click</div><div class="line">button_exact(<span class="string">'Login'</span>).click</div><div class="line">tag(<span class="string">'UIATextField'</span>).type <span class="string">'leo.lee@dji.com'</span></div><div class="line">tag(<span class="string">'UIASecureTextField'</span>).type <span class="string">'123456'</span></div><div class="line">button_exact(<span class="string">'Login'</span>).click</div><div class="line"></div><div class="line">driver_quit</div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">require</span> <span class="string">'rubygems'</span></div><div class="line"><span class="keyword">require</span> <span class="string">'appium_lib'</span></div><div class="line"></div><div class="line">capabilities = &#123;</div><div class="line">true<span class="string">'appium-version'</span> =&gt; <span class="string">'1.0'</span>,</div><div class="line">true<span class="string">'platformName'</span> =&gt; <span class="string">'iOS'</span>,</div><div class="line">true<span class="string">'platformVersion'</span> =&gt; <span class="string">'9.3'</span>,</div><div class="line">&#125;</div><div class="line">Appium::Driver.new(<span class="symbol">caps:</span> capabilities).start_driver</div><div class="line">Appium.promote_appium_methods Object</div><div class="line"></div><div class="line"><span class="comment"># testcase: login</span></div><div class="line">button_exact(<span class="string">'My Account'</span>).click</div><div class="line">button_exact(<span class="string">'Login'</span>).click</div><div class="line">tag(<span class="string">'UIATextField'</span>).type <span class="string">'leo.lee@dji.com'</span></div><div class="line">tag(<span class="string">'UIASecureTextField'</span>).type <span class="string">'123456'</span></div><div class="line">button_exact(<span class="string">'Login'</span>).click</div><div class="line"></div><div class="line">driver_quit</div></pre></td></tr></table></figure>
 <h2 id="优化测试脚本：加入等待机制"><a href="#优化测试脚本：加入等待机制" class="headerlink" title="优化测试脚本：加入等待机制"></a>优化测试脚本：加入等待机制</h2><p>如上测试脚本编写好后，在Terminal中运行<code>ruby login.rb</code>，就可以执行脚本了。</p>
 <p>运行命令后，会看到iOS虚拟机成功启动，接着App成功进行加载，然后自动按照前面设计的路径，执行系统登录流程。</p>
 <p>但是，在实际操作过程中，发现有时候运行脚本时会出现找不到控件的异常，异常信息如下所示：</p>
@@ -276,19 +276,23 @@
 			
 		
 			
-				<li><a href="/tags/AutomationTest/" title="AutomationTest">AutomationTest<sup>6</sup></a></li>
+				<li><a href="/tags/AutomationTest/" title="AutomationTest">AutomationTest<sup>7</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/iOS/" title="iOS">iOS<sup>5</sup></a></li>
+				<li><a href="/tags/iOS/" title="iOS">iOS<sup>6</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Appium/" title="Appium">Appium<sup>5</sup></a></li>
+				<li><a href="/tags/Appium/" title="Appium">Appium<sup>6</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/环境搭建/" title="环境搭建">环境搭建<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/F0T1/" title="F0T1">F0T1<sup>5</sup></a></li>
 			
 		
 			
@@ -297,10 +301,6 @@
 		
 			
 				<li><a href="/tags/Python/" title="Python">Python<sup>4</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/F0T1/" title="F0T1">F0T1<sup>4</sup></a></li>
 			
 		
 			
@@ -316,27 +316,7 @@
 			
 		
 			
-				<li><a href="/tags/流量测试/" title="流量测试">流量测试<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/脚本开发/" title="脚本开发">脚本开发<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/测试用例设计/" title="测试用例设计">测试用例设计<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/黑盒测试/" title="黑盒测试">黑盒测试<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/Pelican/" title="Pelican">Pelican<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/性能指标/" title="性能指标">性能指标<sup>2</sup></a></li>
+				<li><a href="/tags/Ruby/" title="Ruby">Ruby<sup>3</sup></a></li>
 			
 		
 			
@@ -344,7 +324,27 @@
 			
 		
 			
-				<li><a href="/tags/Simulator/" title="Simulator">Simulator<sup>2</sup></a></li>
+				<li><a href="/tags/流量测试/" title="流量测试">流量测试<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/黑盒测试/" title="黑盒测试">黑盒测试<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/测试用例设计/" title="测试用例设计">测试用例设计<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/性能指标/" title="性能指标">性能指标<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/脚本开发/" title="脚本开发">脚本开发<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Pelican/" title="Pelican">Pelican<sup>2</sup></a></li>
 			
 		
 		</ul>
