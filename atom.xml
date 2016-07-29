@@ -600,9 +600,9 @@
     </summary>
     
     
-      <category term="GitHub" scheme="http://debugtalk.com/tags/GitHub/"/>
-    
       <category term="SSH" scheme="http://debugtalk.com/tags/SSH/"/>
+    
+      <category term="GitHub" scheme="http://debugtalk.com/tags/GitHub/"/>
     
       <category term="HTTPS，权限校验" scheme="http://debugtalk.com/tags/HTTPS%EF%BC%8C%E6%9D%83%E9%99%90%E6%A0%A1%E9%AA%8C/"/>
     
@@ -937,9 +937,9 @@
     
       <category term="iOS" scheme="http://debugtalk.com/tags/iOS/"/>
     
-      <category term="Ruby" scheme="http://debugtalk.com/tags/Ruby/"/>
-    
       <category term="Simulator" scheme="http://debugtalk.com/tags/Simulator/"/>
+    
+      <category term="Ruby" scheme="http://debugtalk.com/tags/Ruby/"/>
     
   </entry>
   

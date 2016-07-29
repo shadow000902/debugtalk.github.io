@@ -142,9 +142,9 @@
          
         <tag>iOS</tag>
          
-        <tag>Ruby</tag>
-         
         <tag>Simulator</tag>
+         
+        <tag>Ruby</tag>
          
          
            
@@ -389,9 +389,9 @@
         
         <tag>Android</tag>
          
-        <tag>bootloader</tag>
-         
         <tag>环境搭建</tag>
+         
+        <tag>bootloader</tag>
          
          
            
@@ -410,9 +410,9 @@
         
         <tag>Android</tag>
          
-        <tag>环境搭建</tag>
-         
         <tag>recovery</tag>
+         
+        <tag>环境搭建</tag>
          
          
            
@@ -608,9 +608,9 @@
         <title>GitHub权限校验失败给我的启发</title>
         <pubTime>2016-06-13T16:00:00.000Z</pubTime>
         
-        <tag>GitHub</tag>
-         
         <tag>SSH</tag>
+         
+        <tag>GitHub</tag>
          
         <tag>HTTPS，权限校验</tag>
          
@@ -646,23 +646,6 @@
     
     
   <url>
-    <loc>http://debugtalk.com/post/traps-in-sql-null/</loc>
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    <data>
-        <display>
-        <title>SQL语句中关于NULL的那些坑</title>
-        <pubTime>2016-04-24T16:00:00.000Z</pubTime>
-        
-        <tag>SQL</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://debugtalk.com/post/WebService-Test-Based-On-HTTP/</loc>
     <lastmod>2016-07-22T11:07:58.000Z</lastmod>
     <data>
@@ -686,37 +669,16 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/SIPp-IP-Telephone-Server-Performance-Testing/</loc>
+    <loc>http://debugtalk.com/post/remote-debugging-with-pycharm/</loc>
     <lastmod>2016-07-22T11:07:58.000Z</lastmod>
     <data>
         <display>
-        <title>使用SIPp对基于SIP协议的IP电话通信服务器进行性能测试</title>
-        <pubTime>2014-05-10T16:00:00.000Z</pubTime>
+        <title>利用PyCharm进行Python远程调试</title>
+        <pubTime>2015-07-12T16:00:00.000Z</pubTime>
         
-        <tag>性能测试</tag>
+        <tag>pycharm</tag>
          
-        <tag>SIP</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/concept-about-webservice/</loc>
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    <data>
-        <display>
-        <title>测试工程师的自我修养--理解WebService</title>
-        <pubTime>2013-08-04T16:00:00.000Z</pubTime>
-        
-        <tag>WebService</tag>
-         
-        <tag>WSDL</tag>
-         
-        <tag>SOAP</tag>
+        <tag>Python</tag>
          
          
            
@@ -734,124 +696,6 @@
         <pubTime>2016-03-07T16:00:00.000Z</pubTime>
         
         <tag>Development</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/manage-Jenkins-via-remote-api/</loc>
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    <data>
-        <display>
-        <title>通过API远程管理Jenkins</title>
-        <pubTime>2016-05-01T16:00:00.000Z</pubTime>
-        
-        <tag>Jenkins</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/Introspection-on-WebService-Test/</loc>
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    <data>
-        <display>
-        <title>基于WSDL或SOAP的WebService测试方法--对原理的思考</title>
-        <pubTime>2015-02-11T16:00:00.000Z</pubTime>
-        
-        <tag>WebService</tag>
-         
-        <tag>WSDL</tag>
-         
-        <tag>SOAP</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/Using-DuoShuo-in-Pelican/</loc>
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    <data>
-        <display>
-        <title>在Pelican中使用多说评论系统</title>
-        <pubTime>2013-10-04T16:00:00.000Z</pubTime>
-        
-        <tag>Pelican</tag>
-         
-        <tag>评论系统</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/LoadRunner-SOAP-WebService/</loc>
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    <data>
-        <display>
-        <title>LoadRunner基于SOAP的WebService测试方法</title>
-        <pubTime>2013-08-05T16:00:00.000Z</pubTime>
-        
-        <tag>LoadRunner</tag>
-         
-        <tag>WebService</tag>
-         
-        <tag>SOAP</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/Evaluate-Largest-Online-Users/</loc>
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    <data>
-        <display>
-        <title>测试最大在线用户数</title>
-        <pubTime>2013-08-21T16:00:00.000Z</pubTime>
-        
-        <tag>LoadRunner</tag>
-         
-        <tag>性能指标</tag>
-         
-        <tag>最大在线用户数</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/performance-index-concurrent-users/</loc>
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    <data>
-        <display>
-        <title>性能指标--并发用户数（Concurrent Users）</title>
-        <pubTime>2013-07-30T16:00:00.000Z</pubTime>
-        
-        <tag>性能指标</tag>
-         
-        <tag>并发用户数</tag>
          
          
            
@@ -882,16 +726,94 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/remote-debugging-with-pycharm/</loc>
+    <loc>http://debugtalk.com/post/Introspection-on-WebService-Test/</loc>
     <lastmod>2016-07-22T11:07:58.000Z</lastmod>
     <data>
         <display>
-        <title>利用PyCharm进行Python远程调试</title>
-        <pubTime>2015-07-12T16:00:00.000Z</pubTime>
+        <title>基于WSDL或SOAP的WebService测试方法--对原理的思考</title>
+        <pubTime>2015-02-11T16:00:00.000Z</pubTime>
         
-        <tag>pycharm</tag>
+        <tag>WebService</tag>
          
-        <tag>Python</tag>
+        <tag>SOAP</tag>
+         
+        <tag>WSDL</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/performance-index-concurrent-users/</loc>
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    <data>
+        <display>
+        <title>性能指标--并发用户数（Concurrent Users）</title>
+        <pubTime>2013-07-30T16:00:00.000Z</pubTime>
+        
+        <tag>性能指标</tag>
+         
+        <tag>并发用户数</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/traps-in-sql-null/</loc>
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    <data>
+        <display>
+        <title>SQL语句中关于NULL的那些坑</title>
+        <pubTime>2016-04-24T16:00:00.000Z</pubTime>
+        
+        <tag>SQL</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/Using-DuoShuo-in-Pelican/</loc>
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    <data>
+        <display>
+        <title>在Pelican中使用多说评论系统</title>
+        <pubTime>2013-10-04T16:00:00.000Z</pubTime>
+        
+        <tag>Pelican</tag>
+         
+        <tag>评论系统</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/concept-about-webservice/</loc>
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    <data>
+        <display>
+        <title>测试工程师的自我修养--理解WebService</title>
+        <pubTime>2013-08-04T16:00:00.000Z</pubTime>
+        
+        <tag>WebService</tag>
+         
+        <tag>SOAP</tag>
+         
+        <tag>WSDL</tag>
          
          
            
@@ -911,6 +833,84 @@
         <tag>LoadRunner</tag>
          
         <tag>场景设计</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/LoadRunner-SOAP-WebService/</loc>
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    <data>
+        <display>
+        <title>LoadRunner基于SOAP的WebService测试方法</title>
+        <pubTime>2013-08-05T16:00:00.000Z</pubTime>
+        
+        <tag>LoadRunner</tag>
+         
+        <tag>WebService</tag>
+         
+        <tag>SOAP</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/SIPp-IP-Telephone-Server-Performance-Testing/</loc>
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    <data>
+        <display>
+        <title>使用SIPp对基于SIP协议的IP电话通信服务器进行性能测试</title>
+        <pubTime>2014-05-10T16:00:00.000Z</pubTime>
+        
+        <tag>性能测试</tag>
+         
+        <tag>SIP</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/manage-Jenkins-via-remote-api/</loc>
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    <data>
+        <display>
+        <title>通过API远程管理Jenkins</title>
+        <pubTime>2016-05-01T16:00:00.000Z</pubTime>
+        
+        <tag>Jenkins</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/Evaluate-Largest-Online-Users/</loc>
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    <data>
+        <display>
+        <title>测试最大在线用户数</title>
+        <pubTime>2013-08-21T16:00:00.000Z</pubTime>
+        
+        <tag>LoadRunner</tag>
+         
+        <tag>性能指标</tag>
+         
+        <tag>最大在线用户数</tag>
          
          
            
