@@ -140,13 +140,13 @@ iOS应用安装包的基础知识作为完全的iOS新手，困惑</p>
   
 <section class="post" itemscope itemprop="blogitem">
   
-    <a href="/post/Android-performance-test-start-traffic-tcpdump-wireshark/" title="Android App持续集成性能测试：启动流量（2）" itemprop="url">
+    <a href="/post/Android-performance-test-start-traffic-uid-stat/" title="Android App持续集成性能测试：启动流量（1）" itemprop="url">
   
-    <h1 itemprop="name">Android App持续集成性能测试：启动流量（2）</h1>
+    <h1 itemprop="name">Android App持续集成性能测试：启动流量（1）</h1>
     
      
-           <p itemprop="description" >在上一篇文章中，介绍了一种测试Android App启动流量的方法。当时也提到了，通过读取/proc/uid_stat/&amp;lt;UID&amp;gt;/目录下的tcp_rcv和tcp_snd文件，只能得到App的流量总值，无法得到更细化的数据。
-例如，UC浏览器国际版在启动后，会和美国的</p>
+           <p itemprop="description" >本文对Android App的启动流量测试进行介绍。这里的启动流量指的是网络流量，即App在启动时发起网络请求和接收网络响应时传输的网络数据量。
+说起流量，也许大家的第一反应就是tcpdump/wireshark这类网络抓包工具。的确，Android系统确实也支持tcpdump工</p>
         
     
     <time datetime="2016-05-02T16:00:00.000Z" itemprop="datePublished">2016-05-03</time>
@@ -161,13 +161,13 @@ iOS应用安装包的基础知识作为完全的iOS新手，困惑</p>
   
 <section class="post" itemscope itemprop="blogitem">
   
-    <a href="/post/Android-performance-test-start-traffic-uid-stat/" title="Android App持续集成性能测试：启动流量（1）" itemprop="url">
+    <a href="/post/Android-performance-test-start-traffic-tcpdump-wireshark/" title="Android App持续集成性能测试：启动流量（2）" itemprop="url">
   
-    <h1 itemprop="name">Android App持续集成性能测试：启动流量（1）</h1>
+    <h1 itemprop="name">Android App持续集成性能测试：启动流量（2）</h1>
     
      
-           <p itemprop="description" >本文对Android App的启动流量测试进行介绍。这里的启动流量指的是网络流量，即App在启动时发起网络请求和接收网络响应时传输的网络数据量。
-说起流量，也许大家的第一反应就是tcpdump/wireshark这类网络抓包工具。的确，Android系统确实也支持tcpdump工</p>
+           <p itemprop="description" >在上一篇文章中，介绍了一种测试Android App启动流量的方法。当时也提到了，通过读取/proc/uid_stat/&amp;lt;UID&amp;gt;/目录下的tcp_rcv和tcp_snd文件，只能得到App的流量总值，无法得到更细化的数据。
+例如，UC浏览器国际版在启动后，会和美国的</p>
         
     
     <time datetime="2016-05-02T16:00:00.000Z" itemprop="datePublished">2016-05-03</time>
@@ -365,15 +365,15 @@ CPU频率首先说下CPU的频率。我们都知道，CPU的工作频率越高�
 			
 		
 			
-				<li><a href="/tags/脚本开发/" title="脚本开发">脚本开发<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/流量测试/" title="流量测试">流量测试<sup>2</sup></a></li>
+				<li><a href="/tags/Git/" title="Git">Git<sup>2</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/CI/" title="CI">CI<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/流量测试/" title="流量测试">流量测试<sup>2</sup></a></li>
 			
 		
 			
@@ -385,11 +385,11 @@ CPU频率首先说下CPU的频率。我们都知道，CPU的工作频率越高�
 			
 		
 			
-				<li><a href="/tags/Pelican/" title="Pelican">Pelican<sup>2</sup></a></li>
+				<li><a href="/tags/脚本开发/" title="脚本开发">脚本开发<sup>2</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Git/" title="Git">Git<sup>2</sup></a></li>
+				<li><a href="/tags/Simulator/" title="Simulator">Simulator<sup>2</sup></a></li>
 			
 		
 		</ul>
@@ -430,7 +430,7 @@ CPU频率首先说下CPU的频率。我们都知道，CPU的工作频率越高�
 
 
   <div class="weiboshow">
-  <p class="asidetitle">Weibo</p>
+  <p class="asidetitle">新浪微博</p>
     <iframe width="100%" height="120" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=120&fansRow=2&ptype=1&speed=0&skin=9&isTitle=0&noborder=1&isWeibo=0&isFans=0&uid=2715081203&verifier=4477fd74&dpc=1"></iframe>
 </div>
 
