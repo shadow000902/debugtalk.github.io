@@ -25,7 +25,7 @@
 某美发网上商城（以下简称S商城）在微信平台上举办了一场在线投票活动，">
 <meta property="og:image" content="http://debugtalk.com/images/voteRobot_01.png">
 <meta property="og:image" content="http://debugtalk.com/images/voteRobot_02.png">
-<meta property="og:updated_time" content="2016-07-23T07:31:27.000Z">
+<meta property="og:updated_time" content="2016-07-30T05:11:42.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="微信朋友圈投票活动的刷票案例分析">
 <meta name="twitter:description" content="现阶段，在微信朋友圈举办的投票活动层出不穷，相信已经有不少同学对此不胜其烦，因为总会时不时地冒出个人（亲戚、朋友、or whatever）来请你帮TA投票。
@@ -60,7 +60,7 @@
 				<h1 class="site-name"><a href="/" title="DebugTalk">DebugTalk</a></h1>
 				<h2 class="blog-motto">探索一个软件工程师的无限可能</h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -76,7 +76,7 @@
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
 						<input type="hidden" name="q" value="site:debugtalk.com">
 					</form>
 					
@@ -99,7 +99,7 @@
 		<a href="/about" title="九毫" target="_blank" itemprop="author">九毫</a>
 		 -->
   <p class="article-time">
-    <time datetime="2016-04-03T16:00:00.000Z" itemprop="datePublished"> Published 2016-04-04</time>
+    <time datetime="2016-04-03T16:00:00.000Z" itemprop="datePublished"> 发表于 2016-04-04</time>
     
     <span id="busuanzi_container_page_pv">
       | 本文总阅读量<span id="busuanzi_value_page_pv"></span>次
@@ -111,7 +111,7 @@
 	<div class="article-content">
 		
 		<div id="toc" class="toc-article">
-			<strong class="toc-title">Contents</strong>
+			<strong class="toc-title">文章目录</strong>
 		
 			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#案例描述"><span class="toc-number">1.</span> <span class="toc-text">案例描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#漏洞分析"><span class="toc-number">2.</span> <span class="toc-text">漏洞分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#VoteRobot实现"><span class="toc-number">3.</span> <span class="toc-text">VoteRobot实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#作弊与反作弊？"><span class="toc-number">4.</span> <span class="toc-text">作弊与反作弊？</span></a></li></ol>
 		
@@ -122,11 +122,11 @@
 <h2 id="案例描述"><a href="#案例描述" class="headerlink" title="案例描述"></a>案例描述</h2><p>这里就有一个案例。</p>
 <p>某美发网上商城（以下简称S商城）在微信平台上举办了一场在线投票活动，微信用户可通过活动链接访问到投票页面，对喜欢的发型师作品进行投票；每个微信帐号每天只能给单个作品投1张选票。</p>
 <p>投票活动页面如下图所示：</p>
-<p><img src="/images/voteRobot_01.png" alt=""></p>
+<p><img src="/images/voteRobot_01.png" alt="vote activity overview"></p>
 <h2 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h2><p>表面上看，S商城已经对投票活动进行了反作弊处理，因为限制了每个微信用户每天只能投一张票。如果用户都是正常地通过微信访问这个投票服务进行投票的话，的确是能起到预期效果的。</p>
 <p>然而，如果查看投票页面的原始地址，即按住页面向下拖动，会发现屏幕顶端显示为”本网页由XXX提供”，需要注意的是，这里的”XXX”并不是”mp.weixin.qq.com”，而是S商城的域名。也就是说，这个投票活动的程序是运行在S商城的服务器上面的。</p>
 <p>基于以上分析，可以推断出用户投票操作的网络拓扑结构示意图应该是这样的：</p>
-<p><img src="/images/voteRobot_02.png" alt=""></p>
+<p><img src="/images/voteRobot_02.png" alt="vote system network structure"></p>
 <p>微信用户访问投票页面时，微信服务器只是进行了请求转发，具体的投票计数与校验都是在S商城的服务器上的。</p>
 <p>那么，S商城是怎么来区分投票用户的呢？</p>
 <p>这里就涉及到微信公众平台<code>OpenID</code>的概念了。官方对<code>OpenID</code>的解释是：加密后的微信号，每个用户对每个公众号的OpenID是唯一的。</p>
@@ -214,22 +214,22 @@
 </section>
 
 </div>  
-      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
 
   <div id="toc" class="toc-aside">
-  <strong class="toc-title">Contents</strong>
+  <strong class="toc-title">文章目录</strong>
  
  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#案例描述"><span class="toc-number">1.</span> <span class="toc-text">案例描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#漏洞分析"><span class="toc-number">2.</span> <span class="toc-text">漏洞分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#VoteRobot实现"><span class="toc-number">3.</span> <span class="toc-text">VoteRobot实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#作弊与反作弊？"><span class="toc-number">4.</span> <span class="toc-text">作弊与反作弊？</span></a></li></ol>
  
   </div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
 <aside class="clearfix">
 
   
 <div class="github-card">
-<p class="asidetitle">Github Card</p>
+<p class="asidetitle">My Github</p>
 <div class="github-card" data-github="debugtalk" data-width="220" data-height="119" data-theme="medium">
 <script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
 </div>
@@ -241,7 +241,7 @@
 
   
 <div class="tagslist">
-	<p class="asidetitle">Tags</p>
+	<p class="asidetitle">标签</p>
 		<ul class="clearfix">
 		
 			
@@ -265,15 +265,15 @@
 			
 		
 			
+				<li><a href="/tags/环境搭建/" title="环境搭建">环境搭建<sup>5</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/F0T1/" title="F0T1">F0T1<sup>5</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/WebService/" title="WebService">WebService<sup>5</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/环境搭建/" title="环境搭建">环境搭建<sup>5</sup></a></li>
 			
 		
 			
@@ -297,11 +297,15 @@
 			
 		
 			
-				<li><a href="/tags/流量测试/" title="流量测试">流量测试<sup>2</sup></a></li>
+				<li><a href="/tags/Git/" title="Git">Git<sup>2</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Git/" title="Git">Git<sup>2</sup></a></li>
+				<li><a href="/tags/黑盒测试/" title="黑盒测试">黑盒测试<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/流量测试/" title="流量测试">流量测试<sup>2</sup></a></li>
 			
 		
 			
@@ -309,15 +313,11 @@
 			
 		
 			
-				<li><a href="/tags/Pelican/" title="Pelican">Pelican<sup>2</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/性能指标/" title="性能指标">性能指标<sup>2</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/黑盒测试/" title="黑盒测试">黑盒测试<sup>2</sup></a></li>
+				<li><a href="/tags/脚本开发/" title="脚本开发">脚本开发<sup>2</sup></a></li>
 			
 		
 			
@@ -329,7 +329,7 @@
 
 
   <div class="linkslist">
-  <p class="asidetitle">Recent GitHub Projects</p>
+  <p class="asidetitle">近期开源项目</p>
     <ul>
         
           <li>
@@ -368,7 +368,7 @@
 
 
   <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
 </div>
 
 </aside>
@@ -607,7 +607,7 @@ var disqus_shortname = 'debugtalk';
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 

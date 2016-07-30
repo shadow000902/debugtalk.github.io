@@ -20,7 +20,7 @@
 <meta property="og:description" content="写在前面前两天微信突然发来一条系统消息，提示DebugTalk可以开通原创标识了（同时也有了评论功能），虽然一直在期待，但没想到来得这么快，着实是个不小的惊喜。
 另外，最近在公众号后台也收到好几个朋友的信息，有的是询问某某部分什么时候能发布，有的是希望能加快更新速度。说实话，收到这样的信息虽然会有压力，但真的挺开心的，因为这说明DebugTalk至少能给一部分人带去价值，这说明这件事本身还是值得坚">
 <meta property="og:image" content="http://debugtalk.com/images/Appium_inspector_introduction.jpg">
-<meta property="og:updated_time" content="2016-07-23T07:58:57.000Z">
+<meta property="og:updated_time" content="2016-07-30T05:15:26.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从0到1搭建移动App功能自动化测试平台（2）：操作iOS应用的控件">
 <meta name="twitter:description" content="写在前面前两天微信突然发来一条系统消息，提示DebugTalk可以开通原创标识了（同时也有了评论功能），虽然一直在期待，但没想到来得这么快，着实是个不小的惊喜。
@@ -53,7 +53,7 @@
 				<h1 class="site-name"><a href="/" title="DebugTalk">DebugTalk</a></h1>
 				<h2 class="blog-motto">探索一个软件工程师的无限可能</h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -69,7 +69,7 @@
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
 						<input type="hidden" name="q" value="site:debugtalk.com">
 					</form>
 					
@@ -92,7 +92,7 @@
 		<a href="/about" title="九毫" target="_blank" itemprop="author">九毫</a>
 		 -->
   <p class="article-time">
-    <time datetime="2016-05-28T16:00:00.000Z" itemprop="datePublished"> Published 2016-05-29</time>
+    <time datetime="2016-05-28T16:00:00.000Z" itemprop="datePublished"> 发表于 2016-05-29</time>
     
     <span id="busuanzi_container_page_pv">
       | 本文总阅读量<span id="busuanzi_value_page_pv"></span>次
@@ -104,7 +104,7 @@
 	<div class="article-content">
 		
 		<div id="toc" class="toc-article">
-			<strong class="toc-title">Contents</strong>
+			<strong class="toc-title">文章目录</strong>
 		
 			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#写在前面"><span class="toc-number">1.</span> <span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#关于UI控件"><span class="toc-number">2.</span> <span class="toc-text">关于UI控件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#获取UI控件信息"><span class="toc-number">3.</span> <span class="toc-text">获取UI控件信息</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Appium-Inspector"><span class="toc-number">3.1.</span> <span class="toc-text">Appium Inspector</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Appium-Ruby-Console"><span class="toc-number">3.2.</span> <span class="toc-text">Appium Ruby Console</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#定位UI控件"><span class="toc-number">4.</span> <span class="toc-text">定位UI控件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对控件执行操作"><span class="toc-number">5.</span> <span class="toc-text">对控件执行操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#To-be-continued-…"><span class="toc-number">6.</span> <span class="toc-text">To be continued …</span></a></li></ol>
 		
@@ -123,7 +123,7 @@
 <p>在iOS系统中，UI控件有多种类型，常见的有按钮（UIAButton）、文本（UIAStaticText）、输入框（UIATextField）等等。但不管是对什么类型的UI控件进行操作，基本都可以分解为三步，首先是获取目标控件的属性信息，然后是对目标控件进行定位，最后是对定位到的控件执行动作。</p>
 <h2 id="获取UI控件信息"><a href="#获取UI控件信息" class="headerlink" title="获取UI控件信息"></a>获取UI控件信息</h2><p>在Appium中，要获取iOS的UI控件元素信息，可以采用两种方式：一种是在前一篇文章中提到的Appium Inspector，另一种是借助Ruby实现的<code>appium_console</code>，在Terminal中通过命令进行查询。</p>
 <h3 id="Appium-Inspector"><a href="#Appium-Inspector" class="headerlink" title="Appium Inspector"></a>Appium Inspector</h3><p>运行Appium Server，并启动【Inspector】后，整体界面如下图所示。</p>
-<p><img src="/images/Appium_inspector_introduction.jpg" alt=""></p>
+<p><img src="/images/Appium_inspector_introduction.jpg" alt="Appium inspector introduction"></p>
 <p>现对照着这张图对Appium Inspector进行介绍。</p>
 <p>在右边部分，是启动的模拟器，里面运行着我们的待测APP。我们可以像在真机中一样，在模拟器中执行任意功能的操作，当然，模拟器跟真机毕竟还是有区别的，跟传感器相关的功能，例如摄像头、重力感应等，是没法实现的。</p>
 <p>在左边部分，就是<code>Appium Inspector</code>。Inspector主要由如下四个部分组成：</p>
@@ -250,22 +250,22 @@
 </section>
 
 </div>  
-      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
 
   <div id="toc" class="toc-aside">
-  <strong class="toc-title">Contents</strong>
+  <strong class="toc-title">文章目录</strong>
  
  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#写在前面"><span class="toc-number">1.</span> <span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#关于UI控件"><span class="toc-number">2.</span> <span class="toc-text">关于UI控件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#获取UI控件信息"><span class="toc-number">3.</span> <span class="toc-text">获取UI控件信息</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Appium-Inspector"><span class="toc-number">3.1.</span> <span class="toc-text">Appium Inspector</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Appium-Ruby-Console"><span class="toc-number">3.2.</span> <span class="toc-text">Appium Ruby Console</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#定位UI控件"><span class="toc-number">4.</span> <span class="toc-text">定位UI控件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对控件执行操作"><span class="toc-number">5.</span> <span class="toc-text">对控件执行操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#To-be-continued-…"><span class="toc-number">6.</span> <span class="toc-text">To be continued …</span></a></li></ol>
  
   </div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
 <aside class="clearfix">
 
   
 <div class="github-card">
-<p class="asidetitle">Github Card</p>
+<p class="asidetitle">My Github</p>
 <div class="github-card" data-github="debugtalk" data-width="220" data-height="119" data-theme="medium">
 <script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
 </div>
@@ -277,7 +277,7 @@
 
   
 <div class="tagslist">
-	<p class="asidetitle">Tags</p>
+	<p class="asidetitle">标签</p>
 		<ul class="clearfix">
 		
 			
@@ -301,15 +301,15 @@
 			
 		
 			
+				<li><a href="/tags/环境搭建/" title="环境搭建">环境搭建<sup>5</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/F0T1/" title="F0T1">F0T1<sup>5</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/WebService/" title="WebService">WebService<sup>5</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/环境搭建/" title="环境搭建">环境搭建<sup>5</sup></a></li>
 			
 		
 			
@@ -333,11 +333,15 @@
 			
 		
 			
-				<li><a href="/tags/流量测试/" title="流量测试">流量测试<sup>2</sup></a></li>
+				<li><a href="/tags/Git/" title="Git">Git<sup>2</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Git/" title="Git">Git<sup>2</sup></a></li>
+				<li><a href="/tags/黑盒测试/" title="黑盒测试">黑盒测试<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/流量测试/" title="流量测试">流量测试<sup>2</sup></a></li>
 			
 		
 			
@@ -345,15 +349,11 @@
 			
 		
 			
-				<li><a href="/tags/Pelican/" title="Pelican">Pelican<sup>2</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/性能指标/" title="性能指标">性能指标<sup>2</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/黑盒测试/" title="黑盒测试">黑盒测试<sup>2</sup></a></li>
+				<li><a href="/tags/脚本开发/" title="脚本开发">脚本开发<sup>2</sup></a></li>
 			
 		
 			
@@ -365,7 +365,7 @@
 
 
   <div class="linkslist">
-  <p class="asidetitle">Recent GitHub Projects</p>
+  <p class="asidetitle">近期开源项目</p>
     <ul>
         
           <li>
@@ -404,7 +404,7 @@
 
 
   <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
 </div>
 
 </aside>
@@ -643,7 +643,7 @@ var disqus_shortname = 'debugtalk';
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 
