@@ -247,35 +247,7 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/WebService-Test-Based-On-HTTP/</loc>
-    
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/manage-Jenkins-via-remote-api/</loc>
-    
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/traps-in-sql-null/</loc>
-    
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/concept-about-webservice/</loc>
-    
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/scenario-design-scripts-percent-controll/</loc>
+    <loc>http://debugtalk.com/post/remote-debugging-with-pycharm/</loc>
     
     <lastmod>2016-07-22T11:07:58.000Z</lastmod>
     
@@ -296,28 +268,7 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/Using-DuoShuo-in-Pelican/</loc>
-    
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/LoadRunner-SOAP-WebService/</loc>
-    
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/performance-index-concurrent-users/</loc>
-    
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/Evaluate-Largest-Online-Users/</loc>
+    <loc>http://debugtalk.com/post/WebService-Test-Based-On-HTTP/</loc>
     
     <lastmod>2016-07-22T11:07:58.000Z</lastmod>
     
@@ -331,7 +282,56 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/remote-debugging-with-pycharm/</loc>
+    <loc>http://debugtalk.com/post/scenario-design-scripts-percent-controll/</loc>
+    
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/Evaluate-Largest-Online-Users/</loc>
+    
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/traps-in-sql-null/</loc>
+    
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/manage-Jenkins-via-remote-api/</loc>
+    
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/performance-index-concurrent-users/</loc>
+    
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/concept-about-webservice/</loc>
+    
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/Using-DuoShuo-in-Pelican/</loc>
+    
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/LoadRunner-SOAP-WebService/</loc>
     
     <lastmod>2016-07-22T11:07:58.000Z</lastmod>
     
