@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://debugtalk.com/post/iOS-Android-Packing-with-Jenkins-details/</loc>
+    
+    <lastmod>2016-08-05T11:29:20.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://debugtalk.com/post/render-multi-level-table-in-webpage/</loc>
     
     <lastmod>2016-07-30T05:24:31.000Z</lastmod>
@@ -89,13 +96,6 @@
     <loc>http://debugtalk.com/post/Introduction-to-AppiumBooster/</loc>
     
     <lastmod>2016-07-30T05:09:13.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/iOS-Android-Packing-with-Jenkins-details/</loc>
-    
-    <lastmod>2016-07-30T05:08:40.000Z</lastmod>
     
   </url>
   

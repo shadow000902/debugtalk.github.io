@@ -4,6 +4,29 @@
 
     
   <url>
+    <loc>http://debugtalk.com/post/iOS-Android-Packing-with-Jenkins-details/</loc>
+    <lastmod>2016-08-05T11:29:20.000Z</lastmod>
+    <data>
+        <display>
+        <title>关于持续集成打包平台的Jenkins配置和构建脚本实现细节</title>
+        <pubTime>2016-07-25T16:00:00.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>Jenkins</tag>
+         
+        <tag>iOS</tag>
+         
+        <tag>CI</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://debugtalk.com/post/render-multi-level-table-in-webpage/</loc>
     <lastmod>2016-07-30T05:24:31.000Z</lastmod>
     <data>
@@ -284,29 +307,6 @@
         <tag>Appium</tag>
          
         <tag>AppiumBooster</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/iOS-Android-Packing-with-Jenkins-details/</loc>
-    <lastmod>2016-07-30T05:08:40.000Z</lastmod>
-    <data>
-        <display>
-        <title>关于持续集成打包平台的Jenkins配置和构建脚本实现细节</title>
-        <pubTime>2016-07-25T16:00:00.000Z</pubTime>
-        
-        <tag>Android</tag>
-         
-        <tag>Jenkins</tag>
-         
-        <tag>iOS</tag>
-         
-        <tag>CI</tag>
          
          
            
