@@ -24,7 +24,7 @@
 <meta property="og:image" content="http://debugtalk.com/images/Jenkins_set_build_description.jpg">
 <meta property="og:image" content="http://debugtalk.com/images/Jenkins_archive_the_artifacts.jpg">
 <meta property="og:image" content="http://debugtalk.com/images/Jenkins_show_artifacts.jpg">
-<meta property="og:updated_time" content="2016-08-05T11:29:20.000Z">
+<meta property="og:updated_time" content="2016-08-08T03:02:15.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于持续集成打包平台的Jenkins配置和构建脚本实现细节">
 <meta name="twitter:description" content="在《使用Jenkins搭建iOS/Android持续集成打包平台》一文中，我对如何使用Jenkins搭建iOS/Android持续集成打包平台的基础概念和实施流程进行了介绍。本文作为配套，对搭建持续集成打包平台中涉及到的执行命令、构建脚本（build.py），以及Jenkins的配置进行详细的补充说明。
@@ -126,8 +126,8 @@
 <h3 id="源码-gt-archive-gt-ipa"><a href="#源码-gt-archive-gt-ipa" class="headerlink" title="源码 -&gt; .archive -&gt; .ipa"></a><code>源码</code> -&gt; <code>.archive</code> -&gt; <code>.ipa</code></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># build archive file from source code</span></div><div class="line">xcodebuild \    <span class="comment"># xctool</span></div><div class="line">  -workspace <span class="variable">$&#123;WORKSPACE_PATH&#125;</span> \</div><div class="line">  -scheme <span class="variable">$&#123;SCHEME&#125;</span> \</div><div class="line">  -configuration <span class="variable">$&#123;CONFIGURATION&#125;</span> \</div><div class="line">  -sdk <span class="variable">$&#123;SDK&#125;</span></div><div class="line">  -archivePath <span class="variable">$&#123;archive_path&#125;</span></div><div class="line">  archive</div></pre></td></tr></table></figure>
 <p><code>archive</code>：对编译结果进行归档，会生成一个<code>.xcarchive</code>的文件，位于<code>-archivePath</code>指定的目录中。需要注意的是，对模拟器类型的<code>sdk</code>无法使用<code>archive</code>命令。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># export ipa file from .archive</span></div><div class="line">xcodebuild -exportArchive \</div><div class="line">  -exportFormat format \</div><div class="line">  -archivePath xcarchivepath \</div><div class="line">  -exportPath destinationpath \</div><div class="line">  -exportProvisioningProfile profilename \</div><div class="line">  [-exportSigningIdentity identityname]</div><div class="line">  [-exportInstallerIdentity identityname]</div></pre></td></tr></table></figure>
-<h3 id="源码-gt-app-gt-ipa"><a href="#源码-gt-app-gt-ipa" class="headerlink" title="源码 -&gt; .app -&gt; .ipa"></a><code>源码</code> -&gt; <code>.app</code> -&gt; <code>.ipa</code></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># build .app file from source code</span></div><div class="line">xcodebuild \    <span class="comment"># xctool</span></div><div class="line">  -workspace <span class="variable">$&#123;WORKSPACE_PATH&#125;</span> \</div><div class="line">  -scheme <span class="variable">$&#123;SCHEME&#125;</span> \</div><div class="line">  -configuration <span class="variable">$&#123;CONFIGURATION&#125;</span> \</div><div class="line">  -sdk <span class="variable">$&#123;SDK&#125;</span></div><div class="line">  -derivedDataPath build</div></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># convert .app file to ipa file</span></div><div class="line">xcrun \</div><div class="line">  -sdk iphoneos \</div><div class="line">  PackageApplication \</div><div class="line">  -v build/Release-iphoneos/xxx.app \</div><div class="line">  -o build/Release-iphoneos/xxx.ipa</div></pre></td></tr></table></figure>
+<h3 id="源码-gt-app-gt-ipa"><a href="#源码-gt-app-gt-ipa" class="headerlink" title="源码 -&gt; .app -&gt; .ipa"></a><code>源码</code> -&gt; <code>.app</code> -&gt; <code>.ipa</code></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># build .app file from source code</span></div><div class="line">xcodebuild \    <span class="comment"># xctool</span></div><div class="line">  -workspace <span class="variable">$&#123;WORKSPACE_PATH&#125;</span> \</div><div class="line">  -scheme <span class="variable">$&#123;SCHEME&#125;</span> \</div><div class="line">  -configuration <span class="variable">$&#123;CONFIGURATION&#125;</span> \</div><div class="line">  -sdk <span class="variable">$&#123;SDK&#125;</span></div><div class="line">  -derivedDataPath <span class="variable">$&#123;OUTPUT_FOLDER&#125;</span></div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># convert .app file to ipa file</span></div><div class="line">xcrun \</div><div class="line">  -sdk iphoneos \</div><div class="line">  PackageApplication \</div><div class="line">  -v <span class="variable">$&#123;OUTPUT_FOLDER&#125;</span>/Release-iphoneos/xxx.app \</div><div class="line">  -o <span class="variable">$&#123;OUTPUT_FOLDER&#125;</span>/Release-iphoneos/xxx.ipa</div></pre></td></tr></table></figure>
 <h3 id="参数说明"><a href="#参数说明" class="headerlink" title="参数说明"></a>参数说明</h3><p><strong>xcodebuild/xctool参数</strong>：</p>
 <ul>
 <li><code>-workspace</code>：需要打包的workspace，后面接的文件一定要是<code>.xcworkspace</code>结尾的；</li>
@@ -138,7 +138,7 @@
 <li><code>-archivePath</code>：<code>.xcarchive</code>文件的路径；</li>
 <li><code>-exportPath</code>：导出文件（<code>.ipa</code>）的路径；</li>
 <li><code>-exportProvisioningProfile</code>：profile文件证书；</li>
-<li><code>-derivedDataPath</code>：指定编译结果文件的存储路径；例如，指定<code>-derivedDataPath build</code>时，将在项目根目录下创建一个<code>build</code>文件夹，生成的<code>.app</code>文件将位于<code>build/Build/Products/${CONFIGURATION}-iphoneos</code>中。</li>
+<li><code>-derivedDataPath</code>：指定编译结果文件的存储路径；例如，指定<code>-derivedDataPath ${OUTPUT_FOLDER}</code>时，将在项目根目录下创建一个<code>${OUTPUT_FOLDER}</code>文件夹，生成的<code>.app</code>文件将位于<code>${OUTPUT_FOLDER}/Build/Products/${CONFIGURATION}-iphoneos</code>中。</li>
 </ul>
 <p>除了采用官方的<code>xcodebuild</code>命令，还可以使用由Facebook开发维护的<code>xctool</code>。<code>xctool</code>命令的使用方法基本与<code>xcodebuild</code>一致，但是输出的日志会清晰很多，而且还有许多其它优化，详情请参考<code>xctool</code>的官方文档。</p>
 <p><strong>xcrun参数</strong>：</p>
@@ -371,6 +371,10 @@
 			
 		
 			
+				<li><a href="/tags/WSDL/" title="WSDL">WSDL<sup>3</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/Jenkins/" title="Jenkins">Jenkins<sup>3</sup></a></li>
 			
 		
@@ -379,19 +383,11 @@
 			
 		
 			
-				<li><a href="/tags/WSDL/" title="WSDL">WSDL<sup>3</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/Ruby/" title="Ruby">Ruby<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/流量测试/" title="流量测试">流量测试<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/Git/" title="Git">Git<sup>2</sup></a></li>
+				<li><a href="/tags/脚本开发/" title="脚本开发">脚本开发<sup>2</sup></a></li>
 			
 		
 			
@@ -399,11 +395,7 @@
 			
 		
 			
-				<li><a href="/tags/Pelican/" title="Pelican">Pelican<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/性能指标/" title="性能指标">性能指标<sup>2</sup></a></li>
+				<li><a href="/tags/流量测试/" title="流量测试">流量测试<sup>2</sup></a></li>
 			
 		
 			
@@ -411,7 +403,15 @@
 			
 		
 			
+				<li><a href="/tags/Git/" title="Git">Git<sup>2</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/Simulator/" title="Simulator">Simulator<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/性能指标/" title="性能指标">性能指标<sup>2</sup></a></li>
 			
 		
 		</ul>
