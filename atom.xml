@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://debugtalk.com/"/>
-  <updated>2016-08-12T05:28:34.000Z</updated>
+  <updated>2016-08-14T08:57:42.000Z</updated>
   <id>http://debugtalk.com/</id>
   
   <author>
@@ -14,6 +14,72 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>使用Jenkins实现持续集成构建检查</title>
+    <link href="http://debugtalk.com/post/Jenkins-CI-Automation-Test/"/>
+    <id>http://debugtalk.com/post/Jenkins-CI-Automation-Test/</id>
+    <published>2016-08-13T16:00:00.000Z</published>
+    <updated>2016-08-14T08:57:42.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>通过<a href="/post/iOS-Android-Packing-with-Jenkins/">《使用Jenkins搭建iOS/Android持续集成打包平台》</a>和<a href="/post/iOS-Android-Packing-with-Jenkins-details/">《关于持续集成打包平台的Jenkins配置和构建脚本实现细节》</a>两篇文章，我们已经在原理概念和实践操作两个层面掌握了如何搭建一个完整的持续集成打包平台。</p>
+<p>不过，在实际使用过程中，发现有时候还会存在一个问题。研发同学提交新的代码后，Jenkins端可以成功执行构建，并生成安装包；然而在将安装包安装至移动设备时，却发现有时候会出现无法成功安装，或者安装后出现启动闪退的情况。</p>
+<p>为了及时发现该类问题，我们还需要对每次构建生成的安装包进行检查。本文便是对构建检查涉及到的方法进行介绍。</p>
+<h2 id="构建生成-app"><a href="#构建生成-app" class="headerlink" title="构建生成.app"></a>构建生成<code>.app</code></h2><p>为了降低问题的复杂度，我们可以选择在模拟器中运行构建生成的安装包。之前在<a href="/post/build-app-automated-test-platform-from-0-to-1-Appium-inspector-iOS-simulator/">《从0到1搭建移动App功能自动化测试平台（1）：模拟器中运行iOS应用》</a>也讲解过，要在模拟器中运行iOS应用，需要在Xcode中编译时选择模拟器类型，并且编译生成的文件后缀为<code>.app</code>。</p>
+<p>对应的，构建生成<code>.app</code>的命令如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># build .app file from source code</span></div><div class="line">xcodebuild \    <span class="comment"># xctool</span></div><div class="line">  -workspace <span class="variable">$&#123;WORKSPACE_PATH&#125;</span> \</div><div class="line">  -scheme <span class="variable">$&#123;SCHEME&#125;</span> \</div><div class="line">  -configuration <span class="variable">$&#123;CONFIGURATION&#125;</span> \</div><div class="line">  -sdk <span class="variable">$&#123;SDK&#125;</span> \</div><div class="line">  -derivedDataPath <span class="variable">$&#123;OUTPUT_FOLDER&#125;</span></div></pre></td></tr></table></figure>
+<p><strong>xcodebuild/xctool参数说明</strong>：</p>
+<ul>
+<li><code>-workspace</code>：需要打包的workspace，后面接的文件一定要是<code>.xcworkspace</code>结尾的；</li>
+<li><code>-scheme</code>：需要打包的Scheme，一般与<code>$project_name</code>相同；</li>
+<li><code>-sdk</code>：区分iphone device和Simulator，可通过<code>xcodebuild -showsdks</code>获取，例如<code>iphonesimulator9.3</code>。</li>
+<li><code>-configuration</code>：需要打包的配置文件，我们一般在项目中添加多个配置，适合不同的环境，Release/Debug；</li>
+<li><code>-derivedDataPath</code>：指定编译结果文件的存储路径；例如，指定<code>-derivedDataPath build_outputs</code>时，将在项目根目录下创建一个<code>build_outputs</code>文件夹，生成的<code>.app</code>文件将位于<code>build_outputs/Build/Products/${CONFIGURATION}-iphoneos</code>中。</li>
+</ul>
+<p>同样地，这里也可以使用<code>xctool</code>代替<code>xcodebuild</code>。</p>
+<p>这里使用到的命令和参数基本上和<a href="/post/iOS-Android-Packing-with-Jenkins-details/">《关于持续集成打包平台的Jenkins配置和构建脚本实现细节》</a>一文中的大致相同，唯一需要特别注意的是<code>-sdk</code>参数。因为是要在模拟器中运行，因此<code>-sdk</code>参数要设置为<code>iphonesimulator</code>，而非<code>iphoneos</code>。</p>
+<p>命令成功执行后，就会在指定的<code>${OUTPUT_FOLDER}</code>目录中生成<code>${SCHEME}.app</code>文件，这也就是我们构建生成的产物。另外，熟悉<code>iOS</code>的同学都知道，<code>.app</code>文件其实是一个文件夹，为了实现更好的存储，我们也可以额外地再做一步操作，将<code>.app</code>文件夹压缩转换为<code>.zip</code>格式，而且Appium也是支持读取<code>.zip</code>格式的安装包的。</p>
+<p>至此，适用于iOS模拟器运行的构建产物已准备就绪。这里涉及到的脚本实现已更新至<a href="https://github.com/debugtalk/JenkinsTemplateForApp" target="_blank" rel="external">【debugtalk/JenkinsTemplateForApp】</a>。</p>
+<h2 id="实现构建检查"><a href="#实现构建检查" class="headerlink" title="实现构建检查"></a>实现构建检查</h2><p>那要怎样对构建生成的产物进行检查呢？</p>
+<p>最简单的方式，就是在iOS模拟器中运行构建生成的<code>.app</code>，并执行一组基本的自动化测试用例。在执行过程中，如果出现无法成功安装，或者安装成功后启动出现闪退，或者自动化测试用例执行失败等异常情况，则说明我们最新提交的代码存在问题，需要通知研发同学及时进行修复。</p>
+<p>而这些实现方式，其实我在<a href="/tags/F0T1/">《从0到1搭建移动App功能自动化测试平台》</a>系列文章中都已经进行了详细讲解，并形成了一套较为成熟的自动化测试框架，【<a href="https://github.com/debugtalk/AppiumBooster" target="_blank" rel="external">debugtalk/AppiumBooster</a>】。</p>
+<p>在此基础上，我们无需再做其它工作，只需要按照<code>debugtalk/AppiumBooster</code>的要求在表格中编写一组基本的自动化测试用例，即可采用如下方式执行构建检查。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">cd</span> <span class="variable">$&#123;AppiumBooster_Folder&#125;</span></div><div class="line">$ ruby run.rb -p <span class="string">"<span class="variable">$&#123;OUTPUT_FOLDER&#125;</span>/<span class="variable">$&#123;SCHEME&#125;</span>.app.zip"</span> --disable_output_color &gt; <span class="built_in">test</span>_result.log</div></pre></td></tr></table></figure>
+<p>在如上命令中，通过<code>-p</code>参数指定构建生成的安装包，然后就可以在iOS模拟器中运行事先编写好的自动化测试用例，从而实现构建检查。</p>
+<p>在这里，我们还可以通过<code>--disable_output_color</code>开关将输出日志的颜色关闭。之所以实现这么一个功能，是因为在Jenkins中本来也无法显示颜色，但是如果还将Terminal中有颜色的日志内容输出到Jenkins中，就会出现一些额外的字符，比较影响日志的美观。</p>
+<p>现在，我们已经分别实现了代码构建和构建检查这两个核心的操作环节，而要执行最终的持续集成，我们还需要做最后一项工作，即在Jenkins中将这两个环节串联起来。</p>
+<h2 id="Jenkins配置"><a href="#Jenkins配置" class="headerlink" title="Jenkins配置"></a>Jenkins配置</h2><p>关于Jenkins的相关基础概念、实施流程和配置细节，我在<a href="/tags/Jenkins/">之前的文章</a>中已经讲解得非常详细了。在此我就只进行一点补充。</p>
+<p>要实现在构建完成后再运行一些额外的脚本，例如我们的构建检查命令，需要使用到Jenkins的一个插件，<code>Post-Build Script Plug-in</code>。</p>
+<p>安装完该插件后，在Jenkins配置界面的<code>Post-build Actions</code>栏目中，<code>Add post-build action</code>选项列表中就会多出<code>Execute a set of scripts</code>选项。选择该项后，会出现如下配置界面。</p>
+<p><img src="/images/Jenkins_Post_build_Actions_Execute_shell_menu.jpg" alt="Jenkins Post_build_Actions Execute_shell menu"></p>
+<p>选择<code>Execute shell</code>后，会出现一个文本框，然后我们就可以将构建检查的命令填写到里面。</p>
+<p><img src="/images/Jenkins_Post_build_Actions_Execute_shell.jpg" alt="Jenkins Post_build_Actions Execute_shell"></p>
+<p>在这里我们用到了<code>${AppiumBooster_Folder}</code>参数，该参数也需要通过<code>String Parameter</code>来进行定义，用于指定<code>AppiumBooster</code>项目的路径。</p>
+<p><img src="/images/Jenkins_String_Parameter.jpg" alt="Jenkins String Parameter"></p>
+<p>最后，为了便于将执行自动化测试用例的日志和执行构建的日志分开，我们将执行自动化测试用例的日志写入到了<code>test_result.log</code>文件中。然后，在<code>Archives build artifacts</code>中就可以通过<code>${AppiumBooster_Folder}/test_result.log</code>将执行构建检查的日志收集起来，并展示到每次构建的页面中。</p>
+<p>延续一贯的<code>开箱即用</code>原则，我将使用Jenkins实现持续集成构建检查涉及到的Jenkins配置也做成了一套模板，并更新到【<a href="https://github.com/debugtalk/JenkinsTemplateForApp" target="_blank" rel="external">debugtalk/JenkinsTemplateForApp</a>】中了，供大家参考。</p>
+<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>至此，通过<a href="/tags/Jenkins/">本系列的几篇文章</a>，关于如何使用Jenkins实现移动APP持续集成的相关内容应该都已经覆盖得差不多了。</p>
+<p>不过，由于我个人的近期工作主要集中在iOS部分，因此在讲解的过程中都是以iOS为主。后续在将工作重心移到Android部分后，我会再在<code>DebugTalk</code>的这几篇文章中更新Android部分的内容。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;通过&lt;a href=&quot;/post/iOS-Android-Packing-with-Jenkins/&quot;&gt;《使用Jenkins搭建iOS/Android持续集成打包平台》&lt;/a&gt;和&lt;a href=&quot;/post/iOS-Android-Packing-with-Jenkins-
+    
+    </summary>
+    
+    
+      <category term="Android" scheme="http://debugtalk.com/tags/Android/"/>
+    
+      <category term="Jenkins" scheme="http://debugtalk.com/tags/Jenkins/"/>
+    
+      <category term="iOS" scheme="http://debugtalk.com/tags/iOS/"/>
+    
+      <category term="CI" scheme="http://debugtalk.com/tags/CI/"/>
+    
+      <category term="Automation" scheme="http://debugtalk.com/tags/Automation/"/>
+    
+  </entry>
   
   <entry>
     <title>发福利啦！大疆无人机员工优惠券&amp;机器人争霸赛门票</title>
@@ -112,9 +178,9 @@
     
       <category term="Appium" scheme="http://debugtalk.com/tags/Appium/"/>
     
-      <category term="iOS" scheme="http://debugtalk.com/tags/iOS/"/>
-    
       <category term="F0T1" scheme="http://debugtalk.com/tags/F0T1/"/>
+    
+      <category term="iOS" scheme="http://debugtalk.com/tags/iOS/"/>
     
       <category term="Ruby" scheme="http://debugtalk.com/tags/Ruby/"/>
     
@@ -636,9 +702,9 @@
     </summary>
     
     
-      <category term="GitHub" scheme="http://debugtalk.com/tags/GitHub/"/>
-    
       <category term="SSH" scheme="http://debugtalk.com/tags/SSH/"/>
+    
+      <category term="GitHub" scheme="http://debugtalk.com/tags/GitHub/"/>
     
       <category term="HTTPS，权限校验" scheme="http://debugtalk.com/tags/HTTPS%EF%BC%8C%E6%9D%83%E9%99%90%E6%A0%A1%E9%AA%8C/"/>
     
@@ -859,9 +925,9 @@
     
       <category term="Appium" scheme="http://debugtalk.com/tags/Appium/"/>
     
-      <category term="iOS" scheme="http://debugtalk.com/tags/iOS/"/>
-    
       <category term="F0T1" scheme="http://debugtalk.com/tags/F0T1/"/>
+    
+      <category term="iOS" scheme="http://debugtalk.com/tags/iOS/"/>
     
       <category term="Ruby" scheme="http://debugtalk.com/tags/Ruby/"/>
     
@@ -969,11 +1035,11 @@
     
       <category term="Appium" scheme="http://debugtalk.com/tags/Appium/"/>
     
+      <category term="F0T1" scheme="http://debugtalk.com/tags/F0T1/"/>
+    
       <category term="iOS" scheme="http://debugtalk.com/tags/iOS/"/>
     
       <category term="Simulator" scheme="http://debugtalk.com/tags/Simulator/"/>
-    
-      <category term="F0T1" scheme="http://debugtalk.com/tags/F0T1/"/>
     
       <category term="Ruby" scheme="http://debugtalk.com/tags/Ruby/"/>
     
@@ -1062,11 +1128,11 @@
     
       <category term="Appium" scheme="http://debugtalk.com/tags/Appium/"/>
     
+      <category term="F0T1" scheme="http://debugtalk.com/tags/F0T1/"/>
+    
       <category term="iOS" scheme="http://debugtalk.com/tags/iOS/"/>
     
       <category term="Simulator" scheme="http://debugtalk.com/tags/Simulator/"/>
-    
-      <category term="F0T1" scheme="http://debugtalk.com/tags/F0T1/"/>
     
   </entry>
   
@@ -1635,143 +1701,6 @@
       <category term="UI" scheme="http://debugtalk.com/tags/UI/"/>
     
       <category term="AutomationTest" scheme="http://debugtalk.com/tags/AutomationTest/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Python的函数式编程--从入门到⎡放弃⎦</title>
-    <link href="http://debugtalk.com/post/python-functional-programming-getting-started/"/>
-    <id>http://debugtalk.com/post/python-functional-programming-getting-started/</id>
-    <published>2016-04-07T16:00:00.000Z</published>
-    <updated>2016-07-23T07:30:41.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>很早以前就听说过了函数式编程，印象中是一种很晦涩难懂的编程模式，但却一直没有去进行了解。</p>
-<p>恰好这周组内的周会轮到我主持，一时也没想到要分享什么。灵光一闪，就选定函数式编程这个主题吧，反正组里的同事都没有学过，只需要讲解入门方面的知识就好，也正好可以借这个机会逼迫自己去学习下这种新的编程方式。</p>
-<p>经过初步了解，发现支持函数式编程的语言挺多的，除了像Lisp、Scheme、Haskell、Erlang这样专用的函数式编程语言，我们常用的好多通用型编程语言（如Java、Python、Ruby、Javascript等）都支持函数式编程模式。考虑了下实际情况，最终还是选择Python作为函数式编程的入门语言，因为组内同事都熟悉Python，以此作为切入点不会产生太大困难。</p>
-<p>经过查询资料和初步学习，对函数式编程有了些概念，经过整理，便形成了分享PPT。</p>
-<p>以下便是这次分享的内容。</p>
-<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>通常，我们在新学习一门技术或者编程语言的时候，通常都会先从相关概念和特性入手。对于新接触函数式编程的人来说，可能会想知道如下几点：</p>
-<ul>
-<li>什么是函数式编程？</li>
-<li>函数式编程的特点？</li>
-<li>函数式编程的用途？</li>
-<li>函数式编程相比于命令式编程和面向对象编程的优缺点？</li>
-</ul>
-<p>但是我这次分享却没有按照这个思路，因为我感觉在一开始就向听众灌输太多概念性的东西，反倒会让听众感到迷糊。因为经过查询资料发现，对于什么是函数化编程，很难能有一个协调一致的定义。而且由于我也是新接触，自身的理解可能会存在较大的偏差。</p>
-<p>因此，我决定分享内容尽量从大家熟悉的命令式编程切入，通过大量实例来向听众展现函数式编程思维方式的不同之处。在这之后，再回过头看这几个问题，相信听众应该都会有更深刻的理解。</p>
-<p>考虑到实际情况，本次分享希望能达成的目标是：</p>
-<ul>
-<li>了解函数式编程与命令式编程的主要区别</li>
-<li>掌握Python语言函数式编程的基本函数和算子</li>
-<li>会将简单的命令式编程语句转换为函数式编程</li>
-</ul>
-<h2 id="命令式编程-amp-函数式编程"><a href="#命令式编程-amp-函数式编程" class="headerlink" title="命令式编程 &amp; 函数式编程"></a>命令式编程 &amp; 函数式编程</h2><p>首先从大家熟悉的命令式编程开始，我们先回顾下平时在写代码时主要的情景。</p>
-<p>其实，不管我们的业务代码有多复杂，都离不开以下几类操作：</p>
-<ul>
-<li>函数定义：def</li>
-<li>条件控制：if, elif, else</li>
-<li>循环控制：for, break, continue, while</li>
-</ul>
-<p>当然，这只是部分操作类型，除此之外还应该有类和模块、异常处理等等。但考虑到是入门，我们就先只关注上面这三种最常见的操作。</p>
-<p>对应地，函数式编程也有自己的关键字。在Python语言中，用于函数式编程的主要由3个基本函数和1个算子。</p>
-<ul>
-<li>基本函数：map()、reduce()、filter()</li>
-<li>算子(operator)：lambda</li>
-</ul>
-<p>令人惊讶的是，仅仅采用这几个函数和算子就基本上可以实现任意Python程序。</p>
-<p>当然，能实现是一回事儿，实际编码时是否这么写又是另外一回事儿。估计要真只采用这几个基本单元来写所有代码的话，不管是在表达上还是在阅读上应该都挺别扭的。不过，尝试采用这几个基本单元来替代上述的函数定义、条件控制、循环控制等操作，对理解函数式编程如何通过函数和递归表达流程控制应该会很有帮助。</p>
-<p>在开始尝试将命令式编程转换为函数式编程之前，我们还是需要先熟悉下这几个基本单元。</p>
-<h2 id="Python函数式编程的基本单元"><a href="#Python函数式编程的基本单元" class="headerlink" title="Python函数式编程的基本单元"></a>Python函数式编程的基本单元</h2><h3 id="lambda"><a href="#lambda" class="headerlink" title="lambda"></a>lambda</h3><p>lambda这个关键词在很多语言中都存在。简单地说，它可以实现函数创建的功能。</p>
-<p>如下便是lambda的两种使用方式。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">func1 = <span class="keyword">lambda</span> : &lt;expression()&gt;</div><div class="line">func2 = <span class="keyword">lambda</span> x : &lt;expression(x)&gt;</div><div class="line">func3 = <span class="keyword">lambda</span> x,y : &lt;expression(x,y)&gt;</div></pre></td></tr></table></figure>
-<p>在第一条语句中，采用lambda创建了一个无参的函数func1。这和下面采用def创建函数的效果是相同的。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">func1</span><span class="params">()</span>:</span></div><div class="line">    &lt;expression()&gt;</div></pre></td></tr></table></figure>
-<p>在第二条和第三条语句中，分别采用lambda创建了需要传入1个参数的函数func2，以及传入2个参数的函数func3。这和下面采用<code>def</code>创建函数的效果是相同的。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">func2</span><span class="params">(x)</span>:</span></div><div class="line">    &lt;expression(x)&gt;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">func3</span><span class="params">(x,y)</span>:</span></div><div class="line">    &lt;expression(x,y)&gt;</div></pre></td></tr></table></figure>
-<p>需要注意的是，调用func1的时候，虽然不需要传入参数，但是必须要带有括号<code>()</code>，否则返回的只是函数的定义，而非函数执行的结果。这个和在ruby中调用无参函数时有所不同，希望ruby程序员引起注意。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>func = <span class="keyword">lambda</span> : <span class="number">123</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>func</div><div class="line">&lt;function &lt;<span class="keyword">lambda</span>&gt; at <span class="number">0x100f4e1b8</span>&gt;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>func()</div><div class="line"><span class="number">123</span></div></pre></td></tr></table></figure>
-<p>另外，虽然在上面例子中都将lambda创建的函数赋值给了一个函数名，但这并不是必须的。从下面的例子中大家可以看到，很多时候我们都是直接调用lambda创建的函数，而并没有命名一个函数，这也是我们常听说的匿名函数的由来。</p>
-<h3 id="map"><a href="#map" class="headerlink" title="map()"></a>map()</h3><p><code>map()</code>函数的常见调用形式如下所示：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">map(func, iterable)</div></pre></td></tr></table></figure>
-<p><code>map()</code>需要两个必填参数，第一个参数是一个函数名，第二个参数是一个可迭代的对象，如列表、元组等。</p>
-<p><code>map()</code>实现的功能很简单，就是将第二个参数（iterable）中的每一个元素分别传给第一个参数（func），依次执行函数得到结果，并将结果组成一个新的<code>list</code>对象后进行返回。返回结果永远都是一个<code>list</code>。</p>
-<p>简单示例如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>double_func = <span class="keyword">lambda</span> s : s * <span class="number">2</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>map(double_func, [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>])</div><div class="line">[<span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">10</span>]</div></pre></td></tr></table></figure>
-<p>除了传入一个可迭代对象这种常见的模式外，<code>map()</code>还支持传入多个可迭代对象。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">map(func, iterable1, iterable2)</div></pre></td></tr></table></figure>
-<p>在传入多个可迭代对象的情况下，<code>map()</code>会依次从所有可迭代对象中依次取一个元素，组成一个元组列表，然后将元组依次传给func；若可迭代对象的长度不一致，则会以None进行补上。</p>
-<p>通过以下示例应该就比较容易理解。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>plus = <span class="keyword">lambda</span> x,y : (x <span class="keyword">or</span> <span class="number">0</span>) + (y <span class="keyword">or</span> <span class="number">0</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>map(plus, [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>])</div><div class="line">[<span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>]</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>map(plus, [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>], [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>])</div><div class="line">[<span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>, <span class="number">4</span>]</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>map(plus, [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>])</div><div class="line">[<span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>, <span class="number">7</span>]</div></pre></td></tr></table></figure>
-<p>在上面的例子中，之所以采用<code>x or 0</code>的形式，是为了防止<code>None + int</code>出现异常。</p>
-<p>需要注意的是，可迭代对象的个数应该与func的参数个数一致，否则就会出现异常，因为传参个数与函数参数个数不一致了，这个应该比较好理解。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>plus = <span class="keyword">lambda</span> x,y : x + y</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>map(plus, [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>])</div><div class="line">Traceback (most recent call last):</div><div class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</div><div class="line">TypeError: &lt;<span class="keyword">lambda</span>&gt;() takes exactly <span class="number">2</span> arguments (<span class="number">1</span> given)</div></pre></td></tr></table></figure>
-<p>另外，<code>map()</code>还存在一种特殊情况，就是func为None。这个时候，<code>map()</code>仍然是从所有可迭代对象中依次取一个元素，组成一个元组列表，然后将这个元组列表作为结果进行返回。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>map(<span class="keyword">None</span>, [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>])</div><div class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>map(<span class="keyword">None</span>, [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>], [<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>])</div><div class="line">[(<span class="number">1</span>, <span class="number">5</span>), (<span class="number">2</span>, <span class="number">6</span>), (<span class="number">3</span>, <span class="number">7</span>), (<span class="number">4</span>, <span class="number">8</span>)]</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>map(<span class="keyword">None</span>, [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>], [<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>])</div><div class="line">[(<span class="number">1</span>, <span class="number">5</span>), (<span class="number">2</span>, <span class="number">6</span>), (<span class="number">3</span>, <span class="number">7</span>), (<span class="number">4</span>, <span class="keyword">None</span>)]</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>map(<span class="keyword">None</span>, [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>], [<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>], [<span class="number">11</span>,<span class="number">12</span>])</div><div class="line">[(<span class="number">1</span>, <span class="number">6</span>, <span class="number">11</span>), (<span class="number">2</span>, <span class="number">7</span>, <span class="number">12</span>), (<span class="number">3</span>, <span class="number">8</span>, <span class="keyword">None</span>), (<span class="number">4</span>, <span class="number">9</span>, <span class="keyword">None</span>)]</div></pre></td></tr></table></figure>
-<h3 id="reduce"><a href="#reduce" class="headerlink" title="reduce()"></a>reduce()</h3><p><code>reduce()</code>函数的调用形式如下所示：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">reduce(func, iterable[, initializer])</div></pre></td></tr></table></figure>
-<p><code>reduce()</code>函数的功能是对可迭代对象（iterable）中的元素从左到右进行累计运算，最终得到一个数值。第三个参数initializer是初始数值，可以空置，空置为None时就从可迭代对象（iterable）的第二个元素开始，并将第一个元素作为之前的结果。</p>
-<p>文字描述可能不大清楚，看下<code>reduce()</code>的源码应该就比较清晰了。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">reduce</span><span class="params">(function, iterable, initializer=None)</span>:</span></div><div class="line">    it = iter(iterable)</div><div class="line">    <span class="keyword">if</span> initializer <span class="keyword">is</span> <span class="keyword">None</span>:</div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            initializer = next(it)</div><div class="line">        <span class="keyword">except</span> StopIteration:</div><div class="line">            <span class="keyword">raise</span> TypeError(<span class="string">'reduce() of empty sequence with no initial value'</span>)</div><div class="line">    accum_value = initializer</div><div class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> it:</div><div class="line">        accum_value = function(accum_value, x)</div><div class="line">    <span class="keyword">return</span> accum_value</div></pre></td></tr></table></figure>
-<p>再加上如下示例，对<code>reduce()</code>的功能应该就能掌握了。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>plus = <span class="keyword">lambda</span> x, y : x + y</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>reduce(plus, [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>])</div><div class="line"><span class="number">15</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>reduce(plus, [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>], <span class="number">10</span>)</div><div class="line"><span class="number">25</span></div></pre></td></tr></table></figure>
-<h3 id="filter"><a href="#filter" class="headerlink" title="filter()"></a>filter()</h3><p><code>filter()</code>函数的调用形式如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">filter(func, iterable)</div></pre></td></tr></table></figure>
-<p><code>filter()</code>有且仅有两个参数，第一个参数是一个函数名，第二个参数是一个可迭代的对象，如列表、元组等。</p>
-<p><code>filter()</code>函数的调用形式与<code>map()</code>比较相近，都是将第二个参数（iterable）中的每一个元素分别传给第一个参数（func），依次执行函数得到结果；差异在于，<code>filter()</code>会判断每次执行结果的<code>bool</code>值，并只将<code>bool</code>值为<code>true</code>的筛选出来，组成一个新的列表并进行返回。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>mode2 = <span class="keyword">lambda</span> x : x % <span class="number">2</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>filter(mode2, [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span>])</div><div class="line">[<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>]</div></pre></td></tr></table></figure>
-<p>以上便是Python函数式编程基本单元的核心内容。</p>
-<p>接下来，我们就开始尝试采用新学习到的基本单元对命令式编程中的<code>条件控制</code>和<code>循环控制</code>进行转换。</p>
-<h2 id="替换条件控制语句"><a href="#替换条件控制语句" class="headerlink" title="替换条件控制语句"></a>替换条件控制语句</h2><p>在对<code>条件控制</code>进行替换之前，我们先来回顾下Python中对布尔表达式求值时进行的“短路”处理。</p>
-<p>什么叫“短路”处理？简单地讲，就是如下两点：</p>
-<ul>
-<li>在<code>f(x) and g(y)</code>中，当<code>f(x)</code>为<code>false</code>时，不会再执行<code>g(y)</code>，直接返回<code>false</code></li>
-<li>在<code>f(x) or g(y)</code>中，当<code>f(x)</code>为<code>true</code>时，不会再执行<code>g(y)</code>，直接返回<code>true</code></li>
-</ul>
-<p>结论是显然易现的，就不再过多解释。</p>
-<p>那么，对应到条件控制语句，我们不难理解，如下条件控制语句和表达式是等价的。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># flow control statement</span></div><div class="line"><span class="keyword">if</span> &lt;cond1&gt;:   func1()</div><div class="line"><span class="keyword">elif</span> &lt;cond2&gt;: func2()</div><div class="line"><span class="keyword">else</span>:         func3()</div></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Equivalent "short circuit" expression</span></div><div class="line">(&lt;cond1&gt; <span class="keyword">and</span> func1()) <span class="keyword">or</span> (&lt;cond2&gt; <span class="keyword">and</span> func2()) <span class="keyword">or</span> (func3())</div></pre></td></tr></table></figure>
-<p>通过这个等价替换，我们就去除掉了<code>if/elif/else</code>关键词，将条件控制语句转换为一个表达式。那这个表达式和函数式编程有什么关系呢？</p>
-<p>这时我们回顾上面讲过的<code>lambda</code>，会发现<code>lambda</code>算子返回的就是一个表达式。</p>
-<p>基于这一点，我们就可以采用<code>lambda</code>创建如下函数。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>pr = <span class="keyword">lambda</span> s:s</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>print_num = <span class="keyword">lambda</span> x: (x==<span class="number">1</span> <span class="keyword">and</span> pr(<span class="string">"one"</span>)) \</div><div class="line">....                  <span class="keyword">or</span> (x==<span class="number">2</span> <span class="keyword">and</span> pr(<span class="string">"two"</span>)) \</div><div class="line">....                  <span class="keyword">or</span> (pr(<span class="string">"other"</span>))</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>print_num(<span class="number">1</span>)</div><div class="line"><span class="string">'one'</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>print_num(<span class="number">2</span>)</div><div class="line"><span class="string">'two'</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>print_num(<span class="number">3</span>)</div><div class="line"><span class="string">'other'</span></div></pre></td></tr></table></figure>
-<p>通过函数调用的结果可以看到，以上函数实现的功能与之前的条件控制语句实现的功能完全相同。</p>
-<p>到这里，我们就实现了命令式条件控制语句向函数式语句的转换。并且这个转换的方法是通用的，所有条件控制语句都可以采用这种方式转换为函数式语句。</p>
-<h2 id="替换循环控制语句"><a href="#替换循环控制语句" class="headerlink" title="替换循环控制语句"></a>替换循环控制语句</h2><p>接下来我们再看<code>循环控制</code>语句的转换。在Python中，循环控制是通过<code>for</code>和<code>while</code>这两种方式实现的。</p>
-<h3 id="替换for循环"><a href="#替换for循环" class="headerlink" title="替换for循环"></a>替换for循环</h3><p><code>for</code>循环语句的替换十分简单，采用<code>map()</code>函数就能轻松实现。这主要是因为<code>for</code>语句和<code>map()</code>原理相同，都是对可迭代对象里面的每一个元素进行操作，因此转换过程比较自然。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># statement-based for loop</span></div><div class="line"><span class="keyword">for</span> e <span class="keyword">in</span> lst:  func(e)</div><div class="line"></div><div class="line"><span class="comment"># Equivalent map()-based loop</span></div><div class="line">map(func, lst)</div></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>square = <span class="keyword">lambda</span> x : x * x</div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> x <span class="keyword">in</span> [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]: square(x)</div><div class="line">...</div><div class="line"><span class="number">1</span></div><div class="line"><span class="number">4</span></div><div class="line"><span class="number">9</span></div><div class="line"><span class="number">16</span></div><div class="line"><span class="number">25</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>map(square, [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>])</div><div class="line">[<span class="number">1</span>, <span class="number">4</span>, <span class="number">9</span>, <span class="number">16</span>, <span class="number">25</span>]</div></pre></td></tr></table></figure>
-<h3 id="替换while循环"><a href="#替换while循环" class="headerlink" title="替换while循环"></a>替换while循环</h3><p><code>while</code>循环语句的替换相比而言就复杂了许多。</p>
-<p>下面分别是<code>while</code>循环语句及其对应的函数式风格的代码。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># statement-based while loop</span></div><div class="line"><span class="keyword">while</span> &lt;condition&gt;:</div><div class="line">    &lt;pre-suite&gt;</div><div class="line">    <span class="keyword">if</span> &lt;break_condition&gt;:</div><div class="line">        <span class="keyword">break</span></div><div class="line">    <span class="keyword">else</span>:</div><div class="line">        &lt;suite&gt;</div><div class="line"></div><div class="line"><span class="comment"># Equivalent FP-style recursive while loop</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">while_block</span><span class="params">()</span>:</span></div><div class="line">    &lt;pre-suite&gt;</div><div class="line">    <span class="keyword">if</span> &lt;break_condition&gt;:</div><div class="line">        <span class="keyword">return</span> <span class="number">1</span></div><div class="line">    <span class="keyword">else</span>:</div><div class="line">        &lt;suite&gt;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span></div><div class="line"> </div><div class="line">while_FP = <span class="keyword">lambda</span>: &lt;condition&gt; <span class="keyword">and</span> (while_block() <span class="keyword">or</span> while_FP())</div><div class="line">while_FP()</div></pre></td></tr></table></figure>
-<p>这里的难点在于，函数式<code>while_FP</code>循环采用了递归的概念。当<code>&lt;condition&gt;</code>为<code>true</code>时，进入循环体，执行<code>while_block()</code>；若<code>&lt;break_condition&gt;</code>为<code>true</code>时，返回1，<code>while_FP()</code>调用结束；若<code>&lt;break_condition&gt;</code>为<code>false</code>时，返回0，会继续执行<code>or</code>右侧的<code>while_FP()</code>，从而实现递归调用；若<code>&lt;break_condition&gt;</code>始终为<code>false</code>，则会持续递归调用<code>while_FP()</code>，这就实现了<code>while</code>语句中同样的功能。</p>
-<p>为了对函数式的<code>while</code>循环有更深刻的理解，可以再看下如下示例。这个例子是在网上找的，实现的是<code>echo</code>功能：输入任意非”quit”字符时，打印输入的字符；输入”quit”字符时，退出程序。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">➜  PythonFP python pyecho.py</div><div class="line">IMP -- 1</div><div class="line">1</div><div class="line">IMP -- 2</div><div class="line">2</div><div class="line">IMP -- abc</div><div class="line">abc</div><div class="line">IMP -- 1 + 1</div><div class="line">1 + 1</div><div class="line">IMP -- quit</div><div class="line">quit</div><div class="line">➜  PythonFP</div></pre></td></tr></table></figure>
-<p>如下便是分别采用过程式和函数式语句实现的”echo”功能。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># imperative version of "echo()"</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">echo_IMP</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">while</span> <span class="number">1</span>:</div><div class="line">        x = raw_input(<span class="string">"IMP -- "</span>)</div><div class="line">        <span class="keyword">print</span> x</div><div class="line">        <span class="keyword">if</span> x == <span class="string">'quit'</span>:</div><div class="line">            <span class="keyword">break</span></div><div class="line"></div><div class="line">echo_IMP()</div></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">monadic_print</span><span class="params">(x)</span>:</span></div><div class="line">    <span class="keyword">print</span> x</div><div class="line">    <span class="keyword">return</span> x</div><div class="line"></div><div class="line"><span class="comment"># FP version of "echo()"</span></div><div class="line">echo_FP = <span class="keyword">lambda</span>: monadic_print(raw_input(<span class="string">"FP -- "</span>))==<span class="string">'quit'</span> <span class="keyword">or</span> echo_FP()</div><div class="line">echo_FP()</div></pre></td></tr></table></figure>
-<h2 id="更多示例"><a href="#更多示例" class="headerlink" title="更多示例"></a>更多示例</h2><p>到此为止，我们对函数式编程总算有了点认识，到达之前设定的目标应该是没有问题了，看来函数式编程也并没有想象中的那么难懂。</p>
-<p>然而，这都只是函数式编程的皮毛而已，不信？再看下如下示例。</p>
-<p>这个示例也是在网上找的，实现的是两个列表笛卡尔积的筛选功能，找出笛卡尔积元组集合中两个元素之积大于25的所有元组。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">bigmuls = <span class="keyword">lambda</span> xs,ys: filter(<span class="keyword">lambda</span> (x,y):x*y &gt; <span class="number">25</span>, combine(xs,ys))</div><div class="line">combine = <span class="keyword">lambda</span> xs,ys: map(<span class="keyword">None</span>, xs*len(ys), dupelms(ys,len(xs)))</div><div class="line">dupelms = <span class="keyword">lambda</span> lst,n: reduce(<span class="keyword">lambda</span> s,t:s+t, map(<span class="keyword">lambda</span> l,n=n: [l]*n, lst))</div><div class="line"></div><div class="line"><span class="keyword">print</span> bigmuls([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>],[<span class="number">10</span>,<span class="number">15</span>,<span class="number">3</span>,<span class="number">22</span>])</div><div class="line"></div><div class="line">[(<span class="number">3</span>, <span class="number">10</span>), (<span class="number">4</span>, <span class="number">10</span>), (<span class="number">2</span>, <span class="number">15</span>), (<span class="number">3</span>, <span class="number">15</span>), (<span class="number">4</span>, <span class="number">15</span>), (<span class="number">2</span>, <span class="number">22</span>), (<span class="number">3</span>, <span class="number">22</span>), (<span class="number">4</span>, <span class="number">22</span>)]</div></pre></td></tr></table></figure>
-<p>虽然这个例子中<code>lambda/map/reduce/filter</code>都是我们已经比较熟悉了的基本单元，但是经过组合后，理解起来还是会比较吃力。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>看到这里，有的同学就开玩笑说我这标题名称非常贴切，《Python的函数式编程–从入门到⎡放弃⎦》，因为以后在工作中应该也不会再尝试使用函数式编程了，^_^。</p>
-<p>不过，我还是觉得函数式编程挺有意思的，更高级的特性后面值得再继续学习。即使代码不用写成pure函数式风格，但在某些时候局部使用<code>lambda/map/reduce/filter</code>也能大大简化代码，也是一个不错的选择。</p>
-<p>另外，通过此次分享，再次切身体会到了教授是最好的学习方式，只有当你真正能将一个概念讲解清楚的时候，你才算是掌握了这个概念。</p>
-<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p><a href="http://www.ibm.com/developerworks/linux/library/l-prog/index.html" target="_blank" rel="external">http://www.ibm.com/developerworks/linux/library/l-prog/index.html</a></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;很早以前就听说过了函数式编程，印象中是一种很晦涩难懂的编程模式，但却一直没有去进行了解。&lt;/p&gt;
-&lt;p&gt;恰好这周组内的周会轮到我主持，一时也没想到要分享什么。灵光一闪，就选定函数式编程这个主题吧，反正组里的同事都没有学过，只需要讲解入门方面的知识就好，也正好可以借这个机会逼
-    
-    </summary>
-    
-    
-      <category term="Python" scheme="http://debugtalk.com/tags/Python/"/>
-    
-      <category term="函数式编程" scheme="http://debugtalk.com/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
     
   </entry>
   
