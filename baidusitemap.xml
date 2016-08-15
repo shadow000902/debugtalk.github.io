@@ -4,6 +4,29 @@
 
     
   <url>
+    <loc>http://debugtalk.com/post/make-Jenkins-Console-Output-Colorful/</loc>
+    <lastmod>2016-08-15T08:23:44.000Z</lastmod>
+    <data>
+        <display>
+        <title>Jenkins的输出日志也可以变得色色的</title>
+        <pubTime>2016-08-14T16:00:00.000Z</pubTime>
+        
+        <tag>Jenkins</tag>
+         
+        <tag>Console</tag>
+         
+        <tag>Plugin</tag>
+         
+        <tag>ANSI escape sequences</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://debugtalk.com/post/Jenkins-CI-Automation-Test/</loc>
     <lastmod>2016-08-14T08:57:42.000Z</lastmod>
     <data>
@@ -237,9 +260,9 @@
          
         <tag>iOS</tag>
          
-        <tag>Simulator</tag>
-         
         <tag>Ruby</tag>
+         
+        <tag>Simulator</tag>
          
          
            
@@ -548,9 +571,9 @@
         
         <tag>Android</tag>
          
-        <tag>bootloader</tag>
-         
         <tag>环境搭建</tag>
+         
+        <tag>bootloader</tag>
          
          
            
@@ -569,9 +592,9 @@
         
         <tag>Android</tag>
          
-        <tag>环境搭建</tag>
-         
         <tag>recovery</tag>
+         
+        <tag>环境搭建</tag>
          
          
            
@@ -727,54 +750,18 @@
     
     
   <url>
-    <loc>http://debugtalk.com/post/traps-in-sql-null/</loc>
+    <loc>http://debugtalk.com/post/LoadRunner-WSDL-WebService/</loc>
     <lastmod>2016-07-22T11:07:58.000Z</lastmod>
     <data>
         <display>
-        <title>SQL语句中关于NULL的那些坑</title>
-        <pubTime>2016-04-24T16:00:00.000Z</pubTime>
+        <title>LoadRunner基于WSDL的WebService测试方法</title>
+        <pubTime>2013-08-01T16:00:00.000Z</pubTime>
         
-        <tag>SQL</tag>
+        <tag>LoadRunner</tag>
          
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/performance-index-concurrent-users/</loc>
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    <data>
-        <display>
-        <title>性能指标--并发用户数（Concurrent Users）</title>
-        <pubTime>2013-07-30T16:00:00.000Z</pubTime>
-        
-        <tag>性能指标</tag>
-         
-        <tag>并发用户数</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/Introspection-on-WebService-Test/</loc>
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    <data>
-        <display>
-        <title>基于WSDL或SOAP的WebService测试方法--对原理的思考</title>
-        <pubTime>2015-02-11T16:00:00.000Z</pubTime>
-        
         <tag>WebService</tag>
          
         <tag>WSDL</tag>
-         
-        <tag>SOAP</tag>
          
          
            
@@ -792,44 +779,6 @@
         <pubTime>2016-03-07T16:00:00.000Z</pubTime>
         
         <tag>Development</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/remote-debugging-with-pycharm/</loc>
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    <data>
-        <display>
-        <title>利用PyCharm进行Python远程调试</title>
-        <pubTime>2015-07-12T16:00:00.000Z</pubTime>
-        
-        <tag>pycharm</tag>
-         
-        <tag>Python</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/scenario-design-scripts-percent-controll/</loc>
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    <data>
-        <display>
-        <title>性能测试场景设计--混合业务场景下的脚本比例控制</title>
-        <pubTime>2013-07-21T16:00:00.000Z</pubTime>
-        
-        <tag>LoadRunner</tag>
-         
-        <tag>场景设计</tag>
          
          
            
@@ -858,60 +807,16 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/Evaluate-Largest-Online-Users/</loc>
+    <loc>http://debugtalk.com/post/remote-debugging-with-pycharm/</loc>
     <lastmod>2016-07-22T11:07:58.000Z</lastmod>
     <data>
         <display>
-        <title>测试最大在线用户数</title>
-        <pubTime>2013-08-21T16:00:00.000Z</pubTime>
+        <title>利用PyCharm进行Python远程调试</title>
+        <pubTime>2015-07-12T16:00:00.000Z</pubTime>
         
-        <tag>LoadRunner</tag>
+        <tag>pycharm</tag>
          
-        <tag>性能指标</tag>
-         
-        <tag>最大在线用户数</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/LoadRunner-WSDL-WebService/</loc>
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    <data>
-        <display>
-        <title>LoadRunner基于WSDL的WebService测试方法</title>
-        <pubTime>2013-08-01T16:00:00.000Z</pubTime>
-        
-        <tag>LoadRunner</tag>
-         
-        <tag>WebService</tag>
-         
-        <tag>WSDL</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/concept-about-webservice/</loc>
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    <data>
-        <display>
-        <title>测试工程师的自我修养--理解WebService</title>
-        <pubTime>2013-08-04T16:00:00.000Z</pubTime>
-        
-        <tag>WebService</tag>
-         
-        <tag>WSDL</tag>
-         
-        <tag>SOAP</tag>
+        <tag>Python</tag>
          
          
            
@@ -942,6 +847,46 @@
 
     
   <url>
+    <loc>http://debugtalk.com/post/scenario-design-scripts-percent-controll/</loc>
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    <data>
+        <display>
+        <title>性能测试场景设计--混合业务场景下的脚本比例控制</title>
+        <pubTime>2013-07-21T16:00:00.000Z</pubTime>
+        
+        <tag>LoadRunner</tag>
+         
+        <tag>场景设计</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/Introspection-on-WebService-Test/</loc>
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    <data>
+        <display>
+        <title>基于WSDL或SOAP的WebService测试方法--对原理的思考</title>
+        <pubTime>2015-02-11T16:00:00.000Z</pubTime>
+        
+        <tag>WebService</tag>
+         
+        <tag>WSDL</tag>
+         
+        <tag>SOAP</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://debugtalk.com/post/Using-DuoShuo-in-Pelican/</loc>
     <lastmod>2016-07-22T11:07:58.000Z</lastmod>
     <data>
@@ -952,6 +897,84 @@
         <tag>Pelican</tag>
          
         <tag>评论系统</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/concept-about-webservice/</loc>
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    <data>
+        <display>
+        <title>测试工程师的自我修养--理解WebService</title>
+        <pubTime>2013-08-04T16:00:00.000Z</pubTime>
+        
+        <tag>WebService</tag>
+         
+        <tag>WSDL</tag>
+         
+        <tag>SOAP</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/performance-index-concurrent-users/</loc>
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    <data>
+        <display>
+        <title>性能指标--并发用户数（Concurrent Users）</title>
+        <pubTime>2013-07-30T16:00:00.000Z</pubTime>
+        
+        <tag>性能指标</tag>
+         
+        <tag>并发用户数</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/Evaluate-Largest-Online-Users/</loc>
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    <data>
+        <display>
+        <title>测试最大在线用户数</title>
+        <pubTime>2013-08-21T16:00:00.000Z</pubTime>
+        
+        <tag>LoadRunner</tag>
+         
+        <tag>性能指标</tag>
+         
+        <tag>最大在线用户数</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/traps-in-sql-null/</loc>
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    <data>
+        <display>
+        <title>SQL语句中关于NULL的那些坑</title>
+        <pubTime>2016-04-24T16:00:00.000Z</pubTime>
+        
+        <tag>SQL</tag>
          
          
            

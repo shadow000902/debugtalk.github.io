@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://debugtalk.com/"/>
-  <updated>2016-08-14T08:57:42.000Z</updated>
+  <updated>2016-08-15T08:23:44.000Z</updated>
   <id>http://debugtalk.com/</id>
   
   <author>
@@ -14,6 +14,85 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Jenkins的输出日志也可以变得色色的</title>
+    <link href="http://debugtalk.com/post/make-Jenkins-Console-Output-Colorful/"/>
+    <id>http://debugtalk.com/post/make-Jenkins-Console-Output-Colorful/</id>
+    <published>2016-08-14T16:00:00.000Z</published>
+    <updated>2016-08-15T08:23:44.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>在《<a href="/post/Jenkins-CI-Automation-Test/">使用Jenkins实现持续集成构建检查</a>》一文中，写到了这么一段话：</p>
+<blockquote>
+<p>在这里，我们还可以通过–disable_output_color开关将输出日志的颜色关闭。之所以实现这么一个功能，是因为在Jenkins中本来也无法显示颜色，但是如果还将Terminal中有颜色的日志内容输出到Jenkins中，就会出现一些额外的字符，比较影响日志的美观。</p>
+</blockquote>
+<p>非常感谢热心的读者，及时地为我纠正了这一点。事实上，当前在Jenkins中，是可以通过安装插件来实现在输出日志中显示颜色的。</p>
+<p>这个插件就是<code>AnsiColor</code>。</p>
+<h2 id="安装-amp-amp-配置"><a href="#安装-amp-amp-配置" class="headerlink" title="安装 &amp;&amp; 配置"></a>安装 &amp;&amp; 配置</h2><p>安装的方式很简单，【Manage Jenkins】-&gt;【Manage Plugins】，搜索<code>AnsiColor</code>进行安装即可。</p>
+<p>安装完成后，在Jenkins Project的<code>Configure</code>页面中，<code>Build Environment</code>栏目下会多出<code>Color ANSI Console Output</code>配置项，勾选后即可开启颜色输出配置。</p>
+<p><img src="/images/Jenkins_Color_ANSI_Console_Output.jpg" alt="Jenkins Color ANSI Console Output"></p>
+<p>在<code>ANSI color map</code>的列表选择框中，存在多个选项，默认情况下，选择<code>xterm</code>即可。</p>
+<p>保存配置后，再次执行构建时，就可以在<code>Console</code>中看到颜色输出了。</p>
+<h2 id="效果图"><a href="#效果图" class="headerlink" title="效果图"></a>效果图</h2><p>使用<code>xctool</code>命令编译iOS应用时，在Jenkins的<code>Console output</code>中会看到和<code>Terminal</code>中一样的颜色效果。</p>
+<p><img src="/images/Jenkins_Console_Output_Colored.jpg" alt="Jenkins Console Output Colored"></p>
+<h2 id="补充说明"><a href="#补充说明" class="headerlink" title="补充说明"></a>补充说明</h2><p>需要说明的是，在输出日志中显示颜色，依赖于输出的日志本身。也就是说，如果输出日志时并没有<code>ANSI escape sequences</code>，那么安装该插件后也没有任何作用，并不会凭空给日志加上颜色。</p>
+<p>例如，如果采用<code>xcodebuild</code>命令编译iOS应用，那么输出日志就不会显示颜色。</p>
+<p>说到这里，再简单介绍下<code>ANSI escape sequences</code>。</p>
+<h2 id="ANSI-escape-sequences"><a href="#ANSI-escape-sequences" class="headerlink" title="ANSI escape sequences"></a>ANSI escape sequences</h2><p><a href="https://en.wikipedia.org/wiki/ANSI_escape_code" target="_blank" rel="external"><code>ANSI escape sequences</code></a>，也叫<code>ANSI escape codes</code>，主要是用于对Terminal中的文本字符进行颜色的控制，包括字符背景颜色和字符颜色。</p>
+<p>使用方式如下：</p>
+<p><code>33[字符背景颜色;字符颜色m{String}33[0m</code></p>
+<p>其中，<code>33[字符背景颜色;字符颜色m</code>是开始标识，<code>33[0m</code>是结束标识，<code>{String}</code>是原始文本内容。通过这种形式，就可以对输出的文本颜色进行控制。</p>
+<p>具体地，字符颜色和字符背景颜色的编码如下：</p>
+<p>字符颜色（foreground color）：30~37</p>
+<ul>
+<li>30:黑</li>
+<li>31:红</li>
+<li>32:绿</li>
+<li>33:黄</li>
+<li>34:蓝色</li>
+<li>35:紫色</li>
+<li>36:深绿</li>
+<li>37:白色</li>
+</ul>
+<p>字符背景颜色（background color）：40~47</p>
+<ul>
+<li>40:黑</li>
+<li>41:深红</li>
+<li>42:绿</li>
+<li>43:黄色</li>
+<li>44:蓝色</li>
+<li>45:紫色</li>
+<li>46:深绿</li>
+<li>47:白色</li>
+</ul>
+<p>需要说明的是，字符背景颜色和字符颜色并非必须同时设置，也可以只设置一项。</p>
+<h2 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h2><p>掌握了以上概念后，我们就可以通过对打印日志的代码进行一点调整，然后就可以让输出的日志更加美观了。</p>
+<p>以Ruby为例，在<code>Sting</code>基础类中添加一些展示颜色的方法。</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">String</span></span></div><div class="line">  <span class="comment"># colorization</span></div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">colorize</span><span class="params">(color_code)</span></span></div><div class="line">    <span class="string">"\e[<span class="subst">#&#123;color_code&#125;</span>m<span class="subst">#&#123;<span class="keyword">self</span>&#125;</span>\e[0m"</span></div><div class="line">  <span class="keyword">end</span></div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">red</span></span></div><div class="line">    colorize(<span class="number">31</span>)</div><div class="line">  <span class="keyword">end</span></div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">green</span></span></div><div class="line">    colorize(<span class="number">32</span>)</div><div class="line">  <span class="keyword">end</span></div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">yellow</span></span></div><div class="line">    colorize(<span class="number">33</span>)</div><div class="line">  <span class="keyword">end</span></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
+<p>然后，我们在打印日志时就可以通过如下方式来控制日志的颜色了。</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 步骤执行正常，输出为绿色</span></div><div class="line">step_action_desc += <span class="string">"    ...    ✓"</span></div><div class="line">puts step_action_desc.green</div><div class="line"></div><div class="line"><span class="comment"># 步骤执行异常，输出为红色</span></div><div class="line">step_action_desc += <span class="string">"    ...    ✖"</span></div><div class="line">puts step_action_desc.red</div></pre></td></tr></table></figure>
+<p>展示效果如下图所示。</p>
+<p><img src="/images/Terminal_Output_Colored.jpg" alt="Terminal Output Colored"></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在《&lt;a href=&quot;/post/Jenkins-CI-Automation-Test/&quot;&gt;使用Jenkins实现持续集成构建检查&lt;/a&gt;》一文中，写到了这么一段话：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;在这里，我们还可以通过–disable_output_color开
+    
+    </summary>
+    
+    
+      <category term="Jenkins" scheme="http://debugtalk.com/tags/Jenkins/"/>
+    
+      <category term="Console" scheme="http://debugtalk.com/tags/Console/"/>
+    
+      <category term="Plugin" scheme="http://debugtalk.com/tags/Plugin/"/>
+    
+      <category term="ANSI escape sequences" scheme="http://debugtalk.com/tags/ANSI-escape-sequences/"/>
+    
+  </entry>
   
   <entry>
     <title>使用Jenkins实现持续集成构建检查</title>
@@ -1039,9 +1118,9 @@
     
       <category term="iOS" scheme="http://debugtalk.com/tags/iOS/"/>
     
-      <category term="Simulator" scheme="http://debugtalk.com/tags/Simulator/"/>
-    
       <category term="Ruby" scheme="http://debugtalk.com/tags/Ruby/"/>
+    
+      <category term="Simulator" scheme="http://debugtalk.com/tags/Simulator/"/>
     
   </entry>
   
@@ -1576,131 +1655,6 @@
       <category term="Android" scheme="http://debugtalk.com/tags/Android/"/>
     
       <category term="CPU" scheme="http://debugtalk.com/tags/CPU/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Android App持续集成性能测试：使用Python实现UI自动化</title>
-    <link href="http://debugtalk.com/post/Android-performance-test-UI-Automation-with-Python/"/>
-    <id>http://debugtalk.com/post/Android-performance-test-UI-Automation-with-Python/</id>
-    <published>2016-04-16T16:00:00.000Z</published>
-    <updated>2016-07-23T07:30:12.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>在进行Android App持续集成性能测试的时候，需要自动化实现UI层面的一些操作，常见的几种场景包括：</p>
-<ul>
-<li>测试帧率时，需要模拟滑屏、拖拽操作；</li>
-<li>初次安装app后启动应用时，需要点击按钮跳过协议页面；</li>
-<li>从<code>Android M</code>(6.0)开始，首次启动应用时会进行系统权限校验，需要勾选checkbox以及点击按钮；</li>
-<li>模拟点击按钮登录用户账号；</li>
-</ul>
-<p>这些场景虽然看上去互不相关，但是从测试的角度，UI层面的操作应该都可以归为两类：控件定位和执行动作。</p>
-<p>本文将从测试的角度出发，介绍Android UI实现自动化测试的基本方法，并着重讲解通过Python操作Android UI的一般性流程。后续，我会在单独的博客文章中介绍UI操作在Android App持续集成性能测试中的应用。</p>
-<h2 id="先说uiautomator"><a href="#先说uiautomator" class="headerlink" title="先说uiautomator"></a>先说uiautomator</h2><p>要对Android的UI实现自动化操作，首先想到的就是Google官方的<code>UI Automator</code>，通过这个工具，可以很好地实现Android UI自动化。</p>
-<p><code>UI Automator</code>是一个从Android 4.3 (API level 18) 引入的测试框架，它提供了一套丰富的API，可以在不依赖于目标app内部实现机制的基础上，方便地创建自动化测试用例，实现用户对Android UI各种界面交互操作的模拟。</p>
-<p>对于<code>UI Automator</code>的使用介绍，我从创建测试用例和执行测试两部分进行。</p>
-<p>首先是创建测试用例，流程大致如下：</p>
-<ul>
-<li>采用JUnit Library创建Java Project</li>
-<li>将<code>Android-sdk</code>中的<code>android.jar</code>和<code>uiautomator.jar</code>添加进项目</li>
-<li>使用<code>UI Automator</code>提供的API编写测试用例，实现对UI界面操作的定制场景，例如点击按钮、滑动屏幕等</li>
-<li>将项目编译生成jar文件，例如memorytest.jar</li>
-</ul>
-<p>创建好了测试用例，那要怎样执行呢？</p>
-<p>从Android 4.3开始，系统中就自带了<code>uiautomator</code>命令，命令的路径为<code>/system/bin/uiautomator</code>。</p>
-<p>由于<code>uiautomator</code>命令是运行在Android设备中的，因此需先要将编译好的jar文件push到Android设备中，导入目录为<code>/data/local/tmp/</code>。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">➜  adb push memorytest.jar /data/local/tmp/</div></pre></td></tr></table></figure>
-<p>完成以上准备工作后，就可以在Android的Terminal中执行了<code>uiautomator</code>命令了。</p>
-<p>详细的<code>uiautomator</code>命令用法可参考官方文档，这里只列出最常用的一种方式：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">➜  adb shell</div><div class="line">shell@hammerhead:/ $ uiautomator runtest memorytest.jar -c com.uc.util.TestCases<span class="comment">#slideScreen -e pkgName com.UCMobile</span></div></pre></td></tr></table></figure>
-<p>在如上示例中，<code>memorytest.jar</code>是我们之前编译好的测试用例jar文件名，<code>com.uc.util.TestCases#slideScreen</code>是Java工程中的类名和方法名，<code>-e</code>后面是传入测试类的<code>name-value</code>参数。</p>
-<p>这里就不再对<code>UI Automator</code>进行过多介绍，后续我会再针对<code>UI Automator</code>单独写一篇更加详细的教程。</p>
-<h2 id="Python调用uiautomator"><a href="#Python调用uiautomator" class="headerlink" title="Python调用uiautomator"></a>Python调用uiautomator</h2><p>通常，我们的持续集成性能测试代码是采用Python编写的，那如何通过Python调用uiautomator呢？</p>
-<p>如果沿用上面介绍的流程，Python调用uiautomator实现自动化测试应该也会采用同样的思路：</p>
-<p>首先，需要在Java Project使用<code>UI Automator API</code>编写UI测试场景，编译生成jar文件，并将这个文件导入到Python项目中。</p>
-<p>然后，在Python测试代码中，调用<code>uiautomator</code>命令前需要先将jar文件push到Android设备。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">jar_file_path = os.path.join(_project_root_path, <span class="string">"resource/jar/memorytest.jar"</span>)</div><div class="line">cmdexec.push(jar_file_path, <span class="string">'/data/local/tmp/'</span>)</div></pre></td></tr></table></figure>
-<p>接下来，就可以在Python中组装测试命令，并将命令传到Android设备中进行执行。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cmd = <span class="string">"uiautomator runtest memorytest.jar -c com.uc.util.TestCases#slideScreen -e pkgName com.UCMobile"</span></div><div class="line">cmdexec.sendShellCommand(cmd, timeout_time=<span class="keyword">None</span>)</div></pre></td></tr></table></figure>
-<p>需要说明的是，上面代码中的<code>cmdexec</code>是一个封装类的实例，主要实现的是通过adb与Android设备进行交互，例如push/pull文件、执行Android shell命令等。</p>
-<p>经过这么一个流程，可能大家都会感觉到实现起来太过复杂。特别地，如果需要增加一个测试场景，就又要到Java项目中添加测试代码，重新编译为jar文件，并将新的jar文件添加到Python项目中，或者替换原有jar文件。这还不算完，同样地，在Python项目中也需要针对新增的测试场景进行相应的编码。</p>
-<p>难道就没有更便捷的方式么？</p>
-<p>幸运的是，之前已经有人针对这个痛点填了坑，并在GitHub上进行了开源，项目名称是<code>xiaocong/uiautomator</code>（为了便于与Google官方的uiautomator进行区分，后面统一采用pyuiautomator进行描述）。它实现的功能很明确，从项目简介就一目了然。</p>
-<blockquote>
-<p>Python wrapper of Android uiautomator test tool.</p>
-</blockquote>
-<p>该工具以<code>Python package</code>的形式存在，可通过<code>pip</code>在测试机（PC）上进行安装。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install uiautomator</div></pre></td></tr></table></figure>
-<p>安装完毕后，无需在Android设备上安装任何东西，只要设备通过adb与主机相连，就可以在主机中通过Python操作Android设备的UI控件。</p>
-<p>如下是简单的示例：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> uiautomator <span class="keyword">import</span> device <span class="keyword">as</span> d</div><div class="line"></div><div class="line"><span class="comment"># Turn on screen</span></div><div class="line">d.screen.on()</div><div class="line"></div><div class="line"><span class="comment"># press back key</span></div><div class="line">d.press.back()</div><div class="line"></div><div class="line"><span class="comment"># click (x, y) on screen</span></div><div class="line">d.click(x, y)</div><div class="line"></div><div class="line"><span class="comment"># check unchecked checkbox</span></div><div class="line">checkbox = d(className=<span class="string">'android.widget.CheckBox'</span>, checked=<span class="string">'false'</span>)</div><div class="line">checkbox.click()</div><div class="line"></div><div class="line"><span class="comment"># click button with text 'Next'</span></div><div class="line">d(text=<span class="string">"Clock"</span>).click()</div><div class="line">button = d(className=<span class="string">'android.widget.Button'</span>, text=<span class="string">'Next'</span>)</div><div class="line">button.click()</div><div class="line"></div><div class="line"><span class="comment"># swipe from (sx, sy) to (ex, ey)</span></div><div class="line">d.swipe(sx, sy, ex, ey)</div></pre></td></tr></table></figure>
-<p>更详细的使用方法可参考<a href="https://github.com/xiaocong/uiautomator" target="_blank" rel="external">项目文档</a>。</p>
-<p>通过这种方式，我们就可以极大地简化Python操作UI控件的方式，不用再对照着<code>UI Automator API</code>使用Java编写测试用例，也不用再反复编译jar文件，省去了同一个测试场景需要维护两套代码的麻烦，整个过程也更加Pythonic。</p>
-<p>当然，<code>pyuiautomator</code>也并非完美，毕竟它不是Google官方维护的，从我实际使用的经历来看，有时候也会存在一些问题。这里先不展开，后续会单独写一篇博客。不过，总的来说，<code>pyuiautomator</code>还是非常值得使用的，它的确可以大大简化测试工作量。</p>
-<p>现在继续本文的主题，我们怎么采用<code>pyuiautomator</code>来进行UI控件操作呢？</p>
-<p>其实从上面的示例代码中就可以看到，UI控件的操作分为两步，首先是对目标控件进行定位，然后是对定位的控件执行动作。</p>
-<h2 id="定位控件"><a href="#定位控件" class="headerlink" title="定位控件"></a>定位控件</h2><p>在UI中，每个控件都有许多属性，例如<code>class</code>、<code>text</code>、<code>index</code>等等。我们要想对某一个控件进行操作，必然需要先对目标控件进行选择。</p>
-<p>在上面的<code>pyuiautomator</code>用法示例中，已经包含了控件选择的代码：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">checkbox = d(className=<span class="string">'android.widget.CheckBox'</span>, checked=<span class="string">'false'</span>)</div><div class="line">button = d(className=<span class="string">'android.widget.Button'</span>, text=<span class="string">'Next'</span>)</div></pre></td></tr></table></figure>
-<p>在这两行代码中，分别实现了对checkbox和button的选择。基本原则就是，通过指定的控件属性，可以唯一确定目标控件。</p>
-<p>那么，我们怎么知道目标控件有哪些属性，以及对应的属性值是什么呢？</p>
-<p>Google官方提供了两个工具，<code>hierarchyviewer</code>和<code>uiautomatorviewer</code>，这两个工具都位于<code>&lt;android-sdk&gt;/tools/</code>目录下。关于这两个工具的区别及其各自的特点，本文不进行详细介绍，我们当前只需要知道，在查看控件属性方面，这两个工具实现的功能完全相同，界面也完全相同，我们任选其一即可。</p>
-<p>{: .center}<br><img src="/images/uiautomatorviewer.png" alt="uiautomatorviewer"></p>
-<p>通过这个工具，我们可以查看到当前设备屏幕中的UI元素信息：</p>
-<ul>
-<li>当前Android设备屏幕中显示的UI元素的详细属性信息</li>
-<li>当前Android设备屏幕中所有UI元素的层级关系结构</li>
-</ul>
-<p>需要强调的是，工具每执行一次dump，获取到的UI信息仅限于当前屏幕中前端（foreground）显示的内容。</p>
-<p>获得UI元素的信息后，由于UI控件是以树形结构进行存储，而且每个控件都存在index属性值，因此，理论上讲，通过层级结构和index属性就能唯一指定任意UI控件。</p>
-<p>然而，这并不是最佳实践。因为通常情况下，UI布局的树形结构层级较多，通过层级关系进行指定时会造成书写极为复杂，而且从代码中很难一眼看出指定的是哪个控件。不信？看下这个例子就能体会了。如下代码对应的就是上图中红色方框的控件，可以看出，要是寻找每个控件都要从顶级节点开始，要将根节点到目标控件的路径找出来，这也是一个很大的工作量，而且很容易出错。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">d(className=&apos;android.widget.FrameLayout&apos;)</div><div class="line">  .child(className=&apos;android.widget.LinearLayout&apos;)</div><div class="line">  .child(className=&apos;android.widget.FrameLayout&apos;)</div><div class="line">  .child(className=&apos;android.widget.FrameLayout&apos;)</div><div class="line">  .child(className=&apos;android.widget.FrameLayout&apos;)</div><div class="line">  .child(className=&apos;android.widget.FrameLayout&apos;)</div><div class="line">  .child(className=&apos;android.widget.FrameLayout&apos;)</div><div class="line">  .child(className=&apos;android.view.View&apos;)</div><div class="line">  .child(className=&apos;android.widget.FrameLayout&apos;)</div><div class="line">  .child(className=&apos;android.widget.FrameLayout&apos;)</div><div class="line">  .child(className=&apos;android.view.View&apos;)</div><div class="line">  .child(className=&apos;android.widget.FrameLayout&apos;)</div><div class="line">  .child(className=&apos;android.widget.TextView&apos;)</div></pre></td></tr></table></figure>
-<p>在实际应用中，我们更多地是采用控件的属性信息来定位控件，一般情况下，采用属性值<code>text</code>就能唯一确定目标控件了。例如同样是对上图中的红色方框进行定位，如下代码就足够了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">d(text=&apos;UC头条有新消息，点击刷新&apos;)</div></pre></td></tr></table></figure>
-<p>不过，经常会出现目标控件的<code>text</code>属性值为空的情况，这个时候我们一般就会采用<code>class</code>属性和部分层级关系组合的方式。同样是上图中的红色方框，我们也可以使用如下方式进行定位。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">d(className=&apos;android.widget.FrameLayout&apos;).child(className=&apos;android.widget.TextView&apos;)</div></pre></td></tr></table></figure>
-<p>可以看出，同一个控件，我们可以采用多种方式进行定位。具体选择何种定位方式，可以参考如下准则：</p>
-<ul>
-<li>定位方式应保证定位准确</li>
-<li>定位方式应尽可能简洁</li>
-<li>定位方式应尽可能稳定，即使屏幕界面出现变化，定位方式也不会失效</li>
-</ul>
-<p>这里说到了定位方式的准确性，那要如何进行验证呢？技巧是，采用<code>.count</code>和<code>.info</code>属性值即可。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>d(text=<span class="string">'UC头条有新消息，点击刷新'</span>).count</div><div class="line"><span class="number">1</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>d(text=<span class="string">'UC头条有新消息，点击刷新'</span>).info</div><div class="line">&#123;<span class="string">u'contentDescription'</span>: <span class="keyword">None</span>, <span class="string">u'checked'</span>: <span class="keyword">False</span>, <span class="string">u'clickable'</span>: <span class="keyword">True</span>, <span class="string">u'scrollable'</span>: <span class="keyword">False</span>, <span class="string">u'text'</span>: <span class="string">u'UC\u5934\u6761\u6709\u65b0\u6d88\u606f\uff0c\u70b9\u51fb\u5237\u65b0'</span>, <span class="string">u'packageName'</span>: <span class="string">u'com.UCMobile.projectscn1098RHEAD'</span>, <span class="string">u'selected'</span>: <span class="keyword">False</span>, <span class="string">u'enabled'</span>: <span class="keyword">True</span>, <span class="string">u'bounds'</span>: &#123;<span class="string">u'top'</span>: <span class="number">1064</span>, <span class="string">u'left'</span>: <span class="number">42</span>, <span class="string">u'right'</span>: <span class="number">1038</span>, <span class="string">u'bottom'</span>: <span class="number">1136</span>&#125;, <span class="string">u'className'</span>: <span class="string">u'android.widget.TextView'</span>, <span class="string">u'focusable'</span>: <span class="keyword">False</span>, <span class="string">u'focused'</span>: <span class="keyword">False</span>, <span class="string">u'checkable'</span>: <span class="keyword">False</span>, <span class="string">u'resourceName'</span>: <span class="keyword">None</span>, <span class="string">u'longClickable'</span>: <span class="keyword">False</span>, <span class="string">u'visibleBounds'</span>: &#123;<span class="string">u'top'</span>: <span class="number">1064</span>, <span class="string">u'left'</span>: <span class="number">42</span>, <span class="string">u'right'</span>: <span class="number">1038</span>, <span class="string">u'bottom'</span>: <span class="number">1136</span>&#125;, <span class="string">u'childCount'</span>: <span class="number">0</span>&#125;</div></pre></td></tr></table></figure>
-<p>当<code>.count</code>属性值为1，<code>.info</code>属性值的内容与目标控件的属性值一致时，就可以确定我们采用的定位方式是准确的。</p>
-<h2 id="控件操作"><a href="#控件操作" class="headerlink" title="控件操作"></a>控件操作</h2><p>定位到具体的控件后，操作就比较容易了。</p>
-<p>在<code>pyuiautomator</code>中，对<code>UI Automator</code>的UI操作动作进行了封装，常用的操作动作有：</p>
-<ul>
-<li>.click()</li>
-<li>.long_click()</li>
-<li>.swipe</li>
-<li>.drag</li>
-</ul>
-<p>更多的操作可根据我们测试场景的实际需求，查询<code>pyuiautomator</code>文档找到合适的方法。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>看到这里，相信大家对Android UI自动化测试已经有了基本的认识。由于篇幅关系，我没有将所有内容都包含进来，而是打算后续分多个专题以单独博文的形式进行展开（不知不觉就给自己埋下了坑^_^）。</p>
-<h2 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h2><ul>
-<li><a href="http://developer.android.com/tools/testing-support-library/index.html#UIAutomator" target="_blank" rel="external">http://developer.android.com/tools/testing-support-library/index.html#UIAutomator</a></li>
-<li><a href="https://github.com/xiaocong/uiautomator" target="_blank" rel="external">https://github.com/xiaocong/uiautomator</a></li>
-</ul>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;在进行Android App持续集成性能测试的时候，需要自动化实现UI层面的一些操作，常见的几种场景包括：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;测试帧率时，需要模拟滑屏、拖拽操作；&lt;/li&gt;
-&lt;li&gt;初次安装app后启动应用时，需要点击按钮跳过协议页面；&lt;/li&gt;
-&lt;li&gt;从&lt;cod
-    
-    </summary>
-    
-    
-      <category term="Android" scheme="http://debugtalk.com/tags/Android/"/>
-    
-      <category term="Python" scheme="http://debugtalk.com/tags/Python/"/>
-    
-      <category term="UI" scheme="http://debugtalk.com/tags/UI/"/>
-    
-      <category term="AutomationTest" scheme="http://debugtalk.com/tags/AutomationTest/"/>
     
   </entry>
   
