@@ -4,6 +4,27 @@
 
     
   <url>
+    <loc>http://debugtalk.com/post/Introduction-to-AppiumBooster/</loc>
+    <lastmod>2016-08-18T09:40:37.000Z</lastmod>
+    <data>
+        <display>
+        <title>Introduction to AppiumBooster</title>
+        <pubTime>2016-07-19T16:00:00.000Z</pubTime>
+        
+        <tag>AutomationTest</tag>
+         
+        <tag>Appium</tag>
+         
+        <tag>AppiumBooster</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://debugtalk.com/post/make-Jenkins-Console-Output-Colorful/</loc>
     <lastmod>2016-08-15T08:40:41.000Z</lastmod>
     <data>
@@ -349,27 +370,6 @@
         <tag>GitHub</tag>
          
         <tag>HTTPS，权限校验</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/Introduction-to-AppiumBooster/</loc>
-    <lastmod>2016-07-30T05:09:13.000Z</lastmod>
-    <data>
-        <display>
-        <title>Introduction to AppiumBooster</title>
-        <pubTime>2016-07-19T16:00:00.000Z</pubTime>
-        
-        <tag>AutomationTest</tag>
-         
-        <tag>Appium</tag>
-         
-        <tag>AppiumBooster</tag>
          
          
            
