@@ -3,6 +3,7 @@
 
 
     
+    
   <url>
     <loc>http://debugtalk.com/post/build-ideal-app-automation-test-framework/</loc>
     <lastmod>2016-09-07T07:24:15.000Z</lastmod>
@@ -427,7 +428,6 @@
     
     
     
-    
   <url>
     <loc>http://debugtalk.com/post/Android-performance-test-start-traffic-uid-stat/</loc>
     <lastmod>2016-07-23T07:39:25.000Z</lastmod>
@@ -773,52 +773,18 @@
     
     
   <url>
-    <loc>http://debugtalk.com/post/traps-in-sql-null/</loc>
+    <loc>http://debugtalk.com/post/Evaluate-Largest-Online-Users/</loc>
     <lastmod>2016-07-22T11:07:58.000Z</lastmod>
     <data>
         <display>
-        <title>SQL语句中关于NULL的那些坑</title>
-        <pubTime>2016-04-24T16:00:00.000Z</pubTime>
+        <title>测试最大在线用户数</title>
+        <pubTime>2013-08-21T16:00:00.000Z</pubTime>
         
-        <tag>SQL</tag>
+        <tag>LoadRunner</tag>
          
+        <tag>性能指标</tag>
          
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/concept-about-webservice/</loc>
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    <data>
-        <display>
-        <title>测试工程师的自我修养--理解WebService</title>
-        <pubTime>2013-08-04T16:00:00.000Z</pubTime>
-        
-        <tag>WebService</tag>
-         
-        <tag>SOAP</tag>
-         
-        <tag>WSDL</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/developing-idea-production-data-picker/</loc>
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    <data>
-        <display>
-        <title>【灵感】线上数据采摘工具（ProductionDataPicker）</title>
-        <pubTime>2016-03-07T16:00:00.000Z</pubTime>
-        
-        <tag>Development</tag>
+        <tag>最大在线用户数</tag>
          
          
            
@@ -847,6 +813,46 @@
 
     
   <url>
+    <loc>http://debugtalk.com/post/Introspection-on-WebService-Test/</loc>
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    <data>
+        <display>
+        <title>基于WSDL或SOAP的WebService测试方法--对原理的思考</title>
+        <pubTime>2015-02-11T16:00:00.000Z</pubTime>
+        
+        <tag>WebService</tag>
+         
+        <tag>WSDL</tag>
+         
+        <tag>SOAP</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/remote-debugging-with-pycharm/</loc>
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    <data>
+        <display>
+        <title>利用PyCharm进行Python远程调试</title>
+        <pubTime>2015-07-12T16:00:00.000Z</pubTime>
+        
+        <tag>pycharm</tag>
+         
+        <tag>Python</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://debugtalk.com/post/scenario-design-scripts-percent-controll/</loc>
     <lastmod>2016-07-22T11:07:58.000Z</lastmod>
     <data>
@@ -866,18 +872,14 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/Evaluate-Largest-Online-Users/</loc>
+    <loc>http://debugtalk.com/post/developing-idea-production-data-picker/</loc>
     <lastmod>2016-07-22T11:07:58.000Z</lastmod>
     <data>
         <display>
-        <title>测试最大在线用户数</title>
-        <pubTime>2013-08-21T16:00:00.000Z</pubTime>
+        <title>【灵感】线上数据采摘工具（ProductionDataPicker）</title>
+        <pubTime>2016-03-07T16:00:00.000Z</pubTime>
         
-        <tag>LoadRunner</tag>
-         
-        <tag>性能指标</tag>
-         
-        <tag>最大在线用户数</tag>
+        <tag>Development</tag>
          
          
            
@@ -887,18 +889,16 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/LoadRunner-WSDL-WebService/</loc>
+    <loc>http://debugtalk.com/post/SIPp-IP-Telephone-Server-Performance-Testing/</loc>
     <lastmod>2016-07-22T11:07:58.000Z</lastmod>
     <data>
         <display>
-        <title>LoadRunner基于WSDL的WebService测试方法</title>
-        <pubTime>2013-08-01T16:00:00.000Z</pubTime>
+        <title>使用SIPp对基于SIP协议的IP电话通信服务器进行性能测试</title>
+        <pubTime>2014-05-10T16:00:00.000Z</pubTime>
         
-        <tag>LoadRunner</tag>
+        <tag>性能测试</tag>
          
-        <tag>WebService</tag>
-         
-        <tag>WSDL</tag>
+        <tag>SIP</tag>
          
          
            
@@ -948,16 +948,14 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/SIPp-IP-Telephone-Server-Performance-Testing/</loc>
+    <loc>http://debugtalk.com/post/traps-in-sql-null/</loc>
     <lastmod>2016-07-22T11:07:58.000Z</lastmod>
     <data>
         <display>
-        <title>使用SIPp对基于SIP协议的IP电话通信服务器进行性能测试</title>
-        <pubTime>2014-05-10T16:00:00.000Z</pubTime>
+        <title>SQL语句中关于NULL的那些坑</title>
+        <pubTime>2016-04-24T16:00:00.000Z</pubTime>
         
-        <tag>性能测试</tag>
-         
-        <tag>SIP</tag>
+        <tag>SQL</tag>
          
          
            
@@ -967,18 +965,18 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/Introspection-on-WebService-Test/</loc>
+    <loc>http://debugtalk.com/post/concept-about-webservice/</loc>
     <lastmod>2016-07-22T11:07:58.000Z</lastmod>
     <data>
         <display>
-        <title>基于WSDL或SOAP的WebService测试方法--对原理的思考</title>
-        <pubTime>2015-02-11T16:00:00.000Z</pubTime>
+        <title>测试工程师的自我修养--理解WebService</title>
+        <pubTime>2013-08-04T16:00:00.000Z</pubTime>
         
         <tag>WebService</tag>
          
-        <tag>SOAP</tag>
-         
         <tag>WSDL</tag>
+         
+        <tag>SOAP</tag>
          
          
            
@@ -988,16 +986,18 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/remote-debugging-with-pycharm/</loc>
+    <loc>http://debugtalk.com/post/LoadRunner-WSDL-WebService/</loc>
     <lastmod>2016-07-22T11:07:58.000Z</lastmod>
     <data>
         <display>
-        <title>利用PyCharm进行Python远程调试</title>
-        <pubTime>2015-07-12T16:00:00.000Z</pubTime>
+        <title>LoadRunner基于WSDL的WebService测试方法</title>
+        <pubTime>2013-08-01T16:00:00.000Z</pubTime>
         
-        <tag>pycharm</tag>
+        <tag>LoadRunner</tag>
          
-        <tag>Python</tag>
+        <tag>WebService</tag>
+         
+        <tag>WSDL</tag>
          
          
            
