@@ -19,7 +19,7 @@
 <meta property="og:description" content="最近因为工作原因，我又拾起了老本行，开始做Web性能测试。之前虽然做过三四年的性能测试，但是在博客和开源项目方面都没有什么输出，一直是一个很大的遗憾。因此，近期打算围绕服务端性能测试的话题，将自己在这方面的经历进行整理。并且，最近使用的性能测试工具Locust感觉挺不错的，只是其功能比较单薄，特别是在性能指标监控和测试报告图表方面比较缺失，因此也打算在Locust的基础上做二次开发，打造一款自己用">
 <meta property="og:image" content="http://debugtalk.com/images/google_search.png">
 <meta property="og:image" content="http://debugtalk.com/images/perftest_tool.png">
-<meta property="og:updated_time" content="2016-11-02T11:43:35.000Z">
+<meta property="og:updated_time" content="2016-11-02T13:26:39.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【LocustPlus序】漫谈服务端性能测试">
 <meta name="twitter:description" content="最近因为工作原因，我又拾起了老本行，开始做Web性能测试。之前虽然做过三四年的性能测试，但是在博客和开源项目方面都没有什么输出，一直是一个很大的遗憾。因此，近期打算围绕服务端性能测试的话题，将自己在这方面的经历进行整理。并且，最近使用的性能测试工具Locust感觉挺不错的，只是其功能比较单薄，特别是在性能指标监控和测试报告图表方面比较缺失，因此也打算在Locust的基础上做二次开发，打造一款自己用">
@@ -108,7 +108,7 @@
 		
 		</div>
 		
-		<p>最近因为工作原因，我又拾起了老本行，开始做Web性能测试。之前虽然做过三四年的性能测试，但是在博客和开源项目方面都没有什么输出，一直是一个很大的遗憾。因此，近期打算围绕服务端性能测试的话题，将自己在这方面的经历进行整理。并且，最近使用的性能测试工具Locust感觉挺不错的，只是其功能比较单薄，特别是在性能指标监控和测试报告图表方面比较缺失，因此也打算在Locust的基础上做二次开发，打造一款自己用得顺手的性能测试工具，暂且将其命名为LocustPlus吧。</p>
+		<p>最近因为工作原因，我又拾起了老本行，开始做Web性能测试。之前虽然做过三四年的性能测试，但是在博客和开源项目方面都没有什么输出，一直是一个很大的遗憾。因此，近期打算围绕服务端性能测试的话题，将自己在这方面的经历进行整理。并且，最近使用的性能测试工具Locust感觉挺不错的，只是其功能比较单薄，特别是在性能指标监控和测试报告图表方面比较缺失，因此也打算在Locust的基础上做二次开发，打造一款自己用得顺手的性能测试工具，暂且将其命名为<code>LocustPlus</code>吧。</p>
 <h2 id="简述性能测试"><a href="#简述性能测试" class="headerlink" title="简述性能测试"></a>简述性能测试</h2><p>提起性能测试，可能移动APP的从业人员会感觉比较混淆，因为在客户端（Android、iOS）中也有性能测试专项，主要涉及的是APP的启动时间、内存、包大小、帧率，流量等客户端相关的指标。在本博客之前的文章中，也包含了一些客户端性能测试的内容。需要说明的是，本文所讲解的性能测试都是针对服务器端，尤指Web系统的，与移动APP的性能测试完全是不同的领域。</p>
 <p>那么，什么是服务端的性能测试呢？</p>
 <p>先从大家都熟悉的功能测试说起吧。例如，我们要测试一个搜索功能，那么我们测试时，就会输入搜索关键词，点击搜索按钮，然后再去查看搜索结果，看结果是否跟我们输入的搜索关键词匹配，如果匹配则说明搜索功能实现正确。</p>
@@ -297,6 +297,14 @@
 	
 <nav class="article-nav clearfix">
  
+ <div class="prev" >
+ <a href="/post/switch-macOS-web-proxy-in-elegant-way/" title="如何优雅地一键实现macOS网络代理切换">
+  <strong>上一篇：</strong><br/>
+  <span>
+  如何优雅地一键实现macOS网络代理切换</span>
+</a>
+</div>
+
 
 <div class="next">
 <a href="/post/build-ideal-app-automation-test-framework/"  title="打造心目中理想的自动化测试框架（AppiumBooster）">
@@ -366,15 +374,11 @@
 			
 		
 			
-				<li><a href="/tags/WebService/" title="WebService">WebService<sup>5</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/Jenkins/" title="Jenkins">Jenkins<sup>5</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/F0T1/" title="F0T1">F0T1<sup>5</sup></a></li>
+				<li><a href="/tags/WebService/" title="WebService">WebService<sup>5</sup></a></li>
 			
 		
 			
@@ -382,15 +386,19 @@
 			
 		
 			
+				<li><a href="/tags/F0T1/" title="F0T1">F0T1<sup>5</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/Python/" title="Python">Python<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/SOAP/" title="SOAP">SOAP<sup>3</sup></a></li>
+				<li><a href="/tags/WSDL/" title="WSDL">WSDL<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/WSDL/" title="WSDL">WSDL<sup>3</sup></a></li>
+				<li><a href="/tags/SOAP/" title="SOAP">SOAP<sup>3</sup></a></li>
 			
 		
 			
@@ -402,11 +410,7 @@
 			
 		
 			
-				<li><a href="/tags/Git/" title="Git">Git<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/Pelican/" title="Pelican">Pelican<sup>2</sup></a></li>
+				<li><a href="/tags/脚本开发/" title="脚本开发">脚本开发<sup>2</sup></a></li>
 			
 		
 			
@@ -414,11 +418,15 @@
 			
 		
 			
-				<li><a href="/tags/测试用例设计/" title="测试用例设计">测试用例设计<sup>2</sup></a></li>
+				<li><a href="/tags/Pelican/" title="Pelican">Pelican<sup>2</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/脚本开发/" title="脚本开发">脚本开发<sup>2</sup></a></li>
+				<li><a href="/tags/黑盒测试/" title="黑盒测试">黑盒测试<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/测试用例设计/" title="测试用例设计">测试用例设计<sup>2</sup></a></li>
 			
 		
 			
