@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://debugtalk.com/"/>
-  <updated>2016-11-24T02:47:22.000Z</updated>
+  <updated>2017-01-02T15:11:50.000Z</updated>
   <id>http://debugtalk.com/</id>
   
   <author>
@@ -16,11 +16,48 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>我的2016年终总结</title>
+    <link href="http://debugtalk.com/post/my-2016-summary/"/>
+    <id>http://debugtalk.com/post/my-2016-summary/</id>
+    <published>2016-12-30T16:00:00.000Z</published>
+    <updated>2017-01-02T15:11:50.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>2016年于我而言，经历的事情挺多的，现在回想起来，很难相信这些都是在一年内发生的。</p>
+<p>在5月份的时候，我从UC离职去了大疆，从移动互联网公司到了做无人机的硬件公司，从待了5年的广州到了深圳。很多朋友都很好奇换工作的原因，也许，是我还没有折腾够吧，再或者，是想到一个全新的环境去实践自己的一些想法吧。有种说法是，判断一个选择是否正确的方式，就是假设让你再回到之前选择的时刻，你还是否会做出同样的决定。如果让我回答这个问题，还真不好说，毕竟UC和大疆都是非常优秀的公司，只是作为成熟的上市公司和处于快速成长期的创业公司，各自有着不同的特质罢了。不过，我对现在的工作状态挺满意的，我想这就够了。</p>
+<p>在技术方面，今年接触的领域挺多的。离开UC之前，主要是在Android客户端性能测试的持续集成方面，探索实践了几类专项测试，并将公司的测试平台任务成功率从不足70%提升到了95%以上。到了大疆以后，发现这边在测试这块儿基本上还处于蛮荒状态，于是便借此机会从零开始建设测试平台。刚开始接手的项目是<code>DJI+Discover</code>，于是新接触了iOS测试，从零开始做了iOS的UI自动化测试，并开源了一个基于Appium的测试框架<a href="https://github.com/debugtalk/AppiumBooster" target="_blank" rel="external"><code>AppiumBooster</code></a>；然后搞了持续集成测试平台，将自动化打包构建和iOS自动化测试串了起来。后面因为项目调整，接手了商城性能测试，重新捡起了之前的老本行服务端性能测试，不过没有使用之前精通的LoadRunner，而是选择了Locust这款开源的测试工具，并在其基础上做了一些扩展。再到后来，公司成立了互联网事业部一级部门，划分了质量部二级部门，然后我就从业务测试工作中抽调出来，专职做测试开发的工作，主要内容暂时是在Web的接口自动化测试和流程自动化测试方面。</p>
+<p>除了纯粹的技术工作，今年也开始做测试岗的技术面试工作，前前后后面试了三四十人。在面试工作中，收获也挺大的，最主要的还是可以借此了解到其它公司在软件测试方面开展的情况，以及其他同行在做的事情，这些都挺有借鉴意义的。其中，有一点感触特别深，在我们这个行业，干技术的如果工作年限与实际能力不匹配，真的是挺尴尬的。虽然听上去很残忍，但是站在招聘方的角度就很好理解了，一个工作七八年的人如果技术积累跟工作了一两年的人差不多，或者是只高了一点，那么公司不管是从薪酬成本还是从员工发展潜力的角度，肯定会选择后者了。因此，既然选择了技术这条路，要想以后不经历这种尴尬，我们能做的也只有多磨练多积累了。</p>
+<p>在今年，我开始用心经营<a href="http://debugtalk.com/">个人博客</a>和微信公众号（<code>DebugTalk</code>）。虽然在2013年的时候，当时也有开通过博客和公众号（52test.org），但那时玩的性质更多一些，没写几篇就搁置了。今年重新开始写博客的原因也挺简单的，就是想对自己的工作和学习进行下总结和记录。而且自身也越来越认同一个观点，最好的学习方式就是去教授别人，因为要向别人将一个问题通俗易懂地讲解清楚，自己就必须对其中的原理和因果联系有足够清晰的认识，有了这层动力，学习也就更有方向性，学习效率和效果也就上去了。再延伸一点，其实这也跟TDD的开发模式挺类似的，现在我也挺喜欢这样的开发模式，并在实际开发工作中践行TDD。</p>
+<p>截止当前，今年更新的博客大概有30篇左右，主要内容还是工作中对一些技术的感悟和对学习过程的记录。从数量上看，这个量还是挺少的，而且更新频率也从每周数篇，到每周一篇，再到半月一篇，一月一篇，工作繁忙是一方面的原因，更主要的还是拖延症导致的。而且一旦丢了写博客的感觉，再提笔写起来更是难上加难。还算欣慰的是，从留言反馈来看，写的东西至少还是给一部分人带去了一些价值，并且博客在搜索引擎中也有了不错的收录。特别是有时候同事搜索解决方案结果检索到我写的文章时，还是会有一些成就感的。另外，通过公众号和博客，我也认识了好多业界同行，这也是一个很大的收获。</p>
+<p>因为个人博客的原因，今年第一次接了私活儿，挣到了第一笔工资以外的收入。当时深圳一所高校的老师看到我的博客后，觉得还不错，于是联系我想让我给他和他的同事培训，他们再将培训内容用到教学中。之前也没接过私活儿，只是觉得这也是一个不错的实践机会，所以就答应了。好在实际教学过程中，他们还挺满意，我的压力也就小了许多。这里再插入一件比较有趣的事情，第一次授课后一位老师问我是研究生还是博士，我不大好意思地说我是本科。一个本科生给博士和博士后培训，这也算是一份难得的人生经历了。不过，术业有专攻嘛，理论教学和工程实践毕竟存在一定的差异。我也挺佩服他们的，能在业余休息时间主动去学习，让学生能了解到当前工程界流行的技术，这比某些照着课本念几十年的”老教授”真的不知道强了多少倍。</p>
+<p>除了博客分享，今年在公司内部也进行了几场技术分享，印象比较深的有：<a href="/post/python-functional-programming-getting-started/">《Python的函数式编程–从入门到⎡放弃⎦》</a>，<a href="/post/build-ideal-app-automation-test-framework/">《从0到1搭建移动APP功能自动化测试平台（AppiumBooster）》</a>，<a href="/post/locustplus-talk-about-performance-test/">《漫谈服务端性能测试》</a>，《基于有限状态机的流程自动化测试》等。在演讲方面，自我感觉在时间控制方面还比较欠缺，一不小心就超时，这个在明年得好好改进下。</p>
+<p>当然，对我个人而言，2016年最大的一件事儿就是成家了。虽然在年初的时候还完全没有想过今年会结婚的，但我还是和女朋友在2016年结束了四年的恋爱长跑，在9.19领了证，在10.3办了婚礼。当然，不是奉子成婚，请不要邪恶。在婚礼这件事情上，我们没有请婚庆主持，而是找了我们从小玩到大的好朋友，我们自己设计的流程环节，自己选的背景音乐，自己做的视频，虽然在婚礼前一晚还因为设备故障忙得焦头烂额，但是经历这么一个过程本身也是挺有意义的。</p>
+<p>最后，我再简单地展望下2017年吧。</p>
+<p>1、坚持写博客。至于具体指标，盯着博客阅读量和微信公众号关注人数也没啥意义，更多的还是希望能通过写博客让自己的内心静下来，同时获得自我成长。</p>
+<p>2、进行一场对外技术分享，毕竟，面向公众演讲和面向同事演讲，感觉还是不一样的。也希望通过这种方式，逼迫自己更快的成长。</p>
+<p>3、经得住诱惑，做好手头的工作，将公司的软件测试技术提升一个层次。这一年来收到的工作邀请也挺多的，特别是华为和腾讯，开出的薪资也很是诱人。但我还是觉得不能这么浮躁，换一个地方如果还是做同样的事情，意义也不大，还不如跟着公司一起成长。</p>
+<p>4、学会生活，锻炼身体，陪伴家人，工作是长跑，讲究的是可持续发展。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;2016年于我而言，经历的事情挺多的，现在回想起来，很难相信这些都是在一年内发生的。&lt;/p&gt;
+&lt;p&gt;在5月份的时候，我从UC离职去了大疆，从移动互联网公司到了做无人机的硬件公司，从待了5年的广州到了深圳。很多朋友都很好奇换工作的原因，也许，是我还没有折腾够吧，再或者，是想到
+    
+    </summary>
+    
+    
+      <category term="年终总结" scheme="http://debugtalk.com/tags/%E5%B9%B4%E7%BB%88%E6%80%BB%E7%BB%93/"/>
+    
+      <category term="个人成长" scheme="http://debugtalk.com/tags/%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF/"/>
+    
+  </entry>
+  
+  <entry>
     <title>如何优雅地一键实现macOS网络代理切换</title>
     <link href="http://debugtalk.com/post/switch-macOS-web-proxy-in-elegant-way/"/>
     <id>http://debugtalk.com/post/switch-macOS-web-proxy-in-elegant-way/</id>
     <published>2016-11-23T16:00:00.000Z</published>
-    <updated>2016-11-24T02:47:22.000Z</updated>
+    <updated>2017-01-02T05:07:46.000Z</updated>
     
     <content type="html"><![CDATA[<p>在<code>macOS</code>中配置Web代理时，通常的做法是在控制面板中进行操作，<code>System Preferences</code> -&gt; <code>Network</code> -&gt; <code>Advanced</code> -&gt; <code>Proxies</code>.</p>
 <p><img src="/images/macOS-Web-Proxy-Setting.jpg" alt="macOS-Web-Proxy-Setting"></p>
@@ -62,13 +99,13 @@
     </summary>
     
     
-      <category term="Locust" scheme="http://debugtalk.com/tags/Locust/"/>
-    
       <category term="Web proxy" scheme="http://debugtalk.com/tags/Web-proxy/"/>
     
       <category term="Shuttle" scheme="http://debugtalk.com/tags/Shuttle/"/>
     
       <category term="mitmproxy" scheme="http://debugtalk.com/tags/mitmproxy/"/>
+    
+      <category term="Locust" scheme="http://debugtalk.com/tags/Locust/"/>
     
   </entry>
   
@@ -645,9 +682,9 @@
     
       <category term="Appium" scheme="http://debugtalk.com/tags/Appium/"/>
     
-      <category term="iOS" scheme="http://debugtalk.com/tags/iOS/"/>
-    
       <category term="F0T1" scheme="http://debugtalk.com/tags/F0T1/"/>
+    
+      <category term="iOS" scheme="http://debugtalk.com/tags/iOS/"/>
     
       <category term="Ruby" scheme="http://debugtalk.com/tags/Ruby/"/>
     
@@ -1312,7 +1349,7 @@
     <link href="http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-write-iOS-testcase-scripts/"/>
     <id>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-write-iOS-testcase-scripts/</id>
     <published>2016-05-29T16:00:00.000Z</published>
-    <updated>2016-07-30T05:14:44.000Z</updated>
+    <updated>2016-11-27T07:45:12.000Z</updated>
     
     <content type="html"><![CDATA[<p>通过前面三篇文章，我们已经将iOS自动化功能测试的开发环境全部准备就绪，也学习了iOS UI控件交互操作的一般性方法，接下来，就可以开始编写自动化测试脚本了。</p>
 <p>在本文中，我将在M项目中挑选一个功能点，对其编写自动化测试脚本，演示编写自动化测试用例的整个流程。</p>
@@ -1355,7 +1392,7 @@
 <p>在上一篇文章中有介绍过，通过<code>arc</code>启动虚拟机时，会从<code>appium.txt</code>中读取虚拟机的配置信息。类似的，我们在脚本中执行自动化测试时，也会加载虚拟机，因此同样需要在脚本中指定虚拟机的配置信息，并初始化<code>Appium Driver</code>的实例。</p>
 <p>初始化代码可以通过<code>Appium Inspector</code>生成，基本上为固定模式，我们暂时不用深究。</p>
 <p>添加初始化部分的代码后，测试脚本如下所示。</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">require</span> <span class="string">'rubygems'</span></div><div class="line"><span class="keyword">require</span> <span class="string">'appium_lib'</span></div><div class="line"></div><div class="line">capabilities = &#123;</div><div class="line">true<span class="string">'appium-version'</span> =&gt; <span class="string">'1.0'</span>,</div><div class="line">true<span class="string">'platformName'</span> =&gt; <span class="string">'iOS'</span>,</div><div class="line">true<span class="string">'platformVersion'</span> =&gt; <span class="string">'9.3'</span>,</div><div class="line">&#125;</div><div class="line">Appium::Driver.new(<span class="symbol">caps:</span> capabilities).start_driver</div><div class="line">Appium.promote_appium_methods Object</div><div class="line"></div><div class="line"><span class="comment"># testcase: login</span></div><div class="line">button_exact(<span class="string">'My Account'</span>).click</div><div class="line">button_exact(<span class="string">'Login'</span>).click</div><div class="line">tag(<span class="string">'UIATextField'</span>).type <span class="string">'leo.lee@dji.com'</span></div><div class="line">tag(<span class="string">'UIASecureTextField'</span>).type <span class="string">'123456'</span></div><div class="line">button_exact(<span class="string">'Login'</span>).click</div><div class="line"></div><div class="line">driver_quit</div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">require</span> <span class="string">'rubygems'</span></div><div class="line"><span class="keyword">require</span> <span class="string">'appium_lib'</span></div><div class="line"></div><div class="line">capabilities = &#123;</div><div class="line">  <span class="string">'appium-version'</span> =&gt; <span class="string">'1.0'</span>,</div><div class="line">  <span class="string">'platformName'</span> =&gt; <span class="string">'iOS'</span>,</div><div class="line">  <span class="string">'platformVersion'</span> =&gt; <span class="string">'9.3'</span>,</div><div class="line">&#125;</div><div class="line">Appium::Driver.new(<span class="symbol">caps:</span> capabilities).start_driver</div><div class="line">Appium.promote_appium_methods Object</div><div class="line"></div><div class="line"><span class="comment"># testcase: login</span></div><div class="line">button_exact(<span class="string">'My Account'</span>).click</div><div class="line">button_exact(<span class="string">'Login'</span>).click</div><div class="line">tag(<span class="string">'UIATextField'</span>).type <span class="string">'leo.lee@dji.com'</span></div><div class="line">tag(<span class="string">'UIASecureTextField'</span>).type <span class="string">'123456'</span></div><div class="line">button_exact(<span class="string">'Login'</span>).click</div><div class="line"></div><div class="line">driver_quit</div></pre></td></tr></table></figure>
 <h2 id="优化测试脚本：加入等待机制"><a href="#优化测试脚本：加入等待机制" class="headerlink" title="优化测试脚本：加入等待机制"></a>优化测试脚本：加入等待机制</h2><p>如上测试脚本编写好后，在Terminal中运行<code>ruby login.rb</code>，就可以执行脚本了。</p>
 <p>运行命令后，会看到iOS虚拟机成功启动，接着App成功进行加载，然后自动按照前面设计的路径，执行系统登录流程。</p>
 <p>但是，在实际操作过程中，发现有时候运行脚本时会出现找不到控件的异常，异常信息如下所示：</p>
@@ -1396,9 +1433,9 @@
     
       <category term="Appium" scheme="http://debugtalk.com/tags/Appium/"/>
     
-      <category term="iOS" scheme="http://debugtalk.com/tags/iOS/"/>
-    
       <category term="F0T1" scheme="http://debugtalk.com/tags/F0T1/"/>
+    
+      <category term="iOS" scheme="http://debugtalk.com/tags/iOS/"/>
     
       <category term="Ruby" scheme="http://debugtalk.com/tags/Ruby/"/>
     
@@ -1506,13 +1543,13 @@
     
       <category term="Appium" scheme="http://debugtalk.com/tags/Appium/"/>
     
-      <category term="iOS" scheme="http://debugtalk.com/tags/iOS/"/>
-    
-      <category term="Simulator" scheme="http://debugtalk.com/tags/Simulator/"/>
-    
       <category term="F0T1" scheme="http://debugtalk.com/tags/F0T1/"/>
     
+      <category term="iOS" scheme="http://debugtalk.com/tags/iOS/"/>
+    
       <category term="Ruby" scheme="http://debugtalk.com/tags/Ruby/"/>
+    
+      <category term="Simulator" scheme="http://debugtalk.com/tags/Simulator/"/>
     
   </entry>
   
@@ -1599,11 +1636,11 @@
     
       <category term="Appium" scheme="http://debugtalk.com/tags/Appium/"/>
     
+      <category term="F0T1" scheme="http://debugtalk.com/tags/F0T1/"/>
+    
       <category term="iOS" scheme="http://debugtalk.com/tags/iOS/"/>
     
       <category term="Simulator" scheme="http://debugtalk.com/tags/Simulator/"/>
-    
-      <category term="F0T1" scheme="http://debugtalk.com/tags/F0T1/"/>
     
   </entry>
   
@@ -1759,48 +1796,6 @@
       <category term="tcpdump" scheme="http://debugtalk.com/tags/tcpdump/"/>
     
       <category term="wireshark" scheme="http://debugtalk.com/tags/wireshark/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Android App持续集成性能测试：启动流量（1）</title>
-    <link href="http://debugtalk.com/post/Android-performance-test-start-traffic-uid-stat/"/>
-    <id>http://debugtalk.com/post/Android-performance-test-start-traffic-uid-stat/</id>
-    <published>2016-05-02T16:00:00.000Z</published>
-    <updated>2016-07-23T07:39:25.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>本文对Android App的启动流量测试进行介绍。这里的启动流量指的是网络流量，即App在启动时发起网络请求和接收网络响应时传输的网络数据量。</p>
-<p>说起流量，也许大家的第一反应就是tcpdump/wireshark这类网络抓包工具。的确，Android系统确实也支持<code>tcpdump</code>工具，通过<code>tcpdump</code>，我们可以实现非常精准的流量测试。但<code>tcpdump</code>也有个问题，就是它捕捉到的流量是系统层面的，我们很难区分捕捉得到的流量数据是否都是当前apk产生的。</p>
-<p>其实，对于特定apk的整体流量数据，在Android系统中都会存储到对应文件中，我们完全可以通过读取对应文件来获得当前apk的流量信息。</p>
-<h2 id="get-app-UID"><a href="#get-app-UID" class="headerlink" title="get app UID"></a>get app UID</h2><p>与流量相关的状态数据存储在<code>/proc/uid_stat/&lt;UID&gt;/</code>目录下，其中，<code>&lt;UID&gt;</code>表示apk对应的UID。</p>
-<p>关于UID，简单地进行下说明。在Linux系统中，UID表示的是User Identifier，主要用于表示是哪位用户运行了该程序。但在Android系统中，由于Android系统本身就为单用户系统，这时UID就被赋予了新的使命，主要用于实现数据共享。具体地，Android系统为每个应用都分配了一个UID，不同apk的UID几乎都是互不相同的，而对于不同UID的apk，不能共享数据资源。之所以用“几乎”，是因为有时候同一厂家会存在多个产品，并且希望能在多个apk之间实现数据共享，这个时候，便可通过在menifest配置文件中指定相同的sharedUserId，然后在Android系统中安装应用时便会分配相同的UID。</p>
-<p>获取app UID的方式有多种，最简单的方式应该还是从<code>/data/system/packages.list</code>中读取，并通过apk的<code>&lt;PKGNAME&gt;</code>找到对应的UID。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">root@hammerhead:/ # cat /data/system/packages.list | grep com.UCMobile.trunk</div><div class="line">com.UCMobile.trunk 10084 0 /data/data/com.UCMobile.trunk default 3003,1028,1015</div></pre></td></tr></table></figure>
-<p>在这里，10084即是<code>com.UCMobile.trunk</code>的UID。</p>
-<h2 id="获取流量数据"><a href="#获取流量数据" class="headerlink" title="获取流量数据"></a>获取流量数据</h2><p>流量数据分为接收流量（tcp_rcv）和发送流量（tcp_snd）两部分，这两个状态数值我们可以通过读取<code>/proc/uid_stat/&lt;UID&gt;</code>目录下的两个文件得到。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">shell@hammerhead:/ $ cat /proc/uid_stat/10084/tcp_rcv</div><div class="line">3446837</div><div class="line">shell@hammerhead:/ $ cat /proc/uid_stat/10084/tcp_snd</div><div class="line">134366</div></pre></td></tr></table></figure>
-<p>通过这种方式，我们就可以读取得到指定apk在当前时刻的累计流量数值。</p>
-<h2 id="获得启动流量数据"><a href="#获得启动流量数据" class="headerlink" title="获得启动流量数据"></a>获得启动流量数据</h2><p>有了前面的基础，我们要测试启动流量就很好实现了。只需要在启动前采集下累计流量数值，然后启动应用，完成启动后再采集一次累计流量数值，前后两次累计数值的差值便是当次启动耗费的流量数。需要注意的是，由于很多时候apk在启动后，会在系统后台异步加载一些数据资源，因此为了保证我们采集到当次启动耗费的全部流量数值，我们在启动应用后最好能等待一段时间。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">root@hammerhead:/ # cat /proc/uid_stat/10084/tcp_snd</div><div class="line">15068</div><div class="line">root@hammerhead:/ # cat /proc/uid_stat/10084/tcp_rcv</div><div class="line">98021</div><div class="line"></div><div class="line"># start app activity, sleep 10s</div><div class="line"></div><div class="line">root@hammerhead:/ # cat /proc/uid_stat/10142/tcp_snd</div><div class="line">23268</div><div class="line">root@hammerhead:/ # cat /proc/uid_stat/10142/tcp_rcv</div><div class="line">965651</div></pre></td></tr></table></figure>
-<p>采集到前后两次流量数值后，即可计算得到当次启动耗费的总流量。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">当次启动总流量 = (23268 + 965651) - (15068 + 98021) = 875830 bytes</div></pre></td></tr></table></figure>
-<p>当然，这里的启动还分为好几种，包括首次安装启动、非首次安装启动、覆盖安装启动等。具体的启动方式可根据实际场景来定，但在统计流量的方法方面都是相同的。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文讲解了Android App启动流量测试的一种方法。然而，本次介绍的方法也存在一定局限性，因为<code>/proc/uid_stat/&lt;UID&gt;/</code>目录下的<code>tcp_rcv</code>和<code>tcp_snd</code>文件中都只记录了总值，如果我们只关注总体的流量数值还好，但要是我们希望能测试得到更细化的数据，该方法就没法满足我们的测试需求了。</p>
-<p>举个例子，UC浏览器国际版在启动后，会和美国的服务器进行通讯交互。现在，我们想测试UC浏览器国际版在启动后与美国服务器的通讯流量。</p>
-<p>显然，本文中介绍的方法是没法实现上述例子中的测试需求的。那例子中的场景要怎么测呢？这就还是得用到<code>tcpdump</code>，在下一篇文章中我会再详细进行介绍。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;本文对Android App的启动流量测试进行介绍。这里的启动流量指的是网络流量，即App在启动时发起网络请求和接收网络响应时传输的网络数据量。&lt;/p&gt;
-&lt;p&gt;说起流量，也许大家的第一反应就是tcpdump/wireshark这类网络抓包工具。的确，Android系统确实也
-    
-    </summary>
-    
-    
-      <category term="Android" scheme="http://debugtalk.com/tags/Android/"/>
-    
-      <category term="流量测试" scheme="http://debugtalk.com/tags/%E6%B5%81%E9%87%8F%E6%B5%8B%E8%AF%95/"/>
     
   </entry>
   
