@@ -19,7 +19,7 @@
 <meta property="og:description" content="最近因为工作原因，我又拾起了老本行，开始做Web性能测试。之前虽然做过三四年的性能测试，但是在博客和开源项目方面都没有什么输出，一直是一个很大的遗憾。因此，近期打算围绕服务端性能测试的话题，将自己在这方面的经历进行整理。并且，最近使用的性能测试工具Locust感觉挺不错的，只是其功能比较单薄，特别是在性能指标监控和测试报告图表方面比较缺失，因此也打算在Locust的基础上做二次开发，打造一款自己用">
 <meta property="og:image" content="http://debugtalk.com/images/google_search.png">
 <meta property="og:image" content="http://debugtalk.com/images/perftest_tool.png">
-<meta property="og:updated_time" content="2016-11-02T13:26:39.000Z">
+<meta property="og:updated_time" content="2017-01-07T04:06:41.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【LocustPlus序】漫谈服务端性能测试">
 <meta name="twitter:description" content="最近因为工作原因，我又拾起了老本行，开始做Web性能测试。之前虽然做过三四年的性能测试，但是在博客和开源项目方面都没有什么输出，一直是一个很大的遗憾。因此，近期打算围绕服务端性能测试的话题，将自己在这方面的经历进行整理。并且，最近使用的性能测试工具Locust感觉挺不错的，只是其功能比较单薄，特别是在性能指标监控和测试报告图表方面比较缺失，因此也打算在Locust的基础上做二次开发，打造一款自己用">
@@ -194,7 +194,7 @@
 <table>
 <thead>
 <tr>
-<th>\</th>
+<th style="text-align:left">\</th>
 <th>LoadRunner</th>
 <th>Jmeter</th>
 <th>Locust</th>
@@ -202,55 +202,55 @@
 </thead>
 <tbody>
 <tr>
-<td>授权方式</td>
+<td style="text-align:left">授权方式</td>
 <td>商业收费</td>
 <td>开源免费</td>
 <td>开源免费</td>
 </tr>
 <tr>
-<td>开发语言</td>
+<td style="text-align:left">开发语言</td>
 <td>C/Java</td>
 <td>Java</td>
 <td>Python</td>
 </tr>
 <tr>
-<td>测试脚本形式</td>
+<td style="text-align:left">测试脚本形式</td>
 <td>C/Java</td>
 <td>GUI</td>
 <td>Python</td>
 </tr>
 <tr>
-<td>并发机制</td>
+<td style="text-align:left">并发机制</td>
 <td>进程/线程</td>
 <td>线程</td>
 <td>协程</td>
 </tr>
 <tr>
-<td>单机并发能力</td>
+<td style="text-align:left">单机并发能力</td>
 <td>低</td>
 <td>低</td>
 <td>高</td>
 </tr>
 <tr>
-<td>分布式压力</td>
+<td style="text-align:left">分布式压力</td>
 <td>支持</td>
 <td>支持</td>
 <td>支持</td>
 </tr>
 <tr>
-<td>资源监控</td>
+<td style="text-align:left">资源监控</td>
 <td>支持</td>
 <td>不支持</td>
 <td>不支持</td>
 </tr>
 <tr>
-<td>报告与分析</td>
+<td style="text-align:left">报告与分析</td>
 <td>完善</td>
 <td>简单图表</td>
 <td>简单图表</td>
 </tr>
 <tr>
-<td>支持二次开发</td>
+<td style="text-align:left">支持二次开发</td>
 <td>不支持</td>
 <td>支持</td>
 <td>支持</td>
@@ -362,7 +362,7 @@
 			
 		
 			
-				<li><a href="/tags/LoadRunner/" title="LoadRunner">LoadRunner<sup>7</sup></a></li>
+				<li><a href="/tags/Appium/" title="Appium">Appium<sup>7</sup></a></li>
 			
 		
 			
@@ -370,19 +370,7 @@
 			
 		
 			
-				<li><a href="/tags/Appium/" title="Appium">Appium<sup>7</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/WebService/" title="WebService">WebService<sup>5</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/F0T1/" title="F0T1">F0T1<sup>5</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/Jenkins/" title="Jenkins">Jenkins<sup>5</sup></a></li>
+				<li><a href="/tags/LoadRunner/" title="LoadRunner">LoadRunner<sup>7</sup></a></li>
 			
 		
 			
@@ -390,15 +378,19 @@
 			
 		
 			
+				<li><a href="/tags/WebService/" title="WebService">WebService<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Jenkins/" title="Jenkins">Jenkins<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/F0T1/" title="F0T1">F0T1<sup>5</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/Python/" title="Python">Python<sup>4</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/SOAP/" title="SOAP">SOAP<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/WSDL/" title="WSDL">WSDL<sup>3</sup></a></li>
 			
 		
 			
@@ -410,15 +402,15 @@
 			
 		
 			
-				<li><a href="/tags/Git/" title="Git">Git<sup>2</sup></a></li>
+				<li><a href="/tags/SOAP/" title="SOAP">SOAP<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Pelican/" title="Pelican">Pelican<sup>2</sup></a></li>
+				<li><a href="/tags/WSDL/" title="WSDL">WSDL<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/流量测试/" title="流量测试">流量测试<sup>2</sup></a></li>
+				<li><a href="/tags/个人成长/" title="个人成长">个人成长<sup>2</sup></a></li>
 			
 		
 			
@@ -431,6 +423,14 @@
 		
 			
 				<li><a href="/tags/测试用例设计/" title="测试用例设计">测试用例设计<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/性能测试/" title="性能测试">性能测试<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Simulator/" title="Simulator">Simulator<sup>2</sup></a></li>
 			
 		
 		</ul>

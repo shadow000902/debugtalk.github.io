@@ -22,7 +22,7 @@
 <meta property="og:image" content="http://debugtalk.com/images/Jenkins_Post_build_Actions_Execute_shell_menu.jpg">
 <meta property="og:image" content="http://debugtalk.com/images/Jenkins_Post_build_Actions_Execute_shell.jpg">
 <meta property="og:image" content="http://debugtalk.com/images/Jenkins_String_Parameter.jpg">
-<meta property="og:updated_time" content="2016-08-14T08:57:42.000Z">
+<meta property="og:updated_time" content="2017-01-07T15:48:09.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用Jenkins实现持续集成构建检查">
 <meta name="twitter:description" content="通过《使用Jenkins搭建iOS/Android持续集成打包平台》和《关于持续集成打包平台的Jenkins配置和构建脚本实现细节》两篇文章，我们已经在原理概念和实践操作两个层面掌握了如何搭建一个完整的持续集成打包平台。
@@ -136,7 +136,7 @@
 <p>在此基础上，我们无需再做其它工作，只需要按照<code>debugtalk/AppiumBooster</code>的要求在表格中编写一组基本的自动化测试用例，即可采用如下方式执行构建检查。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">cd</span> <span class="variable">$&#123;AppiumBooster_Folder&#125;</span></div><div class="line">$ ruby run.rb -p <span class="string">"<span class="variable">$&#123;OUTPUT_FOLDER&#125;</span>/<span class="variable">$&#123;SCHEME&#125;</span>.app.zip"</span> --disable_output_color &gt; <span class="built_in">test</span>_result.log</div></pre></td></tr></table></figure>
 <p>在如上命令中，通过<code>-p</code>参数指定构建生成的安装包，然后就可以在iOS模拟器中运行事先编写好的自动化测试用例，从而实现构建检查。</p>
-<p>在这里，我们还可以通过<code>--disable_output_color</code>开关将输出日志的颜色关闭。之所以实现这么一个功能，是因为在Jenkins中本来也无法显示颜色，但是如果还将Terminal中有颜色的日志内容输出到Jenkins中，就会出现一些额外的字符，比较影响日志的美观。</p>
+<p>在这里，我们还可以通过<code>--disable_output_color</code>开关将输出日志的颜色关闭。<del>之所以实现这么一个功能，是因为在Jenkins中本来也无法显示颜色，但是如果还将Terminal中有颜色的日志内容输出到Jenkins中，就会出现一些额外的字符，比较影响日志的美观。</del></p>
 <p>现在，我们已经分别实现了代码构建和构建检查这两个核心的操作环节，而要执行最终的持续集成，我们还需要做最后一项工作，即在Jenkins中将这两个环节串联起来。</p>
 <h2 id="Jenkins配置"><a href="#Jenkins配置" class="headerlink" title="Jenkins配置"></a>Jenkins配置</h2><p>关于Jenkins的相关基础概念、实施流程和配置细节，我在<a href="/tags/Jenkins/">之前的文章</a>中已经讲解得非常详细了。在此我就只进行一点补充。</p>
 <p>要实现在构建完成后再运行一些额外的脚本，例如我们的构建检查命令，需要使用到Jenkins的一个插件，<code>Post-Build Script Plug-in</code>。</p>
@@ -245,7 +245,7 @@
 			
 		
 			
-				<li><a href="/tags/LoadRunner/" title="LoadRunner">LoadRunner<sup>7</sup></a></li>
+				<li><a href="/tags/Appium/" title="Appium">Appium<sup>7</sup></a></li>
 			
 		
 			
@@ -253,19 +253,7 @@
 			
 		
 			
-				<li><a href="/tags/Appium/" title="Appium">Appium<sup>7</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/WebService/" title="WebService">WebService<sup>5</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/F0T1/" title="F0T1">F0T1<sup>5</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/Jenkins/" title="Jenkins">Jenkins<sup>5</sup></a></li>
+				<li><a href="/tags/LoadRunner/" title="LoadRunner">LoadRunner<sup>7</sup></a></li>
 			
 		
 			
@@ -273,15 +261,19 @@
 			
 		
 			
+				<li><a href="/tags/WebService/" title="WebService">WebService<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Jenkins/" title="Jenkins">Jenkins<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/F0T1/" title="F0T1">F0T1<sup>5</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/Python/" title="Python">Python<sup>4</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/SOAP/" title="SOAP">SOAP<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/WSDL/" title="WSDL">WSDL<sup>3</sup></a></li>
 			
 		
 			
@@ -293,15 +285,15 @@
 			
 		
 			
-				<li><a href="/tags/Git/" title="Git">Git<sup>2</sup></a></li>
+				<li><a href="/tags/SOAP/" title="SOAP">SOAP<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Pelican/" title="Pelican">Pelican<sup>2</sup></a></li>
+				<li><a href="/tags/WSDL/" title="WSDL">WSDL<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/流量测试/" title="流量测试">流量测试<sup>2</sup></a></li>
+				<li><a href="/tags/个人成长/" title="个人成长">个人成长<sup>2</sup></a></li>
 			
 		
 			
@@ -314,6 +306,14 @@
 		
 			
 				<li><a href="/tags/测试用例设计/" title="测试用例设计">测试用例设计<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/性能测试/" title="性能测试">性能测试<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Simulator/" title="Simulator">Simulator<sup>2</sup></a></li>
 			
 		
 		</ul>

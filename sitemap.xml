@@ -2,6 +2,27 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://debugtalk.com/post/my-impression-on-italy-and-france/</loc>
+    
+    <lastmod>2017-02-02T17:08:39.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/Jenkins-CI-Automation-Test/</loc>
+    
+    <lastmod>2017-01-07T15:48:09.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/locustplus-talk-about-performance-test/</loc>
+    
+    <lastmod>2017-01-07T04:06:41.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://debugtalk.com/post/my-2016-summary/</loc>
     
     <lastmod>2017-01-02T15:11:50.000Z</lastmod>
@@ -19,13 +40,6 @@
     <loc>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-write-iOS-testcase-scripts/</loc>
     
     <lastmod>2016-11-27T07:45:12.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/locustplus-talk-about-performance-test/</loc>
-    
-    <lastmod>2016-11-02T13:26:39.000Z</lastmod>
     
   </url>
   
@@ -54,13 +68,6 @@
     <loc>http://debugtalk.com/post/make-Jenkins-Console-Output-Colorful/</loc>
     
     <lastmod>2016-08-15T08:40:41.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/Jenkins-CI-Automation-Test/</loc>
-    
-    <lastmod>2016-08-14T08:57:42.000Z</lastmod>
     
   </url>
   
@@ -310,6 +317,34 @@
   </url>
   
   <url>
+    <loc>http://debugtalk.com/post/traps-in-sql-null/</loc>
+    
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/SIPp-IP-Telephone-Server-Performance-Testing/</loc>
+    
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/Using-DuoShuo-in-Pelican/</loc>
+    
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/concept-about-webservice/</loc>
+    
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://debugtalk.com/post/Evaluate-Largest-Online-Users/</loc>
     
     <lastmod>2016-07-22T11:07:58.000Z</lastmod>
@@ -317,7 +352,28 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/performance-index-concurrent-users/</loc>
+    <loc>http://debugtalk.com/post/LoadRunner-SOAP-WebService/</loc>
+    
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/scenario-design-scripts-percent-controll/</loc>
+    
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/LoadRunner-WSDL-WebService/</loc>
+    
+    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/Introspection-on-WebService-Test/</loc>
     
     <lastmod>2016-07-22T11:07:58.000Z</lastmod>
     
@@ -338,56 +394,7 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/SIPp-IP-Telephone-Server-Performance-Testing/</loc>
-    
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/Introspection-on-WebService-Test/</loc>
-    
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/Using-DuoShuo-in-Pelican/</loc>
-    
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/traps-in-sql-null/</loc>
-    
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/concept-about-webservice/</loc>
-    
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/LoadRunner-SOAP-WebService/</loc>
-    
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/LoadRunner-WSDL-WebService/</loc>
-    
-    <lastmod>2016-07-22T11:07:58.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/scenario-design-scripts-percent-controll/</loc>
+    <loc>http://debugtalk.com/post/performance-index-concurrent-users/</loc>
     
     <lastmod>2016-07-22T11:07:58.000Z</lastmod>
     
