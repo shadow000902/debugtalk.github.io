@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://debugtalk.com/"/>
-  <updated>2017-02-02T17:08:39.000Z</updated>
+  <updated>2017-02-22T04:21:50.000Z</updated>
   <id>http://debugtalk.com/</id>
   
   <author>
@@ -14,6 +14,326 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>深入浅出开源性能测试工具Locust（使用篇）</title>
+    <link href="http://debugtalk.com/post/head-first-locust-user-guide/"/>
+    <id>http://debugtalk.com/post/head-first-locust-user-guide/</id>
+    <published>2017-02-21T16:00:00.000Z</published>
+    <updated>2017-02-22T04:21:50.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>在<a href="/post/locustplus-talk-about-performance-test/">《【LocustPlus序】漫谈服务端性能测试》</a>中，我对服务端性能测试的基础概念和性能测试工具的基本原理进行了介绍，并且重点推荐了<code>Locust</code>这一款开源性能测试工具。然而，当前在网络上针对<code>Locust</code>的教程极少，不管是中文还是英文，基本都是介绍安装方法和简单的测试案例演示，但对于较复杂测试场景的案例演示却基本没有，因此很多测试人员都感觉难以将<code>Locust</code>应用到实际的性能测试工作当中。</p>
+<p>经过一段时间的摸索，包括通读<code>Locust</code>官方文档和项目源码，并且在多个性能测试项目中对<code>Locust</code>进行应用实践，事实证明，<code>Locust</code>完全能满足日常的性能测试需求，<code>LoadRunner</code>能实现的功能<code>Locust</code>也基本都能实现。</p>
+<p>本文将从<code>Locust</code>的功能特性出发，结合实例对<code>Locust</code>的使用方法进行介绍。考虑到大众普遍对<code>LoadRunner</code>比较熟悉，在讲解<code>Locust</code>时也会采用<code>LoadRunner</code>的一些概念进行类比。</p>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>先从<code>Locust</code>的名字说起。<code>Locust</code>的原意是蝗虫，原作者之所以选择这个名字，估计也是听过这么一句俗语，“蝗虫过境，寸草不生”。我在网上找了张图片，大家可以感受下。</p>
+<p><img src="/images/14875962785342.jpg" alt=""></p>
+<p>而<code>Locust</code>工具生成的并发请求就跟一大群蝗虫一般，对我们的被测系统发起攻击，以此检测系统在高并发压力下是否能正常运转。</p>
+<p>在<a href="/post/locustplus-talk-about-performance-test/">《【LocustPlus序】漫谈服务端性能测试》</a>中说过，服务端性能测试工具最核心的部分是压力发生器，而压力发生器的核心要点有两个，一是真实模拟用户操作，二是模拟有效并发。</p>
+<p>在<code>Locust</code>测试框架中，测试场景是采用纯Python脚本进行描述的。对于最常见的<code>HTTPS(s)</code>协议的系统，<code>Locust</code>采用Python的<code>requests</code>库作为客户端，使得脚本编写大大简化，富有表现力的同时且极具美感。而对于其它协议类型的系统，<code>Locust</code>也提供了接口，只要我们能采用Python编写对应的请求客户端，就能方便地采用<code>Locust</code>实现压力测试。从这个角度来说，<code>Locust</code>可以用于压测任意类型的系统。</p>
+<p>在模拟有效并发方面，<code>Locust</code>的优势在于其摒弃了进程和线程，完全基于事件驱动，使用<code>gevent</code>提供的<code>非阻塞IO</code>和<code>coroutine</code>来实现网络层的并发请求，因此即使是单台压力机也能产生数千并发请求数；再加上对分布式运行的支持，理论上来说，<code>Locust</code>能在使用较少压力机的前提下支持极高并发数的测试。</p>
+<h2 id="脚本编写"><a href="#脚本编写" class="headerlink" title="脚本编写"></a>脚本编写</h2><p>编写<code>Locust</code>脚本，是使用<code>Locust</code>的第一步，也是最为重要的一步。</p>
+<h3 id="简单示例"><a href="#简单示例" class="headerlink" title="简单示例"></a>简单示例</h3><p>先来看一个最简单的示例。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> locust <span class="keyword">import</span> HttpLocust, TaskSet, task</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WebsiteTasks</span><span class="params">(TaskSet)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_start</span><span class="params">(self)</span>:</span></div><div class="line">        self.client.post(<span class="string">"/login"</span>, &#123;</div><div class="line">            <span class="string">"username"</span>: <span class="string">"test"</span>,</div><div class="line">            <span class="string">"password"</span>: <span class="string">"123456"</span></div><div class="line">        &#125;)</div><div class="line"></div><div class="line"><span class="meta">    @task(2)</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">index</span><span class="params">(self)</span>:</span></div><div class="line">        self.client.get(<span class="string">"/"</span>)</div><div class="line"></div><div class="line"><span class="meta">    @task(1)</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">about</span><span class="params">(self)</span>:</span></div><div class="line">        self.client.get(<span class="string">"/about/"</span>)</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WebsiteUser</span><span class="params">(HttpLocust)</span>:</span></div><div class="line">    task_set = WebsiteTasks</div><div class="line">    host = <span class="string">"http://debugtalk.com"</span></div><div class="line">    min_wait = <span class="number">1000</span></div><div class="line">    max_wait = <span class="number">5000</span></div></pre></td></tr></table></figure>
+<p>在这个示例中，定义了针对<code>http://debugtalk.com</code>网站的测试场景：先模拟用户登录系统，然后随机地访问首页（<code>/</code>）和关于页面（<code>/about/</code>），请求比例为<code>2:1</code>；并且，在测试过程中，两次请求的间隔时间为<code>1~5</code>秒间的随机值。</p>
+<p>那么，如上Python脚本是如何表达出以上测试场景的呢？</p>
+<p>从脚本中可以看出，脚本主要包含两个类，一个是<code>WebsiteUser</code>（继承自<code>HttpLocust</code>，而<code>HttpLocust</code>继承自<code>Locust</code>），另一个是<code>WebsiteTasks</code>（继承自<code>TaskSet</code>）。事实上，在<code>Locust</code>的测试脚本中，所有业务测试场景都是在<code>Locust</code>和<code>TaskSet</code>两个类的继承子类中进行描述的。</p>
+<p>那如何理解<code>Locust</code>和<code>TaskSet</code>这两个类呢？</p>
+<p>简单地说，<code>Locust类</code>就好比是一群蝗虫，而每一只蝗虫就是一个类的实例。相应的，<code>TaskSet类</code>就好比是蝗虫的大脑，控制着蝗虫的具体行为，即实际业务场景测试对应的任务集。</p>
+<p>这个比喻可能不是很准确，接下来，我将分别对<code>Locust</code>和<code>TaskSet</code>两个类进行详细介绍。</p>
+<h3 id="class-HttpLocust-Locust"><a href="#class-HttpLocust-Locust" class="headerlink" title="class HttpLocust(Locust)"></a>class HttpLocust(Locust)</h3><p>在<code>Locust类</code>中，具有一个<code>client</code>属性，它对应着虚拟用户作为客户端所具备的请求能力，也就是我们常说的请求方法。通常情况下，我们不会直接使用<code>Locust</code>类，因为其<code>client</code>属性没有绑定任何方法。因此在使用<code>Locust</code>时，需要先继承<code>Locust类</code>，然后在继承子类中的<code>client</code>属性中绑定客户端的实现类。</p>
+<p>对于常见的<code>HTTP(S)</code>协议，<code>Locust</code>已经实现了<code>HttpLocust</code>类，其<code>client</code>属性绑定了<code>HttpSession</code>类，而<code>HttpSession</code>又继承自<code>requests.Session</code>。因此在测试<code>HTTP(S)</code>的<code>Locust脚本</code>中，我们可以通过<code>client</code>属性来使用<code>Python requests</code>库的所有方法，包括<code>GET/POST/HEAD/PUT/DELETE/PATCH</code>等，调用方式也与<code>requests</code>完全一致。另外，由于<code>requests.Session</code>的使用，因此<code>client</code>的方法调用之间就自动具有了状态记忆的功能。常见的场景就是，在登录系统后可以维持登录状态的<code>Session</code>，从而后续HTTP请求操作都能带上登录态。</p>
+<p>而对于<code>HTTP(S)</code>以外的协议，我们同样可以使用<code>Locust</code>进行测试，只是需要我们自行实现客户端。在客户端的具体实现上，可通过注册事件的方式，在请求成功时触发<code>events.request_success</code>，在请求失败时触发<code>events.request_failure</code>即可。然后创建一个继承自<code>Locust类</code>的类，对其设置一个<code>client</code>属性并与我们实现的客户端进行绑定。后续，我们就可以像使用<code>HttpLocust类</code>一样，测试其它协议类型的系统。</p>
+<p>原理就是这样简单！</p>
+<p>在<code>Locust类</code>中，除了<code>client</code>属性，还有几个属性需要关注下：</p>
+<ul>
+<li><code>task_set</code>: 指向一个<code>TaskSet</code>类，<code>TaskSet</code>类定义了用户的任务信息，该属性为必填；</li>
+<li><code>max_wait/min_wait</code>: 每个用户执行两个任务间隔时间的上下限（毫秒），具体数值在上下限中随机取值，若不指定则默认间隔时间固定为1秒；</li>
+<li><code>host</code>：被测系统的host，当在终端中启动<code>locust</code>时没有指定<code>--host</code>参数时才会用到；</li>
+<li><code>weight</code>：同时运行多个<code>Locust类</code>时会用到，用于控制不同类型任务的执行权重。</li>
+</ul>
+<p>测试开始后，每个虚拟用户（<code>Locust实例</code>）的运行逻辑都会遵循如下规律：</p>
+<ol>
+<li>先执行<code>WebsiteTasks</code>中的<code>on_start</code>（只执行一次），作为初始化；</li>
+<li>从<code>WebsiteTasks</code>中随机挑选（如果定义了任务间的权重关系，那么就是按照权重关系随机挑选）一个任务执行；</li>
+<li>根据<code>Locust类</code>中<code>min_wait</code>和<code>max_wait</code>定义的间隔时间范围（如果<code>TaskSet类</code>中也定义了<code>min_wait</code>或者<code>max_wait</code>，以<code>TaskSet</code>中的优先），在时间范围中随机取一个值，休眠等待；</li>
+<li>重复<code>2~3</code>步骤，直至测试任务终止。</li>
+</ol>
+<h3 id="class-TaskSet"><a href="#class-TaskSet" class="headerlink" title="class TaskSet"></a>class TaskSet</h3><p>再说下<code>TaskSet类</code>。</p>
+<p>性能测试工具要模拟用户的业务操作，就需要通过脚本模拟用户的行为。在前面的比喻中说到，<code>TaskSet类</code>好比蝗虫的大脑，控制着蝗虫的具体行为。</p>
+<p>具体地，<code>TaskSet类</code>实现了虚拟用户所执行任务的调度算法，包括规划任务执行顺序（<code>schedule_task</code>）、挑选下一个任务（<code>execute_next_task</code>）、执行任务（<code>execute_task</code>）、休眠等待（<code>wait</code>）、中断控制（<code>interrupt</code>）等等。在此基础上，我们就可以在<code>TaskSet</code>子类中采用非常简洁的方式来描述虚拟用户的业务测试场景，对虚拟用户的所有行为（任务）进行组织和描述，并可以对不同任务的权重进行配置。</p>
+<p>在<code>TaskSet</code>子类中定义任务信息时，可以采取两种方式，<code>@task装饰器</code>和<code>tasks属性</code>。</p>
+<p>采用<code>@task装饰器</code>定义任务信息时，描述形式如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> locust <span class="keyword">import</span> TaskSet, task</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserBehavior</span><span class="params">(TaskSet)</span>:</span></div><div class="line"><span class="meta">    @task(1)</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_job1</span><span class="params">(self)</span>:</span></div><div class="line">        self.client.get(<span class="string">'/job1'</span>)</div><div class="line"></div><div class="line"><span class="meta">    @task(2)</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_job2</span><span class="params">(self)</span>:</span></div><div class="line">        self.client.get(<span class="string">'/job2'</span>)</div></pre></td></tr></table></figure>
+<p>采用<code>tasks属性</code>定义任务信息时，描述形式如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> locust <span class="keyword">import</span> TaskSet</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_job1</span><span class="params">(obj)</span>:</span></div><div class="line">    obj.client.get(<span class="string">'/job1'</span>)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_job2</span><span class="params">(obj)</span>:</span></div><div class="line">    obj.client.get(<span class="string">'/job2'</span>)</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserBehavior</span><span class="params">(TaskSet)</span>:</span></div><div class="line">    tasks = &#123;test_job1:<span class="number">1</span>, test_job2:<span class="number">2</span>&#125;</div><div class="line">    <span class="comment"># tasks = [(test_job1,1), (test_job1,2)] # 两种方式等价</span></div></pre></td></tr></table></figure>
+<p>在如上两种定义任务信息的方式中，均设置了权重属性，即执行<code>test_job2</code>的频率是<code>test_job1</code>的两倍。</p>
+<p>若不指定执行任务的权重，则相当于比例为<code>1:1</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> locust <span class="keyword">import</span> TaskSet, task</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserBehavior</span><span class="params">(TaskSet)</span>:</span></div><div class="line"><span class="meta">    @task</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_job1</span><span class="params">(self)</span>:</span></div><div class="line">        self.client.get(<span class="string">'/job1'</span>)</div><div class="line"></div><div class="line"><span class="meta">    @task</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_job2</span><span class="params">(self)</span>:</span></div><div class="line">        self.client.get(<span class="string">'/job2'</span>)</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> locust <span class="keyword">import</span> TaskSet</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_job1</span><span class="params">(obj)</span>:</span></div><div class="line">    obj.client.get(<span class="string">'/job1'</span>)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_job2</span><span class="params">(obj)</span>:</span></div><div class="line">    obj.client.get(<span class="string">'/job2'</span>)</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserBehavior</span><span class="params">(TaskSet)</span>:</span></div><div class="line">    tasks = [test_job1, test_job2]</div><div class="line">    <span class="comment"># tasks = &#123;test_job1:1, test_job2:1&#125; # 两种方式等价</span></div></pre></td></tr></table></figure>
+<p>在<code>TaskSet</code>子类中除了定义任务信息，还有一个是经常用到的，那就是<code>on_start</code>函数。这个和<code>LoadRunner</code>中的<code>vuser_init</code>功能相同，在正式执行测试前执行一次，主要用于完成一些初始化的工作。例如，当测试某个搜索功能，而该搜索功能又要求必须为登录态的时候，就可以先在<code>on_start</code>中进行登录操作；前面也提到，<code>HttpLocust</code>使用到了<code>requests.Session</code>，因此后续所有任务执行过程中就都具有登录态了。</p>
+<h3 id="脚本增强"><a href="#脚本增强" class="headerlink" title="脚本增强"></a>脚本增强</h3><p>掌握了<code>HttpLocust</code>和<code>TaskSet</code>，我们就基本具备了编写测试脚本的能力。此时再回过头来看前面的案例，相信大家都能很好的理解了。</p>
+<p>然而，当面对较复杂的测试场景，可能有的同学还是会感觉无从下手；例如，很多时候脚本需要做关联或参数化处理，这些在<code>LoadRunner</code>中集成的功能，换到<code>Locust</code>中就不知道怎么实现了。可能也是这方面的原因，造成很多测试人员都感觉难以将Locust应用到实际的性能测试工作当中。</p>
+<p>其实这也跟<code>Locust</code>的目标定位有关，<code>Locust</code>的定位就是<code>small and very hackable</code>。但是小巧并不意味着功能弱，我们完全可以通过Python脚本本身来实现各种各样的功能，如果大家有疑问，我们不妨逐项分解来看。</p>
+<p>在<code>LoadRunner</code>这款功能全面应用广泛的商业性能测试工具中，脚本增强无非就涉及到四个方面：</p>
+<ul>
+<li>关联</li>
+<li>参数化</li>
+<li>检查点</li>
+<li>集合点</li>
+</ul>
+<p>先说关联这一项。在某些请求中，需要携带之前从Server端返回的参数，因此在构造请求时需要先从之前请求的Response中提取出所需的参数，常见场景就是<code>session_id</code>。针对这种情况，<code>LoadRunner</code>虽然可能通过录制脚本进行自动关联，但是效果并不理想，在实际测试过程中也基本都是靠测试人员手动的来进行关联处理。</p>
+<p>在<code>LoadRunner</code>中手动进行关联处理时，主要是通过使用注册型函数，例如<code>web_reg_save_param</code>，对前一个请求的响应结果进行解析，根据左右边界或其它特征定位到参数值并将其保存到参数变量，然后在后续请求中使用该参数。采用同样的思想，我们在<code>Locust</code>脚本中也完全可以实现同样的功能，毕竟只是Python脚本，通过官方库函数<code>re.search</code>就能实现所有需求。甚至针对html页面，我们也可以采用<code>lxml</code>库，通过<code>etree.HTML(html).xpath</code>来更优雅地实现元素定位。</p>
+<p>然后再来看参数化这一项。这一项极其普遍，主要是用在测试数据方面。但通过归纳，发现其实也可以概括为三种类型。</p>
+<ul>
+<li>循环取数据，数据可重复使用：e.g. 模拟3用户并发请求网页，总共有100个URL地址，每个虚拟用户都会依次循环加载这100个URL地址；</li>
+<li>保证并发测试数据唯一性，不循环取数据：e.g. 模拟3用户并发注册账号，总共有90个账号，要求注册账号不重复，注册完毕后结束测试；</li>
+<li>保证并发测试数据唯一性，循环取数据：模拟3用户并发登录账号，总共有90个账号，要求并发登录账号不相同，但数据可循环使用。</li>
+</ul>
+<p>通过以上归纳，可以确信地说，以上三种类型基本上可以覆盖我们日常性能测试工作中的所有参数化场景。</p>
+<p>在<code>LoadRunner</code>中是有一个集成的参数化模块，可以直接配置参数化策略。那在<code>Locust</code>要怎样实现该需求呢？</p>
+<p>答案依旧很简单，使用Python的<code>list</code>和<code>queue</code>数据结构即可！具体做法是，在<code>WebsiteUser</code>定义一个数据集，然后所有虚拟用户在<code>WebsiteTasks</code>中就可以共享该数据集了。如果不要求数据唯一性，数据集选择<code>list</code>数据结构，从头到尾循环遍历即可；如果要求数据唯一性，数据集选择<code>queue</code>数据结构，取数据时进行<code>queue.get()</code>操作即可，并且这也不会循环取数据；至于涉及到需要循环取数据的情况，那也简单，每次取完数据后再将数据插入到队尾即可，<code>queue.put_nowait(data)</code>。</p>
+<p>最后再说下检查点。该功能在<code>LoadRunner</code>中通常是使用<code>web_reg_find</code>这类注册函数进行检查的。在<code>Locust</code>脚本中，处理就更方便了，只需要对响应的内容关键字进行<code>assert xxx in response</code>操作即可。</p>
+<p>针对如上各种脚本增强的场景，我也通过代码示例分别进行了演示。但考虑到文章中插入太多代码会影响到阅读，因此将代码示例部分剥离了出来，如有需要请点击查看<a href="">《深入浅出开源性能测试工具Locust（脚本增强）》</a>。</p>
+<h2 id="Locust运行模式"><a href="#Locust运行模式" class="headerlink" title="Locust运行模式"></a>Locust运行模式</h2><p>在开始运行<code>Locust</code>脚本之前，我们先来看下<code>Locust</code>支持的运行模式。</p>
+<p>运行<code>Locust</code>时，通常会使用到两种运行模式：单进程运行和多进程分布式运行。</p>
+<p>单进程运行模式的意思是，<code>Locust</code>所有的虚拟并发用户均运行在单个<code>Python</code>进程中，具体从使用形式上，又分为<code>no_web</code>和<code>web</code>两种形式。该种模式由于单进程的原因，并不能完全发挥压力机所有处理器的能力，因此主要用于调试脚本和小并发压测的情况。</p>
+<p>当并发压力要求较高时，就需要用到<code>Locust</code>的多进程分布式运行模式。从字面意思上看，大家可能第一反应就是多台压力机同时运行，每台压力机分担负载一部分的压力生成。的确，<code>Locust</code>支持任意多台压力机（一主多从）的分布式运行模式，但这里说到的多进程分布式运行模式还有另外一种情况，就是在同一台压力机上开启多个<code>slave</code>的情况。这是因为当前阶段大多数计算机的CPU都是多处理器（<code>multiple processor cores</code>），单进程运行模式下只能用到一个处理器的能力，而通过在一台压力机上运行多个<code>slave</code>，就能调用多个处理器的能力了。比较好的做法是，如果一台压力机有<code>N</code>个处理器内核，那么就在这台压力机上启动一个<code>master</code>，<code>N</code>个<code>slave</code>。当然，我们也可以启动<code>N</code>的倍数个<code>slave</code>，但是根据我的试验数据，效果跟<code>N</code>个差不多，因此只需要启动<code>N</code>个<code>slave</code>即可。</p>
+<h2 id="脚本调试"><a href="#脚本调试" class="headerlink" title="脚本调试"></a>脚本调试</h2><p><code>Locust</code>脚本编写完毕后，通常不会那么顺利，在正式开始性能测试之前还需要先调试运行下。</p>
+<p>不过，<code>Locust</code>脚本虽然为Python脚本，但却很难直接当做Python脚本运行起来，为什么呢？这主要还是因为<code>Locust</code>脚本中引用了<code>HttpLocust</code>和<code>TaskSet</code>这两个类，如果要想直接对其进行调用测试，会发现编写启动脚本是一个比较困难的事情。因为这个原因，刚接触<code>Locust</code>的同学可能就会觉得<code>Locust</code>脚本不好调试。</p>
+<p>但这个问题也能克服，那就是借助<code>Locust</code>的单进程<code>no_web</code>运行模式。</p>
+<p>在<code>Locust</code>的单进程<code>no_web</code>运行模式中，我们可以通过<code>--no_web</code>参数，指定并发数（<code>-c</code>）和总执行次数（<code>-n</code>），直接在<code>Terminal</code>中执行脚本。</p>
+<p>在此基础上，当我们想要调试<code>Locust</code>脚本时，就可以在脚本中需要调试的地方通过<code>print</code>打印日志，然后将并发数和总执行次数都指定为1，执行形式如下所示。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ locust <span class="_">-f</span> locustfile.py --no_web -c 1 -n 1</div></pre></td></tr></table></figure>
+<p>通过这种方式，我们就能很方便地对<code>Locust</code>脚本进行调试了。</p>
+<h2 id="执行测试"><a href="#执行测试" class="headerlink" title="执行测试"></a>执行测试</h2><p><code>Locust</code>脚本调试通过后，就算是完成了所有准备工作，可以开始进行压力测试了。</p>
+<p><code>Locust</code>是通过在<code>Terminal</code>中执行命令进行启动的，通用的参数有如下两个：</p>
+<ul>
+<li><code>-H, --host</code>：被测系统的<code>host</code>，若在<code>Terminal</code>中不进行指定，就需要在<code>Locust</code>子类中通过<code>host</code>参数进行指定；</li>
+<li><code>-f, --locustfile</code>：指定执行的<code>Locust</code>脚本文件；</li>
+</ul>
+<p>除了这两个通用的参数，我们还需要根据实际测试场景，选择不同的<code>Locust</code>运行模式，而模式的指定也是通过其它参数来进行控制的。</p>
+<h3 id="单进程运行"><a href="#单进程运行" class="headerlink" title="单进程运行"></a>单进程运行</h3><p><strong>no_web</strong></p>
+<p>如果采用<code>no_web</code>形式，则需使用<code>--no-web</code>参数，并会用到如下几个参数。</p>
+<ul>
+<li><code>-c, --clients</code>：指定并发用户数；</li>
+<li><code>-n, --num-request</code>：指定总执行测试；</li>
+<li><code>-r, --hatch-rate</code>：指定并发加压速率，默认值位1。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">$ locust -H http://debugtalk.com <span class="_">-f</span> demo.py --no-web -c1 -n2</div><div class="line">[2017-02-21 21:27:26,522] Leos-MacBook-Air.local/INFO/locust.main: Starting Locust 0.8a2</div><div class="line">[2017-02-21 21:27:26,523] Leos-MacBook-Air.local/INFO/locust.runners: Hatching and swarming 1 clients at the rate 1 clients/s...</div><div class="line"> Name                                                          <span class="comment"># reqs      # fails     Avg     Min     Max  |  Median   req/s</span></div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line"> Total                                                              0     0(0.00%)                                       0.00</div><div class="line"></div><div class="line">[2017-02-21 21:27:27,526] Leos-MacBook-Air.local/INFO/locust.runners: All locusts hatched: WebsiteUser: 1</div><div class="line">[2017-02-21 21:27:27,527] Leos-MacBook-Air.local/INFO/locust.runners: Resetting stats</div><div class="line"></div><div class="line"> Name                                                          <span class="comment"># reqs      # fails     Avg     Min     Max  |  Median   req/s</span></div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line"> GET /about/                                                        0     0(0.00%)       0       0       0  |       0    0.00</div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line"> Total                                                              0     0(0.00%)                                       0.00</div><div class="line"></div><div class="line"> Name                                                          <span class="comment"># reqs      # fails     Avg     Min     Max  |  Median   req/s</span></div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line"> GET /about/                                                        1     0(0.00%)      17      17      17  |      17    0.00</div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line"> Total                                                              1     0(0.00%)                                       0.00</div><div class="line"></div><div class="line">[2017-02-21 21:27:32,420] Leos-MacBook-Air.local/INFO/locust.runners: All locusts dead</div><div class="line"></div><div class="line">[2017-02-21 21:27:32,421] Leos-MacBook-Air.local/INFO/locust.main: Shutting down (<span class="built_in">exit</span> code 0), bye.</div><div class="line"> Name                                                          <span class="comment"># reqs      # fails     Avg     Min     Max  |  Median   req/s</span></div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line"> GET /                                                              1     0(0.00%)      20      20      20  |      20    0.00</div><div class="line"> GET /about/                                                        1     0(0.00%)      17      17      17  |      17    0.00</div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line"> Total                                                              2     0(0.00%)                                       0.00</div><div class="line"></div><div class="line">Percentage of the requests completed within given <span class="built_in">times</span></div><div class="line"> Name                                                           <span class="comment"># reqs    50%    66%    75%    80%    90%    95%    98%    99%   100%</span></div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line"> GET /                                                               1     20     20     20     20     20     20     20     20     20</div><div class="line"> GET /about/                                                         1     17     17     17     17     17     17     17     17     17</div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div></pre></td></tr></table></figure>
+<p><strong>web</strong></p>
+<p>如果采用<code>web</code>形式，，则通常情况下无需指定其它额外参数，<code>Locust</code>默认采用<code>8089</code>端口启动<code>web</code>；如果要使用其它端口，就可以使用如下参数进行指定。</p>
+<ul>
+<li><code>-P, --port</code>：指定web端口，默认为<code>8089</code>.</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ locust -H http://debugtalk.com <span class="_">-f</span> demo.py</div><div class="line">[2017-02-21 21:31:26,334] Leos-MacBook-Air.local/INFO/locust.main: Starting web monitor at *:8089</div><div class="line">[2017-02-21 21:31:26,334] Leos-MacBook-Air.local/INFO/locust.main: Starting Locust 0.8a2</div></pre></td></tr></table></figure>
+<p>此时，<code>Locust</code>并没有开始执行测试，还需要在Web页面中配置参数后进行启动。</p>
+<p>如果<code>Locust</code>运行在本机，在浏览器中访问<code>http://localhost:8089</code>即可进入<code>Locust</code>的Web管理页面；如果<code>Locust</code>运行在其它机器上，那么在浏览器中访问<code>http://locust_machine_ip:8089</code>即可。</p>
+<p>在<code>Locust</code>的Web管理页面中，需要配置的参数只有两个：</p>
+<ul>
+<li><code>Number of users to simulate</code>: 设置并发用户数，对应中<code>no_web</code>模式的<code>-c, --clients</code>参数；</li>
+<li><code>Hatch rate (users spawned/second)</code>: 启动虚拟用户的速率，对应着<code>no_web</code>模式的<code>-r, --hatch-rate</code>参数。</li>
+</ul>
+<p>参数配置完毕后，点击【Start swarming】即可开始测试。</p>
+<h3 id="多进程分布式运行"><a href="#多进程分布式运行" class="headerlink" title="多进程分布式运行"></a>多进程分布式运行</h3><p>不管是<code>单机多进程</code>，还是<code>多机负载</code>模式，运行方式都是一样的，都是先运行一个<code>master</code>，再启动多个<code>slave</code>。</p>
+<p>启动<code>master</code>时，需要使用<code>--master</code>参数；同样的，如果要使用<code>8089</code>以外的端口，还需要使用<code>-P, --port</code>参数。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ locust -H http://debugtalk.com <span class="_">-f</span> demo.py --master --port=8088</div><div class="line">[2017-02-21 22:59:57,308] Leos-MacBook-Air.local/INFO/locust.main: Starting web monitor at *:8088</div><div class="line">[2017-02-21 22:59:57,310] Leos-MacBook-Air.local/INFO/locust.main: Starting Locust 0.8a2</div></pre></td></tr></table></figure>
+<p><code>master</code>启动后，还需要启动<code>slave</code>才能执行测试任务。</p>
+<p>启动<code>slave</code>时需要使用<code>--slave</code>参数；在<code>slave</code>中，就不需要再指定端口了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ locust -H http://debugtalk.com <span class="_">-f</span> demo.py --slave</div><div class="line">[2017-02-21 23:07:58,696] Leos-MacBook-Air.local/INFO/locust.main: Starting Locust 0.8a2</div><div class="line">[2017-02-21 23:07:58,696] Leos-MacBook-Air.local/INFO/locust.runners: Client <span class="string">'Leos-MacBook-Air.local_980ab0eec2bca517d03feb60c31d6a3a'</span> reported as</div><div class="line"> ready. Currently 2 clients ready to swarm.</div></pre></td></tr></table></figure>
+<p>如果<code>slave</code>与<code>master</code>不在同一台机器上，还需要通过<code>--master-host</code>参数再指定<code>master</code>的IP地址。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ locust -H http://debugtalk.com <span class="_">-f</span> demo.py --slave --master-host=&lt;locust_machine_ip&gt;</div><div class="line">[2017-02-21 23:07:58,696] Leos-MacBook-Air.local/INFO/locust.main: Starting Locust 0.8a2</div><div class="line">[2017-02-21 23:07:58,696] Leos-MacBook-Air.local/INFO/locust.runners: Client <span class="string">'Leos-MacBook-Air.local_980ab0eec2bca517d03feb60c31d6a3a'</span> reported as</div><div class="line"> ready. Currently 2 clients ready to swarm.</div></pre></td></tr></table></figure>
+<p><code>master</code>和<code>slave</code>都启动完毕后，就可以在浏览器中通过<code>http://locust_machine_ip:8089</code>进入<code>Locust</code>的Web管理页面了。使用方式跟单进程<code>web</code>形式完全相同，只是此时是通过多进程负载来生成并发压力，在<code>web</code>管理界面中也能看到实际的<code>slave</code>数量。</p>
+<h2 id="测试结果展示"><a href="#测试结果展示" class="headerlink" title="测试结果展示"></a>测试结果展示</h2><p><code>Locust</code>在执行测试的过程中，我们可以在<code>web</code>界面中实时地看到结果运行情况。</p>
+<p>相比于<code>LoadRunner</code>，<code>Locust</code>的结果展示十分简单，主要就四个指标：<code>并发数</code>、<code>RPS</code>、<code>响应时间</code>、<code>异常率</code>。但对于大多数场景来说，这几个指标已经足够了。</p>
+<p><img src="/images/14877299635610.jpg" alt=""></p>
+<p>在上图中，<code>RPS</code>和<code>平均响应时间</code>这两个指标显示的值都是根据最近2秒请求响应数据计算得到的统计值，我们也可以理解为瞬时值。</p>
+<p>如果想看性能指标数据的走势，就可以在<code>Charts</code>栏查看。在这里，可以查看到<code>RPS</code>和<code>平均响应时间</code>在整个运行过程中的波动情况。这个功能之前在<code>Locust</code>中一直是缺失的，直到最近，这个坑才被我之前在<code>阿里移动</code>的同事（网络ID<a href="http://myzhan.github.io/" target="_blank" rel="external"><code>myzhan</code></a>）给填上了。当前该功能已经合并到<code>Locust</code>了，更新到最新版即可使用。</p>
+<p><img src="/images/14877300553617.jpg" alt=""></p>
+<p>除了以上数据，<code>Locust</code>还提供了整个运行过程数据的百分比统计值，例如我们常用的<code>90%响应时间</code>、<code>响应时间中位值</code>，该数据可以通过<code>Download response time distribution CSV</code>获得，数据展示效果如下所示。</p>
+<p><img src="/images/14877305222231.jpg" alt=""></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过前面对<code>Locust</code>全方位的讲解，相信大家对<code>Locust</code>的功能特性已经非常熟悉了，在实际项目中将<code>Locust</code>作为生产力工具应该也没啥问题了。</p>
+<p>不过，任何一款工具都不是完美的，必定都会存在一些不足之处。但是好在<code>Locust</code>具有极强的可定制型，当我们遇到一些特有的需求时，可以在<code>Locust</code>上很方便地实现扩展。</p>
+<p>还是前面提到的那位技术大牛（<code>myzhan</code>），他为了摆脱<code>CPython</code>的<code>GIL</code>和<code>gevent</code>的 <code>monkey_patch()</code>，将<code>Locust</code>的<code>slave</code>端采用<code>golang</code>进行了重写，采用<code>goroutine</code>取代了<code>gevent</code>。经过测试，相较于原生的<code>Python</code>实现，他的这套<code>golang</code>实现具有<code>5~10</code>倍以上的性能提升。当前，他已经将该实现开源，项目名称为<a href="https://github.com/myzhan/boomer" target="_blank" rel="external"><code>myzhan/boomer</code></a>，如果大家感兴趣，可以阅读他的博客文章进一步了解，<a href="http://myzhan.github.io/2016/03/01/write-a-load-testing-tool-in-golang/" target="_blank" rel="external">《用 golang 来编写压测工具》</a>。</p>
+<p>如果我们也想在<code>Locust</code>的基础上进行二次开发，那要怎么开始呢？</p>
+<p>毫无疑问，阅读<code>Locust</code>的项目源码是必不可少的第一步。可能对于很多人来说，阅读开源项目源码是一件十分困难的事情，不知道如何着手，在知乎上也看到好多关于如何阅读开源项目源码的提问。事实上，<code>Locust</code>项目的代码结构清晰，核心代码量也比较少，十分适合阅读学习。哪怕只是想体验下阅读开源项目源码，或者说想提升下自己的<code>Python</code>技能，<code>Locust</code>也是个不错的选择。</p>
+<p>在下一篇文章中，我将对<code>Locust</code>源码进行解析，《深入浅出开源性能测试工具Locust（源码篇）》，敬请期待！</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在&lt;a href=&quot;/post/locustplus-talk-about-performance-test/&quot;&gt;《【LocustPlus序】漫谈服务端性能测试》&lt;/a&gt;中，我对服务端性能测试的基础概念和性能测试工具的基本原理进行了介绍，并且重点推荐了&lt;code&gt;Locus
+    
+    </summary>
+    
+    
+      <category term="性能测试" scheme="http://debugtalk.com/tags/%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/"/>
+    
+      <category term="Locust" scheme="http://debugtalk.com/tags/Locust/"/>
+    
+      <category term="开源项目" scheme="http://debugtalk.com/tags/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>深入浅出开源性能测试工具Locust（脚本增强）</title>
+    <link href="http://debugtalk.com/post/head-first-locust-advanced-script/"/>
+    <id>http://debugtalk.com/post/head-first-locust-advanced-script/</id>
+    <published>2017-02-21T16:00:00.000Z</published>
+    <updated>2017-02-22T04:35:37.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>在<a href="/post/head-first-locust-user-guide/">《深入浅出开源性能测试工具Locust（使用篇）》</a>一文中，罗列了编写性能测试脚本时常用的几类脚本增强的场景，本文是对应的代码示例。</p>
+<h2 id="关联"><a href="#关联" class="headerlink" title="关联"></a>关联</h2><p>在某些请求中，需要携带之前从Server端返回的参数，因此在构造请求时需要先从之前的Response中提取出所需的参数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</div><div class="line"><span class="keyword">from</span> locust <span class="keyword">import</span> TaskSet, task, HttpLocust</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserBehavior</span><span class="params">(TaskSet)</span>:</span></div><div class="line"></div><div class="line"><span class="meta">    @staticmethod</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_session</span><span class="params">(html)</span>:</span></div><div class="line">        tree = etree.HTML(html)</div><div class="line">        <span class="keyword">return</span> tree.xpath(<span class="string">"//div[@class='btnbox']/input[@name='session']/@value"</span>)[<span class="number">0</span>]</div><div class="line"></div><div class="line"><span class="meta">    @task(10)</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_login</span><span class="params">(self)</span>:</span></div><div class="line">        html = self.client.get(<span class="string">'/login'</span>).text</div><div class="line">        username = <span class="string">'user@compay.com'</span></div><div class="line">        password = <span class="string">'123456'</span></div><div class="line">        session = self.get_session(html)</div><div class="line">        payload = &#123;</div><div class="line">            <span class="string">'username'</span>: username,</div><div class="line">            <span class="string">'password'</span>: password,</div><div class="line">            <span class="string">'session'</span>: session</div><div class="line">        &#125;</div><div class="line">        self.client.post(<span class="string">'/login'</span>, data=payload)</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WebsiteUser</span><span class="params">(HttpLocust)</span>:</span></div><div class="line">    host = <span class="string">'http://debugtalk.com'</span></div><div class="line">    task_set = UserBehavior</div><div class="line">    min_wait = <span class="number">1000</span></div><div class="line">    max_wait = <span class="number">3000</span></div></pre></td></tr></table></figure>
+<h2 id="参数化"><a href="#参数化" class="headerlink" title="参数化"></a>参数化</h2><h3 id="循环取数据，数据可重复使用"><a href="#循环取数据，数据可重复使用" class="headerlink" title="循环取数据，数据可重复使用"></a>循环取数据，数据可重复使用</h3><blockquote>
+<p>所有并发虚拟用户共享同一份测试数据，各虚拟用户在数据列表中循环取值。<br>例如，模拟3用户并发请求网页，总共有100个URL地址，每个虚拟用户都会依次循环加载这100个URL地址；加载示例如下表所示。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>\</th>
+<th>vuser1</th>
+<th>vuser2</th>
+<th>vuser3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>iteration1</td>
+<td>url1</td>
+<td>url1</td>
+<td>url1</td>
+</tr>
+<tr>
+<td>iteration2</td>
+<td>url2</td>
+<td>url2</td>
+<td>url2</td>
+</tr>
+<tr>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+<tr>
+<td>iteration100</td>
+<td>url100</td>
+<td>url100</td>
+<td>url100</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> locust <span class="keyword">import</span> TaskSet, task, HttpLocust</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserBehavior</span><span class="params">(TaskSet)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_start</span><span class="params">(self)</span>:</span></div><div class="line">        self.index = <span class="number">0</span></div><div class="line"></div><div class="line"><span class="meta">    @task</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_visit</span><span class="params">(self)</span>:</span></div><div class="line">        url = self.locust.share_data[self.index]</div><div class="line">        print(<span class="string">'visit url: %s'</span> % url)</div><div class="line">        self.index = (self.index + <span class="number">1</span>) % len(self.locust.share_data)</div><div class="line">        self.client.get(url)</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WebsiteUser</span><span class="params">(HttpLocust)</span>:</span></div><div class="line">    host = <span class="string">'http://debugtalk.com'</span></div><div class="line">    task_set = UserBehavior</div><div class="line">    share_data = [<span class="string">'url1'</span>, <span class="string">'url2'</span>, <span class="string">'url3'</span>, <span class="string">'url4'</span>, <span class="string">'url5'</span>]</div><div class="line">    min_wait = <span class="number">1000</span></div><div class="line">    max_wait = <span class="number">3000</span></div></pre></td></tr></table></figure>
+<h3 id="保证并发测试数据唯一性，不循环取数据"><a href="#保证并发测试数据唯一性，不循环取数据" class="headerlink" title="保证并发测试数据唯一性，不循环取数据"></a>保证并发测试数据唯一性，不循环取数据</h3><blockquote>
+<p>所有并发虚拟用户共享同一份测试数据，并且保证虚拟用户使用的数据不重复。<br>例如，模拟3用户并发注册账号，总共有9个账号，要求注册账号不重复，注册完毕后结束测试；加载示例如下表所示。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>\</th>
+<th>vuser1</th>
+<th>vuser2</th>
+<th>vuser3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>iteration1</td>
+<td>account1</td>
+<td>account2</td>
+<td>account3</td>
+</tr>
+<tr>
+<td>iteration2</td>
+<td>account4</td>
+<td>account6</td>
+<td>account5</td>
+</tr>
+<tr>
+<td>iteration3</td>
+<td>account7</td>
+<td>account9</td>
+<td>account8</td>
+</tr>
+<tr>
+<td>N/A</td>
+<td>-</td>
+<td>—</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> locust <span class="keyword">import</span> TaskSet, task, HttpLocust</div><div class="line"><span class="keyword">import</span> queue</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserBehavior</span><span class="params">(TaskSet)</span>:</span></div><div class="line"></div><div class="line"><span class="meta">    @task</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_register</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            data = self.locust.user_data_queue.get()</div><div class="line">        <span class="keyword">except</span> queue.Empty:</div><div class="line">            print(<span class="string">'account data run out, test ended.'</span>)</div><div class="line">            exit(<span class="number">0</span>)</div><div class="line"></div><div class="line">        print(<span class="string">'register with user: &#123;&#125;, pwd: &#123;&#125;'</span>\</div><div class="line">            .format(data[<span class="string">'username'</span>], data[<span class="string">'password'</span>]))</div><div class="line">        payload = &#123;</div><div class="line">            <span class="string">'username'</span>: data[<span class="string">'username'</span>],</div><div class="line">            <span class="string">'password'</span>: data[<span class="string">'password'</span>]</div><div class="line">        &#125;</div><div class="line">        self.client.post(<span class="string">'/register'</span>, data=payload)</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WebsiteUser</span><span class="params">(HttpLocust)</span>:</span></div><div class="line">    host = <span class="string">'http://debugtalk.com'</span></div><div class="line">    task_set = UserBehavior</div><div class="line"></div><div class="line">    user_data_queue = queue.Queue()</div><div class="line">    <span class="keyword">for</span> index <span class="keyword">in</span> range(<span class="number">100</span>):</div><div class="line">        data = &#123;</div><div class="line">            <span class="string">"username"</span>: <span class="string">"test%04d"</span> % index,</div><div class="line">            <span class="string">"password"</span>: <span class="string">"pwd%04d"</span> % index,</div><div class="line">            <span class="string">"email"</span>: <span class="string">"test%04d@dji.test"</span> % index,</div><div class="line">            <span class="string">"phone"</span>: <span class="string">"186%08d"</span> % index,</div><div class="line">        &#125;</div><div class="line">        user_data_queue.put_nowait(data)</div><div class="line"></div><div class="line">    min_wait = <span class="number">1000</span></div><div class="line">    max_wait = <span class="number">3000</span></div></pre></td></tr></table></figure>
+<h3 id="保证并发测试数据唯一性，循环取数据"><a href="#保证并发测试数据唯一性，循环取数据" class="headerlink" title="保证并发测试数据唯一性，循环取数据"></a>保证并发测试数据唯一性，循环取数据</h3><blockquote>
+<p>所有并发虚拟用户共享同一份测试数据，保证并发虚拟用户使用的数据不重复，并且数据可循环重复使用。<br>例如，模拟3用户并发登录账号，总共有9个账号，要求并发登录账号不相同，但数据可循环使用；加载示例如下表所示。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>\</th>
+<th>vuser1</th>
+<th>vuser2</th>
+<th>vuser3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>iteration1</td>
+<td>account1</td>
+<td>account2</td>
+<td>account3</td>
+</tr>
+<tr>
+<td>iteration2</td>
+<td>account4</td>
+<td>account6</td>
+<td>account5</td>
+</tr>
+<tr>
+<td>iteration3</td>
+<td>account7</td>
+<td>account9</td>
+<td>account8</td>
+</tr>
+<tr>
+<td>iteration4</td>
+<td>account1</td>
+<td>account2</td>
+<td>account3</td>
+</tr>
+<tr>
+<td>iteration5</td>
+<td>account4</td>
+<td>account5</td>
+<td>account6</td>
+</tr>
+<tr>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+</tbody>
+</table>
+<p>该种场景的实现方式与上一种场景基本相同，唯一的差异在于，每次使用完数据后，需要再将数据放入队列中。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> locust <span class="keyword">import</span> TaskSet, task, HttpLocust</div><div class="line"><span class="keyword">import</span> queue</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserBehavior</span><span class="params">(TaskSet)</span>:</span></div><div class="line"></div><div class="line"><span class="meta">    @task</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_register</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            data = self.locust.user_data_queue.get()</div><div class="line">        <span class="keyword">except</span> queue.Empty:</div><div class="line">            print(<span class="string">'account data run out, test ended.'</span>)</div><div class="line">            exit(<span class="number">0</span>)</div><div class="line"></div><div class="line">        print(<span class="string">'register with user: &#123;&#125;, pwd: &#123;&#125;'</span>\</div><div class="line">            .format(data[<span class="string">'username'</span>], data[<span class="string">'password'</span>]))</div><div class="line">        payload = &#123;</div><div class="line">            <span class="string">'username'</span>: data[<span class="string">'username'</span>],</div><div class="line">            <span class="string">'password'</span>: data[<span class="string">'password'</span>]</div><div class="line">        &#125;</div><div class="line">        self.client.post(<span class="string">'/register'</span>, data=payload)</div><div class="line">        self.locust.user_data_queue.put_nowait(data)</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WebsiteUser</span><span class="params">(HttpLocust)</span>:</span></div><div class="line">    host = <span class="string">'http://debugtalk.com'</span></div><div class="line">    task_set = UserBehavior</div><div class="line"></div><div class="line">    user_data_queue = queue.Queue()</div><div class="line">    <span class="keyword">for</span> index <span class="keyword">in</span> range(<span class="number">100</span>):</div><div class="line">        data = &#123;</div><div class="line">            <span class="string">"username"</span>: <span class="string">"test%04d"</span> % index,</div><div class="line">            <span class="string">"password"</span>: <span class="string">"pwd%04d"</span> % index,</div><div class="line">            <span class="string">"email"</span>: <span class="string">"test%04d@dji.test"</span> % index,</div><div class="line">            <span class="string">"phone"</span>: <span class="string">"186%08d"</span> % index,</div><div class="line">        &#125;</div><div class="line">        user_data_queue.put_nowait(data)</div><div class="line"></div><div class="line">    min_wait = <span class="number">1000</span></div><div class="line">    max_wait = <span class="number">3000</span></div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在&lt;a href=&quot;/post/head-first-locust-user-guide/&quot;&gt;《深入浅出开源性能测试工具Locust（使用篇）》&lt;/a&gt;一文中，罗列了编写性能测试脚本时常用的几类脚本增强的场景，本文是对应的代码示例。&lt;/p&gt;
+&lt;h2 id=&quot;关联&quot;&gt;&lt;a h
+    
+    </summary>
+    
+    
+      <category term="性能测试" scheme="http://debugtalk.com/tags/%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/"/>
+    
+      <category term="Locust" scheme="http://debugtalk.com/tags/Locust/"/>
+    
+      <category term="开源项目" scheme="http://debugtalk.com/tags/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/"/>
+    
+  </entry>
   
   <entry>
     <title>春节旅行之意法印象</title>
@@ -142,13 +462,13 @@
     </summary>
     
     
-      <category term="Locust" scheme="http://debugtalk.com/tags/Locust/"/>
-    
       <category term="Web proxy" scheme="http://debugtalk.com/tags/Web-proxy/"/>
     
       <category term="Shuttle" scheme="http://debugtalk.com/tags/Shuttle/"/>
     
       <category term="mitmproxy" scheme="http://debugtalk.com/tags/mitmproxy/"/>
+    
+      <category term="Locust" scheme="http://debugtalk.com/tags/Locust/"/>
     
   </entry>
   
@@ -725,9 +1045,9 @@
     
       <category term="Appium" scheme="http://debugtalk.com/tags/Appium/"/>
     
-      <category term="iOS" scheme="http://debugtalk.com/tags/iOS/"/>
-    
       <category term="F0T1" scheme="http://debugtalk.com/tags/F0T1/"/>
+    
+      <category term="iOS" scheme="http://debugtalk.com/tags/iOS/"/>
     
       <category term="Ruby" scheme="http://debugtalk.com/tags/Ruby/"/>
     
@@ -740,7 +1060,7 @@
     <link href="http://debugtalk.com/post/iOS-Android-Packing-with-Jenkins-details/"/>
     <id>http://debugtalk.com/post/iOS-Android-Packing-with-Jenkins-details/</id>
     <published>2016-07-25T16:00:00.000Z</published>
-    <updated>2016-08-08T03:02:15.000Z</updated>
+    <updated>2017-02-17T12:48:12.000Z</updated>
     
     <content type="html"><![CDATA[<p>在<a href="/post/iOS-Android-Packing-with-Jenkins/">《使用Jenkins搭建iOS/Android持续集成打包平台》</a>一文中，我对如何使用Jenkins搭建iOS/Android持续集成打包平台的基础概念和实施流程进行了介绍。本文作为配套，对搭建持续集成打包平台中涉及到的执行命令、构建脚本（build.py），以及Jenkins的配置进行详细的补充说明。</p>
 <p>当然，如果你不关心技术实现细节，也可以完全不用理会，直接参照【开箱即用】部分按照步骤进行操作即可。</p>
@@ -823,7 +1143,7 @@
 </ul>
 <p>通常，我们可以选择使用<code>String Parameter</code>来定义自定义参数，并可对每个参数设置默认值。</p>
 <p>当我们配置了<code>BRANCH</code>、<code>SCHEME</code>、<code>CONFIGURATION</code>、<code>OUTPUT_FOLDER</code>、<code>BUILD_VERSION</code>这几个参数后，我们就可以在<code>Build</code>配置区域的<code>Execute shell</code>通过如下形式来进行参数传递。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ python <span class="variable">$&#123;WORKSPACE&#125;</span>/Build_scripts/build.py \</div><div class="line">true--scheme <span class="variable">$&#123;SCHEME&#125;</span> \</div><div class="line">    --workspace <span class="variable">$&#123;WORKSPACE&#125;</span>/Store.xcworkspace \</div><div class="line">    --configuration <span class="variable">$&#123;CONFIGURATION&#125;</span> \</div><div class="line">    --output <span class="variable">$&#123;WORKSPACE&#125;</span>/<span class="variable">$&#123;OUTPUT_FOLDER&#125;</span> \</div><div class="line">    --build_version <span class="variable">$&#123;BUILD_VERSION&#125;</span>.<span class="variable">$&#123;BUILD_NUMBER&#125;</span></div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ python <span class="variable">$&#123;WORKSPACE&#125;</span>/Build_scripts/build.py \</div><div class="line">    --scheme <span class="variable">$&#123;SCHEME&#125;</span> \</div><div class="line">    --workspace <span class="variable">$&#123;WORKSPACE&#125;</span>/Store.xcworkspace \</div><div class="line">    --configuration <span class="variable">$&#123;CONFIGURATION&#125;</span> \</div><div class="line">    --output <span class="variable">$&#123;WORKSPACE&#125;</span>/<span class="variable">$&#123;OUTPUT_FOLDER&#125;</span> \</div><div class="line">    --build_version <span class="variable">$&#123;BUILD_VERSION&#125;</span>.<span class="variable">$&#123;BUILD_NUMBER&#125;</span></div></pre></td></tr></table></figure>
 <p>可以看出，参数的传递方式很简单，只需要预先定义好了自定义参数，然后就可以通过<code>${Param}</code>的形式来进行调用了。</p>
 <p>不过你也许会问，<code>WORKSPACE</code>和<code>BUILD_NUMBER</code>这两个参数我们并未进行定义，为什么也能进行调用呢？这是因为Jenkins自带部分与项目相关的环境变量，例如<code>BRANCH_NAME</code>、<code>JOB_NAME</code>等，这部分参数可以在shell脚本中直接进行调用。完整的环境变量可在<code>Jenkins_Url/env-vars.html/</code>中查看。</p>
 <p>配置完成后，就可以在<code>Build with Parameters</code>中通过如下形式手动触发构建。</p>
@@ -1476,9 +1796,9 @@
     
       <category term="Appium" scheme="http://debugtalk.com/tags/Appium/"/>
     
-      <category term="iOS" scheme="http://debugtalk.com/tags/iOS/"/>
-    
       <category term="F0T1" scheme="http://debugtalk.com/tags/F0T1/"/>
+    
+      <category term="iOS" scheme="http://debugtalk.com/tags/iOS/"/>
     
       <category term="Ruby" scheme="http://debugtalk.com/tags/Ruby/"/>
     
@@ -1586,186 +1906,13 @@
     
       <category term="Appium" scheme="http://debugtalk.com/tags/Appium/"/>
     
-      <category term="iOS" scheme="http://debugtalk.com/tags/iOS/"/>
-    
-      <category term="Simulator" scheme="http://debugtalk.com/tags/Simulator/"/>
-    
       <category term="F0T1" scheme="http://debugtalk.com/tags/F0T1/"/>
+    
+      <category term="iOS" scheme="http://debugtalk.com/tags/iOS/"/>
     
       <category term="Ruby" scheme="http://debugtalk.com/tags/Ruby/"/>
     
-  </entry>
-  
-  <entry>
-    <title>从0到1搭建移动App功能自动化测试平台（1）：模拟器中运行iOS应用</title>
-    <link href="http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-Appium-inspector-iOS-simulator/"/>
-    <id>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-Appium-inspector-iOS-simulator/</id>
-    <published>2016-05-20T16:00:00.000Z</published>
-    <updated>2016-07-30T05:17:08.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>在上一篇文章中，我对本系列教程的项目背景进行了介绍，并对自动化测试平台的建设进行了规划。</p>
-<p>在本文中，我将在已准备就绪的iOS自动化测试环境的基础上，通过Appium调用模拟器运行iOS应用。内容很是基础，熟悉的同学可直接略过。</p>
-<h2 id="iOS应用安装包的基础知识"><a href="#iOS应用安装包的基础知识" class="headerlink" title="iOS应用安装包的基础知识"></a>iOS应用安装包的基础知识</h2><p>作为完全的iOS新手，困惑的第一个问题就是iOS安装包文件。</p>
-<p>在Android系统中，安装App的途径很多，除了各类应用市场，普通用户也经常直接下载apk安装包文件后手动进行安装，因此大家对Android的安装包文件都比较熟悉。</p>
-<p>但是对于iOS系统就不一样了，由于我们普通用户在iOS上安装应用的时候基本上只能通过Apple Store进行安装（未越狱），没有机会接触原始的安装包文件，因此往往连iOS应用的安装包到底是什么格式后缀都不清楚。</p>
-<p>现在我们想在Appium App中通过模拟器运行被测应用，需要指定iOS app的安装包路径，因此需要首先获得一个iOS app安装包。</p>
-<p><img src="/images/Appium_iOS_Settings_init.jpg" alt="Appium initialize iOS Settings"></p>
-<p>那么iOS app的安装包长啥样呢？</p>
-<p>或者在这个问题之前，我们先来看下另一个问题：对于iOS设备来说，如果不通过Apple Store，我们可以怎样安装一个应用？</p>
-<p>针对这个问题，我搜了些资料，也请教了周围的同事，了解到的途径有如下几个：</p>
-<ul>
-<li>企业证书：该种方式适用于企业内部；通过企业证书编译出的iOS应用，无需上传至Apple Store，即可无限制的安装到企业员工的iOS设备中。只是需要解决的一个问题是，由于iOS设备没有文件管理器，没法将安装包拷贝到iOS设备中，因此常用的做法是将安装包（<code>.ipa</code>文件）上传至一些下载服务器（例如<code>fir.im</code>），并生成二维码，然后用户扫描二维码后即可通过浏览器下载安装包并进行安装。由此联想到另外一个方法，通过微信文件传输助手将安装包（<code>.ipa</code>）传输至iOS设备，然后再进行安装应该也是可以的吧？这种方法不知在原理上是否可行，因为在试验时由于安装包大于30M，微信无法传输，所以没能进行验证。</li>
-<li>Xcode：该种方式适用于iOS开发者；开发者在Xcode中连上iOS设备对源码进行编译，编译生成的应用会自动安装至iOS设备。当然，该种方式也是需要iOS开发者证书。</li>
-<li>PP助手：该种方式适用于普通用户；PP助手是一个非苹果官方的设备资源管理工具，可以实现对未越狱的iOS设备进行应用管理，也可以安装本地<code>.ipa</code>文件，前提是<code>.ipa</code>文件具有合适的签名。</li>
-</ul>
-<p>在上面列举的安装应用的途径中，反复提到了<code>.ipa</code>文件，那<code>.ipa</code>应该就是iOS应用程序的后缀了吧？暂且这么认为吧。</p>
-<p>再回到前面的场景，要在iOS模拟器中运行iOS应用，我们是否可以找研发人员要一个<code>.ipa</code>安装包文件，然后就能在模拟器中加载运行应用呢？</p>
-<p>刚开始的时候我是这么认为的。于是我获取到<code>.ipa</code>文件后，在<code>App Path</code>中填写该文件的路径，然后启动Appium Server；接着我再打开Inspector时，发现iOS模拟器启动了，但是在应用启动的时候就出问题了，始终无法正常启动，感觉像是启动崩溃，反复尝试多次仍然如此。</p>
-<p>再次经过Google，总算是明白出现问题的原因了，总结下来有如下几点：</p>
-<ul>
-<li>不管是从Apple Store或iTunes上下载的应用，还是在Xcode中针对真机设备编译生成的<code>.ipa</code>文件，都是面向于ARM处理器的iOS设备，只能在真机设备中进行安装；</li>
-<li>而在Mac OSX系统中运行的iOS模拟器，运行环境是基于Intel处理器的；</li>
-<li>因此，若是针对真机设备编译生成的<code>.ipa</code>文件，是无法在iOS模拟器中正常运行的，毕竟处理器架构都不一样；</li>
-<li>要想在iOS模拟器中运行应用，则必须在Xcode中编译时选择模拟器类型；编译生成的文件后缀为<code>.app</code>。</li>
-</ul>
-<h2 id="准备-app文件"><a href="#准备-app文件" class="headerlink" title="准备.app文件"></a>准备<code>.app</code>文件</h2><p>接下来，就说下如何获取<code>.app</code>文件。</p>
-<p>虽然是测试人员，不会对被测iOS项目贡献代码，但是也不能总是找研发帮忙编译生成<code>.app</code>文件。所以，在本地搭建完整的iOS项目开发环境还是很有必要的。</p>
-<p>对于iOS开发环境的搭建，当前社区中应该已经有了很多完整的教程，我在这儿就不详细描述了，只简单说下我搭建过程中涉及到的几个点。</p>
-<p>首先，Mac OSX、Xcode、Apple Developer Tools这些基础环境的安装，在上一篇文章中已经进行说明了；</p>
-<p>然后，申请项目源码的访问权限，<code>git clone</code>到本地；</p>
-<p>接着是项目依赖环境的问题；通常一个较大型的iOS项目都会引用许多第三方库，而这些依赖库并不会直接保存到项目仓库中，通常是采用<code>CocoaPods</code>进行管理；简单地说，<code>CocoaPods</code>是针对<code>Swift</code>和<code>Objective-C</code>项目的依赖管理器，类似于Java中的<code>Maven</code>，Ruby中的<code>Gem</code>，Python中的<code>pip</code>。</p>
-<p>当然，iOS项目的依赖管理工具也不是只有<code>CocoaPods</code>一个，如果是采用的别的依赖管理器，请自行查找对应的资料。</p>
-<p>采用<code>CocoaPods</code>管理的项目，在项目根目录下会包含<code>Podfile</code>和<code>Podfile.lock</code>文件，里面记录了当前项目依赖的第三方库以及对应的版本号。</p>
-<p>安装<code>CocoaPods</code>很简单，采用<code>gem</code>即可。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo gem install cocoapods</div></pre></td></tr></table></figure>
-<p>然后，进入到iOS项目的目录，执行<code>pod install</code>命令即可安装当前项目的所有依赖。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">cd</span> Project_Folder</div><div class="line">$ pod install</div><div class="line">Re-creating CocoaPods due to major version update.</div><div class="line">Analyzing dependencies</div><div class="line">.....（略）</div><div class="line">Downloading dependencies</div><div class="line">.....（略）</div><div class="line">Generating Pods project</div><div class="line">Integrating client project</div><div class="line">Sending stats</div><div class="line">Pod installation complete! There are 27 dependencies from the Podfile and 28 total pods installed.</div></pre></td></tr></table></figure>
-<p>关于<code>CocoaPods</code>的更多信息，请自行查看<a href="https://cocoapods.org" target="_blank" rel="external">官方网站</a></p>
-<p>在依赖安装完成后，正常情况下，就可以在Xcode中编译项目了。</p>
-<p>没有别的需要注意的，将target选择为模拟器（iOS Simulator）即可。而且针对模拟器进行编译时，也不会涉及到开发者证书的问题，项目配置上会简单很多。待后续讲到真机上的自动化测试时，我再对证书方面的内容进行补充。</p>
-<p>编译完成后，在Products目录下，就可以看到<code>XXX.app</code>文件，这里的<code>XXX</code>就是项目名称；然后，选中<code>XXX.app</code>文件，【Show in Finder】，即可在文件目录中定位到该文件。</p>
-<p>接下来，将<code>XXX.app</code>文件拷贝出来，或者复制该文件的<code>Full path</code>，怎样都行，只要在<code>Appium</code>的<code>App Path</code>中能定位到该文件就行。</p>
-<h2 id="模拟器中运行iOS应用"><a href="#模拟器中运行iOS应用" class="headerlink" title="模拟器中运行iOS应用"></a>模拟器中运行iOS应用</h2><p>被测应用<code>.app</code>准备就绪后，接下来就可以在iOS模拟器中运行了。</p>
-<p>回到前面的那张图。启动<code>Appium app</code>后，对于模拟器运行的情况，在<code>iOS Settings</code>中必须设置的参数项就3个，<code>App Path</code>、<code>Force Device</code>和<code>Platform Version</code>。对于真机运行的情况，后续再单独进行说明。</p>
-<p>设置完毕后，点击【Launch】，启动<code>Appium Server</code>。</p>
-<p><img src="/images/Appium_Inspector_Button.jpg" alt="Appium inspector button"></p>
-<p>然后，点击图中红框处的按钮，即可通过<code>Inspector</code>启动模拟器，并在模拟器中加载iOS应用。</p>
-<p><img src="/images/Appium_iOS_Simulator_Console.jpg" alt="Appium iOS Simulator Console"></p>
-<p>在模拟器中，我们可以像在真机中一样，体验被测应用的各项功能；并且，在Appium的日志台中，可以实时查看到日志信息。</p>
-<h2 id="经历的一个坑"><a href="#经历的一个坑" class="headerlink" title="经历的一个坑"></a>经历的一个坑</h2><p>整个过程是挺简单的，不过，在探索过程中我还是有遇到一个坑。</p>
-<p>通过<code>Inspector</code>启动模拟器时，总是弹框报错，报错形式如下。</p>
-<p><img src="/images/Appium_Inspector_Error.jpg" alt="Appium Inspector Error"></p>
-<p>刚开始出现这问题时百思不得其解，因为提示的信息并不明显，Google了好一阵也没找到原因。最后只有详细去看日志信息，才发现问题所在。</p>
-<p>在日志中，发现的报错信息如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[iOS] Error: Could not find a device to launch. You requested &apos;iPhone 6 (8.4)&apos;, but the available devices were: [&quot;Apple TV 1080p (9.2) [98638D25-7C82-48DF-BDCA-7F682F951533] (Simulator)&quot;,&quot;iPad 2 (9.2) [5E22F53E-EAB3-45DF-A1DD-10F58E920679] (Simulator)&quot;,&quot;iPad 2 (9.3) [4B2D2F9A-C099-4C13-8DE9-27C826A521C2] (Simulator)&quot;,&quot;iPad Air (9.2) [825E4997-9CD8-4225-9977-4C7AE2C98389] (Simulator)&quot;,&quot;iPad Air (9.3) [E4523799-E35F-4499-832B-12CF33F09144] (Simulator)&quot;,&quot;iPad Air 2 (9.2) [8057039D-F848-453E-97EC-2F75CAEA2E77] (Simulator)&quot;,&quot;iPad Air 2 (9.3) [0B8F49DA-832A-4248-BA1D-9DA5D11E31FD] (Simulator)&quot;,&quot;iPad Pro (9.2) [AF1F2D06-3067-41B5-AC2B-4B0ED88BF5D9] (Simulator)&quot;,&quot;iPad Pro (9.3) [C39617A6-9D91-4C0B-B25B-741BD57B016C] (Simulator)&quot;,&quot;iPad Retina (9.2) [D3C694E1-E3B4-47BE-AB5E-80B3D4E22FC2] (Simulator)&quot;,&quot;iPad Retina (9.3) [907C7B06-ED2C-48AC-AC46-04E4AD6E0CA3] (Simulator)&quot;,&quot;iPhone 4s (9.2) [1A786195-94E3-4908-8309-7B66D84E4619] (Simulator)&quot;,&quot;iPhone 4s (9.3) [3F76F34B-5A8F-4FD1-928D-56F84C192DDD] (Simulator)&quot;,&quot;iPhone 5 (9.2) [0D79A4CA-71EB-48A6-9EE4-172BEF3EB4E0] (Simulator)&quot;,&quot;iPhone 5 (9.3) [04270D44-F831-4253-95F2-3D205D2BC0D9] (Simulator)&quot;,&quot;iPhone 5s (9.2) [13A16C07-3C5B-4B04-A94B-B40A63238958] (Simulator)&quot;,&quot;iPhone 5s (9.3) [D30A7B34-BA01-4203-80DA-FAEA436725F9] (Simulator)&quot;,&quot;iPhone 6 (9.2) [5D01650F-2A31-4D53-A47A-CCF7FD552ADD] (Simulator)&quot;,&quot;iPhone 6 (9.3) [2F0810F6-C73B-4BA4-93BA-06D4B6D96BDA] (Simulator)&quot;,&quot;iPhone 6 Plus (9.2) [9A840B78-E6CE-4D18-BE83-16B590411641] (Simulator)&quot;,&quot;iPhone 6 Plus (9.3) [27C6557A-B09D-4D8A-9846-DA8FE0A8E8D5] (Simulator)&quot;,&quot;iPhone 6s (9.2) [E7F5B8A5-0E85-404F-A4D4-191D63E7EC1B] (Simulator)&quot;,&quot;iPhone 6s (9.3) [6F702911-13C2-472C-9ECD-BADD4385CB77] (Simulator)&quot;,&quot;iPhone 6s (9.3) + Apple Watch - 38mm (2.2) [B63FFAA4-00A4-473B-9462-3664F41F9001] (Simulator)&quot;,&quot;iPhone 6s Plus (9.2) [58837F78-511A-4F0B-9DDF-782E3B9935BD] (Simulator)&quot;,&quot;iPhone 6s Plus (9.3) [C31003C6-DCE2-414D-AD7F-376F6FA995B0] (Simulator)&quot;,&quot;iPhone 6s Plus (9.3) + Apple Watch - 42mm (2.2) [E3154768-CA23-45CC-90E5-2D0386A57B7D] (Simulator)&quot;]</div></pre></td></tr></table></figure>
-<p>问题在于，我设置<code>iOS Settings</code>时，将<code>Force Device</code>设置为”iPhone 6”，将<code>Platform Version</code>设置为“8.4”，但是经过组合，<code>iPhone 6 (8.4)</code>并不在可用的模拟器设备列表中。</p>
-<p>再来看日志中提示的可用设备，发现“iPhone 6”设备对应的<code>Platform Version</code>只有“9.2”和“9.3”。然后回到<code>iOS Settings</code>，发现<code>Platform Version</code>的下拉框可选项就没有“9.2”和“9.3”，最新的一个可选版本也就是“8.4”。</p>
-<p><img src="/images/Appium_iOS_Settings_bug.jpg" alt="Appium iOS Settings bug"></p>
-<p>这应该是<code>Appium app</code>的一个bug吧。不过好在<code>Platform Version</code>参数虽然是通过下拉框选择，但是也可以在框内直接填写内容。于是我在<code>Platform Version</code>设置框内填写为“9.3”，然后再次启动时，发现iOS模拟器就可以正常启动了。</p>
-<h2 id="To-be-continued-…"><a href="#To-be-continued-…" class="headerlink" title="To be continued …"></a>To be continued …</h2><p>现在，我们已经成功地通过Appium Inspector调用模拟器并运行iOS应用，接下来，我们就要开始尝试编写自动化测试用例了。</p>
-<p>在下一篇文章中，我们将对Appium Inspector的功能进行熟悉，通过Inspector来查看iOS应用的UI元素信息，并尝试采用脚本语言与UI进行交互操作。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;在上一篇文章中，我对本系列教程的项目背景进行了介绍，并对自动化测试平台的建设进行了规划。&lt;/p&gt;
-&lt;p&gt;在本文中，我将在已准备就绪的iOS自动化测试环境的基础上，通过Appium调用模拟器运行iOS应用。内容很是基础，熟悉的同学可直接略过。&lt;/p&gt;
-&lt;h2 id=&quot;iOS应
-    
-    </summary>
-    
-    
-      <category term="AutomationTest" scheme="http://debugtalk.com/tags/AutomationTest/"/>
-    
-      <category term="Appium" scheme="http://debugtalk.com/tags/Appium/"/>
-    
-      <category term="iOS" scheme="http://debugtalk.com/tags/iOS/"/>
-    
       <category term="Simulator" scheme="http://debugtalk.com/tags/Simulator/"/>
-    
-      <category term="F0T1" scheme="http://debugtalk.com/tags/F0T1/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>从0到1搭建移动App功能自动化测试平台（0）：背景介绍和平台规划</title>
-    <link href="http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-backgroud-introduction/"/>
-    <id>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-backgroud-introduction/</id>
-    <published>2016-05-19T16:00:00.000Z</published>
-    <updated>2016-07-30T05:17:31.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>最近新加入DJI的某项目组（以下均已M指代），需要从零开始搭建功能自动化测试平台。</p>
-<p>简单地说，M是一个典型的移动互联网产品，客户端包括iOS和Android，并在app中通过WebView嵌入了H5，后端基于Ruby on Rails实现。</p>
-<p>当前阶段，M项目除了Rails Server端采用Jenkins+RSpec实现了部分的持续集成功能外，客户端部分的部署和测试工作都还是完全依赖于手工操作。</p>
-<p>基于当前项目的开发模式，我对整个M项目实现持续集成自动化测试的架构流程进行了规划，初步计划的架构图如下图所示。最终的目标是希望能实现：不管是Rails Server，还是App(iOS/Android)，以及H5，当任意部分存在代码提交时，系统能自动拉取最新代码进行部署并执行自动化回归测试，及时地将执行情况反馈给开发人员。</p>
-<p><img src="/images/DJI_Plus_Automated_Test_Platform.jpg" alt="DJI Plus Automated Test Platform"></p>
-<p>目标确定后，便是分阶段进行实现，需要开发的模块包括：</p>
-<ul>
-<li>自动化测试平台（Automated Test Platform）：满足iOS/Android/H5的自动化功能测试，包括模拟器和真机的测试；</li>
-<li>测试管理平台（Test Management Platform）：实现自动化测试用例管理、手动下发测试任务、测试结果报表展现、Dashboard等功能；</li>
-<li>打包平台（Pack System）：实现iOS/Android的自动化构建；</li>
-<li>服务端自动化测试（Rails）：将服务端Rails的自动化测试接入测试管理平台；</li>
-<li>持续集成流程打通：对Jenkins进行二次开发，与测试管理平台打通，实现全流程的持续集成自动化测试。</li>
-</ul>
-<p>而本系列教程，《从0到1搭建移动App功能自动化测试平台》，便是对整个实践过程的一个记录。</p>
-<p>需要说明的是，之前我个人的工作经历主要在服务端性能测试、Android客户端性能测试（测试开发）方向，对于客户端的自动化测试基本上没有经验积累，特别是iOS系统的测试，以前更是完全没有接触过。因此本系列教程只能算是个人在探索路上的学习总结和记录，可能会存在一些错误的观点，还请前辈们多多指教。</p>
-<h2 id="自动化测试框架的选择"><a href="#自动化测试框架的选择" class="headerlink" title="自动化测试框架的选择"></a>自动化测试框架的选择</h2><p>在愿景图中，绿色方框（Automated Test Platform）负责移动应用客户端（iOS/Android/H5）自动化测试的调度和执行，是整个自动化测试平台的核心。</p>
-<p>因此，在搭建自动化测试平台之前，首先需要选择一个合适的自动化测试框架。</p>
-<p>对于移动应用的自动化测试框架，当前市面上已经有很多成熟的开源项目。针对当前项目的实际情况，我主要参考如下选择标准：</p>
-<ul>
-<li>同时支持iOS、Android、H5，且尽量能保持接口统一，减少开发维护成本；</li>
-<li>编程语言支持Python/Ruby；</li>
-<li>用户量大，文档丰富。</li>
-</ul>
-<p>经过筛选，Appium无疑是最佳的选择。</p>
-<h2 id="Appium简介"><a href="#Appium简介" class="headerlink" title="Appium简介"></a>Appium简介</h2><p>对于Appium的详细介绍，大家可参考<a href="http://appium.io/" target="_blank" rel="external">Appium</a>官方文档，我就不再重复引用。</p>
-<p>不过对于Appium，仍然有几点很赞的理念值得强调。</p>
-<ul>
-<li>采用Appium时，无需对被测应用做任何修改，也无需嵌入任何东西；</li>
-<li>Appium对iOS和Android的原生自动化测试框架进行了封装，并提供了统一的API（WebDriver API），减少了自动化测试代码的维护工作量；</li>
-<li>Appium采用Client-Server的架构设计，并采用标准的HTTP通信协议；Server端负责与iOS/Android原生测试框架交互，无需测试人员关注细节实现；Client端基本上可以采用任意主流编程语言编写测试用例，减少了学习成本。</li>
-</ul>
-<h2 id="环境准备（iOS）"><a href="#环境准备（iOS）" class="headerlink" title="环境准备（iOS）"></a>环境准备（iOS）</h2><p>在Appium中测试iOS时，依赖于Apple开发环境，因此，在运行Appium之前需要先确保如下环境安装正确。</p>
-<ul>
-<li>Mac OS X &gt;= 10.7</li>
-<li>XCode &gt;= 4.6.3</li>
-<li>Apple Developer Tools (iPhone simulator SDK, command line tools)</li>
-</ul>
-<p>如上几个环境安装比较简单，直接在Apple Store中安装即可。</p>
-<p>在安装Appium之前，为了确保Appium的相关依赖已经准备就绪，可以使用<code>appium-doctor</code>来进行验证。</p>
-<p><a href="https://github.com/appium/appium-doctor" target="_blank" rel="external"><code>appium-doctor</code></a>是一个用于验证appium安装环境的工具，可以诊断出<code>Node/iOS/Android</code>环境配置方面的常见问题。</p>
-<p><code>appium-doctor</code>采用<code>node.js</code>编写，采用<code>npm</code>即可在Terminal中进行安装：</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ npm install appium-doctor -g</div></pre></td></tr></table></figure>
-<p>安装完毕后，执行<code>appium-doctor</code>命令即可对<code>Appium</code>的环境依赖情况进行检测；指定<code>--ios</code>时只针对iOS环境配置进行检测，指定<code>--android</code>参数时只针对Android环境配置进行检测，若不指定则同时对iOS和Android环境进行检测。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">$ appium-doctor --ios                                                                                                                               </div><div class="line">info AppiumDoctor <span class="comment">### Diagnostic starting ###</span></div><div class="line">info AppiumDoctor  ✔ Xcode is installed at: /Applications/Xcode.app/Contents/Developer</div><div class="line">info AppiumDoctor  ✔ Xcode Command Line Tools are installed.</div><div class="line">info AppiumDoctor  ✔ DevToolsSecurity is enabled.</div><div class="line">info AppiumDoctor  ✔ The Authorization DB is <span class="built_in">set</span> up properly.</div><div class="line">info AppiumDoctor  ✔ The Node.js binary was found at: /usr/<span class="built_in">local</span>/bin/node</div><div class="line">info AppiumDoctor  ✔ HOME is <span class="built_in">set</span> to: /Users/Leo</div><div class="line">info AppiumDoctor <span class="comment">### Diagnostic completed, no fix needed. ###</span></div><div class="line">info AppiumDoctor</div><div class="line">info AppiumDoctor Everything looks good, <span class="built_in">bye</span>!</div><div class="line">info AppiumDoctor</div></pre></td></tr></table></figure>
-<p>若检测结果全部通过，则说明Appium的相关依赖已经准备就绪，接下来可以继续安装Appium。</p>
-<h2 id="安装Appium"><a href="#安装Appium" class="headerlink" title="安装Appium"></a>安装Appium</h2><p>根据前面的介绍，Appium采用Client-Server的架构设计，因此安装Appium时需要分别安装Server部分和Client部分。</p>
-<p>通常情况下，我们说的Appium都是指代的Server部分。Appium的安装有多种方式：可以通过源码编译安装，也可以在Terminal中通过<code>npm</code>命令安装，另一种是直接下载<a href="https://github.com/appium/appium/releases" target="_blank" rel="external"><code>appium.dmg</code></a>后安装应用程序。</p>
-<p>在这里推荐运行<code>Appium app</code>的方式，除了GUI界面操作更直观以外，更重要的一个原因是，相比于命令行运行方式，<code>Appium app</code>多了一个<code>Inspector</code>模块，可以调用模拟器运行被测应用程序，并且可以很方便地在预览页面中查看UI元素的层级结构和详细控件属性，极大地提高编写测试脚本的效率。</p>
-<p>至于Client部分，其实我们原本可以不安装任何东西，只需要任意选择一门开发语言，然后直接基于WebDriver的C/S协议（JSON Wire Protocol）即可编写自动化测试代码。但是这样做的话工作量会比较大，因为要去处理一些跟协议相关的工作。所幸Appium项目已经针对众多主流的编程语言，将底层协议处理相关的工作封装为Library，通过调用这些Library，可以极大地简化我们编写测试用例的工作量。</p>
-<p>而说的需要安装的Client部分，其实也就是安装这些Library。选定编写测试用例的语言后，我们就可以针对性地进行安装。</p>
-<p>例如，如果选择Ruby语言，那么需要安装的Library就是<code>appium_lib</code>，安装方式如下：</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ gem install appium_lib</div></pre></td></tr></table></figure>
-<p>如果选择Python语言，那么需要安装的Library就是<code>Appium-Python-Client</code>，安装方式如下：</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ pip install Appium-Python-Client</div></pre></td></tr></table></figure>
-<p>对于其它编程语言，请自行参考官方文档。</p>
-<h2 id="To-be-continued-…"><a href="#To-be-continued-…" class="headerlink" title="To be continued …"></a>To be continued …</h2><p>iOS的自动化测试环境已基本准备就绪了，接下来我们想做的第一件事，就是在模拟器中运行iOS应用。</p>
-<p>在下一篇文章中，我们将从clone项目源码为起点，编译生成iOS app，在Appium中调用模拟器中运行iOS app，并分享实践过程中遇到的一些坑。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h2&gt;&lt;p&gt;最近新加入DJI的某项目组（以下均已M指代），需要从零开始搭建功能自动化测试平台。&lt;/p&gt;
-&lt;p&gt;简单地说，M是一个典型的移动互联网产品，客
-    
-    </summary>
-    
-    
-      <category term="AutomationTest" scheme="http://debugtalk.com/tags/AutomationTest/"/>
-    
-      <category term="Appium" scheme="http://debugtalk.com/tags/Appium/"/>
-    
-      <category term="F0T1" scheme="http://debugtalk.com/tags/F0T1/"/>
     
   </entry>
   

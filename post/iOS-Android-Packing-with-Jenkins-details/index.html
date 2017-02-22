@@ -24,7 +24,7 @@
 <meta property="og:image" content="http://debugtalk.com/images/Jenkins_set_build_description.jpg">
 <meta property="og:image" content="http://debugtalk.com/images/Jenkins_archive_the_artifacts.jpg">
 <meta property="og:image" content="http://debugtalk.com/images/Jenkins_show_artifacts.jpg">
-<meta property="og:updated_time" content="2016-08-08T03:02:15.000Z">
+<meta property="og:updated_time" content="2017-02-17T12:48:12.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于持续集成打包平台的Jenkins配置和构建脚本实现细节">
 <meta name="twitter:description" content="在《使用Jenkins搭建iOS/Android持续集成打包平台》一文中，我对如何使用Jenkins搭建iOS/Android持续集成打包平台的基础概念和实施流程进行了介绍。本文作为配套，对搭建持续集成打包平台中涉及到的执行命令、构建脚本（build.py），以及Jenkins的配置进行详细的补充说明。
@@ -195,7 +195,7 @@
 </ul>
 <p>通常，我们可以选择使用<code>String Parameter</code>来定义自定义参数，并可对每个参数设置默认值。</p>
 <p>当我们配置了<code>BRANCH</code>、<code>SCHEME</code>、<code>CONFIGURATION</code>、<code>OUTPUT_FOLDER</code>、<code>BUILD_VERSION</code>这几个参数后，我们就可以在<code>Build</code>配置区域的<code>Execute shell</code>通过如下形式来进行参数传递。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ python <span class="variable">$&#123;WORKSPACE&#125;</span>/Build_scripts/build.py \</div><div class="line">true--scheme <span class="variable">$&#123;SCHEME&#125;</span> \</div><div class="line">    --workspace <span class="variable">$&#123;WORKSPACE&#125;</span>/Store.xcworkspace \</div><div class="line">    --configuration <span class="variable">$&#123;CONFIGURATION&#125;</span> \</div><div class="line">    --output <span class="variable">$&#123;WORKSPACE&#125;</span>/<span class="variable">$&#123;OUTPUT_FOLDER&#125;</span> \</div><div class="line">    --build_version <span class="variable">$&#123;BUILD_VERSION&#125;</span>.<span class="variable">$&#123;BUILD_NUMBER&#125;</span></div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ python <span class="variable">$&#123;WORKSPACE&#125;</span>/Build_scripts/build.py \</div><div class="line">    --scheme <span class="variable">$&#123;SCHEME&#125;</span> \</div><div class="line">    --workspace <span class="variable">$&#123;WORKSPACE&#125;</span>/Store.xcworkspace \</div><div class="line">    --configuration <span class="variable">$&#123;CONFIGURATION&#125;</span> \</div><div class="line">    --output <span class="variable">$&#123;WORKSPACE&#125;</span>/<span class="variable">$&#123;OUTPUT_FOLDER&#125;</span> \</div><div class="line">    --build_version <span class="variable">$&#123;BUILD_VERSION&#125;</span>.<span class="variable">$&#123;BUILD_NUMBER&#125;</span></div></pre></td></tr></table></figure>
 <p>可以看出，参数的传递方式很简单，只需要预先定义好了自定义参数，然后就可以通过<code>${Param}</code>的形式来进行调用了。</p>
 <p>不过你也许会问，<code>WORKSPACE</code>和<code>BUILD_NUMBER</code>这两个参数我们并未进行定义，为什么也能进行调用呢？这是因为Jenkins自带部分与项目相关的环境变量，例如<code>BRANCH_NAME</code>、<code>JOB_NAME</code>等，这部分参数可以在shell脚本中直接进行调用。完整的环境变量可在<code>Jenkins_Url/env-vars.html/</code>中查看。</p>
 <p>配置完成后，就可以在<code>Build with Parameters</code>中通过如下形式手动触发构建。</p>
@@ -343,15 +343,19 @@
 			
 		
 			
-				<li><a href="/tags/Appium/" title="Appium">Appium<sup>7</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/iOS/" title="iOS">iOS<sup>7</sup></a></li>
 			
 		
 			
+				<li><a href="/tags/Appium/" title="Appium">Appium<sup>7</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/LoadRunner/" title="LoadRunner">LoadRunner<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/F0T1/" title="F0T1">F0T1<sup>5</sup></a></li>
 			
 		
 			
@@ -367,11 +371,19 @@
 			
 		
 			
-				<li><a href="/tags/F0T1/" title="F0T1">F0T1<sup>5</sup></a></li>
+				<li><a href="/tags/Locust/" title="Locust">Locust<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/性能测试/" title="性能测试">性能测试<sup>4</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/Python/" title="Python">Python<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/WSDL/" title="WSDL">WSDL<sup>3</sup></a></li>
 			
 		
 			
@@ -387,19 +399,7 @@
 			
 		
 			
-				<li><a href="/tags/WSDL/" title="WSDL">WSDL<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/个人成长/" title="个人成长">个人成长<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/脚本开发/" title="脚本开发">脚本开发<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/黑盒测试/" title="黑盒测试">黑盒测试<sup>2</sup></a></li>
+				<li><a href="/tags/Git/" title="Git">Git<sup>2</sup></a></li>
 			
 		
 			
@@ -407,11 +407,11 @@
 			
 		
 			
-				<li><a href="/tags/性能测试/" title="性能测试">性能测试<sup>2</sup></a></li>
+				<li><a href="/tags/性能指标/" title="性能指标">性能指标<sup>2</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Simulator/" title="Simulator">Simulator<sup>2</sup></a></li>
+				<li><a href="/tags/脚本开发/" title="脚本开发">脚本开发<sup>2</sup></a></li>
 			
 		
 		</ul>
