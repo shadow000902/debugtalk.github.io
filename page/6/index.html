@@ -44,7 +44,7 @@
 				<h1 class="site-name"><a href="/" title="DebugTalk">DebugTalk</a></h1>
 				<h2 class="blog-motto">探索一个软件工程师的无限可能</h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -60,7 +60,7 @@
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
 						<input type="hidden" name="q" value="site:debugtalk.com">
 					</form>
 					
@@ -71,26 +71,6 @@
     </header>
     <div id="container">
       <div id="main">
-
-  
-<section class="post" itemscope itemprop="blogitem">
-  
-    <a href="/post/Using-DuoShuo-in-Pelican/" title="在Pelican中使用多说评论系统" itemprop="url">
-  
-    <h1 itemprop="name">在Pelican中使用多说评论系统</h1>
-    
-     
-           <p itemprop="description" >引言Pelican默认采用的是Disqus评论系统，但由于Disqus附带的Facebook和Twitter社交功能在国内无法使用，因此我们更希望使用一些国内的SNS平台，比如QQ，新浪微博，豆瓣，人人等。在国产的评论系统中，使用较多的有多说、有言等，本文将介绍如何在Pelica</p>
-        
-    
-    <time datetime="2013-10-04T16:00:00.000Z" itemprop="datePublished">2013-10-05</time>
-  </a>
-</section>
-
-
-
-
-
 
   
 <section class="post" itemscope itemprop="blogitem">
@@ -262,21 +242,44 @@
 
 
 
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/post/scenario-design-scripts-percent-controll/" title="性能测试场景设计--混合业务场景下的脚本比例控制" itemprop="url">
+  
+    <h1 itemprop="name">性能测试场景设计--混合业务场景下的脚本比例控制</h1>
+    
+     
+           <p itemprop="description" >在某个业务场景中，包含数据创建和数据查询两项业务；现需考察数据创建和数据查询两项业务在并发比例为2:1、总并发量为100用户情况下的混合响应时间。
+##1、在Vugen端实现
+对混合比例的设置，可直接在脚本中进行，即通过随机函数rand实现，脚本设计如下所示。
+123456789</p>
+        
+    
+    <time datetime="2013-07-21T16:00:00.000Z" itemprop="datePublished">2013-07-22</time>
+  </a>
+</section>
+
+
+
+
+
+
 
   <nav id="page-nav" class="clearfix unexpand">
-    <a class="extend prev" rel="prev" href="/page/5/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/7/">Next<span></span></a>
+    <a class="extend prev" rel="prev" href="/page/5/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span>
   </nav>
 
 </div>
-      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
 <aside class="clearfix">
 
   
 <div class="github-card">
-<p class="asidetitle">Github Card</p>
+<p class="asidetitle">My Github</p>
 <div class="github-card" data-github="debugtalk" data-width="220" data-height="119" data-theme="medium">
 <script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
 </div>
@@ -288,7 +291,7 @@
 
   
 <div class="tagslist">
-	<p class="asidetitle">Tags</p>
+	<p class="asidetitle">标签</p>
 		<ul class="clearfix">
 		
 			
@@ -376,7 +379,7 @@
 
 
   <div class="linkslist">
-  <p class="asidetitle">Recent GitHub Projects</p>
+  <p class="asidetitle">近期开源项目</p>
     <ul>
         
           <li>
@@ -421,7 +424,7 @@
 
 
   <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
 </div>
 
 </aside>
@@ -563,7 +566,7 @@ $(document).ready(function(){
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 

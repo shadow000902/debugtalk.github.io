@@ -44,20 +44,16 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/Android-performance-test-start-traffic-tcpdump-wireshark/</loc>
+    <loc>http://debugtalk.com/post/Android-performance-test-start-traffic-uid-stat/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
         <display>
-        <title>Android App持续集成性能测试：启动流量（2）</title>
+        <title>Android App持续集成性能测试：启动流量（1）</title>
         <pubTime>2016-05-02T16:00:00.000Z</pubTime>
         
         <tag>Android</tag>
          
         <tag>流量测试</tag>
-         
-        <tag>tcpdump</tag>
-         
-        <tag>wireshark</tag>
          
          
            
@@ -598,25 +594,6 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/Android-performance-test-start-traffic-uid-stat/</loc>
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    <data>
-        <display>
-        <title>Android App持续集成性能测试：启动流量（1）</title>
-        <pubTime>2016-05-02T16:00:00.000Z</pubTime>
-        
-        <tag>Android</tag>
-         
-        <tag>流量测试</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://debugtalk.com/post/concept-about-webservice/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
@@ -629,6 +606,29 @@
         <tag>WSDL</tag>
          
         <tag>SOAP</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/Android-performance-test-start-traffic-tcpdump-wireshark/</loc>
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android App持续集成性能测试：启动流量（2）</title>
+        <pubTime>2016-05-02T16:00:00.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>流量测试</tag>
+         
+        <tag>tcpdump</tag>
+         
+        <tag>wireshark</tag>
          
          
            
@@ -908,21 +908,6 @@
          
         <tag>RSpec</tag>
          
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/dji-drones-coupons-and-robomasters-tickets/</loc>
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    <data>
-        <display>
-        <title>发福利啦！大疆无人机员工优惠券&机器人争霸赛门票</title>
-        <pubTime>2016-08-11T16:00:00.000Z</pubTime>
-        
          
            
         </display>
