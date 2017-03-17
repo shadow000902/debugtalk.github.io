@@ -22,7 +22,7 @@
 在本文中，我将在M项目中挑选一个功能点，对其编写自动化测试脚本，演示编写自动化测试用例的整个流程。
 语言的选择：Python or Ruby？之前介绍Appium的时候也提到，Appium采用Client-Server的架构设计，并采用标准">
 <meta property="og:image" content="http://debugtalk.com/images/DJI_Plus_Login.jpg">
-<meta property="og:updated_time" content="2017-03-11T04:11:02.000Z">
+<meta property="og:updated_time" content="2017-03-17T17:02:03.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从0到1搭建移动App功能自动化测试平台（3）：编写iOS自动化测试脚本">
 <meta name="twitter:description" content="通过前面三篇文章，我们已经将iOS自动化功能测试的开发环境全部准备就绪，也学习了iOS UI控件交互操作的一般性方法，接下来，就可以开始编写自动化测试脚本了。
@@ -56,7 +56,7 @@
 				<h1 class="site-name"><a href="/" title="DebugTalk">DebugTalk</a></h1>
 				<h2 class="blog-motto">探索一个软件工程师的无限可能</h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -72,7 +72,7 @@
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
 						<input type="hidden" name="q" value="site:debugtalk.com">
 					</form>
 					
@@ -95,7 +95,7 @@
 		<a href="/about" title="九毫" target="_blank" itemprop="author">九毫</a>
 		 -->
   <p class="article-time">
-    <time datetime="2016-05-29T16:00:00.000Z" itemprop="datePublished"> 发表于 2016-05-30</time>
+    <time datetime="2016-05-29T16:00:00.000Z" itemprop="datePublished"> Published 2016-05-30</time>
     
     <span id="busuanzi_container_page_pv">
       | 本文总阅读量<span id="busuanzi_value_page_pv"></span>次
@@ -107,7 +107,7 @@
 	<div class="article-content">
 		
 		<div id="toc" class="toc-article">
-			<strong class="toc-title">文章目录</strong>
+			<strong class="toc-title">Contents</strong>
 		
 			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#语言的选择：Python-or-Ruby？"><span class="toc-number">1.</span> <span class="toc-text">语言的选择：Python or Ruby？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第一个测试用例：系统登录"><span class="toc-number">2.</span> <span class="toc-text">第一个测试用例：系统登录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#优化测试脚本：加入等待机制"><span class="toc-number">3.</span> <span class="toc-text">优化测试脚本：加入等待机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#优化测试脚本：加入结果检测机制"><span class="toc-number">4.</span> <span class="toc-text">优化测试脚本：加入结果检测机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#To-be-continued-…"><span class="toc-number">5.</span> <span class="toc-text">To be continued …</span></a></li></ol>
 		
@@ -143,18 +143,18 @@
 <p>进入到登录页面后，再次查看页面中的控件信息：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">[4] pry(main)&gt; page</div><div class="line">...（略）</div><div class="line">UIATextField</div><div class="line">   value: Email Address</div><div class="line">   id: Email Address =&gt; Email Address</div><div class="line">UIASecureTextField</div><div class="line">   value: Password (6-16 characters)</div><div class="line">   id: Password (6-16 characters) =&gt; Password (6-16 characters)</div><div class="line">UIAButton</div><div class="line">   name, label: Login</div><div class="line">   id: Log In =&gt; Login</div><div class="line">       登录     =&gt; Login</div><div class="line">...（略）</div></pre></td></tr></table></figure>
 <p>第三步需要填写账号密码，账号密码的控件属性分别是<code>UIATextField</code>和<code>UIASecureTextField</code>。由于这两个控件的类型在登录页面都是唯一的，因此可以采用控件的类型来进行定位，然后进行输入操作，代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[5] pry(main)&gt; tag(&apos;UIATextField&apos;).type &apos;leo.lee@dji.com&apos;</div><div class="line">&quot;&quot;</div><div class="line">[6] pry(main)&gt; tag(&apos;UIASecureTextField&apos;).type &apos;123456&apos;</div><div class="line">&quot;&quot;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[5] pry(main)&gt; tag(&apos;UIATextField&apos;).type &apos;leo.lee@debugtalk.com&apos;</div><div class="line">&quot;&quot;</div><div class="line">[6] pry(main)&gt; tag(&apos;UIASecureTextField&apos;).type &apos;123456&apos;</div><div class="line">&quot;&quot;</div></pre></td></tr></table></figure>
 <p>执行完输入命令后，在iOS模拟器中可以看到账号密码输入框都成功输入了内容。</p>
 <p>最后第四步点击【Login】按钮，操作上和第二步完全一致。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[7] pry(main)&gt; button_exact(&apos;Login&apos;).click</div><div class="line">nil</div></pre></td></tr></table></figure>
 <p>执行完以上四个步骤后，在iOS模拟器中看到成功完成账号登录操作，这说明我们的执行命令没有问题，可以用于编写自动化测试代码。整合起来，测试脚本就是下面这样。</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">button_exact(<span class="string">'My Account'</span>).click</div><div class="line">button_exact(<span class="string">'Login'</span>).click</div><div class="line">tag(<span class="string">'UIATextField'</span>).type <span class="string">'leo.lee@dji.com'</span></div><div class="line">tag(<span class="string">'UIASecureTextField'</span>).type <span class="string">'12345678'</span></div><div class="line">button_exact(<span class="string">'Login'</span>).click</div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">button_exact(<span class="string">'My Account'</span>).click</div><div class="line">button_exact(<span class="string">'Login'</span>).click</div><div class="line">tag(<span class="string">'UIATextField'</span>).type <span class="string">'leo.lee@debugtalk.com'</span></div><div class="line">tag(<span class="string">'UIASecureTextField'</span>).type <span class="string">'12345678'</span></div><div class="line">button_exact(<span class="string">'Login'</span>).click</div></pre></td></tr></table></figure>
 <p>将以上脚本保存为<code>login.rb</code>文件。</p>
 <p>但当我们直接运行<code>login.rb</code>文件时，并不能运行成功。原因很简单，脚本中的<code>button_exact</code>、<code>tag</code>这些方法并没有定义，我们在文件中也没有引入相关库文件。</p>
 <p>在上一篇文章中有介绍过，通过<code>arc</code>启动虚拟机时，会从<code>appium.txt</code>中读取虚拟机的配置信息。类似的，我们在脚本中执行自动化测试时，也会加载虚拟机，因此同样需要在脚本中指定虚拟机的配置信息，并初始化<code>Appium Driver</code>的实例。</p>
 <p>初始化代码可以通过<code>Appium Inspector</code>生成，基本上为固定模式，我们暂时不用深究。</p>
 <p>添加初始化部分的代码后，测试脚本如下所示。</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">require</span> <span class="string">'rubygems'</span></div><div class="line"><span class="keyword">require</span> <span class="string">'appium_lib'</span></div><div class="line"></div><div class="line">capabilities = &#123;</div><div class="line">  <span class="string">'appium-version'</span> =&gt; <span class="string">'1.0'</span>,</div><div class="line">  <span class="string">'platformName'</span> =&gt; <span class="string">'iOS'</span>,</div><div class="line">  <span class="string">'platformVersion'</span> =&gt; <span class="string">'9.3'</span>,</div><div class="line">&#125;</div><div class="line">Appium::Driver.new(<span class="symbol">caps:</span> capabilities).start_driver</div><div class="line">Appium.promote_appium_methods Object</div><div class="line"></div><div class="line"><span class="comment"># testcase: login</span></div><div class="line">button_exact(<span class="string">'My Account'</span>).click</div><div class="line">button_exact(<span class="string">'Login'</span>).click</div><div class="line">tag(<span class="string">'UIATextField'</span>).type <span class="string">'leo.lee@dji.com'</span></div><div class="line">tag(<span class="string">'UIASecureTextField'</span>).type <span class="string">'123456'</span></div><div class="line">button_exact(<span class="string">'Login'</span>).click</div><div class="line"></div><div class="line">driver_quit</div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">require</span> <span class="string">'rubygems'</span></div><div class="line"><span class="keyword">require</span> <span class="string">'appium_lib'</span></div><div class="line"></div><div class="line">capabilities = &#123;</div><div class="line">  <span class="string">'appium-version'</span> =&gt; <span class="string">'1.0'</span>,</div><div class="line">  <span class="string">'platformName'</span> =&gt; <span class="string">'iOS'</span>,</div><div class="line">  <span class="string">'platformVersion'</span> =&gt; <span class="string">'9.3'</span>,</div><div class="line">&#125;</div><div class="line">Appium::Driver.new(<span class="symbol">caps:</span> capabilities).start_driver</div><div class="line">Appium.promote_appium_methods Object</div><div class="line"></div><div class="line"><span class="comment"># testcase: login</span></div><div class="line">button_exact(<span class="string">'My Account'</span>).click</div><div class="line">button_exact(<span class="string">'Login'</span>).click</div><div class="line">tag(<span class="string">'UIATextField'</span>).type <span class="string">'leo.lee@debugtalk.com'</span></div><div class="line">tag(<span class="string">'UIASecureTextField'</span>).type <span class="string">'123456'</span></div><div class="line">button_exact(<span class="string">'Login'</span>).click</div><div class="line"></div><div class="line">driver_quit</div></pre></td></tr></table></figure>
 <h2 id="优化测试脚本：加入等待机制"><a href="#优化测试脚本：加入等待机制" class="headerlink" title="优化测试脚本：加入等待机制"></a>优化测试脚本：加入等待机制</h2><p>如上测试脚本编写好后，在Terminal中运行<code>ruby login.rb</code>，就可以执行脚本了。</p>
 <p>运行命令后，会看到iOS虚拟机成功启动，接着App成功进行加载，然后自动按照前面设计的路径，执行系统登录流程。</p>
 <p>但是，在实际操作过程中，发现有时候运行脚本时会出现找不到控件的异常，异常信息如下所示：</p>
@@ -165,7 +165,7 @@
 <p>那针对这种情况，我们要怎么修改测试脚本呢？难道要在每一行代码之间都添加休眠（sleep）函数么？</p>
 <p>也不用这么麻烦，针对这类情况，<code>ruby_lib</code>实现了<code>wait</code>机制。将执行命令放入到<code>wait{}</code>中后，执行脚本时就会等待该命令执行完成后再去执行下一条命令。当然，等待也不是无休止的，如果等待30秒后还是没有执行完，仍然会抛出异常。</p>
 <p>登录流程的测试脚本修改后如下所示（已省略初始化部分的代码）：</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">wait &#123; button_exact(<span class="string">'My Account'</span>).click &#125;</div><div class="line">wait &#123; button_exact(<span class="string">'Login'</span>).click &#125;</div><div class="line">wait &#123; tag(<span class="string">'UIATextField'</span>).type <span class="string">'leo.lee@dji.com'</span> &#125;</div><div class="line">wait &#123; tag(<span class="string">'UIASecureTextField'</span>).type <span class="string">'123456'</span> &#125;</div><div class="line">wait &#123; button_exact(<span class="string">'Login'</span>).click &#125;</div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">wait &#123; button_exact(<span class="string">'My Account'</span>).click &#125;</div><div class="line">wait &#123; button_exact(<span class="string">'Login'</span>).click &#125;</div><div class="line">wait &#123; tag(<span class="string">'UIATextField'</span>).type <span class="string">'leo.lee@debugtalk.com'</span> &#125;</div><div class="line">wait &#123; tag(<span class="string">'UIASecureTextField'</span>).type <span class="string">'123456'</span> &#125;</div><div class="line">wait &#123; button_exact(<span class="string">'Login'</span>).click &#125;</div></pre></td></tr></table></figure>
 <p>对脚本添加<code>wait</code>机制后，之前出现的找不到控件的异常就不再出现了。</p>
 <h2 id="优化测试脚本：加入结果检测机制"><a href="#优化测试脚本：加入结果检测机制" class="headerlink" title="优化测试脚本：加入结果检测机制"></a>优化测试脚本：加入结果检测机制</h2><p>然而，现在脚本仍然不够完善。</p>
 <p>我们在<code>Appium Ruby Console</code>中手工执行命令后，都是由人工肉眼确认虚拟机中APP是否成功进入下一个页面，或者返回结果是否正确。</p>
@@ -175,7 +175,7 @@
 <p>例如，由A页面跳转至B页面，在B页面中会存在“Welcome”的文本控件，但是在A页面中是没有这个“Welcome”文本控件的；那么，我们就可以在脚本中的跳转页面语句之后，加入一条检测“Welcome”文本控件的语句；后续在执行测试脚本的时候，如果页面跳转失败，就会因为找不到控件而抛出异常，我们也能通过这个异常知道测试执行失败了。</p>
 <p>当然，对下一页面中的控件进行检测时同样需要加入等待机制的。</p>
 <p>登录流程的测试脚本修改后如下所示（已省略初始化部分的代码）：</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">wait &#123; button_exact(<span class="string">'My Account'</span>).click &#125;</div><div class="line">wait &#123; text_exact <span class="string">'System Settings'</span> &#125;</div><div class="line"></div><div class="line">wait &#123; button_exact(<span class="string">'Login'</span>).click &#125;</div><div class="line">wait &#123; button_exact <span class="string">'Forget password?'</span> &#125;</div><div class="line"></div><div class="line">wait &#123; tag(<span class="string">'UIATextField'</span>).type <span class="string">'leo.lee@dji.com'</span> &#125;</div><div class="line">wait &#123; tag(<span class="string">'UIASecureTextField'</span>).type <span class="string">'12345678'</span> &#125;</div><div class="line">wait &#123; button_exact(<span class="string">'Login'</span>).click &#125;</div><div class="line">wait &#123; text_exact <span class="string">'My Message'</span> &#125;</div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">wait &#123; button_exact(<span class="string">'My Account'</span>).click &#125;</div><div class="line">wait &#123; text_exact <span class="string">'System Settings'</span> &#125;</div><div class="line"></div><div class="line">wait &#123; button_exact(<span class="string">'Login'</span>).click &#125;</div><div class="line">wait &#123; button_exact <span class="string">'Forget password?'</span> &#125;</div><div class="line"></div><div class="line">wait &#123; tag(<span class="string">'UIATextField'</span>).type <span class="string">'leo.lee@debugtalk.com'</span> &#125;</div><div class="line">wait &#123; tag(<span class="string">'UIASecureTextField'</span>).type <span class="string">'12345678'</span> &#125;</div><div class="line">wait &#123; button_exact(<span class="string">'Login'</span>).click &#125;</div><div class="line">wait &#123; text_exact <span class="string">'My Message'</span> &#125;</div></pre></td></tr></table></figure>
 <p>至此，系统登录流程的自动化测试脚本我们就编写完成了。</p>
 <h2 id="To-be-continued-…"><a href="#To-be-continued-…" class="headerlink" title="To be continued …"></a>To be continued …</h2><p>在本文中，我们通过系统登录这一典型功能点，演示了编写自动化测试用例的整个流程。</p>
 <p>在下一篇文章中，我们还会对自动化测试脚本的结构进行进一步优化，并实现测试代码工程化。</p>
@@ -235,22 +235,22 @@
 
 
 </div>  
-      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
 
   <div id="toc" class="toc-aside">
-  <strong class="toc-title">文章目录</strong>
+  <strong class="toc-title">Contents</strong>
  
  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#语言的选择：Python-or-Ruby？"><span class="toc-number">1.</span> <span class="toc-text">语言的选择：Python or Ruby？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第一个测试用例：系统登录"><span class="toc-number">2.</span> <span class="toc-text">第一个测试用例：系统登录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#优化测试脚本：加入等待机制"><span class="toc-number">3.</span> <span class="toc-text">优化测试脚本：加入等待机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#优化测试脚本：加入结果检测机制"><span class="toc-number">4.</span> <span class="toc-text">优化测试脚本：加入结果检测机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#To-be-continued-…"><span class="toc-number">5.</span> <span class="toc-text">To be continued …</span></a></li></ol>
  
   </div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
 <aside class="clearfix">
 
   
 <div class="github-card">
-<p class="asidetitle">My Github</p>
+<p class="asidetitle">Github Card</p>
 <div class="github-card" data-github="debugtalk" data-width="220" data-height="119" data-theme="medium">
 <script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
 </div>
@@ -262,7 +262,7 @@
 
   
 <div class="tagslist">
-	<p class="asidetitle">标签</p>
+	<p class="asidetitle">Tags</p>
 		<ul class="clearfix">
 		
 			
@@ -274,6 +274,10 @@
 			
 		
 			
+				<li><a href="/tags/iOS/" title="iOS">iOS<sup>7</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/Appium/" title="Appium">Appium<sup>7</sup></a></li>
 			
 		
@@ -282,7 +286,7 @@
 			
 		
 			
-				<li><a href="/tags/iOS/" title="iOS">iOS<sup>7</sup></a></li>
+				<li><a href="/tags/环境搭建/" title="环境搭建">环境搭建<sup>5</sup></a></li>
 			
 		
 			
@@ -291,10 +295,6 @@
 		
 			
 				<li><a href="/tags/F0T1/" title="F0T1">F0T1<sup>5</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/环境搭建/" title="环境搭建">环境搭建<sup>5</sup></a></li>
 			
 		
 			
@@ -314,7 +314,15 @@
 			
 		
 			
+				<li><a href="/tags/WSDL/" title="WSDL">WSDL<sup>3</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/Git/" title="Git">Git<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/CI/" title="CI">CI<sup>3</sup></a></li>
 			
 		
 			
@@ -326,23 +334,15 @@
 			
 		
 			
-				<li><a href="/tags/WSDL/" title="WSDL">WSDL<sup>3</sup></a></li>
+				<li><a href="/tags/AppiumBooster/" title="AppiumBooster">AppiumBooster<sup>2</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/CI/" title="CI">CI<sup>3</sup></a></li>
+				<li><a href="/tags/Pelican/" title="Pelican">Pelican<sup>2</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/性能指标/" title="性能指标">性能指标<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/黑盒测试/" title="黑盒测试">黑盒测试<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/测试用例设计/" title="测试用例设计">测试用例设计<sup>2</sup></a></li>
 			
 		
 		</ul>
@@ -350,7 +350,7 @@
 
 
   <div class="linkslist">
-  <p class="asidetitle">近期开源项目</p>
+  <p class="asidetitle">Recent GitHub Projects</p>
     <ul>
         
           <li>
@@ -395,7 +395,7 @@
 
 
   <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
 </div>
 
 </aside>
@@ -626,7 +626,7 @@ $(document).ready(function(){
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 
