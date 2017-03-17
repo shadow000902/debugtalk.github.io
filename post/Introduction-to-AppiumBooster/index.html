@@ -12,20 +12,20 @@
 
     
     <meta name="description" content="AppiumBoosterAppiumBooster helps you to write automation testcases in yaml format or csv tables, without writing a snippet of code.
-write testcases in yaml (recommended)Take DJI+ Discover’s login and">
+write testcases in yaml (recommended)Take DebugTalk+ Discover’s logi">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Introduction to AppiumBooster">
 <meta property="og:url" content="http://debugtalk.com/post/Introduction-to-AppiumBooster/index.html">
 <meta property="og:site_name" content="DebugTalk">
 <meta property="og:description" content="AppiumBoosterAppiumBooster helps you to write automation testcases in yaml format or csv tables, without writing a snippet of code.
-write testcases in yaml (recommended)Take DJI+ Discover’s login and">
+write testcases in yaml (recommended)Take DebugTalk+ Discover’s logi">
 <meta property="og:image" content="http://debugtalk.com/images/preview_login_and_logout.png">
 <meta property="og:image" content="http://debugtalk.com/images/testcase_login_and_logout.png">
-<meta property="og:updated_time" content="2017-03-11T04:11:02.000Z">
+<meta property="og:updated_time" content="2017-03-17T17:14:43.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Introduction to AppiumBooster">
 <meta name="twitter:description" content="AppiumBoosterAppiumBooster helps you to write automation testcases in yaml format or csv tables, without writing a snippet of code.
-write testcases in yaml (recommended)Take DJI+ Discover’s login and">
+write testcases in yaml (recommended)Take DebugTalk+ Discover’s logi">
 <meta name="twitter:image" content="http://debugtalk.com/images/preview_login_and_logout.png">
 
     
@@ -112,7 +112,7 @@ write testcases in yaml (recommended)Take DJI+ Discover’s login and">
 		</div>
 		
 		<h2 id="AppiumBooster"><a href="#AppiumBooster" class="headerlink" title="AppiumBooster"></a>AppiumBooster</h2><p>AppiumBooster helps you to write automation testcases in yaml format or csv tables, without writing a snippet of code.</p>
-<h2 id="write-testcases-in-yaml-recommended"><a href="#write-testcases-in-yaml-recommended" class="headerlink" title="write testcases in yaml (recommended)"></a>write testcases in yaml (recommended)</h2><p>Take DJI+ Discover’s login and logout function as an example.</p>
+<h2 id="write-testcases-in-yaml-recommended"><a href="#write-testcases-in-yaml-recommended" class="headerlink" title="write testcases in yaml (recommended)"></a>write testcases in yaml (recommended)</h2><p>Take DebugTalk+ Discover’s login and logout function as an example.</p>
 <p><img src="/images/preview_login_and_logout.png" alt="preview of login and logout"></p>
 <p>In order to test these functions above, you can write testcases in yaml format like this.</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># ios/testcases/Account.yml</span></div><div class="line"><span class="meta">---</span></div><div class="line"><span class="attr">AccountTestcases:</span></div><div class="line">  login with valid account:</div><div class="line"><span class="bullet">    -</span> AccountSteps | enter My Account page</div><div class="line"><span class="bullet">    -</span> AccountSteps | enter Login page</div><div class="line"><span class="bullet">    -</span> AccountSteps | input EmailAddress</div><div class="line"><span class="bullet">    -</span> AccountSteps | input Password</div><div class="line"><span class="bullet">    -</span> AccountSteps | login</div><div class="line"><span class="bullet">    -</span> AccountSteps | close coupon popup window(optional)</div><div class="line"></div><div class="line"><span class="attr">  logout:</span></div><div class="line"><span class="bullet">    -</span> AccountSteps | enter My Account page</div><div class="line"><span class="bullet">    -</span> SettingsSteps | enter Settings page</div><div class="line"><span class="bullet">    -</span> AccountSteps | logout</div></pre></td></tr></table></figure>
