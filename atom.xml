@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://debugtalk.com/"/>
-  <updated>2017-03-17T08:34:38.000Z</updated>
+  <updated>2017-03-17T10:15:40.000Z</updated>
   <id>http://debugtalk.com/</id>
   
   <author>
@@ -16,13 +16,14 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>【GIT技巧】清除历史记录中的敏感信息</title>
+    <title>【GIT技巧】清除历史提交记录中的敏感信息</title>
     <link href="http://debugtalk.com/post/clean-sensitive-data-from-git-history-commits/"/>
     <id>http://debugtalk.com/post/clean-sensitive-data-from-git-history-commits/</id>
     <published>2017-03-16T16:00:00.000Z</published>
-    <updated>2017-03-17T08:34:38.000Z</updated>
+    <updated>2017-03-17T10:15:40.000Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><p>在使用GitHub的过程中，假如某次提交代码时不小心将密码或<code>SSH-key</code>提交进了公共仓库。当然，希望这种事情永远也不会发生，但是如果真遇到了，该怎么办呢？</p>
+    <content type="html"><![CDATA[<p><img src="/images/GitHub_hacker.jpg" alt=""></p>
+<h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><p>在使用GitHub的过程中，假如某次提交代码时不小心将密码或<code>SSH-key</code>提交进了公共仓库。当然，希望这种事情永远也不会发生，但是如果真遇到了，该怎么办呢？</p>
 <p>如果发现得及时，本地提交后还没有推送到GitHub远程仓库的话，这种情况还好处理，直接修改代码后通过<code>git commit --amend</code>即可。</p>
 <p>但如果发现时已经推送到了GitHub远程仓库，或者已过了许久，后续有了很多新的<code>commits</code>，这种情况就会比较复杂了。</p>
 <p>错误的方式是，直接在当前代码中去除敏感信息，然后再提交到代码仓库中。这样的做法只能在最新的代码中去除了敏感信息，在git历史记录中仍然保存着敏感信息。</p>
@@ -61,7 +62,8 @@
     
     <summary type="html">
     
-      &lt;h2 id=&quot;背景介绍&quot;&gt;&lt;a href=&quot;#背景介绍&quot; class=&quot;headerlink&quot; title=&quot;背景介绍&quot;&gt;&lt;/a&gt;背景介绍&lt;/h2&gt;&lt;p&gt;在使用GitHub的过程中，假如某次提交代码时不小心将密码或&lt;code&gt;SSH-key&lt;/code&gt;提交进了公共仓库。当然，
+      &lt;p&gt;&lt;img src=&quot;/images/GitHub_hacker.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;背景介绍&quot;&gt;&lt;a href=&quot;#背景介绍&quot; class=&quot;headerlink&quot; title=&quot;背景介绍&quot;&gt;&lt;/a&gt;背景介绍&lt;/h2&gt;&lt;p&gt;在使用GitHub的
     
     </summary>
     
@@ -519,13 +521,13 @@
     </summary>
     
     
+      <category term="Locust" scheme="http://debugtalk.com/tags/Locust/"/>
+    
       <category term="Web proxy" scheme="http://debugtalk.com/tags/Web-proxy/"/>
     
       <category term="Shuttle" scheme="http://debugtalk.com/tags/Shuttle/"/>
     
       <category term="mitmproxy" scheme="http://debugtalk.com/tags/mitmproxy/"/>
-    
-      <category term="Locust" scheme="http://debugtalk.com/tags/Locust/"/>
     
   </entry>
   

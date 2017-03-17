@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>【GIT技巧】清除历史记录中的敏感信息 | DebugTalk</title>
+    <title>【GIT技巧】清除历史提交记录中的敏感信息 | DebugTalk</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="九毫">
@@ -13,20 +13,22 @@
     
     <meta name="description" content="背景介绍在使用GitHub的过程中，假如某次提交代码时不小心将密码或SSH-key提交进了公共仓库。当然，希望这种事情永远也不会发生，但是如果真遇到了，该怎么办呢？
 如果发现得及时，本地提交后还没有推送到GitHub远程仓库的话，这种情况还好处理，直接修改代码后通过git commit --amend即可。
-但如果发现时已经推送到了GitHub远程仓库，或者已过了许久，后续有了很多新的commit">
+但如果发现时已经推送到了GitHub远程仓库，或者已过了许久，后续有了很多新的commi">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【GIT技巧】清除历史记录中的敏感信息">
+<meta property="og:title" content="【GIT技巧】清除历史提交记录中的敏感信息">
 <meta property="og:url" content="http://debugtalk.com/post/clean-sensitive-data-from-git-history-commits/index.html">
 <meta property="og:site_name" content="DebugTalk">
 <meta property="og:description" content="背景介绍在使用GitHub的过程中，假如某次提交代码时不小心将密码或SSH-key提交进了公共仓库。当然，希望这种事情永远也不会发生，但是如果真遇到了，该怎么办呢？
 如果发现得及时，本地提交后还没有推送到GitHub远程仓库的话，这种情况还好处理，直接修改代码后通过git commit --amend即可。
-但如果发现时已经推送到了GitHub远程仓库，或者已过了许久，后续有了很多新的commit">
-<meta property="og:updated_time" content="2017-03-17T08:34:38.000Z">
+但如果发现时已经推送到了GitHub远程仓库，或者已过了许久，后续有了很多新的commi">
+<meta property="og:image" content="http://debugtalk.com/images/GitHub_hacker.jpg">
+<meta property="og:updated_time" content="2017-03-17T10:15:40.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="【GIT技巧】清除历史记录中的敏感信息">
+<meta name="twitter:title" content="【GIT技巧】清除历史提交记录中的敏感信息">
 <meta name="twitter:description" content="背景介绍在使用GitHub的过程中，假如某次提交代码时不小心将密码或SSH-key提交进了公共仓库。当然，希望这种事情永远也不会发生，但是如果真遇到了，该怎么办呢？
 如果发现得及时，本地提交后还没有推送到GitHub远程仓库的话，这种情况还好处理，直接修改代码后通过git commit --amend即可。
-但如果发现时已经推送到了GitHub远程仓库，或者已过了许久，后续有了很多新的commit">
+但如果发现时已经推送到了GitHub远程仓库，或者已过了许久，后续有了很多新的commi">
+<meta name="twitter:image" content="http://debugtalk.com/images/GitHub_hacker.jpg">
 
     
     <link rel="alternative" href="/atom.xml" title="DebugTalk" type="application/atom+xml">
@@ -86,7 +88,7 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/post/clean-sensitive-data-from-git-history-commits/" title="【GIT技巧】清除历史记录中的敏感信息" itemprop="url">【GIT技巧】清除历史记录中的敏感信息</a>
+      <a href="/post/clean-sensitive-data-from-git-history-commits/" title="【GIT技巧】清除历史提交记录中的敏感信息" itemprop="url">【GIT技巧】清除历史提交记录中的敏感信息</a>
   </h1>
   <!-- <p class="article-author">By
        
@@ -111,7 +113,8 @@
 		
 		</div>
 		
-		<h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><p>在使用GitHub的过程中，假如某次提交代码时不小心将密码或<code>SSH-key</code>提交进了公共仓库。当然，希望这种事情永远也不会发生，但是如果真遇到了，该怎么办呢？</p>
+		<p><img src="/images/GitHub_hacker.jpg" alt=""></p>
+<h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><p>在使用GitHub的过程中，假如某次提交代码时不小心将密码或<code>SSH-key</code>提交进了公共仓库。当然，希望这种事情永远也不会发生，但是如果真遇到了，该怎么办呢？</p>
 <p>如果发现得及时，本地提交后还没有推送到GitHub远程仓库的话，这种情况还好处理，直接修改代码后通过<code>git commit --amend</code>即可。</p>
 <p>但如果发现时已经推送到了GitHub远程仓库，或者已过了许久，后续有了很多新的<code>commits</code>，这种情况就会比较复杂了。</p>
 <p>错误的方式是，直接在当前代码中去除敏感信息，然后再提交到代码仓库中。这样的做法只能在最新的代码中去除了敏感信息，在git历史记录中仍然保存着敏感信息。</p>
@@ -163,7 +166,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://debugtalk.com/post/clean-sensitive-data-from-git-history-commits/" data-title="【GIT技巧】清除历史记录中的敏感信息 | DebugTalk" data-tsina="undefined" class="share clearfix">
+	  <div data-url="http://debugtalk.com/post/clean-sensitive-data-from-git-history-commits/" data-title="【GIT技巧】清除历史提交记录中的敏感信息 | DebugTalk" data-tsina="undefined" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -189,7 +192,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="post/clean-sensitive-data-from-git-history-commits/" data-title="【GIT技巧】清除历史记录中的敏感信息" data-url="http://debugtalk.com/post/clean-sensitive-data-from-git-history-commits/"></div>
+	<div class="ds-thread" data-thread-key="post/clean-sensitive-data-from-git-history-commits/" data-title="【GIT技巧】清除历史提交记录中的敏感信息" data-url="http://debugtalk.com/post/clean-sensitive-data-from-git-history-commits/"></div>
 </section>
 
 
@@ -233,11 +236,11 @@
 			
 		
 			
-				<li><a href="/tags/LoadRunner/" title="LoadRunner">LoadRunner<sup>7</sup></a></li>
+				<li><a href="/tags/Appium/" title="Appium">Appium<sup>7</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Appium/" title="Appium">Appium<sup>7</sup></a></li>
+				<li><a href="/tags/LoadRunner/" title="LoadRunner">LoadRunner<sup>7</sup></a></li>
 			
 		
 			
@@ -249,10 +252,6 @@
 			
 		
 			
-				<li><a href="/tags/Jenkins/" title="Jenkins">Jenkins<sup>5</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/F0T1/" title="F0T1">F0T1<sup>5</sup></a></li>
 			
 		
@@ -261,11 +260,11 @@
 			
 		
 			
-				<li><a href="/tags/性能测试/" title="性能测试">性能测试<sup>4</sup></a></li>
+				<li><a href="/tags/Jenkins/" title="Jenkins">Jenkins<sup>5</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Python/" title="Python">Python<sup>4</sup></a></li>
+				<li><a href="/tags/性能测试/" title="性能测试">性能测试<sup>4</sup></a></li>
 			
 		
 			
@@ -273,19 +272,7 @@
 			
 		
 			
-				<li><a href="/tags/Ruby/" title="Ruby">Ruby<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/CI/" title="CI">CI<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/WSDL/" title="WSDL">WSDL<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/SOAP/" title="SOAP">SOAP<sup>3</sup></a></li>
+				<li><a href="/tags/Python/" title="Python">Python<sup>4</sup></a></li>
 			
 		
 			
@@ -293,7 +280,23 @@
 			
 		
 			
-				<li><a href="/tags/个人成长/" title="个人成长">个人成长<sup>2</sup></a></li>
+				<li><a href="/tags/SOAP/" title="SOAP">SOAP<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Ruby/" title="Ruby">Ruby<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/WSDL/" title="WSDL">WSDL<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/CI/" title="CI">CI<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/性能指标/" title="性能指标">性能指标<sup>2</sup></a></li>
 			
 		
 			

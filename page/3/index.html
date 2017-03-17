@@ -184,13 +184,13 @@ iOS应用安装包的基础知识作为完全的iOS新手，困惑</p>
   
 <section class="post" itemscope itemprop="blogitem">
   
-    <a href="/post/Android-performance-test-start-traffic-uid-stat/" title="Android App持续集成性能测试：启动流量（1）" itemprop="url">
+    <a href="/post/Android-performance-test-start-traffic-tcpdump-wireshark/" title="Android App持续集成性能测试：启动流量（2）" itemprop="url">
   
-    <h1 itemprop="name">Android App持续集成性能测试：启动流量（1）</h1>
+    <h1 itemprop="name">Android App持续集成性能测试：启动流量（2）</h1>
     
      
-           <p itemprop="description" >本文对Android App的启动流量测试进行介绍。这里的启动流量指的是网络流量，即App在启动时发起网络请求和接收网络响应时传输的网络数据量。
-说起流量，也许大家的第一反应就是tcpdump/wireshark这类网络抓包工具。的确，Android系统确实也支持tcpdump工</p>
+           <p itemprop="description" >在上一篇文章中，介绍了一种测试Android App启动流量的方法。当时也提到了，通过读取/proc/uid_stat/&amp;lt;UID&amp;gt;/目录下的tcp_rcv和tcp_snd文件，只能得到App的流量总值，无法得到更细化的数据。
+例如，UC浏览器国际版在启动后，会和美国的</p>
         
     
     <time datetime="2016-05-02T16:00:00.000Z" itemprop="datePublished">2016-05-03</time>
@@ -205,13 +205,13 @@ iOS应用安装包的基础知识作为完全的iOS新手，困惑</p>
   
 <section class="post" itemscope itemprop="blogitem">
   
-    <a href="/post/Android-performance-test-start-traffic-tcpdump-wireshark/" title="Android App持续集成性能测试：启动流量（2）" itemprop="url">
+    <a href="/post/Android-performance-test-start-traffic-uid-stat/" title="Android App持续集成性能测试：启动流量（1）" itemprop="url">
   
-    <h1 itemprop="name">Android App持续集成性能测试：启动流量（2）</h1>
+    <h1 itemprop="name">Android App持续集成性能测试：启动流量（1）</h1>
     
      
-           <p itemprop="description" >在上一篇文章中，介绍了一种测试Android App启动流量的方法。当时也提到了，通过读取/proc/uid_stat/&amp;lt;UID&amp;gt;/目录下的tcp_rcv和tcp_snd文件，只能得到App的流量总值，无法得到更细化的数据。
-例如，UC浏览器国际版在启动后，会和美国的</p>
+           <p itemprop="description" >本文对Android App的启动流量测试进行介绍。这里的启动流量指的是网络流量，即App在启动时发起网络请求和接收网络响应时传输的网络数据量。
+说起流量，也许大家的第一反应就是tcpdump/wireshark这类网络抓包工具。的确，Android系统确实也支持tcpdump工</p>
         
     
     <time datetime="2016-05-02T16:00:00.000Z" itemprop="datePublished">2016-05-03</time>
@@ -320,11 +320,11 @@ dashboard
 			
 		
 			
-				<li><a href="/tags/LoadRunner/" title="LoadRunner">LoadRunner<sup>7</sup></a></li>
+				<li><a href="/tags/Appium/" title="Appium">Appium<sup>7</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Appium/" title="Appium">Appium<sup>7</sup></a></li>
+				<li><a href="/tags/LoadRunner/" title="LoadRunner">LoadRunner<sup>7</sup></a></li>
 			
 		
 			
@@ -336,10 +336,6 @@ dashboard
 			
 		
 			
-				<li><a href="/tags/Jenkins/" title="Jenkins">Jenkins<sup>5</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/F0T1/" title="F0T1">F0T1<sup>5</sup></a></li>
 			
 		
@@ -348,11 +344,11 @@ dashboard
 			
 		
 			
-				<li><a href="/tags/性能测试/" title="性能测试">性能测试<sup>4</sup></a></li>
+				<li><a href="/tags/Jenkins/" title="Jenkins">Jenkins<sup>5</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Python/" title="Python">Python<sup>4</sup></a></li>
+				<li><a href="/tags/性能测试/" title="性能测试">性能测试<sup>4</sup></a></li>
 			
 		
 			
@@ -360,19 +356,7 @@ dashboard
 			
 		
 			
-				<li><a href="/tags/Ruby/" title="Ruby">Ruby<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/CI/" title="CI">CI<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/WSDL/" title="WSDL">WSDL<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/SOAP/" title="SOAP">SOAP<sup>3</sup></a></li>
+				<li><a href="/tags/Python/" title="Python">Python<sup>4</sup></a></li>
 			
 		
 			
@@ -380,7 +364,23 @@ dashboard
 			
 		
 			
-				<li><a href="/tags/个人成长/" title="个人成长">个人成长<sup>2</sup></a></li>
+				<li><a href="/tags/SOAP/" title="SOAP">SOAP<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Ruby/" title="Ruby">Ruby<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/WSDL/" title="WSDL">WSDL<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/CI/" title="CI">CI<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/性能指标/" title="性能指标">性能指标<sup>2</sup></a></li>
 			
 		
 			
