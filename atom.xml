@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://debugtalk.com/"/>
-  <updated>2017-02-22T04:35:37.000Z</updated>
+  <updated>2017-03-17T08:34:38.000Z</updated>
   <id>http://debugtalk.com/</id>
   
   <author>
@@ -16,11 +16,68 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>【GIT技巧】清除历史记录中的敏感信息</title>
+    <link href="http://debugtalk.com/post/clean-sensitive-data-from-git-history-commits/"/>
+    <id>http://debugtalk.com/post/clean-sensitive-data-from-git-history-commits/</id>
+    <published>2017-03-16T16:00:00.000Z</published>
+    <updated>2017-03-17T08:34:38.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><p>在使用GitHub的过程中，假如某次提交代码时不小心将密码或<code>SSH-key</code>提交进了公共仓库。当然，希望这种事情永远也不会发生，但是如果真遇到了，该怎么办呢？</p>
+<p>如果发现得及时，本地提交后还没有推送到GitHub远程仓库的话，这种情况还好处理，直接修改代码后通过<code>git commit --amend</code>即可。</p>
+<p>但如果发现时已经推送到了GitHub远程仓库，或者已过了许久，后续有了很多新的<code>commits</code>，这种情况就会比较复杂了。</p>
+<p>错误的方式是，直接在当前代码中去除敏感信息，然后再提交到代码仓库中。这样的做法只能在最新的代码中去除了敏感信息，在git历史记录中仍然保存着敏感信息。</p>
+<p>当然，也可以选择直接将整个仓库删除了。不过，看着昔日精心提交的代码记录，实在是难以下手。</p>
+<p>要是可以只删除敏感信息部分，而不影响到其它提交记录就好了。事实上，<code>GIT</code>的确支持这种操作。</p>
+<h2 id="处理方式"><a href="#处理方式" class="headerlink" title="处理方式"></a>处理方式</h2><p>实现的方式有两种，一是通过<code>git filter-branch</code>命令，另一种是采用一款开源的工具，<code>BFG Repo-Cleaner</code>。前者是<code>GIT</code>官方的实现方法，后者是一款采用<code>Scala</code>编写的工具，号称比<code>git filter-branch</code>更简单、更快捷。</p>
+<h3 id="git-filter-branch"><a href="#git-filter-branch" class="headerlink" title="git filter-branch"></a>git filter-branch</h3><p>先来看下<a href="https://help.github.com/articles/removing-sensitive-data-from-a-repository/" target="_blank" rel="external"><code>git filter-branch</code></a>这种方式。假设要在所有历史提交记录中删除文件<code>PATH-TO-YOUR-FILE-WITH-SENSITIVE-DATA</code>，那么就可以采用如下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ git filter-branch --force --index-filter \</div><div class="line"><span class="string">'git rm --cached --ignore-unmatch PATH-TO-YOUR-FILE-WITH-SENSITIVE-DATA'</span> \</div><div class="line">--prune-empty --tag-name-filter cat -- --all</div><div class="line"></div><div class="line">&gt; Rewrite 48dc599c80e20527ed902928085e7861e6b3cbe6 (266/266)</div><div class="line">&gt; Ref <span class="string">'refs/heads/master'</span> was rewritten</div></pre></td></tr></table></figure>
+<p>正常情况下，通过执行上面的命令，就可以在所有历史提交记录中彻底删除指定文件。如果要进一步确定的话，可以在<code>.git</code>目录中进行全局搜索，确保已彻底清理干净。</p>
+<p>然后，就可以通过如下命令将本地代码推送到<code>GitHub</code>上，并强制覆盖掉所有历史记录。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git push origin --force --all</div></pre></td></tr></table></figure>
+<p>可以看出，采用<code>git filter-branch</code>的操作命令十分复杂（复杂到我也不想理会每个参数的具体含义），这还只是选择粗暴地将整个文件进行删除的情况。如果不想删除文件，而是单独修改特定文件特定内容的话，操作会更加复杂，如有兴趣可查看<a href="https://git-scm.com/docs/git-filter-branch" target="_blank" rel="external"><code>git官方文档</code></a>。</p>
+<h3 id="BFG-Repo-Cleaner"><a href="#BFG-Repo-Cleaner" class="headerlink" title="BFG Repo-Cleaner"></a>BFG Repo-Cleaner</h3><p>估计也是因为官方的<code>git filter-branch</code>太过复杂，于是<code>Roberto Tyley</code>开发了<a href="https://rtyley.github.io/bfg-repo-cleaner/" target="_blank" rel="external"><code>BFG Repo-Cleaner</code></a>这款工具。该工具是专门针对移除历史记录的需求而产生的，这可以从其简介中看出来。</p>
+<blockquote>
+<p>Removes large or troublesome blobs like git-filter-branch does, but faster. And written in Scala</p>
+</blockquote>
+<p>使用<code>BFG Repo-Cleaner</code>之前，需要先下载<a href="https://rtyley.github.io/bfg-repo-cleaner/#download" target="_blank" rel="external"><code>BFG&#39;s jar</code></a>(requires Java 7 or above)。</p>
+<p>如果想实现前面例子中同样的功能，删除文件<code>PATH-TO-YOUR-FILE-WITH-SENSITIVE-DATA</code>，可以通过如下命令实现：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ java -jar bfg.jar --delete-files PATH-TO-YOUR-FILE-WITH-SENSITIVE-DATA my-repo.git</div></pre></td></tr></table></figure>
+<p>如果不想删除文件，而是单独修改特定文件特定内容的话，就可以通过如下命令实现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ java -jar bfg.jar --replace-text replacements.txt my-repo.git</div></pre></td></tr></table></figure>
+<p>在<code>replacements.txt</code>文件中，应包含所有需要替换的内容，格式如下（不包含注释内容）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">PASSWORD1                       <span class="comment"># Replace with '***REMOVED***' (default)</span></div><div class="line">PASSWORD2==&gt;examplePass         <span class="comment"># replace with 'examplePass' instead</span></div><div class="line">PASSWORD3==&gt;                    <span class="comment"># replace with the empty string</span></div><div class="line">regex:password=\w+==&gt;password=  <span class="comment"># Replace, using a regex</span></div><div class="line">regex:\r(\n)==&gt;<span class="variable">$1</span>               <span class="comment"># Replace Windows newlines with Unix newlines</span></div></pre></td></tr></table></figure>
+<p>通过执行上述命令，<code>BFG Repo-Cleaner</code>就会扫描代码仓库的所有历史提交记录，并按照<code>replacements.txt</code>文件中的映射进行替换操作。</p>
+<p>通过对比可以看到，<code>BFG Repo-Cleaner</code>的确是更加简洁，这也是<code>GitHub</code>官方推荐的方式。不过，在<code>BFG Repo-Cleaner</code>的介绍文档中也说了，该工具的优势在于简单和快捷，从功能强大的角度来讲，它是比不上<code>git-filter-branch</code>的，有些操作也只能通过<code>git-filter-branch</code>完成。</p>
+<p>如需了解<code>BFG Repo-Cleaner</code>的更多用法，可详细阅读其<a href="https://rtyley.github.io/bfg-repo-cleaner/" target="_blank" rel="external">文档</a>。</p>
+<h2 id="写在末尾"><a href="#写在末尾" class="headerlink" title="写在末尾"></a>写在末尾</h2><p>不要问我为啥写了这么一篇博客，让我再哭一会儿。我也真心地希望大家永远不会用到这些工具。</p>
+<p>小心驶得万年船，共勉！</p>
+<h2 id="阅读更多"><a href="#阅读更多" class="headerlink" title="阅读更多"></a>阅读更多</h2><ul>
+<li><a href="https://rtyley.github.io/bfg-repo-cleaner/" target="_blank" rel="external">https://rtyley.github.io/bfg-repo-cleaner/</a></li>
+<li><a href="https://git-scm.com/docs/git-filter-branch" target="_blank" rel="external">https://git-scm.com/docs/git-filter-branch</a></li>
+<li><a href="https://help.github.com/articles/removing-sensitive-data-from-a-repository/" target="_blank" rel="external">https://help.github.com/articles/removing-sensitive-data-from-a-repository/</a></li>
+<li><a href="http://www-cs-students.stanford.edu/~blynn/gitmagic/ch05.html#_8230_and_then_some" target="_blank" rel="external">http://www-cs-students.stanford.edu/~blynn/gitmagic/ch05.html#_8230_and_then_some</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;背景介绍&quot;&gt;&lt;a href=&quot;#背景介绍&quot; class=&quot;headerlink&quot; title=&quot;背景介绍&quot;&gt;&lt;/a&gt;背景介绍&lt;/h2&gt;&lt;p&gt;在使用GitHub的过程中，假如某次提交代码时不小心将密码或&lt;code&gt;SSH-key&lt;/code&gt;提交进了公共仓库。当然，
+    
+    </summary>
+    
+    
+      <category term="Git" scheme="http://debugtalk.com/tags/Git/"/>
+    
+      <category term="GitHub" scheme="http://debugtalk.com/tags/GitHub/"/>
+    
+  </entry>
+  
+  <entry>
     <title>深入浅出开源性能测试工具Locust（脚本增强）</title>
     <link href="http://debugtalk.com/post/head-first-locust-advanced-script/"/>
     <id>http://debugtalk.com/post/head-first-locust-advanced-script/</id>
     <published>2017-02-21T16:00:00.000Z</published>
-    <updated>2017-02-22T04:35:37.000Z</updated>
+    <updated>2017-03-11T04:11:02.000Z</updated>
     
     <content type="html"><![CDATA[<p>在<a href="/post/head-first-locust-user-guide/">《深入浅出开源性能测试工具Locust（使用篇）》</a>一文中，罗列了编写性能测试脚本时常用的几类脚本增强的场景，本文是对应的代码示例。</p>
 <h2 id="关联"><a href="#关联" class="headerlink" title="关联"></a>关联</h2><p>在某些请求中，需要携带之前从Server端返回的参数，因此在构造请求时需要先从之前的Response中提取出所需的参数。</p>
@@ -181,7 +238,7 @@
     <link href="http://debugtalk.com/post/head-first-locust-user-guide/"/>
     <id>http://debugtalk.com/post/head-first-locust-user-guide/</id>
     <published>2017-02-21T16:00:00.000Z</published>
-    <updated>2017-03-11T03:52:27.000Z</updated>
+    <updated>2017-03-11T04:16:31.000Z</updated>
     
     <content type="html"><![CDATA[<p>在<a href="/post/locustplus-talk-about-performance-test/">《【LocustPlus序】漫谈服务端性能测试》</a>中，我对服务端性能测试的基础概念和性能测试工具的基本原理进行了介绍，并且重点推荐了<code>Locust</code>这一款开源性能测试工具。然而，当前在网络上针对<code>Locust</code>的教程极少，不管是中文还是英文，基本都是介绍安装方法和简单的测试案例演示，但对于较复杂测试场景的案例演示却基本没有，因此很多测试人员都感觉难以将<code>Locust</code>应用到实际的性能测试工作当中。</p>
 <p>经过一段时间的摸索，包括通读<code>Locust</code>官方文档和项目源码，并且在多个性能测试项目中对<code>Locust</code>进行应用实践，事实证明，<code>Locust</code>完全能满足日常的性能测试需求，<code>LoadRunner</code>能实现的功能<code>Locust</code>也基本都能实现。</p>
@@ -340,7 +397,7 @@
     <link href="http://debugtalk.com/post/my-impression-on-italy-and-france/"/>
     <id>http://debugtalk.com/post/my-impression-on-italy-and-france/</id>
     <published>2017-02-01T16:00:00.000Z</published>
-    <updated>2017-02-02T17:08:39.000Z</updated>
+    <updated>2017-03-11T04:11:02.000Z</updated>
     
     <content type="html"><![CDATA[<p><img src="/images/Florence1.jpg" alt=""></p>
 <p>今年春节没有像往常一样回家过年，而是到欧洲旅行（意大利和法国），算是蜜月游吧。第一次到欧洲，确切地说，第一次出国，新鲜感还是蛮大的，趁着返程飞机上的空闲时间，写篇博客记录下。</p>
@@ -383,7 +440,7 @@
     <link href="http://debugtalk.com/post/my-2016-summary/"/>
     <id>http://debugtalk.com/post/my-2016-summary/</id>
     <published>2016-12-30T16:00:00.000Z</published>
-    <updated>2017-01-02T15:11:50.000Z</updated>
+    <updated>2017-03-11T04:11:02.000Z</updated>
     
     <content type="html"><![CDATA[<p>2016年于我而言，经历的事情挺多的，现在回想起来，很难相信这些都是在一年内发生的。</p>
 <p>在5月份的时候，我从UC离职去了大疆，从移动互联网公司到了做无人机的硬件公司，从待了5年的广州到了深圳。很多朋友都很好奇换工作的原因，也许，是我还没有折腾够吧，再或者，是想到一个全新的环境去实践自己的一些想法吧。有种说法是，判断一个选择是否正确的方式，就是假设让你再回到之前选择的时刻，你还是否会做出同样的决定。如果让我回答这个问题，还真不好说，毕竟UC和大疆都是非常优秀的公司，只是作为成熟的上市公司和处于快速成长期的创业公司，各自有着不同的特质罢了。不过，我对现在的工作状态挺满意的，我想这就够了。</p>
@@ -420,7 +477,7 @@
     <link href="http://debugtalk.com/post/switch-macOS-web-proxy-in-elegant-way/"/>
     <id>http://debugtalk.com/post/switch-macOS-web-proxy-in-elegant-way/</id>
     <published>2016-11-23T16:00:00.000Z</published>
-    <updated>2017-01-02T05:07:46.000Z</updated>
+    <updated>2017-03-11T04:11:02.000Z</updated>
     
     <content type="html"><![CDATA[<p>在<code>macOS</code>中配置Web代理时，通常的做法是在控制面板中进行操作，<code>System Preferences</code> -&gt; <code>Network</code> -&gt; <code>Advanced</code> -&gt; <code>Proxies</code>.</p>
 <p><img src="/images/macOS-Web-Proxy-Setting.jpg" alt="macOS-Web-Proxy-Setting"></p>
@@ -462,13 +519,13 @@
     </summary>
     
     
-      <category term="Locust" scheme="http://debugtalk.com/tags/Locust/"/>
-    
       <category term="Web proxy" scheme="http://debugtalk.com/tags/Web-proxy/"/>
     
       <category term="Shuttle" scheme="http://debugtalk.com/tags/Shuttle/"/>
     
       <category term="mitmproxy" scheme="http://debugtalk.com/tags/mitmproxy/"/>
+    
+      <category term="Locust" scheme="http://debugtalk.com/tags/Locust/"/>
     
   </entry>
   
@@ -477,7 +534,7 @@
     <link href="http://debugtalk.com/post/locustplus-talk-about-performance-test/"/>
     <id>http://debugtalk.com/post/locustplus-talk-about-performance-test/</id>
     <published>2016-11-01T16:00:00.000Z</published>
-    <updated>2017-01-07T04:06:41.000Z</updated>
+    <updated>2017-03-11T04:11:02.000Z</updated>
     
     <content type="html"><![CDATA[<p>最近因为工作原因，我又拾起了老本行，开始做Web性能测试。之前虽然做过三四年的性能测试，但是在博客和开源项目方面都没有什么输出，一直是一个很大的遗憾。因此，近期打算围绕服务端性能测试的话题，将自己在这方面的经历进行整理。并且，最近使用的性能测试工具Locust感觉挺不错的，只是其功能比较单薄，特别是在性能指标监控和测试报告图表方面比较缺失，因此也打算在Locust的基础上做二次开发，打造一款自己用得顺手的性能测试工具，暂且将其命名为<code>LocustPlus</code>吧。</p>
 <h2 id="简述性能测试"><a href="#简述性能测试" class="headerlink" title="简述性能测试"></a>简述性能测试</h2><p>提起性能测试，可能移动APP的从业人员会感觉比较混淆，因为在客户端（Android、iOS）中也有性能测试专项，主要涉及的是APP的启动时间、内存、包大小、帧率，流量等客户端相关的指标。在本博客之前的文章中，也包含了一些客户端性能测试的内容。需要说明的是，本文所讲解的性能测试都是针对服务器端，尤指Web系统的，与移动APP的性能测试完全是不同的领域。</p>
@@ -658,7 +715,7 @@
     <link href="http://debugtalk.com/post/build-ideal-app-automation-test-framework/"/>
     <id>http://debugtalk.com/post/build-ideal-app-automation-test-framework/</id>
     <published>2016-09-06T16:00:00.000Z</published>
-    <updated>2016-09-07T07:24:15.000Z</updated>
+    <updated>2017-03-11T04:11:02.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>做过自动化测试的人应该都会有这样一种体会，要写个自动化demo测试用例很容易，但是要真正将自动化测试落地，对成百上千的自动化测试用例实现较好的可复用性和可维护性就很难了。</p>
 <p>基于这一痛点，我开发了<a href="https://github.com/debugtalk/AppiumBooster" target="_blank" rel="external"><code>AppiumBooster</code></a>框架。顾名思义，<code>AppiumBooster</code>基于<code>Appium</code>实现，但更简单和易于使用；测试人员不用接触任何代码，就可以直接采用简洁优雅的方式来编写和维护自动化测试用例。</p>
@@ -807,7 +864,7 @@
     <link href="http://debugtalk.com/post/make-Jenkins-Console-Output-Colorful/"/>
     <id>http://debugtalk.com/post/make-Jenkins-Console-Output-Colorful/</id>
     <published>2016-08-14T16:00:00.000Z</published>
-    <updated>2016-08-15T08:40:41.000Z</updated>
+    <updated>2017-03-11T04:11:02.000Z</updated>
     
     <content type="html"><![CDATA[<p>在《<a href="/post/Jenkins-CI-Automation-Test/">使用Jenkins实现持续集成构建检查</a>》一文中，写到了这么一段话：</p>
 <blockquote>
@@ -887,7 +944,7 @@
     <link href="http://debugtalk.com/post/Jenkins-CI-Automation-Test/"/>
     <id>http://debugtalk.com/post/Jenkins-CI-Automation-Test/</id>
     <published>2016-08-13T16:00:00.000Z</published>
-    <updated>2017-01-07T15:48:09.000Z</updated>
+    <updated>2017-03-11T04:11:02.000Z</updated>
     
     <content type="html"><![CDATA[<p>通过<a href="/post/iOS-Android-Packing-with-Jenkins/">《使用Jenkins搭建iOS/Android持续集成打包平台》</a>和<a href="/post/iOS-Android-Packing-with-Jenkins-details/">《关于持续集成打包平台的Jenkins配置和构建脚本实现细节》</a>两篇文章，我们已经在原理概念和实践操作两个层面掌握了如何搭建一个完整的持续集成打包平台。</p>
 <p>不过，在实际使用过程中，发现有时候还会存在一个问题。研发同学提交新的代码后，Jenkins端可以成功执行构建，并生成安装包；然而在将安装包安装至移动设备时，却发现有时候会出现无法成功安装，或者安装后出现启动闪退的情况。</p>
@@ -953,7 +1010,7 @@
     <link href="http://debugtalk.com/post/dji-drones-coupons-and-robomasters-tickets/"/>
     <id>http://debugtalk.com/post/dji-drones-coupons-and-robomasters-tickets/</id>
     <published>2016-08-11T16:00:00.000Z</published>
-    <updated>2016-08-12T05:28:34.000Z</updated>
+    <updated>2017-03-11T04:11:02.000Z</updated>
     
     <content type="html"><![CDATA[<p>入职大疆已经三个月了，这两天刚转正，期盼已久的内部员工优惠券也终于拿到了（只有转正后才能领取，囧）。</p>
 <p>结果恰好赶上RoboMasters全国大学生机器人争霸赛的促销活动，瞬间账号里面就多了二十多张优惠券。</p>
@@ -985,7 +1042,7 @@
     <link href="http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-refactor-testcase-scripts/"/>
     <id>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-refactor-testcase-scripts/</id>
     <published>2016-07-27T16:00:00.000Z</published>
-    <updated>2016-07-30T05:21:41.000Z</updated>
+    <updated>2017-03-11T04:11:02.000Z</updated>
     
     <content type="html"><![CDATA[<p>在本系列的<a href="http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-write-iOS-testcase-scripts/">上一篇文章</a>中，我通过系统登录这一典型功能点，演示了编写自动化测试脚本的整个流程，并对测试脚本进行了初步优化。</p>
 <p>在本文中，我将重点介绍如何对自动化测试脚本实现⎡工程化⎦的组织和管理。</p>
@@ -1060,7 +1117,7 @@
     <link href="http://debugtalk.com/post/iOS-Android-Packing-with-Jenkins-details/"/>
     <id>http://debugtalk.com/post/iOS-Android-Packing-with-Jenkins-details/</id>
     <published>2016-07-25T16:00:00.000Z</published>
-    <updated>2017-02-17T12:48:12.000Z</updated>
+    <updated>2017-03-11T04:11:02.000Z</updated>
     
     <content type="html"><![CDATA[<p>在<a href="/post/iOS-Android-Packing-with-Jenkins/">《使用Jenkins搭建iOS/Android持续集成打包平台》</a>一文中，我对如何使用Jenkins搭建iOS/Android持续集成打包平台的基础概念和实施流程进行了介绍。本文作为配套，对搭建持续集成打包平台中涉及到的执行命令、构建脚本（build.py），以及Jenkins的配置进行详细的补充说明。</p>
 <p>当然，如果你不关心技术实现细节，也可以完全不用理会，直接参照【开箱即用】部分按照步骤进行操作即可。</p>
@@ -1220,7 +1277,7 @@
     <link href="http://debugtalk.com/post/Introduction-to-AppiumBooster/"/>
     <id>http://debugtalk.com/post/Introduction-to-AppiumBooster/</id>
     <published>2016-07-19T16:00:00.000Z</published>
-    <updated>2016-08-18T09:40:37.000Z</updated>
+    <updated>2017-03-11T04:11:02.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="AppiumBooster"><a href="#AppiumBooster" class="headerlink" title="AppiumBooster"></a>AppiumBooster</h2><p>AppiumBooster helps you to write automation testcases in yaml format or csv tables, without writing a snippet of code.</p>
 <h2 id="write-testcases-in-yaml-recommended"><a href="#write-testcases-in-yaml-recommended" class="headerlink" title="write testcases in yaml (recommended)"></a>write testcases in yaml (recommended)</h2><p>Take DJI+ Discover’s login and logout function as an example.</p>
@@ -1261,7 +1318,7 @@
     <link href="http://debugtalk.com/post/iOS-Android-Packing-with-Jenkins/"/>
     <id>http://debugtalk.com/post/iOS-Android-Packing-with-Jenkins/</id>
     <published>2016-06-27T16:00:00.000Z</published>
-    <updated>2016-07-30T05:07:12.000Z</updated>
+    <updated>2017-03-11T04:11:02.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="背景描述"><a href="#背景描述" class="headerlink" title="背景描述"></a>背景描述</h2><p>根据项目需求，现要在团队内部搭建一个统一的打包平台，实现对iOS和Android项目的打包。而且为了方便团队内部的测试包分发，希望在打包完成后能生成一个二维码，体验用户（产品、运营、测试等人员）通过手机扫描二维码后就能直接安装测试包。</p>
 <p>该需求具有一定的普遍性，基本上所有开发APP的团队都可能会用到，因此我将整个需求实现的过程整理后形成此文，并且真正地做到了<code>零基础上手，到手即飞、开箱即用</code>，希望能对大家有所帮助。</p>
@@ -1401,7 +1458,7 @@
     <link href="http://debugtalk.com/post/head-first-git-authority-verification/"/>
     <id>http://debugtalk.com/post/head-first-git-authority-verification/</id>
     <published>2016-06-14T16:00:00.000Z</published>
-    <updated>2016-07-23T07:25:06.000Z</updated>
+    <updated>2017-03-11T04:11:02.000Z</updated>
     
     <content type="html"><![CDATA[<p>借助上次“掉坑”的经历，我对Git权限校验的两种方式重头进行了梳理，形成了这篇总结记录。</p>
 <p>在本地计算机与GitHub（或GitLab）进行通信时，传输主要基于两种协议，<code>HTTPS</code>和<code>SSH</code>，对应的仓库地址就是<code>HTTPS URLs</code>和<code>SSH URLs</code>。</p>
@@ -1515,7 +1572,7 @@
     <link href="http://debugtalk.com/post/trap-in-GitHub-authority-verification/"/>
     <id>http://debugtalk.com/post/trap-in-GitHub-authority-verification/</id>
     <published>2016-06-13T16:00:00.000Z</published>
-    <updated>2016-07-30T05:09:43.000Z</updated>
+    <updated>2017-03-11T04:11:02.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="背景描述"><a href="#背景描述" class="headerlink" title="背景描述"></a>背景描述</h2><p>众所周知，在GitHub中，每个仓库都有两个地址，分别基于<code>HTTPS</code>协议和<code>SSH</code>协议，两个协议对应的URL地址（repository_url）形式如下所示：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># HTTPS</span></div><div class="line">https://github.com/DJIXY/MobileStore.git</div><div class="line"><span class="comment"># SSH</span></div><div class="line">git@github.com:DJIXY/MobileStore.git</div></pre></td></tr></table></figure>
@@ -1586,7 +1643,7 @@
     <link href="http://debugtalk.com/post/promotion-page-test/"/>
     <id>http://debugtalk.com/post/promotion-page-test/</id>
     <published>2016-06-08T16:00:00.000Z</published>
-    <updated>2016-07-23T07:26:06.000Z</updated>
+    <updated>2017-03-11T04:11:02.000Z</updated>
     
     <content type="html"><![CDATA[<p>这篇文章来说说促销活动页面测试的那些事儿。</p>
 <h2 id="什么是促销活动页面？"><a href="#什么是促销活动页面？" class="headerlink" title="什么是促销活动页面？"></a>什么是促销活动页面？</h2><p>通常电商平台在节假日会做一些促销活动，而活动的宣传方式，主要会采用H5静态页面的形式，也就是本文中要讲的促销活动页面。</p>
@@ -1644,7 +1701,7 @@
     <link href="http://debugtalk.com/post/confluence-simple-tutorial/"/>
     <id>http://debugtalk.com/post/confluence-simple-tutorial/</id>
     <published>2016-06-06T16:00:00.000Z</published>
-    <updated>2016-07-30T05:13:55.000Z</updated>
+    <updated>2017-03-11T04:11:02.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="0、Confluence简介"><a href="#0、Confluence简介" class="headerlink" title="0、Confluence简介"></a>0、Confluence简介</h2><p>Confluence是一个企业级的Wiki软件，可用于在企业、部门、团队内部进行信息共享和协同编辑。</p>
 <h2 id="1、基础概念"><a href="#1、基础概念" class="headerlink" title="1、基础概念"></a>1、基础概念</h2><p>Confluence的使用并不复杂，只需掌握如下几个基础概念。</p>
@@ -1712,7 +1769,7 @@
     <link href="http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-write-iOS-testcase-scripts/"/>
     <id>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-write-iOS-testcase-scripts/</id>
     <published>2016-05-29T16:00:00.000Z</published>
-    <updated>2016-11-27T07:45:12.000Z</updated>
+    <updated>2017-03-11T04:11:02.000Z</updated>
     
     <content type="html"><![CDATA[<p>通过前面三篇文章，我们已经将iOS自动化功能测试的开发环境全部准备就绪，也学习了iOS UI控件交互操作的一般性方法，接下来，就可以开始编写自动化测试脚本了。</p>
 <p>在本文中，我将在M项目中挑选一个功能点，对其编写自动化测试脚本，演示编写自动化测试用例的整个流程。</p>
@@ -1799,118 +1856,6 @@
       <category term="F0T1" scheme="http://debugtalk.com/tags/F0T1/"/>
     
       <category term="iOS" scheme="http://debugtalk.com/tags/iOS/"/>
-    
-      <category term="Ruby" scheme="http://debugtalk.com/tags/Ruby/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>从0到1搭建移动App功能自动化测试平台（2）：操作iOS应用的控件</title>
-    <link href="http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-Appium-interrogate-iOS-UI/"/>
-    <id>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-Appium-interrogate-iOS-UI/</id>
-    <published>2016-05-28T16:00:00.000Z</published>
-    <updated>2016-07-30T05:15:26.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>前两天微信突然发来一条系统消息，提示<code>DebugTalk</code>可以开通原创标识了（同时也有了评论功能），虽然一直在期待，但没想到来得这么快，着实是个不小的惊喜。</p>
-<p>另外，最近在公众号后台也收到好几个朋友的信息，有的是询问某某部分什么时候能发布，有的是希望能加快更新速度。说实话，收到这样的信息虽然会有压力，但真的挺开心的，因为这说明<code>DebugTalk</code>至少能给一部分人带去价值，这说明这件事本身还是值得坚持去做的。</p>
-<p>不过，在更新频率这件事儿上，的确是要跟大家说抱歉了。因为<code>DebugTalk</code>发布的内容全都是原创，主题基本上都是来源于我日常测试工作的经验积累，或者我近期学习一些测试技术的收获总结，这也意味着，我写的东西很多时候并不是自己完全熟悉的（完全掌握的东西也没有足够的动力专门花时间去写）。</p>
-<p>就拿最近连载的《从0到1搭建移动App功能自动化测试平台》系列来说，由于我也是边探索边总结，因此中途难免会遇到一些意想不到的坑，造成额外的耗时，而且为了保证文章能尽量通俗易通，我也需要对涉及到的内容充分进行理解，并且经过大量实践进行验证，然后才能站在半个初学者、半个过来人的角度，重新整理思路，最后以尽可能流畅的思路将主题内容讲解清楚。</p>
-<p>基于这些原因，<code>DebugTalk</code>要做到每日更新是很难了，但是保证每周发布1~2篇还是可以的，希望大家能理解。</p>
-<h2 id="关于UI控件"><a href="#关于UI控件" class="headerlink" title="关于UI控件"></a>关于UI控件</h2><p>在上一篇文章中，我们成功地通过Appium Inspector调用模拟器并运行iOS应用，iOS的自动化测试环境也已全部准备就绪了。</p>
-<p>那么接下来，我们就可以开始实现自动化测试了么？</p>
-<p>貌似还不行。在开始之前，我们先想下什么是APP功能自动化测试。</p>
-<p>APP的功能自动化测试，简单地来说，就是让功能测试用例自动地在APP上执行。具体到每一个测试用例，就是能模拟用户行为对UI控件进行操作，自动化地实现一个功能点或者一个流程的操作。再细分到每一步，就是对UI控件进行操作。</p>
-<p>因此，在正式开始编写自动化测试用例之前，我们还需要熟悉如何与APP的UI控件进行交互操作。</p>
-<p>在iOS系统中，UI控件有多种类型，常见的有按钮（UIAButton）、文本（UIAStaticText）、输入框（UIATextField）等等。但不管是对什么类型的UI控件进行操作，基本都可以分解为三步，首先是获取目标控件的属性信息，然后是对目标控件进行定位，最后是对定位到的控件执行动作。</p>
-<h2 id="获取UI控件信息"><a href="#获取UI控件信息" class="headerlink" title="获取UI控件信息"></a>获取UI控件信息</h2><p>在Appium中，要获取iOS的UI控件元素信息，可以采用两种方式：一种是在前一篇文章中提到的Appium Inspector，另一种是借助Ruby实现的<code>appium_console</code>，在Terminal中通过命令进行查询。</p>
-<h3 id="Appium-Inspector"><a href="#Appium-Inspector" class="headerlink" title="Appium Inspector"></a>Appium Inspector</h3><p>运行Appium Server，并启动【Inspector】后，整体界面如下图所示。</p>
-<p><img src="/images/Appium_inspector_introduction.jpg" alt="Appium inspector introduction"></p>
-<p>现对照着这张图对Appium Inspector进行介绍。</p>
-<p>在右边部分，是启动的模拟器，里面运行着我们的待测APP。我们可以像在真机中一样，在模拟器中执行任意功能的操作，当然，模拟器跟真机毕竟还是有区别的，跟传感器相关的功能，例如摄像头、重力感应等，是没法实现的。</p>
-<p>在左边部分，就是<code>Appium Inspector</code>。Inspector主要由如下四个部分组成：</p>
-<ul>
-<li>预览界面区：显示画面与模拟器界面一致；不过，当我们在模拟器中切换界面后，Inspector的预览区中显示图像并不会自动同步，若要同步，需要点击【Refresh】按钮，然后Inspector会将模拟器当前UI信息dump后显示到预览区；在预览区中，可以点击选择任意UI控件。</li>
-<li>UI信息展示区：展示当前界面预览区中所有UI元素的层级关系和UI元素的详细信息；在预览区中点击选择任意UI控件后，在“Details”信息框中展示选中控件的详细信息，包括name、label、value、xpath等属性值；通过层级关系，我们也能了解选中控件在当前界面树状结构中所处的具体位置。</li>
-<li>交互操作区：模拟用户在设备上的操作，例如单击（tap）、滑动（swipe）、晃动（shake）、输入（input）等；操作动作是针对预览界面区选中的控件，因此在操作之前，务必需要先在预览区点击选择UI元素。</li>
-<li>脚本生成区：将用户行为转换为脚本代码；点击【Record】按钮后，会弹出代码区域；在交互操作区进行操作后，就会实时生成对应的脚本代码；代码语言可通过下拉框进行选择，当前支持的语言类型有：C#、Ruby、Objective-C、Java、node.js、Python。</li>
-</ul>
-<p>在实践操作中，Inspector最大的用途就是在可以可视化地查看UI元素信息，并且可以将操作转换为脚本代码，这对初学者尤为有用。</p>
-<p>例如，在预览区点击选中按钮“BUY NOW”，然后在UI信息展示区的Details窗口就可以看到该按钮的所有属性信息。在交互操作区点击【Tap】按钮后，就会模拟用户点击“BUY NOW”按钮，并且在脚本区域生成当次按钮点击的脚本（选择Ruby语言）：</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">find_element(<span class="symbol">:name</span>, <span class="string">"BUY NOW &gt;"</span>).click</div></pre></td></tr></table></figure>
-<p>如上就是使用<code>Appium Inspector</code>的一般性流程。</p>
-<h3 id="Appium-Ruby-Console"><a href="#Appium-Ruby-Console" class="headerlink" title="Appium Ruby Console"></a>Appium Ruby Console</h3><p>有了<code>Appium Inspector</code>，为什么还需要<code>Appium Ruby Console</code>呢？</p>
-<p>其实，<code>Appium Ruby Console</code>也并不是必须的。经过与多个熟悉<code>Appium</code>的前辈交流，他们也从未用过<code>Appium Ruby Console</code>，这说明<code>Appium Ruby Console</code>并不是必须的，没有它也不会影响我们对<code>Appium</code>的使用。</p>
-<p>但是，这并不意味着<code>Appium Ruby Console</code>是多余的。经过这些天对<code>Appium</code>的摸索，我越发地喜欢上<code>Appium Ruby Console</code>，并且使用的频率越来越高，现在已基本上很少使用<code>Appium Inspector</code>了。这种感觉怎么说呢？<code>Inspector</code>相比于<code>Ruby Conosle</code>，就像是<code>GUI</code>相比于<code>Linux Terminal</code>，大家应该能体会了吧。</p>
-<p><code>Appium Inspector</code>的功能是很齐全，GUI操作也很方便，但是，最大的问题就是使用的时候非常慢，在预览界面区切换一个页面常常需要好几秒，甚至数十秒，这是很难让人接受的。</p>
-<p>在上一节中也说到了，Inspector最大的用途就是在可以可视化地查看UI元素信息，并且可以将操作转换为脚本代码。但是当我们对<code>Appium</code>的常用API熟悉以后，我们就不再需要由工具来生成脚本，因为自己直接写会更快，前提是我们能知道目标控件的属性信息（type、name、label、value）。</p>
-<p>在这种情况下，如果能有一种方式可以供我们快速查看当前屏幕的控件属性信息，那该有多好。</p>
-<p>庆幸的是，在阅读<code>Appium</code>官方文档时，发现<code>Appium</code>的确是支持命令行方式的，这就是<code>Appium Ruby Console</code>。</p>
-<p><code>Appium Ruby Console</code>是采用Ruby语言开发的，在使用方式上面和Ruby的<code>irb</code>很类似。</p>
-<p>在使用<code>Appium Ruby Console</code>时，虚拟机的配置信息并不会从GUI中读取，而是要通过配置文件进行指定。</p>
-<p>配置文件的名称统一要求为<code>appium.txt</code>，内容形式如下所示：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[caps]</div><div class="line">platformName = &quot;ios&quot;</div><div class="line">platformVersion = &apos;9.3&apos;,</div><div class="line">app = &quot;/path/to/UICatalog.app.zip&quot;</div><div class="line">deviceName = &quot;iPhone Simulator&quot;</div></pre></td></tr></table></figure>
-<p>其中，<code>platformName</code>指定虚拟机操作系统类型，“ios”或者”android”；<code>platformVersion</code>指定操作系统的版本，例如iOS的’9.3’，或者Android的’5.1’；<code>app</code>指定被测应用安装包的路径。这三个参数是必须的，与Inspector中的配置也能对应上。</p>
-<p>在使用<code>Appium Ruby Console</code>时，首先需要启动<code>Appium Server</code>，通过<code>GUI</code>或者<code>Terminal</code>均可。</p>
-<p>然后，在Terminal中，进入到<code>appium.txt</code>文件所在的目录，执行<code>arc</code>命令即可启动<code>Appium Ruby Console</code>。<code>arc</code>，即是appium ruby console首字母的组合。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">➜ ls</div><div class="line">appium.txt</div><div class="line">➜ arc</div><div class="line">[1] pry(main)&gt;</div></pre></td></tr></table></figure>
-<p>接下来，就可以通过执行命令查询当前设备屏幕中的控件信息。</p>
-<p>使用频率最高的一个命令是<code>page</code>，通过这个命令可以查看到当前屏幕中所有控件的基本信息。</p>
-<p>例如，当屏幕停留在前面截图中的页面时，执行<code>page</code>命令可以得到如下内容。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line">[1] pry(main)&gt; page</div><div class="line">UIANavigationBar</div><div class="line">   name: HomeView</div><div class="line">   id: Home =&gt; Home</div><div class="line">       米    =&gt; m</div><div class="line">       去看看  =&gt; View</div><div class="line">UIAButton</div><div class="line">   name, label: tabbar category gray</div><div class="line">UIAImage</div><div class="line">   name: dji_logo.png</div><div class="line">UIAButton</div><div class="line">   name, label: tabbar cart gray</div><div class="line">UIATableView</div><div class="line">   value: rows 1 to 4 of 15</div><div class="line">UIAPageIndicator</div><div class="line">   value: page 2 of 2</div><div class="line">UIATableCell</div><div class="line">   name: For the first time ever in a hand held camera, the Osmo brings professional, realtime cinema-quality stabilization.</div><div class="line">   id: 米 =&gt; m</div><div class="line">UIAStaticText</div><div class="line">   name, label, value: For the first time ever in a hand held camera, the Osmo brings professional, realtime cinema-quality stabilization.</div><div class="line">   id: 米 =&gt; m</div><div class="line">UIAStaticText</div><div class="line">   name, label, value: OSMO</div><div class="line">UIAButton</div><div class="line">   name, label: SHOP NOW &gt;</div><div class="line">UIATableCell</div><div class="line">   name: Ronin</div><div class="line">UIAStaticText</div><div class="line">   name, label, value: Ronin</div><div class="line">UIAStaticText</div><div class="line">   name, label, value: Phantom</div><div class="line">   id: 米 =&gt; m</div><div class="line">... (略)</div><div class="line">UIAButton</div><div class="line">   name, label: Store</div><div class="line">   value: 1</div><div class="line">   id: 门店 =&gt; Store</div><div class="line">... (略)</div><div class="line">UIAButton</div><div class="line">   name, label: My Account</div><div class="line">   id: My Account =&gt; My Account</div><div class="line">nil</div></pre></td></tr></table></figure>
-<p>通过返回信息，我们就可以看到所有控件的type、name、label、value属性值。如果在某个控件下没有显示label或value，这是因为这个值为空，我们可以不予理会。</p>
-<p>由于<code>page</code>返回的信息太多，可能不便于查看，因此在使用<code>page</code>命令时，也可以指定控件的类型，相当于对当前屏幕的控件进行筛选，只返回指定类型的控件信息。</p>
-<p>指定控件类型时，可以通过string类型进行指定（如 page “Image”），也可通过symbol类型进行指定（如 page :cell）。指定的类型可只填写部分内容，并且不分区大小写。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">[2] pry(main)&gt; page &quot;Image&quot;</div><div class="line">UIAImage</div><div class="line">   name: dji_logo.png</div><div class="line">nil</div><div class="line">[3] pry(main)&gt; page :cell</div><div class="line">UIATableCell</div><div class="line">   name: DJI’s smartest flying camera ever.</div><div class="line">   id: 米 =&gt; m</div><div class="line">UIATableCell</div><div class="line">   name: Ronin</div><div class="line">UIATableCell</div><div class="line">   name: Phantom</div><div class="line">   id: 米 =&gt; m</div><div class="line">nil</div></pre></td></tr></table></figure>
-<p>如果需要查看当前屏幕的所有控件类型，可以执行<code>page_class</code>命令进行查看。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">[4] pry(main)&gt; page_class</div><div class="line">14x UIAButton</div><div class="line">8x UIAStaticText</div><div class="line">4x UIAElement</div><div class="line">4x UIATableCell</div><div class="line">2x UIAImage</div><div class="line">2x UIAWindow</div><div class="line">1x UIAPageIndicator</div><div class="line">1x UIATableView</div><div class="line">1x UIAStatusBar</div><div class="line">1x UIANavigationBar</div><div class="line">1x UIATabBar</div><div class="line">1x UIAApplication</div><div class="line">nil</div></pre></td></tr></table></figure>
-<p>基本上，<code>page</code>返回的控件信息已经足够满足绝大多数场景需求，但有时候情况比较特殊，需要<code>enabled</code>、<code>xpath</code>、<code>visible</code>、坐标等属性信息，这时就可以通过执行<code>source</code>命令。执行<code>source</code>命令后，就可以返回当前屏幕中所有控件的所有信息，以xml格式进行展现。</p>
-<h2 id="定位UI控件"><a href="#定位UI控件" class="headerlink" title="定位UI控件"></a>定位UI控件</h2><p>获取到UI控件的属性信息后，就可以对控件进行定位了。</p>
-<p>首先介绍下最通用的定位方式，<code>find</code>。通过<code>find</code>命令，可以实现在控件的诸多属性值（<code>name</code>、<code>label</code>、<code>value</code>、<code>hint</code>）中查找目标值。查询时不区分大小写，如果匹配结果有多个，则只返回第一个结果。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[5] pry(main)&gt; find(&apos;osmo&apos;)</div><div class="line">#&lt;Selenium::WebDriver::Element:0x..febd52a30dcdfea32 id=&quot;2&quot;&gt;</div><div class="line">[6] pry(main)&gt; find(&apos;osmo&apos;).label</div><div class="line">&quot;Osmo&quot;</div></pre></td></tr></table></figure>
-<p>另一个通用的定位方式是<code>find_element</code>，它也可以实现对所有控件进行查找，但是相对于<code>find</code>，可以对属性类型进行指定。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[7] pry(main)&gt; find_element(:class_name, &apos;UIATextField&apos;)</div><div class="line">#&lt;Selenium::WebDriver::Element:0x31d87e3848df8804 id=&quot;3&quot;&gt;</div><div class="line">[8] pry(main)&gt; find_element(:class_name, &apos;UIATextField&apos;).value</div><div class="line">&quot;Email Address&quot;</div></pre></td></tr></table></figure>
-<p>不过在实践中发现，采用<code>find</code>、<code>find_element</code>这类通用的定位方式并不好用，因为定位结果经常不是我们期望的。</p>
-<p>经过反复摸索，我推荐根据目标控件的类型，选择对应的定位方式。总结起来，主要有以下三种方式。</p>
-<p>针对Button类型的控件（UIAButton），采用<code>button_exact</code>进行定位：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[9] pry(main)&gt; button_exact(&apos;Login&apos;)</div><div class="line">#&lt;Selenium::WebDriver::Element:0x..feaebd8302b6d77cc id=&quot;4&quot;&gt;</div></pre></td></tr></table></figure>
-<p>针对Text类型的控件（UIAStaticText），采用<code>text_exact</code>进行定位：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[10] pry(main)&gt; text_exact(&apos;Phantom&apos;)</div><div class="line">#&lt;Selenium::WebDriver::Element:0x1347e89100fdcee2 id=&quot;5&quot;&gt;</div></pre></td></tr></table></figure>
-<p>针对控件类型进行定位时，采用<code>tag</code>；如下方式等价于<code>find_element(:class_name, &#39;UIASecureTextField&#39;)</code>。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[11] pry(main)&gt; tag(&apos;UIASecureTextField&apos;)</div><div class="line">#&lt;Selenium::WebDriver::Element:0x..fc6f5efd05a82cdca id=&quot;6&quot;&gt;</div></pre></td></tr></table></figure>
-<p>基本上，这三种方式就已经足够应付绝大多数测试场景了。当然，这三种方式只是我个人经过实践后选择的定位方式，除了这三种，<code>Appium</code>还支持很多种其它定位方式，大家可自行查看<code>Appium</code>官方文档进行选择。</p>
-<p>另外，除了对控件进行定位，有时候我们还想判断当前屏幕中是否存在某个控件（通常用于结果检测判断），这要怎么做呢？</p>
-<p>一种方式是借助于<code>Appium</code>的控件查找机制，即找不到控件时会抛出异常（<code>Selenium::WebDriver::Error::NoSuchElementError</code>）；反过来，当查找某个控件抛出异常时，则说明当前屏幕中不存在该控件。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[12] pry(main)&gt; button_exact(&apos;Login_invalid&apos;)</div><div class="line">Selenium::WebDriver::Error::NoSuchElementError: An element could not be located on the page using the given search parameters.</div><div class="line">from /Library/Ruby/Gems/2.0.0/gems/appium_lib-8.0.2/lib/appium_lib/common/helper.rb:218:in `_no_such_element&apos;</div></pre></td></tr></table></figure>
-<p>该种方式可行，但比较暴力，基本上不会采用这种方式。</p>
-<p>另一种更好的方式是，查找当前屏幕中指定控件的个数，若个数不为零，则说明控件存在。具体操作上，将<code>button_exact</code>替换为<code>buttons_exact</code>，将<code>text_exact</code>替换为<code>texts_exact</code>。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[12] pry(main)&gt; buttons_exact(&apos;Login&apos;).count</div><div class="line">1</div><div class="line">[13] pry(main)&gt; buttons_exact(&apos;Login_invalid&apos;).count</div><div class="line">0</div></pre></td></tr></table></figure>
-<p>除此之外，基于Ruby实现的<code>appium_lib</code>还支持<code>exists</code>方法，可直接返回Boolean值。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[14] pry(main)&gt; exists &#123; button_exact(&apos;Login&apos;) &#125;</div><div class="line">true</div><div class="line">[15] pry(main)&gt; exists &#123; button_exact(&apos;Login_invalid&apos;) &#125;</div><div class="line">false</div></pre></td></tr></table></figure>
-<h2 id="对控件执行操作"><a href="#对控件执行操作" class="headerlink" title="对控件执行操作"></a>对控件执行操作</h2><p>定位到具体的控件后，操作就比较容易了。</p>
-<p>操作类型不多，最常用就是点击（click）和输入（type），这两个操作能覆盖80%以上的场景。</p>
-<p>对于点击操作，才定位到的控件后面添加<code>.click</code>方法；对于输入操作，在定位到的输入框控件后面添加<code>.type</code>方法，并传入输入值。</p>
-<p>例如，账号登录操作就包含输入和点击两种操作类型。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[16] pry(main)&gt; find_element(:class_name, &apos;UIATextField&apos;).type &apos;leo.lee@dji.com&apos;</div><div class="line">&quot;&quot;</div><div class="line">[17] pry(main)&gt; find_element(:class_name, &apos;UIASecureTextField&apos;).type &apos;123456&apos;</div><div class="line">&quot;&quot;</div><div class="line">[18] pry(main)&gt; button_exact(&apos;Login&apos;).click</div><div class="line">nil</div></pre></td></tr></table></figure>
-<h2 id="To-be-continued-…"><a href="#To-be-continued-…" class="headerlink" title="To be continued …"></a>To be continued …</h2><p>在本文中，我们学习了对iOS UI控件进行交互操作的一般性方法，为编写自动化测试脚本打好了基础。</p>
-<p>在下一篇文章中，我们就要正式开始针对iOS应用编写自动化测试脚本了。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;写在前面&quot;&gt;&lt;a href=&quot;#写在前面&quot; class=&quot;headerlink&quot; title=&quot;写在前面&quot;&gt;&lt;/a&gt;写在前面&lt;/h2&gt;&lt;p&gt;前两天微信突然发来一条系统消息，提示&lt;code&gt;DebugTalk&lt;/code&gt;可以开通原创标识了（同时也有了评论功能），虽
-    
-    </summary>
-    
-    
-      <category term="AutomationTest" scheme="http://debugtalk.com/tags/AutomationTest/"/>
-    
-      <category term="Appium" scheme="http://debugtalk.com/tags/Appium/"/>
-    
-      <category term="F0T1" scheme="http://debugtalk.com/tags/F0T1/"/>
-    
-      <category term="iOS" scheme="http://debugtalk.com/tags/iOS/"/>
-    
-      <category term="Simulator" scheme="http://debugtalk.com/tags/Simulator/"/>
     
       <category term="Ruby" scheme="http://debugtalk.com/tags/Ruby/"/>
     

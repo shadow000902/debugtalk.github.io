@@ -4,41 +4,29 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>【灵感】线上数据采摘工具（ProductionDataPicker） | DebugTalk</title>
+    <title>【GIT技巧】清除历史记录中的敏感信息 | DebugTalk</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="九毫">
     
 
     
-    <meta name="description" content="背景不管是是研发同学还是测试同学，日常跟进线上问题时对如下两个场景应该都很熟悉：
-
-生产环境上出现了一个bug，想在测试环境或者本地开发环境复现这个bug，而这个bug又与特定数据相关；
-在本地开发环境修复了线上bug，想用线上最新特定场景的数据验证下bug是否修复成功。
-
-在这两种情况下，都需要将生产环境的数据导入到本地环境。那么怎么进行导入呢？
-说到这里，也许已经勾起了你的一把辛酸泪。通常对于">
+    <meta name="description" content="背景介绍在使用GitHub的过程中，假如某次提交代码时不小心将密码或SSH-key提交进了公共仓库。当然，希望这种事情永远也不会发生，但是如果真遇到了，该怎么办呢？
+如果发现得及时，本地提交后还没有推送到GitHub远程仓库的话，这种情况还好处理，直接修改代码后通过git commit --amend即可。
+但如果发现时已经推送到了GitHub远程仓库，或者已过了许久，后续有了很多新的commit">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【灵感】线上数据采摘工具（ProductionDataPicker）">
-<meta property="og:url" content="http://debugtalk.com/post/developing-idea-production-data-picker/index.html">
+<meta property="og:title" content="【GIT技巧】清除历史记录中的敏感信息">
+<meta property="og:url" content="http://debugtalk.com/post/clean-sensitive-data-from-git-history-commits/index.html">
 <meta property="og:site_name" content="DebugTalk">
-<meta property="og:description" content="背景不管是是研发同学还是测试同学，日常跟进线上问题时对如下两个场景应该都很熟悉：
-
-生产环境上出现了一个bug，想在测试环境或者本地开发环境复现这个bug，而这个bug又与特定数据相关；
-在本地开发环境修复了线上bug，想用线上最新特定场景的数据验证下bug是否修复成功。
-
-在这两种情况下，都需要将生产环境的数据导入到本地环境。那么怎么进行导入呢？
-说到这里，也许已经勾起了你的一把辛酸泪。通常对于">
-<meta property="og:updated_time" content="2017-03-11T04:11:02.000Z">
+<meta property="og:description" content="背景介绍在使用GitHub的过程中，假如某次提交代码时不小心将密码或SSH-key提交进了公共仓库。当然，希望这种事情永远也不会发生，但是如果真遇到了，该怎么办呢？
+如果发现得及时，本地提交后还没有推送到GitHub远程仓库的话，这种情况还好处理，直接修改代码后通过git commit --amend即可。
+但如果发现时已经推送到了GitHub远程仓库，或者已过了许久，后续有了很多新的commit">
+<meta property="og:updated_time" content="2017-03-17T08:34:38.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="【灵感】线上数据采摘工具（ProductionDataPicker）">
-<meta name="twitter:description" content="背景不管是是研发同学还是测试同学，日常跟进线上问题时对如下两个场景应该都很熟悉：
-
-生产环境上出现了一个bug，想在测试环境或者本地开发环境复现这个bug，而这个bug又与特定数据相关；
-在本地开发环境修复了线上bug，想用线上最新特定场景的数据验证下bug是否修复成功。
-
-在这两种情况下，都需要将生产环境的数据导入到本地环境。那么怎么进行导入呢？
-说到这里，也许已经勾起了你的一把辛酸泪。通常对于">
+<meta name="twitter:title" content="【GIT技巧】清除历史记录中的敏感信息">
+<meta name="twitter:description" content="背景介绍在使用GitHub的过程中，假如某次提交代码时不小心将密码或SSH-key提交进了公共仓库。当然，希望这种事情永远也不会发生，但是如果真遇到了，该怎么办呢？
+如果发现得及时，本地提交后还没有推送到GitHub远程仓库的话，这种情况还好处理，直接修改代码后通过git commit --amend即可。
+但如果发现时已经推送到了GitHub远程仓库，或者已过了许久，后续有了很多新的commit">
 
     
     <link rel="alternative" href="/atom.xml" title="DebugTalk" type="application/atom+xml">
@@ -98,14 +86,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/post/developing-idea-production-data-picker/" title="【灵感】线上数据采摘工具（ProductionDataPicker）" itemprop="url">【灵感】线上数据采摘工具（ProductionDataPicker）</a>
+      <a href="/post/clean-sensitive-data-from-git-history-commits/" title="【GIT技巧】清除历史记录中的敏感信息" itemprop="url">【GIT技巧】清除历史记录中的敏感信息</a>
   </h1>
   <!-- <p class="article-author">By
        
 		<a href="/about" title="九毫" target="_blank" itemprop="author">九毫</a>
 		 -->
   <p class="article-time">
-    <time datetime="2016-03-07T16:00:00.000Z" itemprop="datePublished"> Published 2016-03-08</time>
+    <time datetime="2017-03-16T16:00:00.000Z" itemprop="datePublished"> Published 2017-03-17</time>
     
     <span id="busuanzi_container_page_pv">
       | 本文总阅读量<span id="busuanzi_value_page_pv"></span>次
@@ -119,35 +107,45 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决方案"><span class="toc-number">2.</span> <span class="toc-text">解决方案</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景介绍"><span class="toc-number">1.</span> <span class="toc-text">背景介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#处理方式"><span class="toc-number">2.</span> <span class="toc-text">处理方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#git-filter-branch"><span class="toc-number">2.1.</span> <span class="toc-text">git filter-branch</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BFG-Repo-Cleaner"><span class="toc-number">2.2.</span> <span class="toc-text">BFG Repo-Cleaner</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#写在末尾"><span class="toc-number">3.</span> <span class="toc-text">写在末尾</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#阅读更多"><span class="toc-number">4.</span> <span class="toc-text">阅读更多</span></a></li></ol>
 		
 		</div>
 		
-		<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>不管是是研发同学还是测试同学，日常跟进线上问题时对如下两个场景应该都很熟悉：</p>
-<ul>
-<li>生产环境上出现了一个bug，想在测试环境或者本地开发环境复现这个bug，而这个bug又与特定数据相关；</li>
-<li>在本地开发环境修复了线上bug，想用线上最新特定场景的数据验证下bug是否修复成功。</li>
+		<h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><p>在使用GitHub的过程中，假如某次提交代码时不小心将密码或<code>SSH-key</code>提交进了公共仓库。当然，希望这种事情永远也不会发生，但是如果真遇到了，该怎么办呢？</p>
+<p>如果发现得及时，本地提交后还没有推送到GitHub远程仓库的话，这种情况还好处理，直接修改代码后通过<code>git commit --amend</code>即可。</p>
+<p>但如果发现时已经推送到了GitHub远程仓库，或者已过了许久，后续有了很多新的<code>commits</code>，这种情况就会比较复杂了。</p>
+<p>错误的方式是，直接在当前代码中去除敏感信息，然后再提交到代码仓库中。这样的做法只能在最新的代码中去除了敏感信息，在git历史记录中仍然保存着敏感信息。</p>
+<p>当然，也可以选择直接将整个仓库删除了。不过，看着昔日精心提交的代码记录，实在是难以下手。</p>
+<p>要是可以只删除敏感信息部分，而不影响到其它提交记录就好了。事实上，<code>GIT</code>的确支持这种操作。</p>
+<h2 id="处理方式"><a href="#处理方式" class="headerlink" title="处理方式"></a>处理方式</h2><p>实现的方式有两种，一是通过<code>git filter-branch</code>命令，另一种是采用一款开源的工具，<code>BFG Repo-Cleaner</code>。前者是<code>GIT</code>官方的实现方法，后者是一款采用<code>Scala</code>编写的工具，号称比<code>git filter-branch</code>更简单、更快捷。</p>
+<h3 id="git-filter-branch"><a href="#git-filter-branch" class="headerlink" title="git filter-branch"></a>git filter-branch</h3><p>先来看下<a href="https://help.github.com/articles/removing-sensitive-data-from-a-repository/" target="_blank" rel="external"><code>git filter-branch</code></a>这种方式。假设要在所有历史提交记录中删除文件<code>PATH-TO-YOUR-FILE-WITH-SENSITIVE-DATA</code>，那么就可以采用如下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ git filter-branch --force --index-filter \</div><div class="line"><span class="string">'git rm --cached --ignore-unmatch PATH-TO-YOUR-FILE-WITH-SENSITIVE-DATA'</span> \</div><div class="line">--prune-empty --tag-name-filter cat -- --all</div><div class="line"></div><div class="line">&gt; Rewrite 48dc599c80e20527ed902928085e7861e6b3cbe6 (266/266)</div><div class="line">&gt; Ref <span class="string">'refs/heads/master'</span> was rewritten</div></pre></td></tr></table></figure>
+<p>正常情况下，通过执行上面的命令，就可以在所有历史提交记录中彻底删除指定文件。如果要进一步确定的话，可以在<code>.git</code>目录中进行全局搜索，确保已彻底清理干净。</p>
+<p>然后，就可以通过如下命令将本地代码推送到<code>GitHub</code>上，并强制覆盖掉所有历史记录。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git push origin --force --all</div></pre></td></tr></table></figure>
+<p>可以看出，采用<code>git filter-branch</code>的操作命令十分复杂（复杂到我也不想理会每个参数的具体含义），这还只是选择粗暴地将整个文件进行删除的情况。如果不想删除文件，而是单独修改特定文件特定内容的话，操作会更加复杂，如有兴趣可查看<a href="https://git-scm.com/docs/git-filter-branch" target="_blank" rel="external"><code>git官方文档</code></a>。</p>
+<h3 id="BFG-Repo-Cleaner"><a href="#BFG-Repo-Cleaner" class="headerlink" title="BFG Repo-Cleaner"></a>BFG Repo-Cleaner</h3><p>估计也是因为官方的<code>git filter-branch</code>太过复杂，于是<code>Roberto Tyley</code>开发了<a href="https://rtyley.github.io/bfg-repo-cleaner/" target="_blank" rel="external"><code>BFG Repo-Cleaner</code></a>这款工具。该工具是专门针对移除历史记录的需求而产生的，这可以从其简介中看出来。</p>
+<blockquote>
+<p>Removes large or troublesome blobs like git-filter-branch does, but faster. And written in Scala</p>
+</blockquote>
+<p>使用<code>BFG Repo-Cleaner</code>之前，需要先下载<a href="https://rtyley.github.io/bfg-repo-cleaner/#download" target="_blank" rel="external"><code>BFG&#39;s jar</code></a>(requires Java 7 or above)。</p>
+<p>如果想实现前面例子中同样的功能，删除文件<code>PATH-TO-YOUR-FILE-WITH-SENSITIVE-DATA</code>，可以通过如下命令实现：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ java -jar bfg.jar --delete-files PATH-TO-YOUR-FILE-WITH-SENSITIVE-DATA my-repo.git</div></pre></td></tr></table></figure>
+<p>如果不想删除文件，而是单独修改特定文件特定内容的话，就可以通过如下命令实现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ java -jar bfg.jar --replace-text replacements.txt my-repo.git</div></pre></td></tr></table></figure>
+<p>在<code>replacements.txt</code>文件中，应包含所有需要替换的内容，格式如下（不包含注释内容）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">PASSWORD1                       <span class="comment"># Replace with '***REMOVED***' (default)</span></div><div class="line">PASSWORD2==&gt;examplePass         <span class="comment"># replace with 'examplePass' instead</span></div><div class="line">PASSWORD3==&gt;                    <span class="comment"># replace with the empty string</span></div><div class="line">regex:password=\w+==&gt;password=  <span class="comment"># Replace, using a regex</span></div><div class="line">regex:\r(\n)==&gt;<span class="variable">$1</span>               <span class="comment"># Replace Windows newlines with Unix newlines</span></div></pre></td></tr></table></figure>
+<p>通过执行上述命令，<code>BFG Repo-Cleaner</code>就会扫描代码仓库的所有历史提交记录，并按照<code>replacements.txt</code>文件中的映射进行替换操作。</p>
+<p>通过对比可以看到，<code>BFG Repo-Cleaner</code>的确是更加简洁，这也是<code>GitHub</code>官方推荐的方式。不过，在<code>BFG Repo-Cleaner</code>的介绍文档中也说了，该工具的优势在于简单和快捷，从功能强大的角度来讲，它是比不上<code>git-filter-branch</code>的，有些操作也只能通过<code>git-filter-branch</code>完成。</p>
+<p>如需了解<code>BFG Repo-Cleaner</code>的更多用法，可详细阅读其<a href="https://rtyley.github.io/bfg-repo-cleaner/" target="_blank" rel="external">文档</a>。</p>
+<h2 id="写在末尾"><a href="#写在末尾" class="headerlink" title="写在末尾"></a>写在末尾</h2><p>不要问我为啥写了这么一篇博客，让我再哭一会儿。我也真心地希望大家永远不会用到这些工具。</p>
+<p>小心驶得万年船，共勉！</p>
+<h2 id="阅读更多"><a href="#阅读更多" class="headerlink" title="阅读更多"></a>阅读更多</h2><ul>
+<li><a href="https://rtyley.github.io/bfg-repo-cleaner/" target="_blank" rel="external">https://rtyley.github.io/bfg-repo-cleaner/</a></li>
+<li><a href="https://git-scm.com/docs/git-filter-branch" target="_blank" rel="external">https://git-scm.com/docs/git-filter-branch</a></li>
+<li><a href="https://help.github.com/articles/removing-sensitive-data-from-a-repository/" target="_blank" rel="external">https://help.github.com/articles/removing-sensitive-data-from-a-repository/</a></li>
+<li><a href="http://www-cs-students.stanford.edu/~blynn/gitmagic/ch05.html#_8230_and_then_some" target="_blank" rel="external">http://www-cs-students.stanford.edu/~blynn/gitmagic/ch05.html#_8230_and_then_some</a></li>
 </ul>
-<p>在这两种情况下，都需要将生产环境的数据导入到本地环境。那么怎么进行导入呢？</p>
-<p>说到这里，也许已经勾起了你的一把辛酸泪。通常对于这种情况都是这么做的：</p>
-<ul>
-<li>同步整个生产环境数据库到本地</li>
-<li>利用某些数据库管理软件（如Navicat）同步指定场景相关的几张数据表到本地</li>
-</ul>
-<p>不管是采用以上哪种方式，由于线上数据库数据通常都很大，因此都会导致如下几个痛点：</p>
-<ul>
-<li>同步时间非常长，每同步一次都要耗费很多时间进行等待，效率极其低下</li>
-<li>同步数据量非常大，但绝大多数的数据都是不关注的</li>
-<li>对于像我这样本地笔记本电脑总共只有128GB SSD，空闲容量不足5GB的屌丝，想同步都做不到啊</li>
-</ul>
-<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>要解决以上问题，其实从原理上讲很简单，就是只同步我们想要的数据，不多一条，也不少一条，刚刚好！</p>
-<p>以UC浏览器的性能测试平台UCTC为例，某个测试任务出现异常后，我们想要拿到这个任务相关的所有数据在本地开发环境进行复现调试。单个测试任务相关的数据分布在各个数据库表中，包括任务信息、测试用例、测试设备、测试包、原始测试数据等等。</p>
-<p>不难看出，虽然只是一个测试任务，但其相关的数据分布在近10张表中，各张表的数据量从几百到几十万不等。而我们要刚好同步相关数据的意思就是，在测试任务相关的每张表里面，只将特定测试任务的相关数据提取出来，并导入到我们的本地开发环境。这样的话，我们每次只需要同步很少的数据，同步操作基本上可以实现瞬间完成。</p>
-<p>如果能有这样的工具，那么前面提到的几个痛点都将不复存在，我们的工作效率必将得到极大的提升。</p>
-<p>然而遗憾的是，经过漫长的搜索，发现目前市面上都还没有这样的工具。大多数数据库管理工具只能提供数据库的手动导出和导入整张数据表的功能，即使有些做得更便捷的，也仅限于实现两个数据库的数据同步功能，这些都不能满足我们的期望。</p>
-<p>痛点是实实在在的，而又没有可用的工具，那么就这样忍了么？当然不行，We build things!</p>
-<p>线上数据采摘工具（ProductionDataPicker）就此诞生了！</p>
-<p>to be continued …</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -156,7 +154,7 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/Development/">Development</a>
+  <span></span> <a href="/tags/Git/">Git</a><a href="/tags/GitHub/">GitHub</a>
   </div>
 
 </div>
@@ -165,7 +163,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://debugtalk.com/post/developing-idea-production-data-picker/" data-title="【灵感】线上数据采摘工具（ProductionDataPicker） | DebugTalk" data-tsina="undefined" class="share clearfix">
+	  <div data-url="http://debugtalk.com/post/clean-sensitive-data-from-git-history-commits/" data-title="【GIT技巧】清除历史记录中的敏感信息 | DebugTalk" data-tsina="undefined" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -178,19 +176,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/post/render-multi-level-table-in-webpage/" title="测试结果报表展现：Web页面绘制多层级表格">
-  <strong>上一篇：</strong><br/>
-  <span>
-  测试结果报表展现：Web页面绘制多层级表格</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/post/remote-debugging-with-pycharm/"  title="利用PyCharm进行Python远程调试">
+<a href="/post/head-first-locust-advanced-script/"  title="深入浅出开源性能测试工具Locust（脚本增强）">
  <strong>下一篇：</strong><br/> 
- <span>利用PyCharm进行Python远程调试
+ <span>深入浅出开源性能测试工具Locust（脚本增强）
 </span>
 </a>
 </div>
@@ -199,7 +189,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="post/developing-idea-production-data-picker/" data-title="【灵感】线上数据采摘工具（ProductionDataPicker）" data-url="http://debugtalk.com/post/developing-idea-production-data-picker/"></div>
+	<div class="ds-thread" data-thread-key="post/clean-sensitive-data-from-git-history-commits/" data-title="【GIT技巧】清除历史记录中的敏感信息" data-url="http://debugtalk.com/post/clean-sensitive-data-from-git-history-commits/"></div>
 </section>
 
 
@@ -209,7 +199,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决方案"><span class="toc-number">2.</span> <span class="toc-text">解决方案</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景介绍"><span class="toc-number">1.</span> <span class="toc-text">背景介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#处理方式"><span class="toc-number">2.</span> <span class="toc-text">处理方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#git-filter-branch"><span class="toc-number">2.1.</span> <span class="toc-text">git filter-branch</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BFG-Repo-Cleaner"><span class="toc-number">2.2.</span> <span class="toc-text">BFG Repo-Cleaner</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#写在末尾"><span class="toc-number">3.</span> <span class="toc-text">写在末尾</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#阅读更多"><span class="toc-number">4.</span> <span class="toc-text">阅读更多</span></a></li></ol>
  
   </div>
 
