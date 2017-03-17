@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://debugtalk.com/post/head-first-locust-advanced-script/</loc>
+    
+    <lastmod>2017-03-17T17:07:06.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-Appium-interrogate-iOS-UI/</loc>
     
     <lastmod>2017-03-17T17:02:03.000Z</lastmod>
@@ -38,13 +45,6 @@
   
   <url>
     <loc>http://debugtalk.com/post/manage-Jenkins-via-remote-api/</loc>
-    
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/Evaluate-Largest-Online-Users/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
@@ -345,13 +345,6 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/head-first-locust-advanced-script/</loc>
-    
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://debugtalk.com/post/LoadRunner-WSDL-WebService/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
@@ -374,6 +367,13 @@
   
   <url>
     <loc>http://debugtalk.com/post/loadrunner-parameter-variable/</loc>
+    
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/Evaluate-Largest-Online-Users/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
