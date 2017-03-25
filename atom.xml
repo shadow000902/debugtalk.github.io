@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://debugtalk.com/"/>
-  <updated>2017-03-17T10:15:40.000Z</updated>
+  <updated>2017-03-25T04:11:12.000Z</updated>
   <id>http://debugtalk.com/</id>
   
   <author>
@@ -14,6 +14,101 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>使用pyenv管理多个Python版本依赖环境</title>
+    <link href="http://debugtalk.com/post/use-pyenv-manage-multiple-python-virtualenvs/"/>
+    <id>http://debugtalk.com/post/use-pyenv-manage-multiple-python-virtualenvs/</id>
+    <published>2017-03-24T16:00:00.000Z</published>
+    <updated>2017-03-25T04:11:12.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>从接触Python以来，一直都是采用<a href="https://virtualenv.pypa.io/en/stable/" target="_blank" rel="external"><code>virtualenv</code></a>和<a href="https://pypi.python.org/pypi/virtualenvwrapper" target="_blank" rel="external"><code>virtualenvwrapper</code></a>来管理不同项目的依赖环境，通过<code>workon</code>、<code>mkvirtualenv</code>等命令进行虚拟环境切换，很是愉快。</p>
+<p>然而，最近想让项目能兼容更多的Python版本，例如至少同时兼容<code>Python2.7</code>和<code>Python3.3+</code>，就发现采用之前的方式行不通了。</p>
+<p>最大的问题在于，在本地计算机同时安装<code>Python2.7</code>和<code>Python3</code>后，即使分别针对两个Python版本安装了<code>virtualenv</code>和<code>virtualenvwrapper</code>，也无法让两个Python版本的<code>workon</code>、<code>mkvirtualenv</code>命令同时生效。另外一方面，要想在本地计算机安装多个Python版本，会发现安装的成本都比较高，实现方式也不够优雅。</p>
+<p>幸运地是，针对该痛点，已经存在一个比较成熟的方案，那就是<a href="https://github.com/pyenv/pyenv" target="_blank" rel="external"><code>pyenv</code></a>。</p>
+<p>如下是官方的介绍。</p>
+<blockquote>
+<p>pyenv lets you easily switch between multiple versions of Python. It’s simple, unobtrusive, and follows the UNIX tradition of single-purpose tools that do one thing well.</p>
+<p>This project was forked from <a href="https://github.com/rbenv/rbenv" target="_blank" rel="external">rbenv</a> and <a href="https://github.com/rbenv/ruby-build" target="_blank" rel="external">ruby-build</a>, and modified for Python.</p>
+</blockquote>
+<p>本文就针对<code>pyenv</code>最核心的功能进行介绍。</p>
+<h2 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h2><p>如果要讲解<code>pyenv</code>的工作原理，基本上采用一句话就可以概括，那就是：修改系统环境变量<code>PATH</code>。</p>
+<p>对于系统环境变量<code>PATH</code>，相信大家都不陌生，里面包含了一串由冒号分隔的路径，例如<code>/usr/local/bin:/usr/bin:/bin</code>。每当在系统中执行一个命令时，例如<code>python</code>或<code>pip</code>，操作系统就会在<code>PATH</code>的所有路径中从左至右依次寻找对应的命令。因为是依次寻找，因此排在左边的路径具有更高的优先级。</p>
+<p>而<code>pyenv</code>做的，就是在<code>PATH</code>最前面插入一个<code>$(pyenv root)/shims</code>目录。这样，<code>pyenv</code>就可以通过控制<code>shims</code>目录中的Python版本号，来灵活地切换至我们所需的Python版本。</p>
+<p>如果还想了解更多细节，可以查看<a href="https://github.com/pyenv/pyenv" target="_blank" rel="external"><code>pyenv</code></a>的文档介绍及其源码实现。</p>
+<h2 id="环境初始化"><a href="#环境初始化" class="headerlink" title="环境初始化"></a>环境初始化</h2><p><code>pyenv</code>的安装方式包括多种，重点推荐采用<a href="https://github.com/pyenv/pyenv-installer" target="_blank" rel="external"><code>pyenv-installer</code></a>的方式，原因主要有两点：</p>
+<ul>
+<li>通过<code>pyenv-installer</code>可一键安装<code>pyenv</code>全家桶，后续也可以很方便地实现一键升级；</li>
+<li><code>pyenv-installer</code>的安装方式基于<code>GitHub</code>，可保证总是使用到最新版本的<code>pyenv</code>，并且<code>Python</code>版本库也是最新最全的。</li>
+</ul>
+<h3 id="install-amp-amp-config"><a href="#install-amp-amp-config" class="headerlink" title="install &amp;&amp; config"></a>install &amp;&amp; config</h3><p>通过如下命令安装<code>pyenv</code>全家桶。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ curl -L https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer | bash</div></pre></td></tr></table></figure>
+<p>内容除了包含<code>pyenv</code>以外，还包含如下插件：</p>
+<ul>
+<li><code>pyenv-doctor</code></li>
+<li><code>pyenv-installer</code></li>
+<li><code>pyenv-update</code></li>
+<li><code>pyenv-virtualenv</code></li>
+<li><code>pyenv-which-ext</code></li>
+</ul>
+<p>安装完成后，<code>pyenv</code>命令还没有加进系统的环境变量，需要将如下内容加到<code>~/.zshrc</code>中，然后执行<code>source ~/.zshrc</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">export PATH=$HOME/.pyenv/bin:$PATH</div><div class="line">eval &quot;$(pyenv init -)&quot;</div><div class="line">eval &quot;$(pyenv virtualenv-init -)&quot;</div></pre></td></tr></table></figure>
+<p>完成以上操作后，<code>pyenv</code>就安装完成了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ pyenv -v</div><div class="line">pyenv 1.0.8</div></pre></td></tr></table></figure>
+<p>如果不确定<code>pyenv</code>的环境是否安装正常，可以通过<code>pyenv doctor</code>命令对环境进行检测。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">$ pyenv doctor</div><div class="line">Cloning /Users/Leo/.pyenv/plugins/pyenv-doctor/bin/.....</div><div class="line">Installing python-pyenv-doctor...</div><div class="line"></div><div class="line">BUILD FAILED (OS X 10.12.3 using python-build 20160602)</div><div class="line"></div><div class="line">Last 10 log lines:</div><div class="line">checking for memory.h... yes</div><div class="line">checking for strings.h... yes</div><div class="line">checking for inttypes.h... yes</div><div class="line">checking for stdint.h... yes</div><div class="line">checking for unistd.h... yes</div><div class="line">checking openssl/ssl.h usability... no</div><div class="line">checking openssl/ssl.h presence... no</div><div class="line">checking for openssl/ssl.h... no</div><div class="line">configure: error: OpenSSL development header is not installed.</div><div class="line">make: *** No targets specified and no makefile found.  Stop.</div><div class="line">Problem(s) detected while checking system.</div></pre></td></tr></table></figure>
+<p>通过检测，可以发现本地环境可能存在的问题，例如，从以上输出可以看出，本地的<code>OpenSSL development header</code>还没有安装。根据提示的问题，逐一进行修复，直到检测不再出现问题为止。</p>
+<h3 id="update"><a href="#update" class="headerlink" title="update"></a>update</h3><p>通过<code>pyenv update</code>命令，可以更新<code>pyenv</code>全家桶的所有内容。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">$ pyenv update</div><div class="line">Updating /Users/Leo/.pyenv...</div><div class="line">From https://github.com/yyuu/pyenv</div><div class="line"> * branch            master     -&gt; FETCH_HEAD</div><div class="line">Already up-to-date.</div><div class="line">Updating /Users/Leo/.pyenv/plugins/pyenv-doctor...</div><div class="line">From https://github.com/yyuu/pyenv-doctor</div><div class="line"> * branch            master     -&gt; FETCH_HEAD</div><div class="line">Already up-to-date.</div><div class="line">Updating /Users/Leo/.pyenv/plugins/pyenv-installer...</div><div class="line">From https://github.com/yyuu/pyenv-installer</div><div class="line"> * branch            master     -&gt; FETCH_HEAD</div><div class="line">Already up-to-date.</div><div class="line">Updating /Users/Leo/.pyenv/plugins/pyenv-update...</div><div class="line">From https://github.com/yyuu/pyenv-update</div><div class="line"> * branch            master     -&gt; FETCH_HEAD</div><div class="line">Already up-to-date.</div><div class="line">Updating /Users/Leo/.pyenv/plugins/pyenv-virtualenv...</div><div class="line">From https://github.com/yyuu/pyenv-virtualenv</div><div class="line"> * branch            master     -&gt; FETCH_HEAD</div><div class="line">Already up-to-date.</div><div class="line">Updating /Users/Leo/.pyenv/plugins/pyenv-which-ext...</div><div class="line">From https://github.com/yyuu/pyenv-which-ext</div><div class="line"> * branch            master     -&gt; FETCH_HEAD</div><div class="line">Already up-to-date.</div></pre></td></tr></table></figure>
+<h2 id="pyenv的核心使用方法"><a href="#pyenv的核心使用方法" class="headerlink" title="pyenv的核心使用方法"></a>pyenv的核心使用方法</h2><p><code>pyenv</code>的主要功能如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">$ pyenv -h</div><div class="line">Usage: pyenv &lt;command&gt; [&lt;args&gt;]</div><div class="line"></div><div class="line">Some useful pyenv commands are:</div><div class="line">   commands    List all available pyenv commands</div><div class="line">   local       Set or show the local application-specific Python version</div><div class="line">   global      Set or show the global Python version</div><div class="line">   shell       Set or show the shell-specific Python version</div><div class="line">   install     Install a Python version using python-build</div><div class="line">   uninstall   Uninstall a specific Python version</div><div class="line">   rehash      Rehash pyenv shims (run this after installing executables)</div><div class="line">   version     Show the current Python version and its origin</div><div class="line">   versions    List all Python versions available to pyenv</div><div class="line">   which       Display the full path to an executable</div><div class="line">   whence      List all Python versions that contain the given executable</div><div class="line"></div><div class="line">See `pyenv help &lt;command&gt;&apos; for information on a specific command.</div><div class="line">For full documentation, see: https://github.com/yyuu/pyenv#readme</div></pre></td></tr></table></figure>
+<h3 id="查看所有可安装的Python版本"><a href="#查看所有可安装的Python版本" class="headerlink" title="查看所有可安装的Python版本"></a>查看所有可安装的<code>Python</code>版本</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">$ pyenv install --list</div><div class="line">Available versions:</div><div class="line">  2.1.3</div><div class="line">  ...</div><div class="line">  2.7.12</div><div class="line">  2.7.13</div><div class="line">  ...</div><div class="line">  3.5.3</div><div class="line">  3.6.0</div><div class="line">  3.6-dev</div><div class="line">  3.6.1</div><div class="line">  3.7-dev</div></pre></td></tr></table></figure>
+<p>需要注意的是，如果是采用<code>brew</code>命令安装的<code>pyenv</code>，可能会发现<code>Python</code>版本库中没有最新的<code>Python</code>版本。所以建议还是通过<code>GitHub</code>源码方式安装<code>pyenv</code>。</p>
+<h3 id="安装指定版本的Python环境"><a href="#安装指定版本的Python环境" class="headerlink" title="安装指定版本的Python环境"></a>安装指定版本的<code>Python</code>环境</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ pyenv install 3.6.0</div><div class="line">Downloading Python-3.6.0.tar.xz...</div><div class="line">-&gt; https://www.python.org/ftp/python/3.6.0/Python-3.6.0.tar.xz</div><div class="line">Installing Python-3.6.0...</div><div class="line">Installed Python-3.6.0 to /Users/Leo/.pyenv/versions/3.6.0</div></pre></td></tr></table></figure>
+<h3 id="查看当前系统中所有可用的Python版本"><a href="#查看当前系统中所有可用的Python版本" class="headerlink" title="查看当前系统中所有可用的Python版本"></a>查看当前系统中所有可用的<code>Python</code>版本</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ pyenv versions</div><div class="line">* system (set by /Users/Leo/.pyenv/version)</div><div class="line">  2.7.13</div><div class="line">  3.6.0</div></pre></td></tr></table></figure>
+<h3 id="切换Python版本"><a href="#切换Python版本" class="headerlink" title="切换Python版本"></a>切换<code>Python</code>版本</h3><p><code>pyenv</code>可以从三个维度来管理<code>Python</code>环境，简称为：<code>当前系统</code>、<code>当前目录</code>、<code>当前shell</code>。这三个维度的优先级从左到右依次升高，即<code>当前系统</code>的优先级最低、<code>当前shell</code>的优先级最高。</p>
+<p>如果想修改系统全局的Python环境，可以采用<code>pyenv global PYTHON_VERSION</code>命令。该命令执行后会在<code>$(pyenv root)</code>目录（默认为<code>~/.pyenv</code>）中创建一个名为<code>version</code>的文件（如果该文件已存在，则修改该文件的内容），里面记录着系统全局的Python版本号。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">$ pyenv global 2.7.13</div><div class="line">$ cat ~/.pyenv/version</div><div class="line">2.7.13</div><div class="line">$ pyenv version</div><div class="line">2.7.13 (<span class="built_in">set</span> by /Users/Leo/.pyenv/version)</div><div class="line"></div><div class="line">$ pyenv global 3.6.0</div><div class="line">$ cat ~/.pyenv/version</div><div class="line">3.6.0</div><div class="line">$ pyenv version</div><div class="line">3.6.0 (<span class="built_in">set</span> by /Users/Leo/.pyenv/version)</div></pre></td></tr></table></figure>
+<p>通常情况下，对于特定的项目，我们可能需要切换不同的Python环境，这个时候就可以通过<code>pyenv local PYTHON_VERSION</code>命令来修改<code>当前目录</code>的Python环境。命令执行后，会在当前目录中生成一个<code>.python-version</code>文件（如果该文件已存在，则修改该文件的内容），里面记录着当前目录使用的Python版本号。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">$ cat ~/.pyenv/version</div><div class="line">2.7.13</div><div class="line">$ pyenv <span class="built_in">local</span> 3.6.0</div><div class="line">$ cat .python-version</div><div class="line">3.6.0</div><div class="line">$ cat ~/.pyenv/version</div><div class="line">2.7.13</div><div class="line">$ pyenv version</div><div class="line">3.6.0 (<span class="built_in">set</span> by /Users/Leo/MyProjects/.python-version)</div><div class="line">$ pip -V</div><div class="line">pip 9.0.1 from /Users/Leo/.pyenv/versions/3.6.0/lib/python3.6/site-packages (python 3.6)</div></pre></td></tr></table></figure>
+<p>可以看出，当前目录中的<code>.python-version</code>配置优先于系统全局的<code>~/.pyenv/version</code>配置。</p>
+<p>另外一种情况，通过执行<code>pyenv shell PYTHON_VERSION</code>命令，可以修改<code>当前shell</code>的Python环境。执行该命令后，会在当前<code>shell session</code>（Terminal窗口）中创建一个名为<code>PYENV_VERSION</code>的环境变量，然后在<code>当前shell</code>的任意目录中都会采用该环境变量设定的Python版本。此时，<code>当前系统</code>和<code>当前目录</code>中设定的Python版本均会被忽略。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">echo</span> <span class="variable">$PYENV_VERSION</span></div><div class="line"></div><div class="line">$ pyenv shell 3.6.0</div><div class="line">$ <span class="built_in">echo</span> <span class="variable">$PYENV_VERSION</span></div><div class="line">3.6.0</div><div class="line">$ cat .python-version</div><div class="line">2.7.13</div><div class="line">$ pyenv version</div><div class="line">3.6.0 (<span class="built_in">set</span> by PYENV_VERSION environment variable)</div></pre></td></tr></table></figure>
+<p>顾名思义，<code>当前shell</code>的Python环境仅在当前shell中生效，重新打开一个新的shell后，该环境也就失效了。如果想在<code>当前shell</code>中取消shell级别的Python环境，采用<code>unset</code>命令重置<code>PYENV_VERSION</code>环境变量即可。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">$ cat .python-version</div><div class="line">2.7.13</div><div class="line">$ pyenv version</div><div class="line">3.6.0 (<span class="built_in">set</span> by PYENV_VERSION environment variable)</div><div class="line"></div><div class="line">$ <span class="built_in">unset</span> PYENV_VERSION</div><div class="line">$ pyenv version</div><div class="line">2.7.13 (<span class="built_in">set</span> by /Users/Leo/MyProjects/.python-version)</div></pre></td></tr></table></figure>
+<h2 id="管理多个依赖库环境"><a href="#管理多个依赖库环境" class="headerlink" title="管理多个依赖库环境"></a>管理多个依赖库环境</h2><p>经过以上操作，我们在本地计算机中就可以安装多个版本的<code>Python</code>运行环境，并可以按照实际需求进行灵活地切换。然而，很多时候在同一个<code>Python</code>版本下，我们仍然希望能根据项目进行环境分离，就跟之前我们使用<code>virtualenv</code>一样。</p>
+<p>在<code>pyenv</code>中，也包含这么一个插件，<a href="https://github.com/pyenv/pyenv-virtualenv" target="_blank" rel="external"><code>pyenv-virtualenv</code></a>，可以实现同样的功能。</p>
+<p>使用方式如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ pyenv virtualenv PYTHON_VERSION PROJECT_NAME</div></pre></td></tr></table></figure>
+<p>其中，<code>PYTHON_VERSION</code>是具体的Python版本号，例如，<code>3.6.0</code>，<code>PROJECT_NAME</code>是我们自定义的项目名称。比较好的实践方式是，在<code>PROJECT_NAME</code>也带上Python的版本号，以便于识别。</p>
+<p>现假设我们有<code>XDiff</code>这么一个项目，想针对<code>Python 2.7.13</code>和<code>Python 3.6.0</code>分别创建一个虚拟环境，那就可以依次执行如下命令。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ pyenv virtualenv 3.6.0 py36_XDiff</div><div class="line">$ pyenv virtualenv 2.7.13 py27_XDiff</div></pre></td></tr></table></figure>
+<p>创建完成后，通过执行<code>pyenv virtualenvs</code>命令，就可以看到本地所有的项目环境。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ pyenv virtualenvs</div><div class="line">  2.7.13/envs/py27_XDiff (created from /Users/Leo/.pyenv/versions/2.7.13)</div><div class="line">* 3.6.0/envs/py36_XDiff (created from /Users/Leo/.pyenv/versions/3.6.0)</div><div class="line">  py27_XDiff (created from /Users/Leo/.pyenv/versions/2.7.13)</div><div class="line">  py36_XDiff (created from /Users/Leo/.pyenv/versions/3.6.0)</div></pre></td></tr></table></figure>
+<p>通过这种方式，在同一个Python版本下我们也可以创建多个虚拟环境，然后在各个虚拟环境中分别维护依赖库环境。</p>
+<p>例如，<code>py36_XDiff</code>虚拟环境位于<code>/Users/Leo/.pyenv/versions/3.6.0/envs</code>目录下，而其依赖库位于<code>/Users/Leo/.pyenv/versions/3.6.0/lib/python3.6/site-packages</code>中。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ pip -V</div><div class="line">pip 9.0.1 from /Users/Leo/.pyenv/versions/3.6.0/lib/python3.6/site-packages (python 3.6)</div></pre></td></tr></table></figure>
+<p>后续在项目开发过程中，我们就可以通过<code>pyenv local XXX</code>或<code>pyenv activate PROJECT_NAME</code>命令来切换项目的<code>Python</code>环境。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">➜  MyProjects pyenv <span class="built_in">local</span> py27_XDiff</div><div class="line">(py27_XDiff) ➜  MyProjects pyenv version</div><div class="line">py27_XDiff (<span class="built_in">set</span> by /Users/Leo/MyProjects/.python-version)</div><div class="line">(py27_XDiff) ➜  MyProjects python -V</div><div class="line">Python 2.7.13</div><div class="line">(py27_XDiff) ➜  MyProjects pip -V</div><div class="line">pip 9.0.1 from /Users/Leo/.pyenv/versions/2.7.13/envs/py27_XDiff/lib/python2.7/site-packages (python 2.7)</div></pre></td></tr></table></figure>
+<p>可以看出，切换环境后，<code>pip</code>命令对应的目录也随之改变，即始终对应着当前的Python虚拟环境。</p>
+<p>对应的，采用<code>pyenv deactivate</code>命令退出当前项目的<code>Python</code>虚拟环境。</p>
+<p>如果想移除某个项目环境，可以通过如下命令实现。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ pyenv uninstall PROJECT_NAME</div></pre></td></tr></table></figure>
+<p>以上便是日常开发工作中常用的<code>pyenv</code>命令，基本可以满足绝大多数依赖库环境管理方面的需求。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h2&gt;&lt;p&gt;从接触Python以来，一直都是采用&lt;a href=&quot;https://virtualenv.pypa.io/en/stable/&quot; targ
+    
+    </summary>
+    
+    
+      <category term="Python" scheme="http://debugtalk.com/tags/Python/"/>
+    
+      <category term="virtualenv" scheme="http://debugtalk.com/tags/virtualenv/"/>
+    
+  </entry>
   
   <entry>
     <title>【GIT技巧】清除历史提交记录中的敏感信息</title>
@@ -71,6 +166,165 @@
       <category term="Git" scheme="http://debugtalk.com/tags/Git/"/>
     
       <category term="GitHub" scheme="http://debugtalk.com/tags/GitHub/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>深入浅出开源性能测试工具Locust（使用篇）</title>
+    <link href="http://debugtalk.com/post/head-first-locust-user-guide/"/>
+    <id>http://debugtalk.com/post/head-first-locust-user-guide/</id>
+    <published>2017-02-21T16:00:00.000Z</published>
+    <updated>2017-03-11T04:16:31.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>在<a href="/post/locustplus-talk-about-performance-test/">《【LocustPlus序】漫谈服务端性能测试》</a>中，我对服务端性能测试的基础概念和性能测试工具的基本原理进行了介绍，并且重点推荐了<code>Locust</code>这一款开源性能测试工具。然而，当前在网络上针对<code>Locust</code>的教程极少，不管是中文还是英文，基本都是介绍安装方法和简单的测试案例演示，但对于较复杂测试场景的案例演示却基本没有，因此很多测试人员都感觉难以将<code>Locust</code>应用到实际的性能测试工作当中。</p>
+<p>经过一段时间的摸索，包括通读<code>Locust</code>官方文档和项目源码，并且在多个性能测试项目中对<code>Locust</code>进行应用实践，事实证明，<code>Locust</code>完全能满足日常的性能测试需求，<code>LoadRunner</code>能实现的功能<code>Locust</code>也基本都能实现。</p>
+<p>本文将从<code>Locust</code>的功能特性出发，结合实例对<code>Locust</code>的使用方法进行介绍。考虑到大众普遍对<code>LoadRunner</code>比较熟悉，在讲解<code>Locust</code>时也会采用<code>LoadRunner</code>的一些概念进行类比。</p>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>先从<code>Locust</code>的名字说起。<code>Locust</code>的原意是蝗虫，原作者之所以选择这个名字，估计也是听过这么一句俗语，“蝗虫过境，寸草不生”。我在网上找了张图片，大家可以感受下。</p>
+<p><img src="/images/14875962785342.jpg" alt=""></p>
+<p>而<code>Locust</code>工具生成的并发请求就跟一大群蝗虫一般，对我们的被测系统发起攻击，以此检测系统在高并发压力下是否能正常运转。</p>
+<p>在<a href="/post/locustplus-talk-about-performance-test/">《【LocustPlus序】漫谈服务端性能测试》</a>中说过，服务端性能测试工具最核心的部分是压力发生器，而压力发生器的核心要点有两个，一是真实模拟用户操作，二是模拟有效并发。</p>
+<p>在<code>Locust</code>测试框架中，测试场景是采用纯Python脚本进行描述的。对于最常见的<code>HTTP(S)</code>协议的系统，<code>Locust</code>采用Python的<code>requests</code>库作为客户端，使得脚本编写大大简化，富有表现力的同时且极具美感。而对于其它协议类型的系统，<code>Locust</code>也提供了接口，只要我们能采用Python编写对应的请求客户端，就能方便地采用<code>Locust</code>实现压力测试。从这个角度来说，<code>Locust</code>可以用于压测任意类型的系统。</p>
+<p>在模拟有效并发方面，<code>Locust</code>的优势在于其摒弃了进程和线程，完全基于事件驱动，使用<code>gevent</code>提供的<code>非阻塞IO</code>和<code>coroutine</code>来实现网络层的并发请求，因此即使是单台压力机也能产生数千并发请求数；再加上对分布式运行的支持，理论上来说，<code>Locust</code>能在使用较少压力机的前提下支持极高并发数的测试。</p>
+<h2 id="脚本编写"><a href="#脚本编写" class="headerlink" title="脚本编写"></a>脚本编写</h2><p>编写<code>Locust</code>脚本，是使用<code>Locust</code>的第一步，也是最为重要的一步。</p>
+<h3 id="简单示例"><a href="#简单示例" class="headerlink" title="简单示例"></a>简单示例</h3><p>先来看一个最简单的示例。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> locust <span class="keyword">import</span> HttpLocust, TaskSet, task</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WebsiteTasks</span><span class="params">(TaskSet)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_start</span><span class="params">(self)</span>:</span></div><div class="line">        self.client.post(<span class="string">"/login"</span>, &#123;</div><div class="line">            <span class="string">"username"</span>: <span class="string">"test"</span>,</div><div class="line">            <span class="string">"password"</span>: <span class="string">"123456"</span></div><div class="line">        &#125;)</div><div class="line"></div><div class="line"><span class="meta">    @task(2)</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">index</span><span class="params">(self)</span>:</span></div><div class="line">        self.client.get(<span class="string">"/"</span>)</div><div class="line"></div><div class="line"><span class="meta">    @task(1)</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">about</span><span class="params">(self)</span>:</span></div><div class="line">        self.client.get(<span class="string">"/about/"</span>)</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WebsiteUser</span><span class="params">(HttpLocust)</span>:</span></div><div class="line">    task_set = WebsiteTasks</div><div class="line">    host = <span class="string">"http://debugtalk.com"</span></div><div class="line">    min_wait = <span class="number">1000</span></div><div class="line">    max_wait = <span class="number">5000</span></div></pre></td></tr></table></figure>
+<p>在这个示例中，定义了针对<code>http://debugtalk.com</code>网站的测试场景：先模拟用户登录系统，然后随机地访问首页（<code>/</code>）和关于页面（<code>/about/</code>），请求比例为<code>2:1</code>；并且，在测试过程中，两次请求的间隔时间为<code>1~5</code>秒间的随机值。</p>
+<p>那么，如上Python脚本是如何表达出以上测试场景的呢？</p>
+<p>从脚本中可以看出，脚本主要包含两个类，一个是<code>WebsiteUser</code>（继承自<code>HttpLocust</code>，而<code>HttpLocust</code>继承自<code>Locust</code>），另一个是<code>WebsiteTasks</code>（继承自<code>TaskSet</code>）。事实上，在<code>Locust</code>的测试脚本中，所有业务测试场景都是在<code>Locust</code>和<code>TaskSet</code>两个类的继承子类中进行描述的。</p>
+<p>那如何理解<code>Locust</code>和<code>TaskSet</code>这两个类呢？</p>
+<p>简单地说，<code>Locust类</code>就好比是一群蝗虫，而每一只蝗虫就是一个类的实例。相应的，<code>TaskSet类</code>就好比是蝗虫的大脑，控制着蝗虫的具体行为，即实际业务场景测试对应的任务集。</p>
+<p>这个比喻可能不是很准确，接下来，我将分别对<code>Locust</code>和<code>TaskSet</code>两个类进行详细介绍。</p>
+<h3 id="class-HttpLocust-Locust"><a href="#class-HttpLocust-Locust" class="headerlink" title="class HttpLocust(Locust)"></a>class HttpLocust(Locust)</h3><p>在<code>Locust类</code>中，具有一个<code>client</code>属性，它对应着虚拟用户作为客户端所具备的请求能力，也就是我们常说的请求方法。通常情况下，我们不会直接使用<code>Locust</code>类，因为其<code>client</code>属性没有绑定任何方法。因此在使用<code>Locust</code>时，需要先继承<code>Locust类</code>，然后在继承子类中的<code>client</code>属性中绑定客户端的实现类。</p>
+<p>对于常见的<code>HTTP(S)</code>协议，<code>Locust</code>已经实现了<code>HttpLocust</code>类，其<code>client</code>属性绑定了<code>HttpSession</code>类，而<code>HttpSession</code>又继承自<code>requests.Session</code>。因此在测试<code>HTTP(S)</code>的<code>Locust脚本</code>中，我们可以通过<code>client</code>属性来使用<code>Python requests</code>库的所有方法，包括<code>GET/POST/HEAD/PUT/DELETE/PATCH</code>等，调用方式也与<code>requests</code>完全一致。另外，由于<code>requests.Session</code>的使用，因此<code>client</code>的方法调用之间就自动具有了状态记忆的功能。常见的场景就是，在登录系统后可以维持登录状态的<code>Session</code>，从而后续HTTP请求操作都能带上登录态。</p>
+<p>而对于<code>HTTP(S)</code>以外的协议，我们同样可以使用<code>Locust</code>进行测试，只是需要我们自行实现客户端。在客户端的具体实现上，可通过注册事件的方式，在请求成功时触发<code>events.request_success</code>，在请求失败时触发<code>events.request_failure</code>即可。然后创建一个继承自<code>Locust类</code>的类，对其设置一个<code>client</code>属性并与我们实现的客户端进行绑定。后续，我们就可以像使用<code>HttpLocust类</code>一样，测试其它协议类型的系统。</p>
+<p>原理就是这样简单！</p>
+<p>在<code>Locust类</code>中，除了<code>client</code>属性，还有几个属性需要关注下：</p>
+<ul>
+<li><code>task_set</code>: 指向一个<code>TaskSet</code>类，<code>TaskSet</code>类定义了用户的任务信息，该属性为必填；</li>
+<li><code>max_wait/min_wait</code>: 每个用户执行两个任务间隔时间的上下限（毫秒），具体数值在上下限中随机取值，若不指定则默认间隔时间固定为1秒；</li>
+<li><code>host</code>：被测系统的host，当在终端中启动<code>locust</code>时没有指定<code>--host</code>参数时才会用到；</li>
+<li><code>weight</code>：同时运行多个<code>Locust类</code>时会用到，用于控制不同类型任务的执行权重。</li>
+</ul>
+<p>测试开始后，每个虚拟用户（<code>Locust实例</code>）的运行逻辑都会遵循如下规律：</p>
+<ol>
+<li>先执行<code>WebsiteTasks</code>中的<code>on_start</code>（只执行一次），作为初始化；</li>
+<li>从<code>WebsiteTasks</code>中随机挑选（如果定义了任务间的权重关系，那么就是按照权重关系随机挑选）一个任务执行；</li>
+<li>根据<code>Locust类</code>中<code>min_wait</code>和<code>max_wait</code>定义的间隔时间范围（如果<code>TaskSet类</code>中也定义了<code>min_wait</code>或者<code>max_wait</code>，以<code>TaskSet</code>中的优先），在时间范围中随机取一个值，休眠等待；</li>
+<li>重复<code>2~3</code>步骤，直至测试任务终止。</li>
+</ol>
+<h3 id="class-TaskSet"><a href="#class-TaskSet" class="headerlink" title="class TaskSet"></a>class TaskSet</h3><p>再说下<code>TaskSet类</code>。</p>
+<p>性能测试工具要模拟用户的业务操作，就需要通过脚本模拟用户的行为。在前面的比喻中说到，<code>TaskSet类</code>好比蝗虫的大脑，控制着蝗虫的具体行为。</p>
+<p>具体地，<code>TaskSet类</code>实现了虚拟用户所执行任务的调度算法，包括规划任务执行顺序（<code>schedule_task</code>）、挑选下一个任务（<code>execute_next_task</code>）、执行任务（<code>execute_task</code>）、休眠等待（<code>wait</code>）、中断控制（<code>interrupt</code>）等等。在此基础上，我们就可以在<code>TaskSet</code>子类中采用非常简洁的方式来描述虚拟用户的业务测试场景，对虚拟用户的所有行为（任务）进行组织和描述，并可以对不同任务的权重进行配置。</p>
+<p>在<code>TaskSet</code>子类中定义任务信息时，可以采取两种方式，<code>@task装饰器</code>和<code>tasks属性</code>。</p>
+<p>采用<code>@task装饰器</code>定义任务信息时，描述形式如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> locust <span class="keyword">import</span> TaskSet, task</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserBehavior</span><span class="params">(TaskSet)</span>:</span></div><div class="line"><span class="meta">    @task(1)</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_job1</span><span class="params">(self)</span>:</span></div><div class="line">        self.client.get(<span class="string">'/job1'</span>)</div><div class="line"></div><div class="line"><span class="meta">    @task(2)</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_job2</span><span class="params">(self)</span>:</span></div><div class="line">        self.client.get(<span class="string">'/job2'</span>)</div></pre></td></tr></table></figure>
+<p>采用<code>tasks属性</code>定义任务信息时，描述形式如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> locust <span class="keyword">import</span> TaskSet</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_job1</span><span class="params">(obj)</span>:</span></div><div class="line">    obj.client.get(<span class="string">'/job1'</span>)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_job2</span><span class="params">(obj)</span>:</span></div><div class="line">    obj.client.get(<span class="string">'/job2'</span>)</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserBehavior</span><span class="params">(TaskSet)</span>:</span></div><div class="line">    tasks = &#123;test_job1:<span class="number">1</span>, test_job2:<span class="number">2</span>&#125;</div><div class="line">    <span class="comment"># tasks = [(test_job1,1), (test_job1,2)] # 两种方式等价</span></div></pre></td></tr></table></figure>
+<p>在如上两种定义任务信息的方式中，均设置了权重属性，即执行<code>test_job2</code>的频率是<code>test_job1</code>的两倍。</p>
+<p>若不指定执行任务的权重，则相当于比例为<code>1:1</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> locust <span class="keyword">import</span> TaskSet, task</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserBehavior</span><span class="params">(TaskSet)</span>:</span></div><div class="line"><span class="meta">    @task</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_job1</span><span class="params">(self)</span>:</span></div><div class="line">        self.client.get(<span class="string">'/job1'</span>)</div><div class="line"></div><div class="line"><span class="meta">    @task</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_job2</span><span class="params">(self)</span>:</span></div><div class="line">        self.client.get(<span class="string">'/job2'</span>)</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> locust <span class="keyword">import</span> TaskSet</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_job1</span><span class="params">(obj)</span>:</span></div><div class="line">    obj.client.get(<span class="string">'/job1'</span>)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_job2</span><span class="params">(obj)</span>:</span></div><div class="line">    obj.client.get(<span class="string">'/job2'</span>)</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserBehavior</span><span class="params">(TaskSet)</span>:</span></div><div class="line">    tasks = [test_job1, test_job2]</div><div class="line">    <span class="comment"># tasks = &#123;test_job1:1, test_job2:1&#125; # 两种方式等价</span></div></pre></td></tr></table></figure>
+<p>在<code>TaskSet</code>子类中除了定义任务信息，还有一个是经常用到的，那就是<code>on_start</code>函数。这个和<code>LoadRunner</code>中的<code>vuser_init</code>功能相同，在正式执行测试前执行一次，主要用于完成一些初始化的工作。例如，当测试某个搜索功能，而该搜索功能又要求必须为登录态的时候，就可以先在<code>on_start</code>中进行登录操作；前面也提到，<code>HttpLocust</code>使用到了<code>requests.Session</code>，因此后续所有任务执行过程中就都具有登录态了。</p>
+<h3 id="脚本增强"><a href="#脚本增强" class="headerlink" title="脚本增强"></a>脚本增强</h3><p>掌握了<code>HttpLocust</code>和<code>TaskSet</code>，我们就基本具备了编写测试脚本的能力。此时再回过头来看前面的案例，相信大家都能很好的理解了。</p>
+<p>然而，当面对较复杂的测试场景，可能有的同学还是会感觉无从下手；例如，很多时候脚本需要做关联或参数化处理，这些在<code>LoadRunner</code>中集成的功能，换到<code>Locust</code>中就不知道怎么实现了。可能也是这方面的原因，造成很多测试人员都感觉难以将Locust应用到实际的性能测试工作当中。</p>
+<p>其实这也跟<code>Locust</code>的目标定位有关，<code>Locust</code>的定位就是<code>small and very hackable</code>。但是小巧并不意味着功能弱，我们完全可以通过Python脚本本身来实现各种各样的功能，如果大家有疑问，我们不妨逐项分解来看。</p>
+<p>在<code>LoadRunner</code>这款功能全面应用广泛的商业性能测试工具中，脚本增强无非就涉及到四个方面：</p>
+<ul>
+<li>关联</li>
+<li>参数化</li>
+<li>检查点</li>
+<li>集合点</li>
+</ul>
+<p>先说关联这一项。在某些请求中，需要携带之前从Server端返回的参数，因此在构造请求时需要先从之前请求的Response中提取出所需的参数，常见场景就是<code>session_id</code>。针对这种情况，<code>LoadRunner</code>虽然可能通过录制脚本进行自动关联，但是效果并不理想，在实际测试过程中也基本都是靠测试人员手动的来进行关联处理。</p>
+<p>在<code>LoadRunner</code>中手动进行关联处理时，主要是通过使用注册型函数，例如<code>web_reg_save_param</code>，对前一个请求的响应结果进行解析，根据左右边界或其它特征定位到参数值并将其保存到参数变量，然后在后续请求中使用该参数。采用同样的思想，我们在<code>Locust</code>脚本中也完全可以实现同样的功能，毕竟只是Python脚本，通过官方库函数<code>re.search</code>就能实现所有需求。甚至针对html页面，我们也可以采用<code>lxml</code>库，通过<code>etree.HTML(html).xpath</code>来更优雅地实现元素定位。</p>
+<p>然后再来看参数化这一项。这一项极其普遍，主要是用在测试数据方面。但通过归纳，发现其实也可以概括为三种类型。</p>
+<ul>
+<li>循环取数据，数据可重复使用：e.g. 模拟3用户并发请求网页，总共有100个URL地址，每个虚拟用户都会依次循环加载这100个URL地址；</li>
+<li>保证并发测试数据唯一性，不循环取数据：e.g. 模拟3用户并发注册账号，总共有90个账号，要求注册账号不重复，注册完毕后结束测试；</li>
+<li>保证并发测试数据唯一性，循环取数据：模拟3用户并发登录账号，总共有90个账号，要求并发登录账号不相同，但数据可循环使用。</li>
+</ul>
+<p>通过以上归纳，可以确信地说，以上三种类型基本上可以覆盖我们日常性能测试工作中的所有参数化场景。</p>
+<p>在<code>LoadRunner</code>中是有一个集成的参数化模块，可以直接配置参数化策略。那在<code>Locust</code>要怎样实现该需求呢？</p>
+<p>答案依旧很简单，使用Python的<code>list</code>和<code>queue</code>数据结构即可！具体做法是，在<code>WebsiteUser</code>定义一个数据集，然后所有虚拟用户在<code>WebsiteTasks</code>中就可以共享该数据集了。如果不要求数据唯一性，数据集选择<code>list</code>数据结构，从头到尾循环遍历即可；如果要求数据唯一性，数据集选择<code>queue</code>数据结构，取数据时进行<code>queue.get()</code>操作即可，并且这也不会循环取数据；至于涉及到需要循环取数据的情况，那也简单，每次取完数据后再将数据插入到队尾即可，<code>queue.put_nowait(data)</code>。</p>
+<p>最后再说下检查点。该功能在<code>LoadRunner</code>中通常是使用<code>web_reg_find</code>这类注册函数进行检查的。在<code>Locust</code>脚本中，处理就更方便了，只需要对响应的内容关键字进行<code>assert xxx in response</code>操作即可。</p>
+<p>针对如上各种脚本增强的场景，我也通过代码示例分别进行了演示。但考虑到文章中插入太多代码会影响到阅读，因此将代码示例部分剥离了出来，如有需要请点击查看<a href="/post/head-first-locust-advanced-script/">《深入浅出开源性能测试工具Locust（脚本增强）》</a>。</p>
+<h2 id="Locust运行模式"><a href="#Locust运行模式" class="headerlink" title="Locust运行模式"></a>Locust运行模式</h2><p>在开始运行<code>Locust</code>脚本之前，我们先来看下<code>Locust</code>支持的运行模式。</p>
+<p>运行<code>Locust</code>时，通常会使用到两种运行模式：单进程运行和多进程分布式运行。</p>
+<p>单进程运行模式的意思是，<code>Locust</code>所有的虚拟并发用户均运行在单个<code>Python</code>进程中，具体从使用形式上，又分为<code>no_web</code>和<code>web</code>两种形式。该种模式由于单进程的原因，并不能完全发挥压力机所有处理器的能力，因此主要用于调试脚本和小并发压测的情况。</p>
+<p>当并发压力要求较高时，就需要用到<code>Locust</code>的多进程分布式运行模式。从字面意思上看，大家可能第一反应就是多台压力机同时运行，每台压力机分担负载一部分的压力生成。的确，<code>Locust</code>支持任意多台压力机（一主多从）的分布式运行模式，但这里说到的多进程分布式运行模式还有另外一种情况，就是在同一台压力机上开启多个<code>slave</code>的情况。这是因为当前阶段大多数计算机的CPU都是多处理器（<code>multiple processor cores</code>），单进程运行模式下只能用到一个处理器的能力，而通过在一台压力机上运行多个<code>slave</code>，就能调用多个处理器的能力了。比较好的做法是，如果一台压力机有<code>N</code>个处理器内核，那么就在这台压力机上启动一个<code>master</code>，<code>N</code>个<code>slave</code>。当然，我们也可以启动<code>N</code>的倍数个<code>slave</code>，但是根据我的试验数据，效果跟<code>N</code>个差不多，因此只需要启动<code>N</code>个<code>slave</code>即可。</p>
+<h2 id="脚本调试"><a href="#脚本调试" class="headerlink" title="脚本调试"></a>脚本调试</h2><p><code>Locust</code>脚本编写完毕后，通常不会那么顺利，在正式开始性能测试之前还需要先调试运行下。</p>
+<p>不过，<code>Locust</code>脚本虽然为Python脚本，但却很难直接当做Python脚本运行起来，为什么呢？这主要还是因为<code>Locust</code>脚本中引用了<code>HttpLocust</code>和<code>TaskSet</code>这两个类，如果要想直接对其进行调用测试，会发现编写启动脚本是一个比较困难的事情。因为这个原因，刚接触<code>Locust</code>的同学可能就会觉得<code>Locust</code>脚本不好调试。</p>
+<p>但这个问题也能克服，那就是借助<code>Locust</code>的单进程<code>no_web</code>运行模式。</p>
+<p>在<code>Locust</code>的单进程<code>no_web</code>运行模式中，我们可以通过<code>--no_web</code>参数，指定并发数（<code>-c</code>）和总执行次数（<code>-n</code>），直接在<code>Terminal</code>中执行脚本。</p>
+<p>在此基础上，当我们想要调试<code>Locust</code>脚本时，就可以在脚本中需要调试的地方通过<code>print</code>打印日志，然后将并发数和总执行次数都指定为1，执行形式如下所示。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ locust <span class="_">-f</span> locustfile.py --no_web -c 1 -n 1</div></pre></td></tr></table></figure>
+<p>通过这种方式，我们就能很方便地对<code>Locust</code>脚本进行调试了。</p>
+<h2 id="执行测试"><a href="#执行测试" class="headerlink" title="执行测试"></a>执行测试</h2><p><code>Locust</code>脚本调试通过后，就算是完成了所有准备工作，可以开始进行压力测试了。</p>
+<p><code>Locust</code>是通过在<code>Terminal</code>中执行命令进行启动的，通用的参数有如下两个：</p>
+<ul>
+<li><code>-H, --host</code>：被测系统的<code>host</code>，若在<code>Terminal</code>中不进行指定，就需要在<code>Locust</code>子类中通过<code>host</code>参数进行指定；</li>
+<li><code>-f, --locustfile</code>：指定执行的<code>Locust</code>脚本文件；</li>
+</ul>
+<p>除了这两个通用的参数，我们还需要根据实际测试场景，选择不同的<code>Locust</code>运行模式，而模式的指定也是通过其它参数来进行控制的。</p>
+<h3 id="单进程运行"><a href="#单进程运行" class="headerlink" title="单进程运行"></a>单进程运行</h3><p><strong>no_web</strong></p>
+<p>如果采用<code>no_web</code>形式，则需使用<code>--no-web</code>参数，并会用到如下几个参数。</p>
+<ul>
+<li><code>-c, --clients</code>：指定并发用户数；</li>
+<li><code>-n, --num-request</code>：指定总执行测试；</li>
+<li><code>-r, --hatch-rate</code>：指定并发加压速率，默认值位1。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">$ locust -H http://debugtalk.com <span class="_">-f</span> demo.py --no-web -c1 -n2</div><div class="line">[2017-02-21 21:27:26,522] Leos-MacBook-Air.local/INFO/locust.main: Starting Locust 0.8a2</div><div class="line">[2017-02-21 21:27:26,523] Leos-MacBook-Air.local/INFO/locust.runners: Hatching and swarming 1 clients at the rate 1 clients/s...</div><div class="line"> Name                                                          <span class="comment"># reqs      # fails     Avg     Min     Max  |  Median   req/s</span></div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line"> Total                                                              0     0(0.00%)                                       0.00</div><div class="line"></div><div class="line">[2017-02-21 21:27:27,526] Leos-MacBook-Air.local/INFO/locust.runners: All locusts hatched: WebsiteUser: 1</div><div class="line">[2017-02-21 21:27:27,527] Leos-MacBook-Air.local/INFO/locust.runners: Resetting stats</div><div class="line"></div><div class="line"> Name                                                          <span class="comment"># reqs      # fails     Avg     Min     Max  |  Median   req/s</span></div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line"> GET /about/                                                        0     0(0.00%)       0       0       0  |       0    0.00</div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line"> Total                                                              0     0(0.00%)                                       0.00</div><div class="line"></div><div class="line"> Name                                                          <span class="comment"># reqs      # fails     Avg     Min     Max  |  Median   req/s</span></div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line"> GET /about/                                                        1     0(0.00%)      17      17      17  |      17    0.00</div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line"> Total                                                              1     0(0.00%)                                       0.00</div><div class="line"></div><div class="line">[2017-02-21 21:27:32,420] Leos-MacBook-Air.local/INFO/locust.runners: All locusts dead</div><div class="line"></div><div class="line">[2017-02-21 21:27:32,421] Leos-MacBook-Air.local/INFO/locust.main: Shutting down (<span class="built_in">exit</span> code 0), bye.</div><div class="line"> Name                                                          <span class="comment"># reqs      # fails     Avg     Min     Max  |  Median   req/s</span></div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line"> GET /                                                              1     0(0.00%)      20      20      20  |      20    0.00</div><div class="line"> GET /about/                                                        1     0(0.00%)      17      17      17  |      17    0.00</div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line"> Total                                                              2     0(0.00%)                                       0.00</div><div class="line"></div><div class="line">Percentage of the requests completed within given <span class="built_in">times</span></div><div class="line"> Name                                                           <span class="comment"># reqs    50%    66%    75%    80%    90%    95%    98%    99%   100%</span></div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line"> GET /                                                               1     20     20     20     20     20     20     20     20     20</div><div class="line"> GET /about/                                                         1     17     17     17     17     17     17     17     17     17</div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div></pre></td></tr></table></figure>
+<p><strong>web</strong></p>
+<p>如果采用<code>web</code>形式，，则通常情况下无需指定其它额外参数，<code>Locust</code>默认采用<code>8089</code>端口启动<code>web</code>；如果要使用其它端口，就可以使用如下参数进行指定。</p>
+<ul>
+<li><code>-P, --port</code>：指定web端口，默认为<code>8089</code>.</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ locust -H http://debugtalk.com <span class="_">-f</span> demo.py</div><div class="line">[2017-02-21 21:31:26,334] Leos-MacBook-Air.local/INFO/locust.main: Starting web monitor at *:8089</div><div class="line">[2017-02-21 21:31:26,334] Leos-MacBook-Air.local/INFO/locust.main: Starting Locust 0.8a2</div></pre></td></tr></table></figure>
+<p>此时，<code>Locust</code>并没有开始执行测试，还需要在Web页面中配置参数后进行启动。</p>
+<p>如果<code>Locust</code>运行在本机，在浏览器中访问<code>http://localhost:8089</code>即可进入<code>Locust</code>的Web管理页面；如果<code>Locust</code>运行在其它机器上，那么在浏览器中访问<code>http://locust_machine_ip:8089</code>即可。</p>
+<p>在<code>Locust</code>的Web管理页面中，需要配置的参数只有两个：</p>
+<ul>
+<li><code>Number of users to simulate</code>: 设置并发用户数，对应中<code>no_web</code>模式的<code>-c, --clients</code>参数；</li>
+<li><code>Hatch rate (users spawned/second)</code>: 启动虚拟用户的速率，对应着<code>no_web</code>模式的<code>-r, --hatch-rate</code>参数。</li>
+</ul>
+<p>参数配置完毕后，点击【Start swarming】即可开始测试。</p>
+<h3 id="多进程分布式运行"><a href="#多进程分布式运行" class="headerlink" title="多进程分布式运行"></a>多进程分布式运行</h3><p>不管是<code>单机多进程</code>，还是<code>多机负载</code>模式，运行方式都是一样的，都是先运行一个<code>master</code>，再启动多个<code>slave</code>。</p>
+<p>启动<code>master</code>时，需要使用<code>--master</code>参数；同样的，如果要使用<code>8089</code>以外的端口，还需要使用<code>-P, --port</code>参数。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ locust -H http://debugtalk.com <span class="_">-f</span> demo.py --master --port=8088</div><div class="line">[2017-02-21 22:59:57,308] Leos-MacBook-Air.local/INFO/locust.main: Starting web monitor at *:8088</div><div class="line">[2017-02-21 22:59:57,310] Leos-MacBook-Air.local/INFO/locust.main: Starting Locust 0.8a2</div></pre></td></tr></table></figure>
+<p><code>master</code>启动后，还需要启动<code>slave</code>才能执行测试任务。</p>
+<p>启动<code>slave</code>时需要使用<code>--slave</code>参数；在<code>slave</code>中，就不需要再指定端口了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ locust -H http://debugtalk.com <span class="_">-f</span> demo.py --slave</div><div class="line">[2017-02-21 23:07:58,696] Leos-MacBook-Air.local/INFO/locust.main: Starting Locust 0.8a2</div><div class="line">[2017-02-21 23:07:58,696] Leos-MacBook-Air.local/INFO/locust.runners: Client <span class="string">'Leos-MacBook-Air.local_980ab0eec2bca517d03feb60c31d6a3a'</span> reported as</div><div class="line"> ready. Currently 2 clients ready to swarm.</div></pre></td></tr></table></figure>
+<p>如果<code>slave</code>与<code>master</code>不在同一台机器上，还需要通过<code>--master-host</code>参数再指定<code>master</code>的IP地址。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ locust -H http://debugtalk.com <span class="_">-f</span> demo.py --slave --master-host=&lt;locust_machine_ip&gt;</div><div class="line">[2017-02-21 23:07:58,696] Leos-MacBook-Air.local/INFO/locust.main: Starting Locust 0.8a2</div><div class="line">[2017-02-21 23:07:58,696] Leos-MacBook-Air.local/INFO/locust.runners: Client <span class="string">'Leos-MacBook-Air.local_980ab0eec2bca517d03feb60c31d6a3a'</span> reported as</div><div class="line"> ready. Currently 2 clients ready to swarm.</div></pre></td></tr></table></figure>
+<p><code>master</code>和<code>slave</code>都启动完毕后，就可以在浏览器中通过<code>http://locust_machine_ip:8089</code>进入<code>Locust</code>的Web管理页面了。使用方式跟单进程<code>web</code>形式完全相同，只是此时是通过多进程负载来生成并发压力，在<code>web</code>管理界面中也能看到实际的<code>slave</code>数量。</p>
+<h2 id="测试结果展示"><a href="#测试结果展示" class="headerlink" title="测试结果展示"></a>测试结果展示</h2><p><code>Locust</code>在执行测试的过程中，我们可以在<code>web</code>界面中实时地看到结果运行情况。</p>
+<p>相比于<code>LoadRunner</code>，<code>Locust</code>的结果展示十分简单，主要就四个指标：<code>并发数</code>、<code>RPS</code>、<code>响应时间</code>、<code>异常率</code>。但对于大多数场景来说，这几个指标已经足够了。</p>
+<p><img src="/images/14877299635610.jpg" alt=""></p>
+<p>在上图中，<code>RPS</code>和<code>平均响应时间</code>这两个指标显示的值都是根据最近2秒请求响应数据计算得到的统计值，我们也可以理解为瞬时值。</p>
+<p>如果想看性能指标数据的走势，就可以在<code>Charts</code>栏查看。在这里，可以查看到<code>RPS</code>和<code>平均响应时间</code>在整个运行过程中的波动情况。这个功能之前在<code>Locust</code>中一直是缺失的，直到最近，这个坑才被我之前在<code>阿里移动</code>的同事（网络ID<a href="http://myzhan.github.io/" target="_blank" rel="external"><code>myzhan</code></a>）给填上了。当前该功能已经合并到<code>Locust</code>了，更新到最新版即可使用。</p>
+<p><img src="/images/14877300553617.jpg" alt=""></p>
+<p>除了以上数据，<code>Locust</code>还提供了整个运行过程数据的百分比统计值，例如我们常用的<code>90%响应时间</code>、<code>响应时间中位值</code>，该数据可以通过<code>Download response time distribution CSV</code>获得，数据展示效果如下所示。</p>
+<p><img src="/images/14877305222231.jpg" alt=""></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过前面对<code>Locust</code>全方位的讲解，相信大家对<code>Locust</code>的功能特性已经非常熟悉了，在实际项目中将<code>Locust</code>作为生产力工具应该也没啥问题了。</p>
+<p>不过，任何一款工具都不是完美的，必定都会存在一些不足之处。但是好在<code>Locust</code>具有极强的可定制型，当我们遇到一些特有的需求时，可以在<code>Locust</code>上很方便地实现扩展。</p>
+<p>还是前面提到的那位技术大牛（<code>myzhan</code>），他为了摆脱<code>CPython</code>的<code>GIL</code>和<code>gevent</code>的 <code>monkey_patch()</code>，将<code>Locust</code>的<code>slave</code>端采用<code>golang</code>进行了重写，采用<code>goroutine</code>取代了<code>gevent</code>。经过测试，相较于原生的<code>Python</code>实现，他的这套<code>golang</code>实现具有<code>5~10</code>倍以上的性能提升。当前，他已经将该实现开源，项目名称为<a href="https://github.com/myzhan/boomer" target="_blank" rel="external"><code>myzhan/boomer</code></a>，如果大家感兴趣，可以阅读他的博客文章进一步了解，<a href="http://myzhan.github.io/2016/03/01/write-a-load-testing-tool-in-golang/" target="_blank" rel="external">《用 golang 来编写压测工具》</a>。</p>
+<p>如果我们也想在<code>Locust</code>的基础上进行二次开发，那要怎么开始呢？</p>
+<p>毫无疑问，阅读<code>Locust</code>的项目源码是必不可少的第一步。可能对于很多人来说，阅读开源项目源码是一件十分困难的事情，不知道如何着手，在知乎上也看到好多关于如何阅读开源项目源码的提问。事实上，<code>Locust</code>项目的代码结构清晰，核心代码量也比较少，十分适合阅读学习。哪怕只是想体验下阅读开源项目源码，或者说想提升下自己的<code>Python</code>技能，<code>Locust</code>也是个不错的选择。</p>
+<p>在下一篇文章中，我将对<code>Locust</code>源码进行解析，《深入浅出开源性能测试工具Locust（源码篇）》，敬请期待！</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在&lt;a href=&quot;/post/locustplus-talk-about-performance-test/&quot;&gt;《【LocustPlus序】漫谈服务端性能测试》&lt;/a&gt;中，我对服务端性能测试的基础概念和性能测试工具的基本原理进行了介绍，并且重点推荐了&lt;code&gt;Locus
+    
+    </summary>
+    
+    
+      <category term="性能测试" scheme="http://debugtalk.com/tags/%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/"/>
+    
+      <category term="Locust" scheme="http://debugtalk.com/tags/Locust/"/>
+    
+      <category term="开源项目" scheme="http://debugtalk.com/tags/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/"/>
     
   </entry>
   
@@ -236,165 +490,6 @@
   </entry>
   
   <entry>
-    <title>深入浅出开源性能测试工具Locust（使用篇）</title>
-    <link href="http://debugtalk.com/post/head-first-locust-user-guide/"/>
-    <id>http://debugtalk.com/post/head-first-locust-user-guide/</id>
-    <published>2017-02-21T16:00:00.000Z</published>
-    <updated>2017-03-11T04:16:31.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>在<a href="/post/locustplus-talk-about-performance-test/">《【LocustPlus序】漫谈服务端性能测试》</a>中，我对服务端性能测试的基础概念和性能测试工具的基本原理进行了介绍，并且重点推荐了<code>Locust</code>这一款开源性能测试工具。然而，当前在网络上针对<code>Locust</code>的教程极少，不管是中文还是英文，基本都是介绍安装方法和简单的测试案例演示，但对于较复杂测试场景的案例演示却基本没有，因此很多测试人员都感觉难以将<code>Locust</code>应用到实际的性能测试工作当中。</p>
-<p>经过一段时间的摸索，包括通读<code>Locust</code>官方文档和项目源码，并且在多个性能测试项目中对<code>Locust</code>进行应用实践，事实证明，<code>Locust</code>完全能满足日常的性能测试需求，<code>LoadRunner</code>能实现的功能<code>Locust</code>也基本都能实现。</p>
-<p>本文将从<code>Locust</code>的功能特性出发，结合实例对<code>Locust</code>的使用方法进行介绍。考虑到大众普遍对<code>LoadRunner</code>比较熟悉，在讲解<code>Locust</code>时也会采用<code>LoadRunner</code>的一些概念进行类比。</p>
-<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>先从<code>Locust</code>的名字说起。<code>Locust</code>的原意是蝗虫，原作者之所以选择这个名字，估计也是听过这么一句俗语，“蝗虫过境，寸草不生”。我在网上找了张图片，大家可以感受下。</p>
-<p><img src="/images/14875962785342.jpg" alt=""></p>
-<p>而<code>Locust</code>工具生成的并发请求就跟一大群蝗虫一般，对我们的被测系统发起攻击，以此检测系统在高并发压力下是否能正常运转。</p>
-<p>在<a href="/post/locustplus-talk-about-performance-test/">《【LocustPlus序】漫谈服务端性能测试》</a>中说过，服务端性能测试工具最核心的部分是压力发生器，而压力发生器的核心要点有两个，一是真实模拟用户操作，二是模拟有效并发。</p>
-<p>在<code>Locust</code>测试框架中，测试场景是采用纯Python脚本进行描述的。对于最常见的<code>HTTP(S)</code>协议的系统，<code>Locust</code>采用Python的<code>requests</code>库作为客户端，使得脚本编写大大简化，富有表现力的同时且极具美感。而对于其它协议类型的系统，<code>Locust</code>也提供了接口，只要我们能采用Python编写对应的请求客户端，就能方便地采用<code>Locust</code>实现压力测试。从这个角度来说，<code>Locust</code>可以用于压测任意类型的系统。</p>
-<p>在模拟有效并发方面，<code>Locust</code>的优势在于其摒弃了进程和线程，完全基于事件驱动，使用<code>gevent</code>提供的<code>非阻塞IO</code>和<code>coroutine</code>来实现网络层的并发请求，因此即使是单台压力机也能产生数千并发请求数；再加上对分布式运行的支持，理论上来说，<code>Locust</code>能在使用较少压力机的前提下支持极高并发数的测试。</p>
-<h2 id="脚本编写"><a href="#脚本编写" class="headerlink" title="脚本编写"></a>脚本编写</h2><p>编写<code>Locust</code>脚本，是使用<code>Locust</code>的第一步，也是最为重要的一步。</p>
-<h3 id="简单示例"><a href="#简单示例" class="headerlink" title="简单示例"></a>简单示例</h3><p>先来看一个最简单的示例。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> locust <span class="keyword">import</span> HttpLocust, TaskSet, task</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WebsiteTasks</span><span class="params">(TaskSet)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_start</span><span class="params">(self)</span>:</span></div><div class="line">        self.client.post(<span class="string">"/login"</span>, &#123;</div><div class="line">            <span class="string">"username"</span>: <span class="string">"test"</span>,</div><div class="line">            <span class="string">"password"</span>: <span class="string">"123456"</span></div><div class="line">        &#125;)</div><div class="line"></div><div class="line"><span class="meta">    @task(2)</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">index</span><span class="params">(self)</span>:</span></div><div class="line">        self.client.get(<span class="string">"/"</span>)</div><div class="line"></div><div class="line"><span class="meta">    @task(1)</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">about</span><span class="params">(self)</span>:</span></div><div class="line">        self.client.get(<span class="string">"/about/"</span>)</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WebsiteUser</span><span class="params">(HttpLocust)</span>:</span></div><div class="line">    task_set = WebsiteTasks</div><div class="line">    host = <span class="string">"http://debugtalk.com"</span></div><div class="line">    min_wait = <span class="number">1000</span></div><div class="line">    max_wait = <span class="number">5000</span></div></pre></td></tr></table></figure>
-<p>在这个示例中，定义了针对<code>http://debugtalk.com</code>网站的测试场景：先模拟用户登录系统，然后随机地访问首页（<code>/</code>）和关于页面（<code>/about/</code>），请求比例为<code>2:1</code>；并且，在测试过程中，两次请求的间隔时间为<code>1~5</code>秒间的随机值。</p>
-<p>那么，如上Python脚本是如何表达出以上测试场景的呢？</p>
-<p>从脚本中可以看出，脚本主要包含两个类，一个是<code>WebsiteUser</code>（继承自<code>HttpLocust</code>，而<code>HttpLocust</code>继承自<code>Locust</code>），另一个是<code>WebsiteTasks</code>（继承自<code>TaskSet</code>）。事实上，在<code>Locust</code>的测试脚本中，所有业务测试场景都是在<code>Locust</code>和<code>TaskSet</code>两个类的继承子类中进行描述的。</p>
-<p>那如何理解<code>Locust</code>和<code>TaskSet</code>这两个类呢？</p>
-<p>简单地说，<code>Locust类</code>就好比是一群蝗虫，而每一只蝗虫就是一个类的实例。相应的，<code>TaskSet类</code>就好比是蝗虫的大脑，控制着蝗虫的具体行为，即实际业务场景测试对应的任务集。</p>
-<p>这个比喻可能不是很准确，接下来，我将分别对<code>Locust</code>和<code>TaskSet</code>两个类进行详细介绍。</p>
-<h3 id="class-HttpLocust-Locust"><a href="#class-HttpLocust-Locust" class="headerlink" title="class HttpLocust(Locust)"></a>class HttpLocust(Locust)</h3><p>在<code>Locust类</code>中，具有一个<code>client</code>属性，它对应着虚拟用户作为客户端所具备的请求能力，也就是我们常说的请求方法。通常情况下，我们不会直接使用<code>Locust</code>类，因为其<code>client</code>属性没有绑定任何方法。因此在使用<code>Locust</code>时，需要先继承<code>Locust类</code>，然后在继承子类中的<code>client</code>属性中绑定客户端的实现类。</p>
-<p>对于常见的<code>HTTP(S)</code>协议，<code>Locust</code>已经实现了<code>HttpLocust</code>类，其<code>client</code>属性绑定了<code>HttpSession</code>类，而<code>HttpSession</code>又继承自<code>requests.Session</code>。因此在测试<code>HTTP(S)</code>的<code>Locust脚本</code>中，我们可以通过<code>client</code>属性来使用<code>Python requests</code>库的所有方法，包括<code>GET/POST/HEAD/PUT/DELETE/PATCH</code>等，调用方式也与<code>requests</code>完全一致。另外，由于<code>requests.Session</code>的使用，因此<code>client</code>的方法调用之间就自动具有了状态记忆的功能。常见的场景就是，在登录系统后可以维持登录状态的<code>Session</code>，从而后续HTTP请求操作都能带上登录态。</p>
-<p>而对于<code>HTTP(S)</code>以外的协议，我们同样可以使用<code>Locust</code>进行测试，只是需要我们自行实现客户端。在客户端的具体实现上，可通过注册事件的方式，在请求成功时触发<code>events.request_success</code>，在请求失败时触发<code>events.request_failure</code>即可。然后创建一个继承自<code>Locust类</code>的类，对其设置一个<code>client</code>属性并与我们实现的客户端进行绑定。后续，我们就可以像使用<code>HttpLocust类</code>一样，测试其它协议类型的系统。</p>
-<p>原理就是这样简单！</p>
-<p>在<code>Locust类</code>中，除了<code>client</code>属性，还有几个属性需要关注下：</p>
-<ul>
-<li><code>task_set</code>: 指向一个<code>TaskSet</code>类，<code>TaskSet</code>类定义了用户的任务信息，该属性为必填；</li>
-<li><code>max_wait/min_wait</code>: 每个用户执行两个任务间隔时间的上下限（毫秒），具体数值在上下限中随机取值，若不指定则默认间隔时间固定为1秒；</li>
-<li><code>host</code>：被测系统的host，当在终端中启动<code>locust</code>时没有指定<code>--host</code>参数时才会用到；</li>
-<li><code>weight</code>：同时运行多个<code>Locust类</code>时会用到，用于控制不同类型任务的执行权重。</li>
-</ul>
-<p>测试开始后，每个虚拟用户（<code>Locust实例</code>）的运行逻辑都会遵循如下规律：</p>
-<ol>
-<li>先执行<code>WebsiteTasks</code>中的<code>on_start</code>（只执行一次），作为初始化；</li>
-<li>从<code>WebsiteTasks</code>中随机挑选（如果定义了任务间的权重关系，那么就是按照权重关系随机挑选）一个任务执行；</li>
-<li>根据<code>Locust类</code>中<code>min_wait</code>和<code>max_wait</code>定义的间隔时间范围（如果<code>TaskSet类</code>中也定义了<code>min_wait</code>或者<code>max_wait</code>，以<code>TaskSet</code>中的优先），在时间范围中随机取一个值，休眠等待；</li>
-<li>重复<code>2~3</code>步骤，直至测试任务终止。</li>
-</ol>
-<h3 id="class-TaskSet"><a href="#class-TaskSet" class="headerlink" title="class TaskSet"></a>class TaskSet</h3><p>再说下<code>TaskSet类</code>。</p>
-<p>性能测试工具要模拟用户的业务操作，就需要通过脚本模拟用户的行为。在前面的比喻中说到，<code>TaskSet类</code>好比蝗虫的大脑，控制着蝗虫的具体行为。</p>
-<p>具体地，<code>TaskSet类</code>实现了虚拟用户所执行任务的调度算法，包括规划任务执行顺序（<code>schedule_task</code>）、挑选下一个任务（<code>execute_next_task</code>）、执行任务（<code>execute_task</code>）、休眠等待（<code>wait</code>）、中断控制（<code>interrupt</code>）等等。在此基础上，我们就可以在<code>TaskSet</code>子类中采用非常简洁的方式来描述虚拟用户的业务测试场景，对虚拟用户的所有行为（任务）进行组织和描述，并可以对不同任务的权重进行配置。</p>
-<p>在<code>TaskSet</code>子类中定义任务信息时，可以采取两种方式，<code>@task装饰器</code>和<code>tasks属性</code>。</p>
-<p>采用<code>@task装饰器</code>定义任务信息时，描述形式如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> locust <span class="keyword">import</span> TaskSet, task</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserBehavior</span><span class="params">(TaskSet)</span>:</span></div><div class="line"><span class="meta">    @task(1)</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_job1</span><span class="params">(self)</span>:</span></div><div class="line">        self.client.get(<span class="string">'/job1'</span>)</div><div class="line"></div><div class="line"><span class="meta">    @task(2)</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_job2</span><span class="params">(self)</span>:</span></div><div class="line">        self.client.get(<span class="string">'/job2'</span>)</div></pre></td></tr></table></figure>
-<p>采用<code>tasks属性</code>定义任务信息时，描述形式如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> locust <span class="keyword">import</span> TaskSet</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_job1</span><span class="params">(obj)</span>:</span></div><div class="line">    obj.client.get(<span class="string">'/job1'</span>)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_job2</span><span class="params">(obj)</span>:</span></div><div class="line">    obj.client.get(<span class="string">'/job2'</span>)</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserBehavior</span><span class="params">(TaskSet)</span>:</span></div><div class="line">    tasks = &#123;test_job1:<span class="number">1</span>, test_job2:<span class="number">2</span>&#125;</div><div class="line">    <span class="comment"># tasks = [(test_job1,1), (test_job1,2)] # 两种方式等价</span></div></pre></td></tr></table></figure>
-<p>在如上两种定义任务信息的方式中，均设置了权重属性，即执行<code>test_job2</code>的频率是<code>test_job1</code>的两倍。</p>
-<p>若不指定执行任务的权重，则相当于比例为<code>1:1</code>。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> locust <span class="keyword">import</span> TaskSet, task</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserBehavior</span><span class="params">(TaskSet)</span>:</span></div><div class="line"><span class="meta">    @task</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_job1</span><span class="params">(self)</span>:</span></div><div class="line">        self.client.get(<span class="string">'/job1'</span>)</div><div class="line"></div><div class="line"><span class="meta">    @task</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_job2</span><span class="params">(self)</span>:</span></div><div class="line">        self.client.get(<span class="string">'/job2'</span>)</div></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> locust <span class="keyword">import</span> TaskSet</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_job1</span><span class="params">(obj)</span>:</span></div><div class="line">    obj.client.get(<span class="string">'/job1'</span>)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_job2</span><span class="params">(obj)</span>:</span></div><div class="line">    obj.client.get(<span class="string">'/job2'</span>)</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserBehavior</span><span class="params">(TaskSet)</span>:</span></div><div class="line">    tasks = [test_job1, test_job2]</div><div class="line">    <span class="comment"># tasks = &#123;test_job1:1, test_job2:1&#125; # 两种方式等价</span></div></pre></td></tr></table></figure>
-<p>在<code>TaskSet</code>子类中除了定义任务信息，还有一个是经常用到的，那就是<code>on_start</code>函数。这个和<code>LoadRunner</code>中的<code>vuser_init</code>功能相同，在正式执行测试前执行一次，主要用于完成一些初始化的工作。例如，当测试某个搜索功能，而该搜索功能又要求必须为登录态的时候，就可以先在<code>on_start</code>中进行登录操作；前面也提到，<code>HttpLocust</code>使用到了<code>requests.Session</code>，因此后续所有任务执行过程中就都具有登录态了。</p>
-<h3 id="脚本增强"><a href="#脚本增强" class="headerlink" title="脚本增强"></a>脚本增强</h3><p>掌握了<code>HttpLocust</code>和<code>TaskSet</code>，我们就基本具备了编写测试脚本的能力。此时再回过头来看前面的案例，相信大家都能很好的理解了。</p>
-<p>然而，当面对较复杂的测试场景，可能有的同学还是会感觉无从下手；例如，很多时候脚本需要做关联或参数化处理，这些在<code>LoadRunner</code>中集成的功能，换到<code>Locust</code>中就不知道怎么实现了。可能也是这方面的原因，造成很多测试人员都感觉难以将Locust应用到实际的性能测试工作当中。</p>
-<p>其实这也跟<code>Locust</code>的目标定位有关，<code>Locust</code>的定位就是<code>small and very hackable</code>。但是小巧并不意味着功能弱，我们完全可以通过Python脚本本身来实现各种各样的功能，如果大家有疑问，我们不妨逐项分解来看。</p>
-<p>在<code>LoadRunner</code>这款功能全面应用广泛的商业性能测试工具中，脚本增强无非就涉及到四个方面：</p>
-<ul>
-<li>关联</li>
-<li>参数化</li>
-<li>检查点</li>
-<li>集合点</li>
-</ul>
-<p>先说关联这一项。在某些请求中，需要携带之前从Server端返回的参数，因此在构造请求时需要先从之前请求的Response中提取出所需的参数，常见场景就是<code>session_id</code>。针对这种情况，<code>LoadRunner</code>虽然可能通过录制脚本进行自动关联，但是效果并不理想，在实际测试过程中也基本都是靠测试人员手动的来进行关联处理。</p>
-<p>在<code>LoadRunner</code>中手动进行关联处理时，主要是通过使用注册型函数，例如<code>web_reg_save_param</code>，对前一个请求的响应结果进行解析，根据左右边界或其它特征定位到参数值并将其保存到参数变量，然后在后续请求中使用该参数。采用同样的思想，我们在<code>Locust</code>脚本中也完全可以实现同样的功能，毕竟只是Python脚本，通过官方库函数<code>re.search</code>就能实现所有需求。甚至针对html页面，我们也可以采用<code>lxml</code>库，通过<code>etree.HTML(html).xpath</code>来更优雅地实现元素定位。</p>
-<p>然后再来看参数化这一项。这一项极其普遍，主要是用在测试数据方面。但通过归纳，发现其实也可以概括为三种类型。</p>
-<ul>
-<li>循环取数据，数据可重复使用：e.g. 模拟3用户并发请求网页，总共有100个URL地址，每个虚拟用户都会依次循环加载这100个URL地址；</li>
-<li>保证并发测试数据唯一性，不循环取数据：e.g. 模拟3用户并发注册账号，总共有90个账号，要求注册账号不重复，注册完毕后结束测试；</li>
-<li>保证并发测试数据唯一性，循环取数据：模拟3用户并发登录账号，总共有90个账号，要求并发登录账号不相同，但数据可循环使用。</li>
-</ul>
-<p>通过以上归纳，可以确信地说，以上三种类型基本上可以覆盖我们日常性能测试工作中的所有参数化场景。</p>
-<p>在<code>LoadRunner</code>中是有一个集成的参数化模块，可以直接配置参数化策略。那在<code>Locust</code>要怎样实现该需求呢？</p>
-<p>答案依旧很简单，使用Python的<code>list</code>和<code>queue</code>数据结构即可！具体做法是，在<code>WebsiteUser</code>定义一个数据集，然后所有虚拟用户在<code>WebsiteTasks</code>中就可以共享该数据集了。如果不要求数据唯一性，数据集选择<code>list</code>数据结构，从头到尾循环遍历即可；如果要求数据唯一性，数据集选择<code>queue</code>数据结构，取数据时进行<code>queue.get()</code>操作即可，并且这也不会循环取数据；至于涉及到需要循环取数据的情况，那也简单，每次取完数据后再将数据插入到队尾即可，<code>queue.put_nowait(data)</code>。</p>
-<p>最后再说下检查点。该功能在<code>LoadRunner</code>中通常是使用<code>web_reg_find</code>这类注册函数进行检查的。在<code>Locust</code>脚本中，处理就更方便了，只需要对响应的内容关键字进行<code>assert xxx in response</code>操作即可。</p>
-<p>针对如上各种脚本增强的场景，我也通过代码示例分别进行了演示。但考虑到文章中插入太多代码会影响到阅读，因此将代码示例部分剥离了出来，如有需要请点击查看<a href="/post/head-first-locust-advanced-script/">《深入浅出开源性能测试工具Locust（脚本增强）》</a>。</p>
-<h2 id="Locust运行模式"><a href="#Locust运行模式" class="headerlink" title="Locust运行模式"></a>Locust运行模式</h2><p>在开始运行<code>Locust</code>脚本之前，我们先来看下<code>Locust</code>支持的运行模式。</p>
-<p>运行<code>Locust</code>时，通常会使用到两种运行模式：单进程运行和多进程分布式运行。</p>
-<p>单进程运行模式的意思是，<code>Locust</code>所有的虚拟并发用户均运行在单个<code>Python</code>进程中，具体从使用形式上，又分为<code>no_web</code>和<code>web</code>两种形式。该种模式由于单进程的原因，并不能完全发挥压力机所有处理器的能力，因此主要用于调试脚本和小并发压测的情况。</p>
-<p>当并发压力要求较高时，就需要用到<code>Locust</code>的多进程分布式运行模式。从字面意思上看，大家可能第一反应就是多台压力机同时运行，每台压力机分担负载一部分的压力生成。的确，<code>Locust</code>支持任意多台压力机（一主多从）的分布式运行模式，但这里说到的多进程分布式运行模式还有另外一种情况，就是在同一台压力机上开启多个<code>slave</code>的情况。这是因为当前阶段大多数计算机的CPU都是多处理器（<code>multiple processor cores</code>），单进程运行模式下只能用到一个处理器的能力，而通过在一台压力机上运行多个<code>slave</code>，就能调用多个处理器的能力了。比较好的做法是，如果一台压力机有<code>N</code>个处理器内核，那么就在这台压力机上启动一个<code>master</code>，<code>N</code>个<code>slave</code>。当然，我们也可以启动<code>N</code>的倍数个<code>slave</code>，但是根据我的试验数据，效果跟<code>N</code>个差不多，因此只需要启动<code>N</code>个<code>slave</code>即可。</p>
-<h2 id="脚本调试"><a href="#脚本调试" class="headerlink" title="脚本调试"></a>脚本调试</h2><p><code>Locust</code>脚本编写完毕后，通常不会那么顺利，在正式开始性能测试之前还需要先调试运行下。</p>
-<p>不过，<code>Locust</code>脚本虽然为Python脚本，但却很难直接当做Python脚本运行起来，为什么呢？这主要还是因为<code>Locust</code>脚本中引用了<code>HttpLocust</code>和<code>TaskSet</code>这两个类，如果要想直接对其进行调用测试，会发现编写启动脚本是一个比较困难的事情。因为这个原因，刚接触<code>Locust</code>的同学可能就会觉得<code>Locust</code>脚本不好调试。</p>
-<p>但这个问题也能克服，那就是借助<code>Locust</code>的单进程<code>no_web</code>运行模式。</p>
-<p>在<code>Locust</code>的单进程<code>no_web</code>运行模式中，我们可以通过<code>--no_web</code>参数，指定并发数（<code>-c</code>）和总执行次数（<code>-n</code>），直接在<code>Terminal</code>中执行脚本。</p>
-<p>在此基础上，当我们想要调试<code>Locust</code>脚本时，就可以在脚本中需要调试的地方通过<code>print</code>打印日志，然后将并发数和总执行次数都指定为1，执行形式如下所示。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ locust <span class="_">-f</span> locustfile.py --no_web -c 1 -n 1</div></pre></td></tr></table></figure>
-<p>通过这种方式，我们就能很方便地对<code>Locust</code>脚本进行调试了。</p>
-<h2 id="执行测试"><a href="#执行测试" class="headerlink" title="执行测试"></a>执行测试</h2><p><code>Locust</code>脚本调试通过后，就算是完成了所有准备工作，可以开始进行压力测试了。</p>
-<p><code>Locust</code>是通过在<code>Terminal</code>中执行命令进行启动的，通用的参数有如下两个：</p>
-<ul>
-<li><code>-H, --host</code>：被测系统的<code>host</code>，若在<code>Terminal</code>中不进行指定，就需要在<code>Locust</code>子类中通过<code>host</code>参数进行指定；</li>
-<li><code>-f, --locustfile</code>：指定执行的<code>Locust</code>脚本文件；</li>
-</ul>
-<p>除了这两个通用的参数，我们还需要根据实际测试场景，选择不同的<code>Locust</code>运行模式，而模式的指定也是通过其它参数来进行控制的。</p>
-<h3 id="单进程运行"><a href="#单进程运行" class="headerlink" title="单进程运行"></a>单进程运行</h3><p><strong>no_web</strong></p>
-<p>如果采用<code>no_web</code>形式，则需使用<code>--no-web</code>参数，并会用到如下几个参数。</p>
-<ul>
-<li><code>-c, --clients</code>：指定并发用户数；</li>
-<li><code>-n, --num-request</code>：指定总执行测试；</li>
-<li><code>-r, --hatch-rate</code>：指定并发加压速率，默认值位1。</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">$ locust -H http://debugtalk.com <span class="_">-f</span> demo.py --no-web -c1 -n2</div><div class="line">[2017-02-21 21:27:26,522] Leos-MacBook-Air.local/INFO/locust.main: Starting Locust 0.8a2</div><div class="line">[2017-02-21 21:27:26,523] Leos-MacBook-Air.local/INFO/locust.runners: Hatching and swarming 1 clients at the rate 1 clients/s...</div><div class="line"> Name                                                          <span class="comment"># reqs      # fails     Avg     Min     Max  |  Median   req/s</span></div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line"> Total                                                              0     0(0.00%)                                       0.00</div><div class="line"></div><div class="line">[2017-02-21 21:27:27,526] Leos-MacBook-Air.local/INFO/locust.runners: All locusts hatched: WebsiteUser: 1</div><div class="line">[2017-02-21 21:27:27,527] Leos-MacBook-Air.local/INFO/locust.runners: Resetting stats</div><div class="line"></div><div class="line"> Name                                                          <span class="comment"># reqs      # fails     Avg     Min     Max  |  Median   req/s</span></div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line"> GET /about/                                                        0     0(0.00%)       0       0       0  |       0    0.00</div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line"> Total                                                              0     0(0.00%)                                       0.00</div><div class="line"></div><div class="line"> Name                                                          <span class="comment"># reqs      # fails     Avg     Min     Max  |  Median   req/s</span></div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line"> GET /about/                                                        1     0(0.00%)      17      17      17  |      17    0.00</div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line"> Total                                                              1     0(0.00%)                                       0.00</div><div class="line"></div><div class="line">[2017-02-21 21:27:32,420] Leos-MacBook-Air.local/INFO/locust.runners: All locusts dead</div><div class="line"></div><div class="line">[2017-02-21 21:27:32,421] Leos-MacBook-Air.local/INFO/locust.main: Shutting down (<span class="built_in">exit</span> code 0), bye.</div><div class="line"> Name                                                          <span class="comment"># reqs      # fails     Avg     Min     Max  |  Median   req/s</span></div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line"> GET /                                                              1     0(0.00%)      20      20      20  |      20    0.00</div><div class="line"> GET /about/                                                        1     0(0.00%)      17      17      17  |      17    0.00</div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line"> Total                                                              2     0(0.00%)                                       0.00</div><div class="line"></div><div class="line">Percentage of the requests completed within given <span class="built_in">times</span></div><div class="line"> Name                                                           <span class="comment"># reqs    50%    66%    75%    80%    90%    95%    98%    99%   100%</span></div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line"> GET /                                                               1     20     20     20     20     20     20     20     20     20</div><div class="line"> GET /about/                                                         1     17     17     17     17     17     17     17     17     17</div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div></pre></td></tr></table></figure>
-<p><strong>web</strong></p>
-<p>如果采用<code>web</code>形式，，则通常情况下无需指定其它额外参数，<code>Locust</code>默认采用<code>8089</code>端口启动<code>web</code>；如果要使用其它端口，就可以使用如下参数进行指定。</p>
-<ul>
-<li><code>-P, --port</code>：指定web端口，默认为<code>8089</code>.</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ locust -H http://debugtalk.com <span class="_">-f</span> demo.py</div><div class="line">[2017-02-21 21:31:26,334] Leos-MacBook-Air.local/INFO/locust.main: Starting web monitor at *:8089</div><div class="line">[2017-02-21 21:31:26,334] Leos-MacBook-Air.local/INFO/locust.main: Starting Locust 0.8a2</div></pre></td></tr></table></figure>
-<p>此时，<code>Locust</code>并没有开始执行测试，还需要在Web页面中配置参数后进行启动。</p>
-<p>如果<code>Locust</code>运行在本机，在浏览器中访问<code>http://localhost:8089</code>即可进入<code>Locust</code>的Web管理页面；如果<code>Locust</code>运行在其它机器上，那么在浏览器中访问<code>http://locust_machine_ip:8089</code>即可。</p>
-<p>在<code>Locust</code>的Web管理页面中，需要配置的参数只有两个：</p>
-<ul>
-<li><code>Number of users to simulate</code>: 设置并发用户数，对应中<code>no_web</code>模式的<code>-c, --clients</code>参数；</li>
-<li><code>Hatch rate (users spawned/second)</code>: 启动虚拟用户的速率，对应着<code>no_web</code>模式的<code>-r, --hatch-rate</code>参数。</li>
-</ul>
-<p>参数配置完毕后，点击【Start swarming】即可开始测试。</p>
-<h3 id="多进程分布式运行"><a href="#多进程分布式运行" class="headerlink" title="多进程分布式运行"></a>多进程分布式运行</h3><p>不管是<code>单机多进程</code>，还是<code>多机负载</code>模式，运行方式都是一样的，都是先运行一个<code>master</code>，再启动多个<code>slave</code>。</p>
-<p>启动<code>master</code>时，需要使用<code>--master</code>参数；同样的，如果要使用<code>8089</code>以外的端口，还需要使用<code>-P, --port</code>参数。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ locust -H http://debugtalk.com <span class="_">-f</span> demo.py --master --port=8088</div><div class="line">[2017-02-21 22:59:57,308] Leos-MacBook-Air.local/INFO/locust.main: Starting web monitor at *:8088</div><div class="line">[2017-02-21 22:59:57,310] Leos-MacBook-Air.local/INFO/locust.main: Starting Locust 0.8a2</div></pre></td></tr></table></figure>
-<p><code>master</code>启动后，还需要启动<code>slave</code>才能执行测试任务。</p>
-<p>启动<code>slave</code>时需要使用<code>--slave</code>参数；在<code>slave</code>中，就不需要再指定端口了。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ locust -H http://debugtalk.com <span class="_">-f</span> demo.py --slave</div><div class="line">[2017-02-21 23:07:58,696] Leos-MacBook-Air.local/INFO/locust.main: Starting Locust 0.8a2</div><div class="line">[2017-02-21 23:07:58,696] Leos-MacBook-Air.local/INFO/locust.runners: Client <span class="string">'Leos-MacBook-Air.local_980ab0eec2bca517d03feb60c31d6a3a'</span> reported as</div><div class="line"> ready. Currently 2 clients ready to swarm.</div></pre></td></tr></table></figure>
-<p>如果<code>slave</code>与<code>master</code>不在同一台机器上，还需要通过<code>--master-host</code>参数再指定<code>master</code>的IP地址。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ locust -H http://debugtalk.com <span class="_">-f</span> demo.py --slave --master-host=&lt;locust_machine_ip&gt;</div><div class="line">[2017-02-21 23:07:58,696] Leos-MacBook-Air.local/INFO/locust.main: Starting Locust 0.8a2</div><div class="line">[2017-02-21 23:07:58,696] Leos-MacBook-Air.local/INFO/locust.runners: Client <span class="string">'Leos-MacBook-Air.local_980ab0eec2bca517d03feb60c31d6a3a'</span> reported as</div><div class="line"> ready. Currently 2 clients ready to swarm.</div></pre></td></tr></table></figure>
-<p><code>master</code>和<code>slave</code>都启动完毕后，就可以在浏览器中通过<code>http://locust_machine_ip:8089</code>进入<code>Locust</code>的Web管理页面了。使用方式跟单进程<code>web</code>形式完全相同，只是此时是通过多进程负载来生成并发压力，在<code>web</code>管理界面中也能看到实际的<code>slave</code>数量。</p>
-<h2 id="测试结果展示"><a href="#测试结果展示" class="headerlink" title="测试结果展示"></a>测试结果展示</h2><p><code>Locust</code>在执行测试的过程中，我们可以在<code>web</code>界面中实时地看到结果运行情况。</p>
-<p>相比于<code>LoadRunner</code>，<code>Locust</code>的结果展示十分简单，主要就四个指标：<code>并发数</code>、<code>RPS</code>、<code>响应时间</code>、<code>异常率</code>。但对于大多数场景来说，这几个指标已经足够了。</p>
-<p><img src="/images/14877299635610.jpg" alt=""></p>
-<p>在上图中，<code>RPS</code>和<code>平均响应时间</code>这两个指标显示的值都是根据最近2秒请求响应数据计算得到的统计值，我们也可以理解为瞬时值。</p>
-<p>如果想看性能指标数据的走势，就可以在<code>Charts</code>栏查看。在这里，可以查看到<code>RPS</code>和<code>平均响应时间</code>在整个运行过程中的波动情况。这个功能之前在<code>Locust</code>中一直是缺失的，直到最近，这个坑才被我之前在<code>阿里移动</code>的同事（网络ID<a href="http://myzhan.github.io/" target="_blank" rel="external"><code>myzhan</code></a>）给填上了。当前该功能已经合并到<code>Locust</code>了，更新到最新版即可使用。</p>
-<p><img src="/images/14877300553617.jpg" alt=""></p>
-<p>除了以上数据，<code>Locust</code>还提供了整个运行过程数据的百分比统计值，例如我们常用的<code>90%响应时间</code>、<code>响应时间中位值</code>，该数据可以通过<code>Download response time distribution CSV</code>获得，数据展示效果如下所示。</p>
-<p><img src="/images/14877305222231.jpg" alt=""></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过前面对<code>Locust</code>全方位的讲解，相信大家对<code>Locust</code>的功能特性已经非常熟悉了，在实际项目中将<code>Locust</code>作为生产力工具应该也没啥问题了。</p>
-<p>不过，任何一款工具都不是完美的，必定都会存在一些不足之处。但是好在<code>Locust</code>具有极强的可定制型，当我们遇到一些特有的需求时，可以在<code>Locust</code>上很方便地实现扩展。</p>
-<p>还是前面提到的那位技术大牛（<code>myzhan</code>），他为了摆脱<code>CPython</code>的<code>GIL</code>和<code>gevent</code>的 <code>monkey_patch()</code>，将<code>Locust</code>的<code>slave</code>端采用<code>golang</code>进行了重写，采用<code>goroutine</code>取代了<code>gevent</code>。经过测试，相较于原生的<code>Python</code>实现，他的这套<code>golang</code>实现具有<code>5~10</code>倍以上的性能提升。当前，他已经将该实现开源，项目名称为<a href="https://github.com/myzhan/boomer" target="_blank" rel="external"><code>myzhan/boomer</code></a>，如果大家感兴趣，可以阅读他的博客文章进一步了解，<a href="http://myzhan.github.io/2016/03/01/write-a-load-testing-tool-in-golang/" target="_blank" rel="external">《用 golang 来编写压测工具》</a>。</p>
-<p>如果我们也想在<code>Locust</code>的基础上进行二次开发，那要怎么开始呢？</p>
-<p>毫无疑问，阅读<code>Locust</code>的项目源码是必不可少的第一步。可能对于很多人来说，阅读开源项目源码是一件十分困难的事情，不知道如何着手，在知乎上也看到好多关于如何阅读开源项目源码的提问。事实上，<code>Locust</code>项目的代码结构清晰，核心代码量也比较少，十分适合阅读学习。哪怕只是想体验下阅读开源项目源码，或者说想提升下自己的<code>Python</code>技能，<code>Locust</code>也是个不错的选择。</p>
-<p>在下一篇文章中，我将对<code>Locust</code>源码进行解析，《深入浅出开源性能测试工具Locust（源码篇）》，敬请期待！</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;在&lt;a href=&quot;/post/locustplus-talk-about-performance-test/&quot;&gt;《【LocustPlus序】漫谈服务端性能测试》&lt;/a&gt;中，我对服务端性能测试的基础概念和性能测试工具的基本原理进行了介绍，并且重点推荐了&lt;code&gt;Locus
-    
-    </summary>
-    
-    
-      <category term="性能测试" scheme="http://debugtalk.com/tags/%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/"/>
-    
-      <category term="Locust" scheme="http://debugtalk.com/tags/Locust/"/>
-    
-      <category term="开源项目" scheme="http://debugtalk.com/tags/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/"/>
-    
-  </entry>
-  
-  <entry>
     <title>春节旅行之意法印象</title>
     <link href="http://debugtalk.com/post/my-impression-on-italy-and-france/"/>
     <id>http://debugtalk.com/post/my-impression-on-italy-and-france/</id>
@@ -521,13 +616,13 @@
     </summary>
     
     
+      <category term="Locust" scheme="http://debugtalk.com/tags/Locust/"/>
+    
       <category term="Web proxy" scheme="http://debugtalk.com/tags/Web-proxy/"/>
     
       <category term="Shuttle" scheme="http://debugtalk.com/tags/Shuttle/"/>
     
       <category term="mitmproxy" scheme="http://debugtalk.com/tags/mitmproxy/"/>
-    
-      <category term="Locust" scheme="http://debugtalk.com/tags/Locust/"/>
     
   </entry>
   
@@ -1600,9 +1695,9 @@
     </summary>
     
     
-      <category term="GitHub" scheme="http://debugtalk.com/tags/GitHub/"/>
-    
       <category term="SSH" scheme="http://debugtalk.com/tags/SSH/"/>
+    
+      <category term="GitHub" scheme="http://debugtalk.com/tags/GitHub/"/>
     
       <category term="HTTPS，权限校验" scheme="http://debugtalk.com/tags/HTTPS%EF%BC%8C%E6%9D%83%E9%99%90%E6%A0%A1%E9%AA%8C/"/>
     
@@ -1826,118 +1921,6 @@
       <category term="F0T1" scheme="http://debugtalk.com/tags/F0T1/"/>
     
       <category term="iOS" scheme="http://debugtalk.com/tags/iOS/"/>
-    
-      <category term="Ruby" scheme="http://debugtalk.com/tags/Ruby/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>从0到1搭建移动App功能自动化测试平台（2）：操作iOS应用的控件</title>
-    <link href="http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-Appium-interrogate-iOS-UI/"/>
-    <id>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-Appium-interrogate-iOS-UI/</id>
-    <published>2016-05-28T16:00:00.000Z</published>
-    <updated>2017-03-17T17:21:04.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>前两天微信突然发来一条系统消息，提示<code>DebugTalk</code>可以开通原创标识了（同时也有了评论功能），虽然一直在期待，但没想到来得这么快，着实是个不小的惊喜。</p>
-<p>另外，最近在公众号后台也收到好几个朋友的信息，有的是询问某某部分什么时候能发布，有的是希望能加快更新速度。说实话，收到这样的信息虽然会有压力，但真的挺开心的，因为这说明<code>DebugTalk</code>至少能给一部分人带去价值，这说明这件事本身还是值得坚持去做的。</p>
-<p>不过，在更新频率这件事儿上，的确是要跟大家说抱歉了。因为<code>DebugTalk</code>发布的内容全都是原创，主题基本上都是来源于我日常测试工作的经验积累，或者我近期学习一些测试技术的收获总结，这也意味着，我写的东西很多时候并不是自己完全熟悉的（完全掌握的东西也没有足够的动力专门花时间去写）。</p>
-<p>就拿最近连载的《从0到1搭建移动App功能自动化测试平台》系列来说，由于我也是边探索边总结，因此中途难免会遇到一些意想不到的坑，造成额外的耗时，而且为了保证文章能尽量通俗易通，我也需要对涉及到的内容充分进行理解，并且经过大量实践进行验证，然后才能站在半个初学者、半个过来人的角度，重新整理思路，最后以尽可能流畅的思路将主题内容讲解清楚。</p>
-<p>基于这些原因，<code>DebugTalk</code>要做到每日更新是很难了，但是保证每周发布1~2篇还是可以的，希望大家能理解。</p>
-<h2 id="关于UI控件"><a href="#关于UI控件" class="headerlink" title="关于UI控件"></a>关于UI控件</h2><p>在上一篇文章中，我们成功地通过Appium Inspector调用模拟器并运行iOS应用，iOS的自动化测试环境也已全部准备就绪了。</p>
-<p>那么接下来，我们就可以开始实现自动化测试了么？</p>
-<p>貌似还不行。在开始之前，我们先想下什么是APP功能自动化测试。</p>
-<p>APP的功能自动化测试，简单地来说，就是让功能测试用例自动地在APP上执行。具体到每一个测试用例，就是能模拟用户行为对UI控件进行操作，自动化地实现一个功能点或者一个流程的操作。再细分到每一步，就是对UI控件进行操作。</p>
-<p>因此，在正式开始编写自动化测试用例之前，我们还需要熟悉如何与APP的UI控件进行交互操作。</p>
-<p>在iOS系统中，UI控件有多种类型，常见的有按钮（UIAButton）、文本（UIAStaticText）、输入框（UIATextField）等等。但不管是对什么类型的UI控件进行操作，基本都可以分解为三步，首先是获取目标控件的属性信息，然后是对目标控件进行定位，最后是对定位到的控件执行动作。</p>
-<h2 id="获取UI控件信息"><a href="#获取UI控件信息" class="headerlink" title="获取UI控件信息"></a>获取UI控件信息</h2><p>在Appium中，要获取iOS的UI控件元素信息，可以采用两种方式：一种是在前一篇文章中提到的Appium Inspector，另一种是借助Ruby实现的<code>appium_console</code>，在Terminal中通过命令进行查询。</p>
-<h3 id="Appium-Inspector"><a href="#Appium-Inspector" class="headerlink" title="Appium Inspector"></a>Appium Inspector</h3><p>运行Appium Server，并启动【Inspector】后，整体界面如下图所示。</p>
-<p><img src="/images/Appium_inspector_introduction.jpg" alt="Appium inspector introduction"></p>
-<p>现对照着这张图对Appium Inspector进行介绍。</p>
-<p>在右边部分，是启动的模拟器，里面运行着我们的待测APP。我们可以像在真机中一样，在模拟器中执行任意功能的操作，当然，模拟器跟真机毕竟还是有区别的，跟传感器相关的功能，例如摄像头、重力感应等，是没法实现的。</p>
-<p>在左边部分，就是<code>Appium Inspector</code>。Inspector主要由如下四个部分组成：</p>
-<ul>
-<li>预览界面区：显示画面与模拟器界面一致；不过，当我们在模拟器中切换界面后，Inspector的预览区中显示图像并不会自动同步，若要同步，需要点击【Refresh】按钮，然后Inspector会将模拟器当前UI信息dump后显示到预览区；在预览区中，可以点击选择任意UI控件。</li>
-<li>UI信息展示区：展示当前界面预览区中所有UI元素的层级关系和UI元素的详细信息；在预览区中点击选择任意UI控件后，在“Details”信息框中展示选中控件的详细信息，包括name、label、value、xpath等属性值；通过层级关系，我们也能了解选中控件在当前界面树状结构中所处的具体位置。</li>
-<li>交互操作区：模拟用户在设备上的操作，例如单击（tap）、滑动（swipe）、晃动（shake）、输入（input）等；操作动作是针对预览界面区选中的控件，因此在操作之前，务必需要先在预览区点击选择UI元素。</li>
-<li>脚本生成区：将用户行为转换为脚本代码；点击【Record】按钮后，会弹出代码区域；在交互操作区进行操作后，就会实时生成对应的脚本代码；代码语言可通过下拉框进行选择，当前支持的语言类型有：C#、Ruby、Objective-C、Java、node.js、Python。</li>
-</ul>
-<p>在实践操作中，Inspector最大的用途就是在可以可视化地查看UI元素信息，并且可以将操作转换为脚本代码，这对初学者尤为有用。</p>
-<p>例如，在预览区点击选中按钮“BUY NOW”，然后在UI信息展示区的Details窗口就可以看到该按钮的所有属性信息。在交互操作区点击【Tap】按钮后，就会模拟用户点击“BUY NOW”按钮，并且在脚本区域生成当次按钮点击的脚本（选择Ruby语言）：</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">find_element(<span class="symbol">:name</span>, <span class="string">"BUY NOW &gt;"</span>).click</div></pre></td></tr></table></figure>
-<p>如上就是使用<code>Appium Inspector</code>的一般性流程。</p>
-<h3 id="Appium-Ruby-Console"><a href="#Appium-Ruby-Console" class="headerlink" title="Appium Ruby Console"></a>Appium Ruby Console</h3><p>有了<code>Appium Inspector</code>，为什么还需要<code>Appium Ruby Console</code>呢？</p>
-<p>其实，<code>Appium Ruby Console</code>也并不是必须的。经过与多个熟悉<code>Appium</code>的前辈交流，他们也从未用过<code>Appium Ruby Console</code>，这说明<code>Appium Ruby Console</code>并不是必须的，没有它也不会影响我们对<code>Appium</code>的使用。</p>
-<p>但是，这并不意味着<code>Appium Ruby Console</code>是多余的。经过这些天对<code>Appium</code>的摸索，我越发地喜欢上<code>Appium Ruby Console</code>，并且使用的频率越来越高，现在已基本上很少使用<code>Appium Inspector</code>了。这种感觉怎么说呢？<code>Inspector</code>相比于<code>Ruby Conosle</code>，就像是<code>GUI</code>相比于<code>Linux Terminal</code>，大家应该能体会了吧。</p>
-<p><code>Appium Inspector</code>的功能是很齐全，GUI操作也很方便，但是，最大的问题就是使用的时候非常慢，在预览界面区切换一个页面常常需要好几秒，甚至数十秒，这是很难让人接受的。</p>
-<p>在上一节中也说到了，Inspector最大的用途就是在可以可视化地查看UI元素信息，并且可以将操作转换为脚本代码。但是当我们对<code>Appium</code>的常用API熟悉以后，我们就不再需要由工具来生成脚本，因为自己直接写会更快，前提是我们能知道目标控件的属性信息（type、name、label、value）。</p>
-<p>在这种情况下，如果能有一种方式可以供我们快速查看当前屏幕的控件属性信息，那该有多好。</p>
-<p>庆幸的是，在阅读<code>Appium</code>官方文档时，发现<code>Appium</code>的确是支持命令行方式的，这就是<code>Appium Ruby Console</code>。</p>
-<p><code>Appium Ruby Console</code>是采用Ruby语言开发的，在使用方式上面和Ruby的<code>irb</code>很类似。</p>
-<p>在使用<code>Appium Ruby Console</code>时，虚拟机的配置信息并不会从GUI中读取，而是要通过配置文件进行指定。</p>
-<p>配置文件的名称统一要求为<code>appium.txt</code>，内容形式如下所示：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[caps]</div><div class="line">platformName = &quot;ios&quot;</div><div class="line">platformVersion = &apos;9.3&apos;,</div><div class="line">app = &quot;/path/to/UICatalog.app.zip&quot;</div><div class="line">deviceName = &quot;iPhone Simulator&quot;</div></pre></td></tr></table></figure>
-<p>其中，<code>platformName</code>指定虚拟机操作系统类型，“ios”或者”android”；<code>platformVersion</code>指定操作系统的版本，例如iOS的’9.3’，或者Android的’5.1’；<code>app</code>指定被测应用安装包的路径。这三个参数是必须的，与Inspector中的配置也能对应上。</p>
-<p>在使用<code>Appium Ruby Console</code>时，首先需要启动<code>Appium Server</code>，通过<code>GUI</code>或者<code>Terminal</code>均可。</p>
-<p>然后，在Terminal中，进入到<code>appium.txt</code>文件所在的目录，执行<code>arc</code>命令即可启动<code>Appium Ruby Console</code>。<code>arc</code>，即是appium ruby console首字母的组合。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">➜ ls</div><div class="line">appium.txt</div><div class="line">➜ arc</div><div class="line">[1] pry(main)&gt;</div></pre></td></tr></table></figure>
-<p>接下来，就可以通过执行命令查询当前设备屏幕中的控件信息。</p>
-<p>使用频率最高的一个命令是<code>page</code>，通过这个命令可以查看到当前屏幕中所有控件的基本信息。</p>
-<p>例如，当屏幕停留在前面截图中的页面时，执行<code>page</code>命令可以得到如下内容。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line">[1] pry(main)&gt; page</div><div class="line">UIANavigationBar</div><div class="line">   name: HomeView</div><div class="line">   id: Home =&gt; Home</div><div class="line">       米    =&gt; m</div><div class="line">       去看看  =&gt; View</div><div class="line">UIAButton</div><div class="line">   name, label: tabbar category gray</div><div class="line">UIAImage</div><div class="line">   name: debugtalk_logo.png</div><div class="line">UIAButton</div><div class="line">   name, label: tabbar cart gray</div><div class="line">UIATableView</div><div class="line">   value: rows 1 to 4 of 15</div><div class="line">UIAPageIndicator</div><div class="line">   value: page 2 of 2</div><div class="line">UIATableCell</div><div class="line">   name: For the first time ever in a hand held camera, the Osmo brings professional, realtime cinema-quality stabilization.</div><div class="line">   id: 米 =&gt; m</div><div class="line">UIAStaticText</div><div class="line">   name, label, value: For the first time ever in a hand held camera, the Osmo brings professional, realtime cinema-quality stabilization.</div><div class="line">   id: 米 =&gt; m</div><div class="line">UIAStaticText</div><div class="line">   name, label, value: OSMO</div><div class="line">UIAButton</div><div class="line">   name, label: SHOP NOW &gt;</div><div class="line">UIATableCell</div><div class="line">   name: Ronin</div><div class="line">UIAStaticText</div><div class="line">   name, label, value: Ronin</div><div class="line">UIAStaticText</div><div class="line">   name, label, value: Phantom</div><div class="line">   id: 米 =&gt; m</div><div class="line">... (略)</div><div class="line">UIAButton</div><div class="line">   name, label: Store</div><div class="line">   value: 1</div><div class="line">   id: 门店 =&gt; Store</div><div class="line">... (略)</div><div class="line">UIAButton</div><div class="line">   name, label: My Account</div><div class="line">   id: My Account =&gt; My Account</div><div class="line">nil</div></pre></td></tr></table></figure>
-<p>通过返回信息，我们就可以看到所有控件的type、name、label、value属性值。如果在某个控件下没有显示label或value，这是因为这个值为空，我们可以不予理会。</p>
-<p>由于<code>page</code>返回的信息太多，可能不便于查看，因此在使用<code>page</code>命令时，也可以指定控件的类型，相当于对当前屏幕的控件进行筛选，只返回指定类型的控件信息。</p>
-<p>指定控件类型时，可以通过string类型进行指定（如 page “Image”），也可通过symbol类型进行指定（如 page :cell）。指定的类型可只填写部分内容，并且不分区大小写。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">[2] pry(main)&gt; page &quot;Image&quot;</div><div class="line">UIAImage</div><div class="line">   name: debugtalk_logo.png</div><div class="line">nil</div><div class="line">[3] pry(main)&gt; page :cell</div><div class="line">UIATableCell</div><div class="line">   name: DebugTalk’s smartest flying camera ever.</div><div class="line">   id: 米 =&gt; m</div><div class="line">UIATableCell</div><div class="line">   name: Ronin</div><div class="line">UIATableCell</div><div class="line">   name: Phantom</div><div class="line">   id: 米 =&gt; m</div><div class="line">nil</div></pre></td></tr></table></figure>
-<p>如果需要查看当前屏幕的所有控件类型，可以执行<code>page_class</code>命令进行查看。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">[4] pry(main)&gt; page_class</div><div class="line">14x UIAButton</div><div class="line">8x UIAStaticText</div><div class="line">4x UIAElement</div><div class="line">4x UIATableCell</div><div class="line">2x UIAImage</div><div class="line">2x UIAWindow</div><div class="line">1x UIAPageIndicator</div><div class="line">1x UIATableView</div><div class="line">1x UIAStatusBar</div><div class="line">1x UIANavigationBar</div><div class="line">1x UIATabBar</div><div class="line">1x UIAApplication</div><div class="line">nil</div></pre></td></tr></table></figure>
-<p>基本上，<code>page</code>返回的控件信息已经足够满足绝大多数场景需求，但有时候情况比较特殊，需要<code>enabled</code>、<code>xpath</code>、<code>visible</code>、坐标等属性信息，这时就可以通过执行<code>source</code>命令。执行<code>source</code>命令后，就可以返回当前屏幕中所有控件的所有信息，以xml格式进行展现。</p>
-<h2 id="定位UI控件"><a href="#定位UI控件" class="headerlink" title="定位UI控件"></a>定位UI控件</h2><p>获取到UI控件的属性信息后，就可以对控件进行定位了。</p>
-<p>首先介绍下最通用的定位方式，<code>find</code>。通过<code>find</code>命令，可以实现在控件的诸多属性值（<code>name</code>、<code>label</code>、<code>value</code>、<code>hint</code>）中查找目标值。查询时不区分大小写，如果匹配结果有多个，则只返回第一个结果。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[5] pry(main)&gt; find(&apos;osmo&apos;)</div><div class="line">#&lt;Selenium::WebDriver::Element:0x..febd52a30dcdfea32 id=&quot;2&quot;&gt;</div><div class="line">[6] pry(main)&gt; find(&apos;osmo&apos;).label</div><div class="line">&quot;Osmo&quot;</div></pre></td></tr></table></figure>
-<p>另一个通用的定位方式是<code>find_element</code>，它也可以实现对所有控件进行查找，但是相对于<code>find</code>，可以对属性类型进行指定。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[7] pry(main)&gt; find_element(:class_name, &apos;UIATextField&apos;)</div><div class="line">#&lt;Selenium::WebDriver::Element:0x31d87e3848df8804 id=&quot;3&quot;&gt;</div><div class="line">[8] pry(main)&gt; find_element(:class_name, &apos;UIATextField&apos;).value</div><div class="line">&quot;Email Address&quot;</div></pre></td></tr></table></figure>
-<p>不过在实践中发现，采用<code>find</code>、<code>find_element</code>这类通用的定位方式并不好用，因为定位结果经常不是我们期望的。</p>
-<p>经过反复摸索，我推荐根据目标控件的类型，选择对应的定位方式。总结起来，主要有以下三种方式。</p>
-<p>针对Button类型的控件（UIAButton），采用<code>button_exact</code>进行定位：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[9] pry(main)&gt; button_exact(&apos;Login&apos;)</div><div class="line">#&lt;Selenium::WebDriver::Element:0x..feaebd8302b6d77cc id=&quot;4&quot;&gt;</div></pre></td></tr></table></figure>
-<p>针对Text类型的控件（UIAStaticText），采用<code>text_exact</code>进行定位：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[10] pry(main)&gt; text_exact(&apos;Phantom&apos;)</div><div class="line">#&lt;Selenium::WebDriver::Element:0x1347e89100fdcee2 id=&quot;5&quot;&gt;</div></pre></td></tr></table></figure>
-<p>针对控件类型进行定位时，采用<code>tag</code>；如下方式等价于<code>find_element(:class_name, &#39;UIASecureTextField&#39;)</code>。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[11] pry(main)&gt; tag(&apos;UIASecureTextField&apos;)</div><div class="line">#&lt;Selenium::WebDriver::Element:0x..fc6f5efd05a82cdca id=&quot;6&quot;&gt;</div></pre></td></tr></table></figure>
-<p>基本上，这三种方式就已经足够应付绝大多数测试场景了。当然，这三种方式只是我个人经过实践后选择的定位方式，除了这三种，<code>Appium</code>还支持很多种其它定位方式，大家可自行查看<code>Appium</code>官方文档进行选择。</p>
-<p>另外，除了对控件进行定位，有时候我们还想判断当前屏幕中是否存在某个控件（通常用于结果检测判断），这要怎么做呢？</p>
-<p>一种方式是借助于<code>Appium</code>的控件查找机制，即找不到控件时会抛出异常（<code>Selenium::WebDriver::Error::NoSuchElementError</code>）；反过来，当查找某个控件抛出异常时，则说明当前屏幕中不存在该控件。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[12] pry(main)&gt; button_exact(&apos;Login_invalid&apos;)</div><div class="line">Selenium::WebDriver::Error::NoSuchElementError: An element could not be located on the page using the given search parameters.</div><div class="line">from /Library/Ruby/Gems/2.0.0/gems/appium_lib-8.0.2/lib/appium_lib/common/helper.rb:218:in `_no_such_element&apos;</div></pre></td></tr></table></figure>
-<p>该种方式可行，但比较暴力，基本上不会采用这种方式。</p>
-<p>另一种更好的方式是，查找当前屏幕中指定控件的个数，若个数不为零，则说明控件存在。具体操作上，将<code>button_exact</code>替换为<code>buttons_exact</code>，将<code>text_exact</code>替换为<code>texts_exact</code>。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[12] pry(main)&gt; buttons_exact(&apos;Login&apos;).count</div><div class="line">1</div><div class="line">[13] pry(main)&gt; buttons_exact(&apos;Login_invalid&apos;).count</div><div class="line">0</div></pre></td></tr></table></figure>
-<p>除此之外，基于Ruby实现的<code>appium_lib</code>还支持<code>exists</code>方法，可直接返回Boolean值。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[14] pry(main)&gt; exists &#123; button_exact(&apos;Login&apos;) &#125;</div><div class="line">true</div><div class="line">[15] pry(main)&gt; exists &#123; button_exact(&apos;Login_invalid&apos;) &#125;</div><div class="line">false</div></pre></td></tr></table></figure>
-<h2 id="对控件执行操作"><a href="#对控件执行操作" class="headerlink" title="对控件执行操作"></a>对控件执行操作</h2><p>定位到具体的控件后，操作就比较容易了。</p>
-<p>操作类型不多，最常用就是点击（click）和输入（type），这两个操作能覆盖80%以上的场景。</p>
-<p>对于点击操作，才定位到的控件后面添加<code>.click</code>方法；对于输入操作，在定位到的输入框控件后面添加<code>.type</code>方法，并传入输入值。</p>
-<p>例如，账号登录操作就包含输入和点击两种操作类型。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[16] pry(main)&gt; find_element(:class_name, &apos;UIATextField&apos;).type &apos;leo.lee@debugtalk.com&apos;</div><div class="line">&quot;&quot;</div><div class="line">[17] pry(main)&gt; find_element(:class_name, &apos;UIASecureTextField&apos;).type &apos;123456&apos;</div><div class="line">&quot;&quot;</div><div class="line">[18] pry(main)&gt; button_exact(&apos;Login&apos;).click</div><div class="line">nil</div></pre></td></tr></table></figure>
-<h2 id="To-be-continued-…"><a href="#To-be-continued-…" class="headerlink" title="To be continued …"></a>To be continued …</h2><p>在本文中，我们学习了对iOS UI控件进行交互操作的一般性方法，为编写自动化测试脚本打好了基础。</p>
-<p>在下一篇文章中，我们就要正式开始针对iOS应用编写自动化测试脚本了。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;写在前面&quot;&gt;&lt;a href=&quot;#写在前面&quot; class=&quot;headerlink&quot; title=&quot;写在前面&quot;&gt;&lt;/a&gt;写在前面&lt;/h2&gt;&lt;p&gt;前两天微信突然发来一条系统消息，提示&lt;code&gt;DebugTalk&lt;/code&gt;可以开通原创标识了（同时也有了评论功能），虽
-    
-    </summary>
-    
-    
-      <category term="AutomationTest" scheme="http://debugtalk.com/tags/AutomationTest/"/>
-    
-      <category term="Appium" scheme="http://debugtalk.com/tags/Appium/"/>
-    
-      <category term="F0T1" scheme="http://debugtalk.com/tags/F0T1/"/>
-    
-      <category term="iOS" scheme="http://debugtalk.com/tags/iOS/"/>
-    
-      <category term="Simulator" scheme="http://debugtalk.com/tags/Simulator/"/>
     
       <category term="Ruby" scheme="http://debugtalk.com/tags/Ruby/"/>
     

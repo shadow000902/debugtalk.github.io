@@ -4,6 +4,25 @@
 
     
   <url>
+    <loc>http://debugtalk.com/post/use-pyenv-manage-multiple-python-virtualenvs/</loc>
+    <lastmod>2017-03-25T04:11:12.000Z</lastmod>
+    <data>
+        <display>
+        <title>使用pyenv管理多个Python版本依赖环境</title>
+        <pubTime>2017-03-24T16:00:00.000Z</pubTime>
+        
+        <tag>Python</tag>
+         
+        <tag>virtualenv</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://debugtalk.com/post/head-first-git-authority-verification/</loc>
     <lastmod>2017-03-17T17:24:05.000Z</lastmod>
     <data>
@@ -234,14 +253,16 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/manage-Jenkins-via-remote-api/</loc>
+    <loc>http://debugtalk.com/post/SIPp-IP-Telephone-Server-Performance-Testing/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
         <display>
-        <title>通过API远程管理Jenkins</title>
-        <pubTime>2016-05-01T16:00:00.000Z</pubTime>
+        <title>使用SIPp对基于SIP协议的IP电话通信服务器进行性能测试</title>
+        <pubTime>2014-05-10T16:00:00.000Z</pubTime>
         
-        <tag>Jenkins</tag>
+        <tag>性能测试</tag>
+         
+        <tag>SIP</tag>
          
          
            
@@ -263,25 +284,6 @@
         <tag>WSDL</tag>
          
         <tag>SOAP</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/SIPp-IP-Telephone-Server-Performance-Testing/</loc>
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    <data>
-        <display>
-        <title>使用SIPp对基于SIP协议的IP电话通信服务器进行性能测试</title>
-        <pubTime>2014-05-10T16:00:00.000Z</pubTime>
-        
-        <tag>性能测试</tag>
-         
-        <tag>SIP</tag>
          
          
            
@@ -333,29 +335,6 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/android-development-environment-adb-and-fastboot/</loc>
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    <data>
-        <display>
-        <title>Android开发环境配置0：adb和fastboot</title>
-        <pubTime>2015-07-01T16:00:00.000Z</pubTime>
-        
-        <tag>Android</tag>
-         
-        <tag>adb</tag>
-         
-        <tag>fastboot</tag>
-         
-        <tag>环境搭建</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://debugtalk.com/post/blackbox-testing-method-boundary-value-analysis/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
@@ -375,18 +354,20 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/android-development-environment-recovery/</loc>
+    <loc>http://debugtalk.com/post/android-development-environment-adb-and-fastboot/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
         <display>
-        <title>Android开发环境配置2：详解Recovery</title>
-        <pubTime>2015-07-03T16:00:00.000Z</pubTime>
+        <title>Android开发环境配置0：adb和fastboot</title>
+        <pubTime>2015-07-01T16:00:00.000Z</pubTime>
         
         <tag>Android</tag>
          
-        <tag>环境搭建</tag>
+        <tag>adb</tag>
          
-        <tag>recovery</tag>
+        <tag>fastboot</tag>
+         
+        <tag>环境搭建</tag>
          
          
            
@@ -417,6 +398,27 @@
 
     
   <url>
+    <loc>http://debugtalk.com/post/android-development-environment-recovery/</loc>
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android开发环境配置2：详解Recovery</title>
+        <pubTime>2015-07-03T16:00:00.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>环境搭建</tag>
+         
+        <tag>recovery</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://debugtalk.com/post/android-development-environment-root/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
@@ -438,16 +440,16 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/android-development-environment-device-configuration/</loc>
+    <loc>http://debugtalk.com/post/remote-debugging-with-pycharm/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
         <display>
-        <title>Android开发环境配置4：配置Android设备</title>
-        <pubTime>2015-07-09T16:00:00.000Z</pubTime>
+        <title>利用PyCharm进行Python远程调试</title>
+        <pubTime>2015-07-12T16:00:00.000Z</pubTime>
         
-        <tag>Android</tag>
+        <tag>pycharm</tag>
          
-        <tag>环境搭建</tag>
+        <tag>Python</tag>
          
          
            
@@ -484,25 +486,6 @@
         <tag>报表</tag>
          
         <tag>Javascript</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/remote-debugging-with-pycharm/</loc>
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    <data>
-        <display>
-        <title>利用PyCharm进行Python远程调试</title>
-        <pubTime>2015-07-12T16:00:00.000Z</pubTime>
-        
-        <tag>pycharm</tag>
-         
-        <tag>Python</tag>
          
          
            
@@ -550,33 +533,16 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/traps-in-sql-null/</loc>
+    <loc>http://debugtalk.com/post/android-development-environment-device-configuration/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
         <display>
-        <title>SQL语句中关于NULL的那些坑</title>
-        <pubTime>2016-04-24T16:00:00.000Z</pubTime>
-        
-        <tag>SQL</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/Android-CPU-lock-frequency/</loc>
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    <data>
-        <display>
-        <title>对Android设备CPU进行锁频</title>
-        <pubTime>2016-04-17T16:00:00.000Z</pubTime>
+        <title>Android开发环境配置4：配置Android设备</title>
+        <pubTime>2015-07-09T16:00:00.000Z</pubTime>
         
         <tag>Android</tag>
          
-        <tag>CPU</tag>
+        <tag>环境搭建</tag>
          
          
            
@@ -609,6 +575,40 @@
 
     
   <url>
+    <loc>http://debugtalk.com/post/traps-in-sql-null/</loc>
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    <data>
+        <display>
+        <title>SQL语句中关于NULL的那些坑</title>
+        <pubTime>2016-04-24T16:00:00.000Z</pubTime>
+        
+        <tag>SQL</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/manage-Jenkins-via-remote-api/</loc>
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    <data>
+        <display>
+        <title>通过API远程管理Jenkins</title>
+        <pubTime>2016-05-01T16:00:00.000Z</pubTime>
+        
+        <tag>Jenkins</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://debugtalk.com/post/Android-performance-test-start-traffic-uid-stat/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
@@ -619,25 +619,6 @@
         <tag>Android</tag>
          
         <tag>流量测试</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/performance-index-concurrent-users/</loc>
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    <data>
-        <display>
-        <title>性能指标--并发用户数（Concurrent Users）</title>
-        <pubTime>2013-07-30T16:00:00.000Z</pubTime>
-        
-        <tag>性能指标</tag>
-         
-        <tag>并发用户数</tag>
          
          
            
@@ -714,83 +695,16 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/promotion-page-test/</loc>
+    <loc>http://debugtalk.com/post/performance-index-concurrent-users/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
         <display>
-        <title>关于促销活动页面测试的那些事儿</title>
-        <pubTime>2016-06-08T16:00:00.000Z</pubTime>
+        <title>性能指标--并发用户数（Concurrent Users）</title>
+        <pubTime>2013-07-30T16:00:00.000Z</pubTime>
         
-        <tag>promotion</tag>
+        <tag>性能指标</tag>
          
-        <tag>H5</tag>
-         
-        <tag>test</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/trap-in-GitHub-authority-verification/</loc>
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    <data>
-        <display>
-        <title>GitHub权限校验失败给我的启发</title>
-        <pubTime>2016-06-13T16:00:00.000Z</pubTime>
-        
-        <tag>GitHub</tag>
-         
-        <tag>SSH</tag>
-         
-        <tag>HTTPS，权限校验</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/LoadRunner-WSDL-WebService/</loc>
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    <data>
-        <display>
-        <title>LoadRunner基于WSDL的WebService测试方法</title>
-        <pubTime>2013-08-01T16:00:00.000Z</pubTime>
-        
-        <tag>LoadRunner</tag>
-         
-        <tag>WebService</tag>
-         
-        <tag>WSDL</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/iOS-Android-Packing-with-Jenkins/</loc>
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    <data>
-        <display>
-        <title>使用Jenkins搭建iOS/Android持续集成打包平台</title>
-        <pubTime>2016-06-27T16:00:00.000Z</pubTime>
-        
-        <tag>Android</tag>
-         
-        <tag>Jenkins</tag>
-         
-        <tag>iOS</tag>
-         
-        <tag>CI</tag>
+        <tag>并发用户数</tag>
          
          
            
@@ -840,20 +754,102 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/make-Jenkins-Console-Output-Colorful/</loc>
+    <loc>http://debugtalk.com/post/promotion-page-test/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
         <display>
-        <title>Jenkins的输出日志也可以变得色色的</title>
-        <pubTime>2016-08-14T16:00:00.000Z</pubTime>
+        <title>关于促销活动页面测试的那些事儿</title>
+        <pubTime>2016-06-08T16:00:00.000Z</pubTime>
         
+        <tag>promotion</tag>
+         
+        <tag>H5</tag>
+         
+        <tag>test</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/Android-CPU-lock-frequency/</loc>
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    <data>
+        <display>
+        <title>对Android设备CPU进行锁频</title>
+        <pubTime>2016-04-17T16:00:00.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>CPU</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/LoadRunner-WSDL-WebService/</loc>
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    <data>
+        <display>
+        <title>LoadRunner基于WSDL的WebService测试方法</title>
+        <pubTime>2013-08-01T16:00:00.000Z</pubTime>
+        
+        <tag>LoadRunner</tag>
+         
+        <tag>WebService</tag>
+         
+        <tag>WSDL</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/trap-in-GitHub-authority-verification/</loc>
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    <data>
+        <display>
+        <title>GitHub权限校验失败给我的启发</title>
+        <pubTime>2016-06-13T16:00:00.000Z</pubTime>
+        
+        <tag>SSH</tag>
+         
+        <tag>GitHub</tag>
+         
+        <tag>HTTPS，权限校验</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/iOS-Android-Packing-with-Jenkins/</loc>
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    <data>
+        <display>
+        <title>使用Jenkins搭建iOS/Android持续集成打包平台</title>
+        <pubTime>2016-06-27T16:00:00.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
         <tag>Jenkins</tag>
          
-        <tag>Console</tag>
+        <tag>iOS</tag>
          
-        <tag>Plugin</tag>
-         
-        <tag>ANSI escape sequences</tag>
+        <tag>CI</tag>
          
          
            
@@ -875,6 +871,46 @@
         <tag>WebService</tag>
          
         <tag>SOAP</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/loadrunner-parameter-variable/</loc>
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    <data>
+        <display>
+        <title>LoadRuner中的参数与变量</title>
+        <pubTime>2013-08-11T16:00:00.000Z</pubTime>
+        
+        <tag>LoadRunner</tag>
+         
+        <tag>脚本开发</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/Evaluate-Largest-Online-Users/</loc>
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    <data>
+        <display>
+        <title>测试最大在线用户数</title>
+        <pubTime>2013-08-21T16:00:00.000Z</pubTime>
+        
+        <tag>性能指标</tag>
+         
+        <tag>LoadRunner</tag>
+         
+        <tag>最大在线用户数</tag>
          
          
            
@@ -909,18 +945,14 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/switch-macOS-web-proxy-in-elegant-way/</loc>
+    <loc>http://debugtalk.com/post/locustplus-talk-about-performance-test/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
         <display>
-        <title>如何优雅地一键实现macOS网络代理切换</title>
-        <pubTime>2016-11-23T16:00:00.000Z</pubTime>
+        <title>【LocustPlus序】漫谈服务端性能测试</title>
+        <pubTime>2016-11-01T16:00:00.000Z</pubTime>
         
-        <tag>Web proxy</tag>
-         
-        <tag>Shuttle</tag>
-         
-        <tag>mitmproxy</tag>
+        <tag>性能测试</tag>
          
         <tag>Locust</tag>
          
@@ -955,16 +987,20 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/locustplus-talk-about-performance-test/</loc>
+    <loc>http://debugtalk.com/post/make-Jenkins-Console-Output-Colorful/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
         <display>
-        <title>【LocustPlus序】漫谈服务端性能测试</title>
-        <pubTime>2016-11-01T16:00:00.000Z</pubTime>
+        <title>Jenkins的输出日志也可以变得色色的</title>
+        <pubTime>2016-08-14T16:00:00.000Z</pubTime>
         
-        <tag>性能测试</tag>
+        <tag>Jenkins</tag>
          
-        <tag>Locust</tag>
+        <tag>Console</tag>
+         
+        <tag>Plugin</tag>
+         
+        <tag>ANSI escape sequences</tag>
          
          
            
@@ -993,75 +1029,20 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/loadrunner-parameter-variable/</loc>
+    <loc>http://debugtalk.com/post/switch-macOS-web-proxy-in-elegant-way/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
         <display>
-        <title>LoadRuner中的参数与变量</title>
-        <pubTime>2013-08-11T16:00:00.000Z</pubTime>
+        <title>如何优雅地一键实现macOS网络代理切换</title>
+        <pubTime>2016-11-23T16:00:00.000Z</pubTime>
         
-        <tag>LoadRunner</tag>
+        <tag>Locust</tag>
          
-        <tag>脚本开发</tag>
+        <tag>Web proxy</tag>
          
+        <tag>Shuttle</tag>
          
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/my-impression-on-italy-and-france/</loc>
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    <data>
-        <display>
-        <title>春节旅行之意法印象</title>
-        <pubTime>2017-02-01T16:00:00.000Z</pubTime>
-        
-        <tag>个人成长</tag>
-         
-        <tag>旅行</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/Evaluate-Largest-Online-Users/</loc>
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    <data>
-        <display>
-        <title>测试最大在线用户数</title>
-        <pubTime>2013-08-21T16:00:00.000Z</pubTime>
-        
-        <tag>LoadRunner</tag>
-         
-        <tag>性能指标</tag>
-         
-        <tag>最大在线用户数</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/html-character-entity/</loc>
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    <data>
-        <display>
-        <title>HTML字符实体(Character Entity)</title>
-        <pubTime>2013-10-03T16:00:00.000Z</pubTime>
-        
-        <tag>Encoding</tag>
-         
-        <tag>HTML</tag>
+        <tag>mitmproxy</tag>
          
          
            
@@ -1100,6 +1081,44 @@
         <tag>Pelican</tag>
          
         <tag>评论系统</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/my-impression-on-italy-and-france/</loc>
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    <data>
+        <display>
+        <title>春节旅行之意法印象</title>
+        <pubTime>2017-02-01T16:00:00.000Z</pubTime>
+        
+        <tag>个人成长</tag>
+         
+        <tag>旅行</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/html-character-entity/</loc>
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    <data>
+        <display>
+        <title>HTML字符实体(Character Entity)</title>
+        <pubTime>2013-10-03T16:00:00.000Z</pubTime>
+        
+        <tag>Encoding</tag>
+         
+        <tag>HTML</tag>
          
          
            
