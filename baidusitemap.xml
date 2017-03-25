@@ -5,7 +5,7 @@
     
   <url>
     <loc>http://debugtalk.com/post/use-pyenv-manage-multiple-python-virtualenvs/</loc>
-    <lastmod>2017-03-25T04:11:12.000Z</lastmod>
+    <lastmod>2017-03-25T04:14:13.000Z</lastmod>
     <data>
         <display>
         <title>使用pyenv管理多个Python版本依赖环境</title>
@@ -14,6 +14,8 @@
         <tag>Python</tag>
          
         <tag>virtualenv</tag>
+         
+        <tag>pyenv</tag>
          
          
            

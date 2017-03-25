@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://debugtalk.com/"/>
-  <updated>2017-03-25T04:11:12.000Z</updated>
+  <updated>2017-03-25T04:14:13.000Z</updated>
   <id>http://debugtalk.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://debugtalk.com/post/use-pyenv-manage-multiple-python-virtualenvs/"/>
     <id>http://debugtalk.com/post/use-pyenv-manage-multiple-python-virtualenvs/</id>
     <published>2017-03-24T16:00:00.000Z</published>
-    <updated>2017-03-25T04:11:12.000Z</updated>
+    <updated>2017-03-25T04:14:13.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>从接触Python以来，一直都是采用<a href="https://virtualenv.pypa.io/en/stable/" target="_blank" rel="external"><code>virtualenv</code></a>和<a href="https://pypi.python.org/pypi/virtualenvwrapper" target="_blank" rel="external"><code>virtualenvwrapper</code></a>来管理不同项目的依赖环境，通过<code>workon</code>、<code>mkvirtualenv</code>等命令进行虚拟环境切换，很是愉快。</p>
 <p>然而，最近想让项目能兼容更多的Python版本，例如至少同时兼容<code>Python2.7</code>和<code>Python3.3+</code>，就发现采用之前的方式行不通了。</p>
@@ -107,6 +107,8 @@
       <category term="Python" scheme="http://debugtalk.com/tags/Python/"/>
     
       <category term="virtualenv" scheme="http://debugtalk.com/tags/virtualenv/"/>
+    
+      <category term="pyenv" scheme="http://debugtalk.com/tags/pyenv/"/>
     
   </entry>
   
