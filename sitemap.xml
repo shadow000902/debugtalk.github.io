@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://debugtalk.com/post/introduction-to-testing-engineer-daily-work/</loc>
+    
+    <lastmod>2017-06-15T07:16:01.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://debugtalk.com/post/use-pyenv-manage-multiple-python-virtualenvs/</loc>
     
     <lastmod>2017-03-25T04:14:13.000Z</lastmod>
@@ -79,13 +86,6 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/SIPp-IP-Telephone-Server-Performance-Testing/</loc>
-    
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://debugtalk.com/post/Introspection-on-WebService-Test/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
@@ -107,6 +107,13 @@
   </url>
   
   <url>
+    <loc>http://debugtalk.com/post/android-development-environment-adb-and-fastboot/</loc>
+    
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://debugtalk.com/post/blackbox-testing-method-boundary-value-analysis/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
@@ -114,7 +121,7 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/android-development-environment-adb-and-fastboot/</loc>
+    <loc>http://debugtalk.com/post/android-development-environment-root/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
@@ -135,14 +142,7 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/android-development-environment-root/</loc>
-    
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/remote-debugging-with-pycharm/</loc>
+    <loc>http://debugtalk.com/post/android-development-environment-device-configuration/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
@@ -150,6 +150,13 @@
   
   <url>
     <loc>http://debugtalk.com/post/developing-idea-production-data-picker/</loc>
+    
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/remote-debugging-with-pycharm/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
@@ -170,20 +177,6 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/python-functional-programming-getting-started/</loc>
-    
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/android-development-environment-device-configuration/</loc>
-    
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://debugtalk.com/post/Android-performance-test-UI-Automation-with-Python/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
@@ -191,7 +184,14 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/traps-in-sql-null/</loc>
+    <loc>http://debugtalk.com/post/python-functional-programming-getting-started/</loc>
+    
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/Android-CPU-lock-frequency/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
@@ -205,6 +205,13 @@
   </url>
   
   <url>
+    <loc>http://debugtalk.com/post/traps-in-sql-null/</loc>
+    
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://debugtalk.com/post/Android-performance-test-start-traffic-uid-stat/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
@@ -212,14 +219,14 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/Android-performance-test-start-traffic-tcpdump-wireshark/</loc>
+    <loc>http://debugtalk.com/post/scenario-design-scripts-percent-controll/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/scenario-design-scripts-percent-controll/</loc>
+    <loc>http://debugtalk.com/post/Android-performance-test-start-traffic-tcpdump-wireshark/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
@@ -240,7 +247,14 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/concept-about-webservice/</loc>
+    <loc>http://debugtalk.com/post/LoadRunner-WSDL-WebService/</loc>
+    
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/trap-in-GitHub-authority-verification/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
@@ -261,21 +275,14 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/Android-CPU-lock-frequency/</loc>
+    <loc>http://debugtalk.com/post/LoadRunner-SOAP-WebService/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/LoadRunner-WSDL-WebService/</loc>
-    
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/trap-in-GitHub-authority-verification/</loc>
+    <loc>http://debugtalk.com/post/concept-about-webservice/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
@@ -289,21 +296,7 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/LoadRunner-SOAP-WebService/</loc>
-    
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://debugtalk.com/post/loadrunner-parameter-variable/</loc>
-    
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/Evaluate-Largest-Online-Users/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
@@ -317,7 +310,14 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/locustplus-talk-about-performance-test/</loc>
+    <loc>http://debugtalk.com/post/make-Jenkins-Console-Output-Colorful/</loc>
+    
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/Evaluate-Largest-Online-Users/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
@@ -331,14 +331,14 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/make-Jenkins-Console-Output-Colorful/</loc>
+    <loc>http://debugtalk.com/post/my-2016-summary/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/my-2016-summary/</loc>
+    <loc>http://debugtalk.com/post/locustplus-talk-about-performance-test/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
@@ -352,21 +352,14 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/Create-Blog-with-Pelican-and-GitCafe-Pages/</loc>
-    
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/Using-DuoShuo-in-Pelican/</loc>
-    
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://debugtalk.com/post/my-impression-on-italy-and-france/</loc>
+    
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/Create-Blog-with-Pelican-and-GitCafe-Pages/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
@@ -380,7 +373,21 @@
   </url>
   
   <url>
+    <loc>http://debugtalk.com/post/Using-DuoShuo-in-Pelican/</loc>
+    
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://debugtalk.com/post/loadrunner-get-system-time/</loc>
+    
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/SIPp-IP-Telephone-Server-Performance-Testing/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
@@ -408,6 +415,13 @@
   </url>
   
   <url>
+    <loc>http://debugtalk.com//about/index.html</loc>
+    
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://debugtalk.com/categories/index.html</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
@@ -416,13 +430,6 @@
   
   <url>
     <loc>http://debugtalk.com/search/index.html</loc>
-    
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com//about/index.html</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
