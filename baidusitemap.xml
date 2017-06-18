@@ -4,16 +4,18 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/introduction-to-testing-engineer-daily-work/</loc>
-    <lastmod>2017-06-15T07:16:01.000Z</lastmod>
+    <loc>http://debugtalk.com/post/ApiTestEngine-api-test-best-practice/</loc>
+    <lastmod>2017-06-18T15:10:14.000Z</lastmod>
     <data>
         <display>
-        <title>【科普】互联网测试岗位的工作日常</title>
-        <pubTime>2017-06-14T16:00:00.000Z</pubTime>
+        <title>接口自动化测试的最佳工程实践（ApiTestEngine）</title>
+        <pubTime>2017-06-17T16:00:00.000Z</pubTime>
         
-        <tag>个人成长</tag>
+        <tag>接口测试</tag>
          
-        <tag>培训</tag>
+        <tag>自动化测试</tag>
+         
+        <tag>测试框架</tag>
          
          
            
@@ -23,18 +25,45 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/use-pyenv-manage-multiple-python-virtualenvs/</loc>
-    <lastmod>2017-03-25T04:14:13.000Z</lastmod>
+    <loc>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-backgroud-introduction/</loc>
+    <lastmod>2017-06-15T07:51:23.000Z</lastmod>
     <data>
         <display>
-        <title>使用pyenv管理多个Python版本依赖环境</title>
-        <pubTime>2017-03-24T16:00:00.000Z</pubTime>
+        <title>从0到1搭建移动App功能自动化测试平台（0）：背景介绍和平台规划</title>
+        <pubTime>2016-05-19T16:00:00.000Z</pubTime>
+        
+        <tag>AutomationTest</tag>
+         
+        <tag>Appium</tag>
+         
+        <tag>F0T1</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-write-iOS-testcase-scripts/</loc>
+    <lastmod>2017-06-15T07:51:23.000Z</lastmod>
+    <data>
+        <display>
+        <title>从0到1搭建移动App功能自动化测试平台（3）：编写iOS自动化测试脚本</title>
+        <pubTime>2016-05-29T16:00:00.000Z</pubTime>
         
         <tag>Python</tag>
          
-        <tag>pyenv</tag>
+        <tag>AutomationTest</tag>
          
-        <tag>virtualenv</tag>
+        <tag>Appium</tag>
+         
+        <tag>iOS</tag>
+         
+        <tag>F0T1</tag>
+         
+        <tag>Ruby</tag>
          
          
            
@@ -45,7 +74,7 @@
     
   <url>
     <loc>http://debugtalk.com/post/head-first-git-authority-verification/</loc>
-    <lastmod>2017-03-17T17:24:05.000Z</lastmod>
+    <lastmod>2017-06-15T07:51:23.000Z</lastmod>
     <data>
         <display>
         <title>深入浅出Git权限校验</title>
@@ -67,106 +96,8 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-Appium-interrogate-iOS-UI/</loc>
-    <lastmod>2017-03-17T17:21:04.000Z</lastmod>
-    <data>
-        <display>
-        <title>从0到1搭建移动App功能自动化测试平台（2）：操作iOS应用的控件</title>
-        <pubTime>2016-05-28T16:00:00.000Z</pubTime>
-        
-        <tag>AutomationTest</tag>
-         
-        <tag>Appium</tag>
-         
-        <tag>F0T1</tag>
-         
-        <tag>iOS</tag>
-         
-        <tag>Simulator</tag>
-         
-        <tag>Ruby</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/iOS-Android-Packing-with-Jenkins-details/</loc>
-    <lastmod>2017-03-17T17:18:56.000Z</lastmod>
-    <data>
-        <display>
-        <title>关于持续集成打包平台的Jenkins配置和构建脚本实现细节</title>
-        <pubTime>2016-07-25T16:00:00.000Z</pubTime>
-        
-        <tag>Android</tag>
-         
-        <tag>Jenkins</tag>
-         
-        <tag>iOS</tag>
-         
-        <tag>CI</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-backgroud-introduction/</loc>
-    <lastmod>2017-03-17T17:18:16.000Z</lastmod>
-    <data>
-        <display>
-        <title>从0到1搭建移动App功能自动化测试平台（0）：背景介绍和平台规划</title>
-        <pubTime>2016-05-19T16:00:00.000Z</pubTime>
-        
-        <tag>AutomationTest</tag>
-         
-        <tag>Appium</tag>
-         
-        <tag>F0T1</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-write-iOS-testcase-scripts/</loc>
-    <lastmod>2017-03-17T17:15:24.000Z</lastmod>
-    <data>
-        <display>
-        <title>从0到1搭建移动App功能自动化测试平台（3）：编写iOS自动化测试脚本</title>
-        <pubTime>2016-05-29T16:00:00.000Z</pubTime>
-        
-        <tag>Python</tag>
-         
-        <tag>AutomationTest</tag>
-         
-        <tag>Appium</tag>
-         
-        <tag>F0T1</tag>
-         
-        <tag>iOS</tag>
-         
-        <tag>Ruby</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://debugtalk.com/post/Introduction-to-AppiumBooster/</loc>
-    <lastmod>2017-03-17T17:14:43.000Z</lastmod>
+    <lastmod>2017-06-15T07:51:23.000Z</lastmod>
     <data>
         <display>
         <title>Introduction to AppiumBooster</title>
@@ -186,8 +117,58 @@
 
     
   <url>
+    <loc>http://debugtalk.com/post/iOS-Android-Packing-with-Jenkins-details/</loc>
+    <lastmod>2017-06-15T07:51:23.000Z</lastmod>
+    <data>
+        <display>
+        <title>关于持续集成打包平台的Jenkins配置和构建脚本实现细节</title>
+        <pubTime>2016-07-25T16:00:00.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>iOS</tag>
+         
+        <tag>Jenkins</tag>
+         
+        <tag>CI</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-Appium-interrogate-iOS-UI/</loc>
+    <lastmod>2017-06-15T07:51:23.000Z</lastmod>
+    <data>
+        <display>
+        <title>从0到1搭建移动App功能自动化测试平台（2）：操作iOS应用的控件</title>
+        <pubTime>2016-05-28T16:00:00.000Z</pubTime>
+        
+        <tag>AutomationTest</tag>
+         
+        <tag>Appium</tag>
+         
+        <tag>iOS</tag>
+         
+        <tag>Simulator</tag>
+         
+        <tag>F0T1</tag>
+         
+        <tag>Ruby</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://debugtalk.com/post/head-first-locust-advanced-script/</loc>
-    <lastmod>2017-03-17T17:07:06.000Z</lastmod>
+    <lastmod>2017-06-15T07:51:23.000Z</lastmod>
     <data>
         <display>
         <title>深入浅出开源性能测试工具Locust（脚本增强）</title>
@@ -207,54 +188,8 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-refactor-testcase-scripts/</loc>
-    <lastmod>2017-03-17T17:02:03.000Z</lastmod>
-    <data>
-        <display>
-        <title>从0到1搭建移动App功能自动化测试平台 (4)：自动化测试代码⎡工程化⎦</title>
-        <pubTime>2016-07-27T16:00:00.000Z</pubTime>
-        
-        <tag>AutomationTest</tag>
-         
-        <tag>Appium</tag>
-         
-        <tag>F0T1</tag>
-         
-        <tag>iOS</tag>
-         
-        <tag>Ruby</tag>
-         
-        <tag>RSpec</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/clean-sensitive-data-from-git-history-commits/</loc>
-    <lastmod>2017-03-17T10:15:40.000Z</lastmod>
-    <data>
-        <display>
-        <title>【GIT技巧】清除历史提交记录中的敏感信息</title>
-        <pubTime>2017-03-16T16:00:00.000Z</pubTime>
-        
-        <tag>Git</tag>
-         
-        <tag>GitHub</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://debugtalk.com/post/head-first-locust-user-guide/</loc>
-    <lastmod>2017-03-11T04:16:31.000Z</lastmod>
+    <lastmod>2017-06-15T07:51:23.000Z</lastmod>
     <data>
         <display>
         <title>深入浅出开源性能测试工具Locust（使用篇）</title>
@@ -274,18 +209,16 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/Introspection-on-WebService-Test/</loc>
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    <loc>http://debugtalk.com/post/clean-sensitive-data-from-git-history-commits/</loc>
+    <lastmod>2017-06-15T07:51:23.000Z</lastmod>
     <data>
         <display>
-        <title>基于WSDL或SOAP的WebService测试方法--对原理的思考</title>
-        <pubTime>2015-02-11T16:00:00.000Z</pubTime>
+        <title>【GIT技巧】清除历史提交记录中的敏感信息</title>
+        <pubTime>2017-03-16T16:00:00.000Z</pubTime>
         
-        <tag>WebService</tag>
+        <tag>Git</tag>
          
-        <tag>WSDL</tag>
-         
-        <tag>SOAP</tag>
+        <tag>GitHub</tag>
          
          
            
@@ -295,20 +228,64 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/WebService-Test-Based-On-HTTP/</loc>
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    <loc>http://debugtalk.com/post/use-pyenv-manage-multiple-python-virtualenvs/</loc>
+    <lastmod>2017-06-15T07:51:23.000Z</lastmod>
     <data>
         <display>
-        <title>基于HTTP的WebService测试方法</title>
-        <pubTime>2015-02-12T16:00:00.000Z</pubTime>
+        <title>使用pyenv管理多个Python版本依赖环境</title>
+        <pubTime>2017-03-24T16:00:00.000Z</pubTime>
         
-        <tag>LoadRunner</tag>
+        <tag>Python</tag>
          
-        <tag>WebService</tag>
+        <tag>pyenv</tag>
          
-        <tag>HTTP</tag>
+        <tag>virtualenv</tag>
          
-        <tag>Fiddler</tag>
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/introduction-to-testing-engineer-daily-work/</loc>
+    <lastmod>2017-06-15T07:51:23.000Z</lastmod>
+    <data>
+        <display>
+        <title>【科普】互联网测试岗位的工作日常</title>
+        <pubTime>2017-06-14T16:00:00.000Z</pubTime>
+        
+        <tag>个人成长</tag>
+         
+        <tag>培训</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-refactor-testcase-scripts/</loc>
+    <lastmod>2017-06-15T07:51:23.000Z</lastmod>
+    <data>
+        <display>
+        <title>从0到1搭建移动App功能自动化测试平台 (4)：自动化测试代码⎡工程化⎦</title>
+        <pubTime>2016-07-27T16:00:00.000Z</pubTime>
+        
+        <tag>AutomationTest</tag>
+         
+        <tag>Appium</tag>
+         
+        <tag>iOS</tag>
+         
+        <tag>F0T1</tag>
+         
+        <tag>Ruby</tag>
+         
+        <tag>RSpec</tag>
          
          
            
@@ -328,6 +305,25 @@
         <tag>黑盒测试</tag>
          
         <tag>测试用例设计</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/scenario-design-scripts-percent-controll/</loc>
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    <data>
+        <display>
+        <title>性能测试场景设计--混合业务场景下的脚本比例控制</title>
+        <pubTime>2013-07-21T16:00:00.000Z</pubTime>
+        
+        <tag>LoadRunner</tag>
+         
+        <tag>场景设计</tag>
          
          
            
@@ -379,27 +375,6 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/android-development-environment-root/</loc>
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    <data>
-        <display>
-        <title>Android开发环境配置3：Root</title>
-        <pubTime>2015-07-04T16:00:00.000Z</pubTime>
-        
-        <tag>Android</tag>
-         
-        <tag>环境搭建</tag>
-         
-        <tag>root</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://debugtalk.com/post/android-development-environment-bootloader/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
@@ -442,6 +417,27 @@
 
     
   <url>
+    <loc>http://debugtalk.com/post/android-development-environment-root/</loc>
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android开发环境配置3：Root</title>
+        <pubTime>2015-07-04T16:00:00.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>环境搭建</tag>
+         
+        <tag>root</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://debugtalk.com/post/android-development-environment-device-configuration/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
@@ -452,23 +448,6 @@
         <tag>Android</tag>
          
         <tag>环境搭建</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/developing-idea-production-data-picker/</loc>
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    <data>
-        <display>
-        <title>【灵感】线上数据采摘工具（ProductionDataPicker）</title>
-        <pubTime>2016-03-07T16:00:00.000Z</pubTime>
-        
-        <tag>Development</tag>
          
          
            
@@ -497,16 +476,14 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/render-multi-level-table-in-webpage/</loc>
+    <loc>http://debugtalk.com/post/developing-idea-production-data-picker/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
         <display>
-        <title>测试结果报表展现：Web页面绘制多层级表格</title>
-        <pubTime>2016-03-19T16:00:00.000Z</pubTime>
+        <title>【灵感】线上数据采摘工具（ProductionDataPicker）</title>
+        <pubTime>2016-03-07T16:00:00.000Z</pubTime>
         
-        <tag>报表</tag>
-         
-        <tag>Javascript</tag>
+        <tag>Development</tag>
          
          
            
@@ -526,6 +503,44 @@
         <tag>案例分析</tag>
          
         <tag>security</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/render-multi-level-table-in-webpage/</loc>
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    <data>
+        <display>
+        <title>测试结果报表展现：Web页面绘制多层级表格</title>
+        <pubTime>2016-03-19T16:00:00.000Z</pubTime>
+        
+        <tag>报表</tag>
+         
+        <tag>Javascript</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/python-functional-programming-getting-started/</loc>
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    <data>
+        <display>
+        <title>Python的函数式编程--从入门到⎡放弃⎦</title>
+        <pubTime>2016-04-07T16:00:00.000Z</pubTime>
+        
+        <tag>Python</tag>
+         
+        <tag>函数式编程</tag>
          
          
            
@@ -558,25 +573,6 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/python-functional-programming-getting-started/</loc>
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    <data>
-        <display>
-        <title>Python的函数式编程--从入门到⎡放弃⎦</title>
-        <pubTime>2016-04-07T16:00:00.000Z</pubTime>
-        
-        <tag>Python</tag>
-         
-        <tag>函数式编程</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://debugtalk.com/post/Android-CPU-lock-frequency/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
@@ -587,23 +583,6 @@
         <tag>Android</tag>
          
         <tag>CPU</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/manage-Jenkins-via-remote-api/</loc>
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    <data>
-        <display>
-        <title>通过API远程管理Jenkins</title>
-        <pubTime>2016-05-01T16:00:00.000Z</pubTime>
-        
-        <tag>Jenkins</tag>
          
          
            
@@ -649,16 +628,22 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/scenario-design-scripts-percent-controll/</loc>
+    <loc>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-Appium-inspector-iOS-simulator/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
         <display>
-        <title>性能测试场景设计--混合业务场景下的脚本比例控制</title>
-        <pubTime>2013-07-21T16:00:00.000Z</pubTime>
+        <title>从0到1搭建移动App功能自动化测试平台（1）：模拟器中运行iOS应用</title>
+        <pubTime>2016-05-20T16:00:00.000Z</pubTime>
         
-        <tag>LoadRunner</tag>
+        <tag>AutomationTest</tag>
          
-        <tag>场景设计</tag>
+        <tag>Appium</tag>
+         
+        <tag>iOS</tag>
+         
+        <tag>Simulator</tag>
+         
+        <tag>F0T1</tag>
          
          
            
@@ -691,22 +676,35 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-Appium-inspector-iOS-simulator/</loc>
+    <loc>http://debugtalk.com/post/LoadRunner-WSDL-WebService/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
         <display>
-        <title>从0到1搭建移动App功能自动化测试平台（1）：模拟器中运行iOS应用</title>
-        <pubTime>2016-05-20T16:00:00.000Z</pubTime>
+        <title>LoadRunner基于WSDL的WebService测试方法</title>
+        <pubTime>2013-08-01T16:00:00.000Z</pubTime>
         
-        <tag>AutomationTest</tag>
+        <tag>LoadRunner</tag>
          
-        <tag>Appium</tag>
+        <tag>WebService</tag>
          
-        <tag>F0T1</tag>
+        <tag>WSDL</tag>
          
-        <tag>iOS</tag>
          
-        <tag>Simulator</tag>
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/manage-Jenkins-via-remote-api/</loc>
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    <data>
+        <display>
+        <title>通过API远程管理Jenkins</title>
+        <pubTime>2016-05-01T16:00:00.000Z</pubTime>
+        
+        <tag>Jenkins</tag>
          
          
            
@@ -735,39 +733,18 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/LoadRunner-WSDL-WebService/</loc>
+    <loc>http://debugtalk.com/post/concept-about-webservice/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
         <display>
-        <title>LoadRunner基于WSDL的WebService测试方法</title>
-        <pubTime>2013-08-01T16:00:00.000Z</pubTime>
+        <title>测试工程师的自我修养--理解WebService</title>
+        <pubTime>2013-08-04T16:00:00.000Z</pubTime>
         
-        <tag>LoadRunner</tag>
-         
         <tag>WebService</tag>
          
         <tag>WSDL</tag>
          
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/trap-in-GitHub-authority-verification/</loc>
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    <data>
-        <display>
-        <title>GitHub权限校验失败给我的启发</title>
-        <pubTime>2016-06-13T16:00:00.000Z</pubTime>
-        
-        <tag>GitHub</tag>
-         
-        <tag>SSH</tag>
-         
-        <tag>HTTPS，权限校验</tag>
+        <tag>SOAP</tag>
          
          
            
@@ -817,6 +794,27 @@
 
     
   <url>
+    <loc>http://debugtalk.com/post/trap-in-GitHub-authority-verification/</loc>
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    <data>
+        <display>
+        <title>GitHub权限校验失败给我的启发</title>
+        <pubTime>2016-06-13T16:00:00.000Z</pubTime>
+        
+        <tag>GitHub</tag>
+         
+        <tag>SSH</tag>
+         
+        <tag>HTTPS，权限校验</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://debugtalk.com/post/LoadRunner-SOAP-WebService/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
@@ -838,27 +836,6 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/concept-about-webservice/</loc>
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    <data>
-        <display>
-        <title>测试工程师的自我修养--理解WebService</title>
-        <pubTime>2013-08-04T16:00:00.000Z</pubTime>
-        
-        <tag>WebService</tag>
-         
-        <tag>WSDL</tag>
-         
-        <tag>SOAP</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://debugtalk.com/post/iOS-Android-Packing-with-Jenkins/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
@@ -868,11 +845,30 @@
         
         <tag>Android</tag>
          
-        <tag>Jenkins</tag>
-         
         <tag>iOS</tag>
          
+        <tag>Jenkins</tag>
+         
         <tag>CI</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/Create-Blog-with-Pelican-and-GitCafe-Pages/</loc>
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    <data>
+        <display>
+        <title>使用 Pelican + GitCafe Pages 创建 Blog</title>
+        <pubTime>2013-10-02T16:00:00.000Z</pubTime>
+        
+        <tag>Pelican</tag>
+         
+        <tag>Git</tag>
          
          
            
@@ -910,13 +906,34 @@
         
         <tag>Android</tag>
          
-        <tag>Jenkins</tag>
-         
         <tag>iOS</tag>
+         
+        <tag>Jenkins</tag>
          
         <tag>CI</tag>
          
         <tag>Automation</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/Evaluate-Largest-Online-Users/</loc>
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    <data>
+        <display>
+        <title>测试最大在线用户数</title>
+        <pubTime>2013-08-21T16:00:00.000Z</pubTime>
+        
+        <tag>性能指标</tag>
+         
+        <tag>LoadRunner</tag>
+         
+        <tag>最大在线用户数</tag>
          
          
            
@@ -949,18 +966,20 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/Evaluate-Largest-Online-Users/</loc>
+    <loc>http://debugtalk.com/post/switch-macOS-web-proxy-in-elegant-way/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
         <display>
-        <title>测试最大在线用户数</title>
-        <pubTime>2013-08-21T16:00:00.000Z</pubTime>
+        <title>如何优雅地一键实现macOS网络代理切换</title>
+        <pubTime>2016-11-23T16:00:00.000Z</pubTime>
         
-        <tag>性能指标</tag>
+        <tag>Web proxy</tag>
          
-        <tag>LoadRunner</tag>
+        <tag>Shuttle</tag>
          
-        <tag>最大在线用户数</tag>
+        <tag>mitmproxy</tag>
+         
+        <tag>Locust</tag>
          
          
            
@@ -993,25 +1012,6 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/my-2016-summary/</loc>
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    <data>
-        <display>
-        <title>我的2016年终总结</title>
-        <pubTime>2016-12-30T16:00:00.000Z</pubTime>
-        
-        <tag>年终总结</tag>
-         
-        <tag>个人成长</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://debugtalk.com/post/locustplus-talk-about-performance-test/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
@@ -1031,20 +1031,16 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/switch-macOS-web-proxy-in-elegant-way/</loc>
+    <loc>http://debugtalk.com/post/my-2016-summary/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
         <display>
-        <title>如何优雅地一键实现macOS网络代理切换</title>
-        <pubTime>2016-11-23T16:00:00.000Z</pubTime>
+        <title>我的2016年终总结</title>
+        <pubTime>2016-12-30T16:00:00.000Z</pubTime>
         
-        <tag>Locust</tag>
+        <tag>年终总结</tag>
          
-        <tag>Web proxy</tag>
-         
-        <tag>Shuttle</tag>
-         
-        <tag>mitmproxy</tag>
+        <tag>个人成长</tag>
          
          
            
@@ -1073,25 +1069,6 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/Create-Blog-with-Pelican-and-GitCafe-Pages/</loc>
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    <data>
-        <display>
-        <title>使用 Pelican + GitCafe Pages 创建 Blog</title>
-        <pubTime>2013-10-02T16:00:00.000Z</pubTime>
-        
-        <tag>Pelican</tag>
-         
-        <tag>Git</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://debugtalk.com/post/html-character-entity/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
@@ -1102,25 +1079,6 @@
         <tag>Encoding</tag>
          
         <tag>HTML</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/Using-DuoShuo-in-Pelican/</loc>
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    <data>
-        <display>
-        <title>在Pelican中使用多说评论系统</title>
-        <pubTime>2013-10-04T16:00:00.000Z</pubTime>
-        
-        <tag>Pelican</tag>
-         
-        <tag>评论系统</tag>
          
          
            
@@ -1149,6 +1107,25 @@
 
     
   <url>
+    <loc>http://debugtalk.com/post/Using-DuoShuo-in-Pelican/</loc>
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    <data>
+        <display>
+        <title>在Pelican中使用多说评论系统</title>
+        <pubTime>2013-10-04T16:00:00.000Z</pubTime>
+        
+        <tag>Pelican</tag>
+         
+        <tag>评论系统</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://debugtalk.com/post/SIPp-IP-Telephone-Server-Performance-Testing/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
@@ -1159,6 +1136,50 @@
         <tag>性能测试</tag>
          
         <tag>SIP</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/Introspection-on-WebService-Test/</loc>
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    <data>
+        <display>
+        <title>基于WSDL或SOAP的WebService测试方法--对原理的思考</title>
+        <pubTime>2015-02-11T16:00:00.000Z</pubTime>
+        
+        <tag>WebService</tag>
+         
+        <tag>WSDL</tag>
+         
+        <tag>SOAP</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/WebService-Test-Based-On-HTTP/</loc>
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    <data>
+        <display>
+        <title>基于HTTP的WebService测试方法</title>
+        <pubTime>2015-02-12T16:00:00.000Z</pubTime>
+        
+        <tag>LoadRunner</tag>
+         
+        <tag>WebService</tag>
+         
+        <tag>HTTP</tag>
+         
+        <tag>Fiddler</tag>
          
          
            
