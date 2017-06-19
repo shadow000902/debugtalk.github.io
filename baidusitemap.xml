@@ -4,6 +4,206 @@
 
     
   <url>
+    <loc>http://debugtalk.com/post/WebService-Test-Based-On-HTTP/</loc>
+    <lastmod>2017-06-19T14:43:02.000Z</lastmod>
+    <data>
+        <display>
+        <title>基于HTTP的WebService测试方法</title>
+        <pubTime>2015-02-12T16:00:00.000Z</pubTime>
+        
+        <tag>LoadRunner</tag>
+         
+        <tag>WebService</tag>
+         
+        <tag>HTTP</tag>
+         
+        <tag>Fiddler</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/Introspection-on-WebService-Test/</loc>
+    <lastmod>2017-06-19T14:42:56.000Z</lastmod>
+    <data>
+        <display>
+        <title>基于WSDL或SOAP的WebService测试方法--对原理的思考</title>
+        <pubTime>2015-02-11T16:00:00.000Z</pubTime>
+        
+        <tag>WebService</tag>
+         
+        <tag>WSDL</tag>
+         
+        <tag>SOAP</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/SIPp-IP-Telephone-Server-Performance-Testing/</loc>
+    <lastmod>2017-06-19T14:42:46.000Z</lastmod>
+    <data>
+        <display>
+        <title>使用SIPp对基于SIP协议的IP电话通信服务器进行性能测试</title>
+        <pubTime>2014-05-10T16:00:00.000Z</pubTime>
+        
+        <tag>性能测试</tag>
+         
+        <tag>SIP</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/loadrunner-get-system-time/</loc>
+    <lastmod>2017-06-19T14:41:16.000Z</lastmod>
+    <data>
+        <display>
+        <title>LoadRunner中获取当前系统时间</title>
+        <pubTime>2013-10-27T16:00:00.000Z</pubTime>
+        
+        <tag>LoadRunner</tag>
+         
+        <tag>脚本开发</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/Using-DuoShuo-in-Pelican/</loc>
+    <lastmod>2017-06-19T14:41:03.000Z</lastmod>
+    <data>
+        <display>
+        <title>在Pelican中使用多说评论系统</title>
+        <pubTime>2013-10-04T16:00:00.000Z</pubTime>
+        
+        <tag>Pelican</tag>
+         
+        <tag>评论系统</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/loadrunner-parameter-variable/</loc>
+    <lastmod>2017-06-19T14:40:31.000Z</lastmod>
+    <data>
+        <display>
+        <title>LoadRuner中的参数与变量</title>
+        <pubTime>2013-08-11T16:00:00.000Z</pubTime>
+        
+        <tag>LoadRunner</tag>
+         
+        <tag>脚本开发</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/LoadRunner-SOAP-WebService/</loc>
+    <lastmod>2017-06-19T14:40:19.000Z</lastmod>
+    <data>
+        <display>
+        <title>LoadRunner基于SOAP的WebService测试方法</title>
+        <pubTime>2013-08-05T16:00:00.000Z</pubTime>
+        
+        <tag>LoadRunner</tag>
+         
+        <tag>WebService</tag>
+         
+        <tag>SOAP</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/LoadRunner-WSDL-WebService/</loc>
+    <lastmod>2017-06-19T14:39:56.000Z</lastmod>
+    <data>
+        <display>
+        <title>LoadRunner基于WSDL的WebService测试方法</title>
+        <pubTime>2013-08-01T16:00:00.000Z</pubTime>
+        
+        <tag>LoadRunner</tag>
+         
+        <tag>WebService</tag>
+         
+        <tag>WSDL</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/scenario-design-scripts-percent-controll/</loc>
+    <lastmod>2017-06-19T14:39:33.000Z</lastmod>
+    <data>
+        <display>
+        <title>性能测试场景设计--混合业务场景下的脚本比例控制</title>
+        <pubTime>2013-07-21T16:00:00.000Z</pubTime>
+        
+        <tag>LoadRunner</tag>
+         
+        <tag>场景设计</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/performance-index-concurrent-users/</loc>
+    <lastmod>2017-06-19T14:39:06.000Z</lastmod>
+    <data>
+        <display>
+        <title>性能指标--并发用户数（Concurrent Users）</title>
+        <pubTime>2013-07-30T16:00:00.000Z</pubTime>
+        
+        <tag>性能指标</tag>
+         
+        <tag>并发用户数</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://debugtalk.com/post/concept-about-webservice/</loc>
     <lastmod>2017-06-19T14:35:32.000Z</lastmod>
     <data>
@@ -75,84 +275,6 @@
         <tag>LoadRunner</tag>
          
         <tag>最大在线用户数</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/loadrunner-parameter-variable/</loc>
-    <lastmod>2017-06-19T14:33:46.000Z</lastmod>
-    <data>
-        <display>
-        <title>LoadRuner中的参数与变量</title>
-        <pubTime>2013-08-11T16:00:00.000Z</pubTime>
-        
-        <tag>LoadRunner</tag>
-         
-        <tag>脚本开发</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/LoadRunner-SOAP-WebService/</loc>
-    <lastmod>2017-06-19T14:33:12.000Z</lastmod>
-    <data>
-        <display>
-        <title>LoadRunner基于SOAP的WebService测试方法</title>
-        <pubTime>2013-08-05T16:00:00.000Z</pubTime>
-        
-        <tag>LoadRunner</tag>
-         
-        <tag>WebService</tag>
-         
-        <tag>SOAP</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/performance-index-concurrent-users/</loc>
-    <lastmod>2017-06-19T14:31:38.000Z</lastmod>
-    <data>
-        <display>
-        <title>性能指标--并发用户数（Concurrent Users）</title>
-        <pubTime>2013-07-30T16:00:00.000Z</pubTime>
-        
-        <tag>性能指标</tag>
-         
-        <tag>并发用户数</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/scenario-design-scripts-percent-controll/</loc>
-    <lastmod>2017-06-19T14:30:42.000Z</lastmod>
-    <data>
-        <display>
-        <title>性能测试场景设计--混合业务场景下的脚本比例控制</title>
-        <pubTime>2013-07-21T16:00:00.000Z</pubTime>
-        
-        <tag>LoadRunner</tag>
-         
-        <tag>场景设计</tag>
          
          
            
@@ -275,27 +397,6 @@
         <tag>Locust</tag>
          
         <tag>开源项目</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-backgroud-introduction/</loc>
-    <lastmod>2017-06-15T07:51:23.000Z</lastmod>
-    <data>
-        <display>
-        <title>从0到1搭建移动App功能自动化测试平台（0）：背景介绍和平台规划</title>
-        <pubTime>2016-05-19T16:00:00.000Z</pubTime>
-        
-        <tag>AutomationTest</tag>
-         
-        <tag>Appium</tag>
-         
-        <tag>F0T1</tag>
          
          
            
@@ -453,115 +554,41 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/blackbox-testing-method-boundary-value-analysis/</loc>
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    <loc>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-backgroud-introduction/</loc>
+    <lastmod>2017-06-15T07:51:23.000Z</lastmod>
     <data>
         <display>
-        <title>黑盒测试用例设计技术--边界值分析法</title>
-        <pubTime>2015-03-18T16:00:00.000Z</pubTime>
+        <title>从0到1搭建移动App功能自动化测试平台（0）：背景介绍和平台规划</title>
+        <pubTime>2016-05-19T16:00:00.000Z</pubTime>
         
-        <tag>黑盒测试</tag>
-         
-        <tag>测试用例设计</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/remote-debugging-with-pycharm/</loc>
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    <data>
-        <display>
-        <title>利用PyCharm进行Python远程调试</title>
-        <pubTime>2015-07-12T16:00:00.000Z</pubTime>
-        
-        <tag>pycharm</tag>
-         
-        <tag>Python</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/cheat-in-wechat-moments-voting-activity/</loc>
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    <data>
-        <display>
-        <title>微信朋友圈投票活动的刷票案例分析</title>
-        <pubTime>2016-04-03T16:00:00.000Z</pubTime>
-        
-        <tag>案例分析</tag>
-         
-        <tag>security</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/render-multi-level-table-in-webpage/</loc>
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    <data>
-        <display>
-        <title>测试结果报表展现：Web页面绘制多层级表格</title>
-        <pubTime>2016-03-19T16:00:00.000Z</pubTime>
-        
-        <tag>报表</tag>
-         
-        <tag>Javascript</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/python-functional-programming-getting-started/</loc>
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    <data>
-        <display>
-        <title>Python的函数式编程--从入门到⎡放弃⎦</title>
-        <pubTime>2016-04-07T16:00:00.000Z</pubTime>
-        
-        <tag>Python</tag>
-         
-        <tag>函数式编程</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/Android-performance-test-UI-Automation-with-Python/</loc>
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    <data>
-        <display>
-        <title>Android App持续集成性能测试：使用Python实现UI自动化</title>
-        <pubTime>2016-04-16T16:00:00.000Z</pubTime>
-        
-        <tag>Android</tag>
-         
-        <tag>Python</tag>
-         
-        <tag>UI</tag>
-         
         <tag>AutomationTest</tag>
+         
+        <tag>Appium</tag>
+         
+        <tag>F0T1</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/make-Jenkins-Console-Output-Colorful/</loc>
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    <data>
+        <display>
+        <title>Jenkins的输出日志也可以变得色色的</title>
+        <pubTime>2016-08-14T16:00:00.000Z</pubTime>
+        
+        <tag>Jenkins</tag>
+         
+        <tag>Console</tag>
+         
+        <tag>Plugin</tag>
+         
+        <tag>ANSI escape sequences</tag>
          
          
            
@@ -581,23 +608,6 @@
         <tag>Android</tag>
          
         <tag>CPU</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/traps-in-sql-null/</loc>
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    <data>
-        <display>
-        <title>SQL语句中关于NULL的那些坑</title>
-        <pubTime>2016-04-24T16:00:00.000Z</pubTime>
-        
-        <tag>SQL</tag>
          
          
            
@@ -674,18 +684,20 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/LoadRunner-WSDL-WebService/</loc>
+    <loc>http://debugtalk.com/post/Android-performance-test-UI-Automation-with-Python/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
         <display>
-        <title>LoadRunner基于WSDL的WebService测试方法</title>
-        <pubTime>2013-08-01T16:00:00.000Z</pubTime>
+        <title>Android App持续集成性能测试：使用Python实现UI自动化</title>
+        <pubTime>2016-04-16T16:00:00.000Z</pubTime>
         
-        <tag>LoadRunner</tag>
+        <tag>Android</tag>
          
-        <tag>WebService</tag>
+        <tag>Python</tag>
          
-        <tag>WSDL</tag>
+        <tag>UI</tag>
+         
+        <tag>AutomationTest</tag>
          
          
            
@@ -712,16 +724,16 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/android-development-environment-device-configuration/</loc>
+    <loc>http://debugtalk.com/post/python-functional-programming-getting-started/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
         <display>
-        <title>Android开发环境配置4：配置Android设备</title>
-        <pubTime>2015-07-09T16:00:00.000Z</pubTime>
+        <title>Python的函数式编程--从入门到⎡放弃⎦</title>
+        <pubTime>2016-04-07T16:00:00.000Z</pubTime>
         
-        <tag>Android</tag>
+        <tag>Python</tag>
          
-        <tag>环境搭建</tag>
+        <tag>函数式编程</tag>
          
          
            
@@ -731,18 +743,16 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/android-development-environment-root/</loc>
+    <loc>http://debugtalk.com/post/render-multi-level-table-in-webpage/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
         <display>
-        <title>Android开发环境配置3：Root</title>
-        <pubTime>2015-07-04T16:00:00.000Z</pubTime>
+        <title>测试结果报表展现：Web页面绘制多层级表格</title>
+        <pubTime>2016-03-19T16:00:00.000Z</pubTime>
         
-        <tag>Android</tag>
+        <tag>报表</tag>
          
-        <tag>环境搭建</tag>
-         
-        <tag>root</tag>
+        <tag>Javascript</tag>
          
          
            
@@ -813,18 +823,16 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/android-development-environment-recovery/</loc>
+    <loc>http://debugtalk.com/post/cheat-in-wechat-moments-voting-activity/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
         <display>
-        <title>Android开发环境配置2：详解Recovery</title>
-        <pubTime>2015-07-03T16:00:00.000Z</pubTime>
+        <title>微信朋友圈投票活动的刷票案例分析</title>
+        <pubTime>2016-04-03T16:00:00.000Z</pubTime>
         
-        <tag>Android</tag>
+        <tag>案例分析</tag>
          
-        <tag>环境搭建</tag>
-         
-        <tag>recovery</tag>
+        <tag>security</tag>
          
          
            
@@ -857,18 +865,14 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/android-development-environment-bootloader/</loc>
+    <loc>http://debugtalk.com/post/developing-idea-production-data-picker/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
         <display>
-        <title>Android开发环境配置1：详解Bootloader</title>
-        <pubTime>2015-07-02T16:00:00.000Z</pubTime>
+        <title>【灵感】线上数据采摘工具（ProductionDataPicker）</title>
+        <pubTime>2016-03-07T16:00:00.000Z</pubTime>
         
-        <tag>Android</tag>
-         
-        <tag>环境搭建</tag>
-         
-        <tag>bootloader</tag>
+        <tag>Development</tag>
          
          
            
@@ -878,14 +882,16 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/developing-idea-production-data-picker/</loc>
+    <loc>http://debugtalk.com/post/remote-debugging-with-pycharm/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
         <display>
-        <title>【灵感】线上数据采摘工具（ProductionDataPicker）</title>
-        <pubTime>2016-03-07T16:00:00.000Z</pubTime>
+        <title>利用PyCharm进行Python远程调试</title>
+        <pubTime>2015-07-12T16:00:00.000Z</pubTime>
         
-        <tag>Development</tag>
+        <tag>pycharm</tag>
+         
+        <tag>Python</tag>
          
          
            
@@ -920,18 +926,14 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/android-development-environment-adb-and-fastboot/</loc>
+    <loc>http://debugtalk.com/post/android-development-environment-device-configuration/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
         <display>
-        <title>Android开发环境配置0：adb和fastboot</title>
-        <pubTime>2015-07-01T16:00:00.000Z</pubTime>
+        <title>Android开发环境配置4：配置Android设备</title>
+        <pubTime>2015-07-09T16:00:00.000Z</pubTime>
         
         <tag>Android</tag>
-         
-        <tag>adb</tag>
-         
-        <tag>fastboot</tag>
          
         <tag>环境搭建</tag>
          
@@ -943,20 +945,14 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/make-Jenkins-Console-Output-Colorful/</loc>
+    <loc>http://debugtalk.com/post/traps-in-sql-null/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
         <display>
-        <title>Jenkins的输出日志也可以变得色色的</title>
-        <pubTime>2016-08-14T16:00:00.000Z</pubTime>
+        <title>SQL语句中关于NULL的那些坑</title>
+        <pubTime>2016-04-24T16:00:00.000Z</pubTime>
         
-        <tag>Jenkins</tag>
-         
-        <tag>Console</tag>
-         
-        <tag>Plugin</tag>
-         
-        <tag>ANSI escape sequences</tag>
+        <tag>SQL</tag>
          
          
            
@@ -1069,12 +1065,75 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/blackbox-testing-method-equivalence-partitioning/</loc>
+    <loc>http://debugtalk.com/post/android-development-environment-root/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
         <display>
-        <title>黑盒测试用例设计技术--等价类划分法</title>
-        <pubTime>2015-03-17T16:00:00.000Z</pubTime>
+        <title>Android开发环境配置3：Root</title>
+        <pubTime>2015-07-04T16:00:00.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>环境搭建</tag>
+         
+        <tag>root</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/android-development-environment-recovery/</loc>
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android开发环境配置2：详解Recovery</title>
+        <pubTime>2015-07-03T16:00:00.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>环境搭建</tag>
+         
+        <tag>recovery</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/android-development-environment-bootloader/</loc>
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android开发环境配置1：详解Bootloader</title>
+        <pubTime>2015-07-02T16:00:00.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>环境搭建</tag>
+         
+        <tag>bootloader</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/blackbox-testing-method-boundary-value-analysis/</loc>
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    <data>
+        <display>
+        <title>黑盒测试用例设计技术--边界值分析法</title>
+        <pubTime>2015-03-18T16:00:00.000Z</pubTime>
         
         <tag>黑盒测试</tag>
          
@@ -1088,20 +1147,20 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/WebService-Test-Based-On-HTTP/</loc>
+    <loc>http://debugtalk.com/post/android-development-environment-adb-and-fastboot/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
         <display>
-        <title>基于HTTP的WebService测试方法</title>
-        <pubTime>2015-02-12T16:00:00.000Z</pubTime>
+        <title>Android开发环境配置0：adb和fastboot</title>
+        <pubTime>2015-07-01T16:00:00.000Z</pubTime>
         
-        <tag>LoadRunner</tag>
+        <tag>Android</tag>
          
-        <tag>WebService</tag>
+        <tag>adb</tag>
          
-        <tag>HTTP</tag>
+        <tag>fastboot</tag>
          
-        <tag>Fiddler</tag>
+        <tag>环境搭建</tag>
          
          
            
@@ -1111,75 +1170,16 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/Introspection-on-WebService-Test/</loc>
+    <loc>http://debugtalk.com/post/blackbox-testing-method-equivalence-partitioning/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
         <display>
-        <title>基于WSDL或SOAP的WebService测试方法--对原理的思考</title>
-        <pubTime>2015-02-11T16:00:00.000Z</pubTime>
+        <title>黑盒测试用例设计技术--等价类划分法</title>
+        <pubTime>2015-03-17T16:00:00.000Z</pubTime>
         
-        <tag>WebService</tag>
+        <tag>黑盒测试</tag>
          
-        <tag>WSDL</tag>
-         
-        <tag>SOAP</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/SIPp-IP-Telephone-Server-Performance-Testing/</loc>
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    <data>
-        <display>
-        <title>使用SIPp对基于SIP协议的IP电话通信服务器进行性能测试</title>
-        <pubTime>2014-05-10T16:00:00.000Z</pubTime>
-        
-        <tag>性能测试</tag>
-         
-        <tag>SIP</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/Using-DuoShuo-in-Pelican/</loc>
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    <data>
-        <display>
-        <title>在Pelican中使用多说评论系统</title>
-        <pubTime>2013-10-04T16:00:00.000Z</pubTime>
-        
-        <tag>Pelican</tag>
-         
-        <tag>评论系统</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/loadrunner-get-system-time/</loc>
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    <data>
-        <display>
-        <title>LoadRunner中获取当前系统时间</title>
-        <pubTime>2013-10-27T16:00:00.000Z</pubTime>
-        
-        <tag>LoadRunner</tag>
-         
-        <tag>脚本开发</tag>
+        <tag>测试用例设计</tag>
          
          
            

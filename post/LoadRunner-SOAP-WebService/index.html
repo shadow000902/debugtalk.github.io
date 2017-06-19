@@ -25,7 +25,7 @@
 <meta property="og:image" content="http://debugtalk.com/images/130806_02.png">
 <meta property="og:image" content="http://debugtalk.com/images/130806_03.png">
 <meta property="og:image" content="http://debugtalk.com/images/130806_04.png">
-<meta property="og:updated_time" content="2017-06-19T14:33:12.000Z">
+<meta property="og:updated_time" content="2017-06-19T14:40:19.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="LoadRunner基于SOAP的WebService测试方法">
 <meta name="twitter:description" content="在《LoadRunner基于WSDL的WebService测试方法》一文中，52test.org基于案例天气预报WebService服务，详细讲解了在只获悉WSDL的情况下，如何采用LoadRunner对WebService进行测试。
@@ -112,7 +112,7 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1、获取SOAP报文"><span class="toc-number">1.</span> <span class="toc-text">1、获取SOAP报文</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2、在LoadRunner中导入SOAP报文"><span class="toc-number">2.</span> <span class="toc-text">2、在LoadRunner中导入SOAP报文</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3、回放脚本，查看结果"><span class="toc-number">3.</span> <span class="toc-text">3、回放脚本，查看结果</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#获取SOAP报文"><span class="toc-number">1.</span> <span class="toc-text">获取SOAP报文</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#在LoadRunner中导入SOAP报文"><span class="toc-number">2.</span> <span class="toc-text">在LoadRunner中导入SOAP报文</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#回放脚本，查看结果"><span class="toc-number">3.</span> <span class="toc-text">回放脚本，查看结果</span></a></li></ol>
 		
 		</div>
 		
@@ -128,7 +128,7 @@
 <p>本文将继续在天气预报WebService服务的案例基础上，详细讲解如何采用LoadRunner基于SOAP对WebService进行测试。</p>
 <p>需要说明的是，本文只针对测试脚本的开发展开描述，对测试场景的设计暂不进行讨论。</p>
 <p>本文中采用的LoadRunner版本为V11.0，不同版本可能会存在一定差异。</p>
-<h2 id="1、获取SOAP报文"><a href="#1、获取SOAP报文" class="headerlink" title="1、获取SOAP报文"></a>1、获取SOAP报文</h2><p>基于SOAP对WebService进行测试，第一步当然是要先获取到被测接口的SOAP报文，通常可在被测系统的接口设计说明文档（如果有的话）中查询得到，也可直接找开发人员获取。</p>
+<h2 id="获取SOAP报文"><a href="#获取SOAP报文" class="headerlink" title="获取SOAP报文"></a>获取SOAP报文</h2><p>基于SOAP对WebService进行测试，第一步当然是要先获取到被测接口的SOAP报文，通常可在被测系统的接口设计说明文档（如果有的话）中查询得到，也可直接找开发人员获取。</p>
 <p>从测试WebService接口的角度来说，SOAP报文应该至少包含哪些要素呢？</p>
 <p>在本文的演示案例中，以接口getWeatherbyCityName为例，大家在<a href="http://webservice.webxml.com.cn/WebServices/WeatherWebService.asmx?op=getWeatherbyCityName" target="_blank" rel="external">getWeatherbyCityName的介绍页面</a>中可以看到，getWeatherbyCityName支持SOAP 1.1和SOAP 1.2。本文采用SOAP 1.1进行演示。</p>
 <p>采用SOAP 1.1的请求报文如下所示：</p>
@@ -139,12 +139,12 @@
 <li>Service的URL为<code>/WebServices/WeatherWebService.asmx</code>，加上被测系统的域名后得到完整的URL为<a href="http://webservice.webxml.com.cn/WebServices/WeatherWebService.asmx" target="_blank" rel="external">http://webservice.webxml.com.cn/WebServices/WeatherWebService.asmx</a></li>
 <li>SOAPAction: “<a href="http://WebXml.com.cn/getWeatherbyCityName" target="_blank" rel="external">http://WebXml.com.cn/getWeatherbyCityName</a>“</li>
 </ul>
-<h2 id="2、在LoadRunner中导入SOAP报文"><a href="#2、在LoadRunner中导入SOAP报文" class="headerlink" title="2、在LoadRunner中导入SOAP报文"></a>2、在LoadRunner中导入SOAP报文</h2><p>在LoadRunner的Web Services协议中，点击【Import SOAP】，加载之前准备好的SOAP报文，即xml文件；加载完成后，在URL和SOAP Action中分别填入获取得到的地址信息；在Response Parameter中填写存储返回内容的参数名称；如下图所示。</p>
+<h2 id="在LoadRunner中导入SOAP报文"><a href="#在LoadRunner中导入SOAP报文" class="headerlink" title="在LoadRunner中导入SOAP报文"></a>在LoadRunner中导入SOAP报文</h2><p>在LoadRunner的Web Services协议中，点击【Import SOAP】，加载之前准备好的SOAP报文，即xml文件；加载完成后，在URL和SOAP Action中分别填入获取得到的地址信息；在Response Parameter中填写存储返回内容的参数名称；如下图所示。</p>
 <p><img src="/images/130806_01.png" alt=""></p>
 <p>点击【OK】后，便能在脚本界面中生成一个soap_request函数，如下图所示。</p>
 <p><img src="/images/130806_02.png" alt=""></p>
 <p>通过上图可知，SOAP报文中的全部内容已成功转换为LoadRunner的soap_request函数。</p>
-<h2 id="3、回放脚本，查看结果"><a href="#3、回放脚本，查看结果" class="headerlink" title="3、回放脚本，查看结果"></a>3、回放脚本，查看结果</h2><p>将脚本中的字段theCityName赋值为“广州”；在“Run-time Settings”中打开日志“Extended log”，勾选“Parameter substitution”和“Data returned by server”。运行脚本后，查看“Replay Log”，如下图所示。</p>
+<h2 id="回放脚本，查看结果"><a href="#回放脚本，查看结果" class="headerlink" title="回放脚本，查看结果"></a>回放脚本，查看结果</h2><p>将脚本中的字段theCityName赋值为“广州”；在“Run-time Settings”中打开日志“Extended log”，勾选“Parameter substitution”和“Data returned by server”。运行脚本后，查看“Replay Log”，如下图所示。</p>
 <p><img src="/images/130806_03.png" alt=""></p>
 <p>在这里如果将脚本回放得到的结果与在浏览器中调用返回的结果进行对比，会发现内容并不一致。在LoadRunner脚本中将theCityName更改为“深圳”、“上海”等城市后重新回放脚本，会发现内容仍然不一致，且LoadRunner每次回放得到的结果都相同。</p>
 <p>回顾报文中的Content-Type信息可知，请求报文与响应报文的编码均为UTF-8。因此可以猜想该问题是由于LoadRunner脚本中的编码不为UTF-8造成的，从而使得脚本中的设置的汉字theCityName不被服务商所识别。</p>
@@ -213,7 +213,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1、获取SOAP报文"><span class="toc-number">1.</span> <span class="toc-text">1、获取SOAP报文</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2、在LoadRunner中导入SOAP报文"><span class="toc-number">2.</span> <span class="toc-text">2、在LoadRunner中导入SOAP报文</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3、回放脚本，查看结果"><span class="toc-number">3.</span> <span class="toc-text">3、回放脚本，查看结果</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#获取SOAP报文"><span class="toc-number">1.</span> <span class="toc-text">获取SOAP报文</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#在LoadRunner中导入SOAP报文"><span class="toc-number">2.</span> <span class="toc-text">在LoadRunner中导入SOAP报文</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#回放脚本，查看结果"><span class="toc-number">3.</span> <span class="toc-text">回放脚本，查看结果</span></a></li></ol>
  
   </div>
 

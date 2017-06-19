@@ -2,6 +2,76 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://debugtalk.com/post/WebService-Test-Based-On-HTTP/</loc>
+    
+    <lastmod>2017-06-19T14:43:02.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/Introspection-on-WebService-Test/</loc>
+    
+    <lastmod>2017-06-19T14:42:56.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/SIPp-IP-Telephone-Server-Performance-Testing/</loc>
+    
+    <lastmod>2017-06-19T14:42:46.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/loadrunner-get-system-time/</loc>
+    
+    <lastmod>2017-06-19T14:41:16.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/Using-DuoShuo-in-Pelican/</loc>
+    
+    <lastmod>2017-06-19T14:41:03.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/loadrunner-parameter-variable/</loc>
+    
+    <lastmod>2017-06-19T14:40:31.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/LoadRunner-SOAP-WebService/</loc>
+    
+    <lastmod>2017-06-19T14:40:19.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/LoadRunner-WSDL-WebService/</loc>
+    
+    <lastmod>2017-06-19T14:39:56.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/scenario-design-scripts-percent-controll/</loc>
+    
+    <lastmod>2017-06-19T14:39:33.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/performance-index-concurrent-users/</loc>
+    
+    <lastmod>2017-06-19T14:39:06.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://debugtalk.com/post/concept-about-webservice/</loc>
     
     <lastmod>2017-06-19T14:35:32.000Z</lastmod>
@@ -26,34 +96,6 @@
     <loc>http://debugtalk.com/post/Evaluate-Largest-Online-Users/</loc>
     
     <lastmod>2017-06-19T14:34:17.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/loadrunner-parameter-variable/</loc>
-    
-    <lastmod>2017-06-19T14:33:46.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/LoadRunner-SOAP-WebService/</loc>
-    
-    <lastmod>2017-06-19T14:33:12.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/performance-index-concurrent-users/</loc>
-    
-    <lastmod>2017-06-19T14:31:38.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/scenario-design-scripts-percent-controll/</loc>
-    
-    <lastmod>2017-06-19T14:30:42.000Z</lastmod>
     
   </url>
   
@@ -94,13 +136,6 @@
   
   <url>
     <loc>http://debugtalk.com/post/head-first-locust-advanced-script/</loc>
-    
-    <lastmod>2017-06-15T07:51:23.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-backgroud-introduction/</loc>
     
     <lastmod>2017-06-15T07:51:23.000Z</lastmod>
     
@@ -149,42 +184,14 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/blackbox-testing-method-boundary-value-analysis/</loc>
+    <loc>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-backgroud-introduction/</loc>
     
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/remote-debugging-with-pycharm/</loc>
-    
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    <lastmod>2017-06-15T07:51:23.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/cheat-in-wechat-moments-voting-activity/</loc>
-    
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/render-multi-level-table-in-webpage/</loc>
-    
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/python-functional-programming-getting-started/</loc>
-    
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/Android-performance-test-UI-Automation-with-Python/</loc>
+    <loc>http://debugtalk.com/post/make-Jenkins-Console-Output-Colorful/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
@@ -192,13 +199,6 @@
   
   <url>
     <loc>http://debugtalk.com/post/Android-CPU-lock-frequency/</loc>
-    
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/traps-in-sql-null/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
@@ -226,7 +226,7 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/LoadRunner-WSDL-WebService/</loc>
+    <loc>http://debugtalk.com/post/Android-performance-test-UI-Automation-with-Python/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
@@ -240,14 +240,14 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/android-development-environment-device-configuration/</loc>
+    <loc>http://debugtalk.com/post/python-functional-programming-getting-started/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/android-development-environment-root/</loc>
+    <loc>http://debugtalk.com/post/render-multi-level-table-in-webpage/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
@@ -275,7 +275,7 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/android-development-environment-recovery/</loc>
+    <loc>http://debugtalk.com/post/cheat-in-wechat-moments-voting-activity/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
@@ -289,14 +289,14 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/android-development-environment-bootloader/</loc>
+    <loc>http://debugtalk.com/post/developing-idea-production-data-picker/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/developing-idea-production-data-picker/</loc>
+    <loc>http://debugtalk.com/post/remote-debugging-with-pycharm/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
@@ -310,14 +310,14 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/android-development-environment-adb-and-fastboot/</loc>
+    <loc>http://debugtalk.com/post/android-development-environment-device-configuration/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/make-Jenkins-Console-Output-Colorful/</loc>
+    <loc>http://debugtalk.com/post/traps-in-sql-null/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
@@ -359,42 +359,42 @@
   </url>
   
   <url>
+    <loc>http://debugtalk.com/post/android-development-environment-root/</loc>
+    
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/android-development-environment-recovery/</loc>
+    
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/android-development-environment-bootloader/</loc>
+    
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/blackbox-testing-method-boundary-value-analysis/</loc>
+    
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/android-development-environment-adb-and-fastboot/</loc>
+    
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://debugtalk.com/post/blackbox-testing-method-equivalence-partitioning/</loc>
-    
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/WebService-Test-Based-On-HTTP/</loc>
-    
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/Introspection-on-WebService-Test/</loc>
-    
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/SIPp-IP-Telephone-Server-Performance-Testing/</loc>
-    
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/Using-DuoShuo-in-Pelican/</loc>
-    
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/loadrunner-get-system-time/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
