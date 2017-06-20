@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://debugtalk.com/"/>
-  <updated>2017-06-20T14:58:58.000Z</updated>
+  <updated>2017-06-20T15:02:05.000Z</updated>
   <id>http://debugtalk.com/</id>
   
   <author>
@@ -20,9 +20,9 @@
     <link href="http://debugtalk.com/post/ApiTestEngine-0-setup-CI-test/"/>
     <id>http://debugtalk.com/post/ApiTestEngine-0-setup-CI-test/</id>
     <published>2017-06-19T16:00:00.000Z</published>
-    <updated>2017-06-20T14:58:58.000Z</updated>
+    <updated>2017-06-20T15:02:05.000Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="ApiTestEngine-演化之路（0）开发未动，测试先行"><a href="#ApiTestEngine-演化之路（0）开发未动，测试先行" class="headerlink" title="ApiTestEngine 演化之路（0）开发未动，测试先行"></a>ApiTestEngine 演化之路（0）开发未动，测试先行</h1><p>在<a href="http://debugtalk.com/post/ApiTestEngine-api-test-best-practice/">《接口自动化测试的最佳工程实践（ApiTestEngine）》</a>一文中，我详细介绍了<a href="https://github.com/debugtalk/ApiTestEngine" target="_blank" rel="external"><code>ApiTestEngine</code></a>诞生的背景，并对其核心特性进行了详尽的剖析。</p>
+    <content type="html"><![CDATA[<p>在<a href="http://debugtalk.com/post/ApiTestEngine-api-test-best-practice/">《接口自动化测试的最佳工程实践（ApiTestEngine）》</a>一文中，我详细介绍了<a href="https://github.com/debugtalk/ApiTestEngine" target="_blank" rel="external"><code>ApiTestEngine</code></a>诞生的背景，并对其核心特性进行了详尽的剖析。</p>
 <p>接下来，我将在《ApiTestEngine演化之路》系列文章中讲解<a href="https://github.com/debugtalk/ApiTestEngine" target="_blank" rel="external"><code>ApiTestEngine</code></a>是如何从第一行代码开始，逐步实现接口自动化测试框架的核心功能特性的。</p>
 <p>相信大家都有听说过<code>TDD</code>（<code>测试驱动开发</code>）这种开发模式，虽然网络上对该种开发模式存在异议，但我个人是非常推荐使用该种开发方式的。关于<code>TDD</code>的优势，我就不在此赘述了，我就只说下自己受益最深的两个方面。</p>
 <ul>
@@ -79,7 +79,7 @@
     
     <summary type="html">
     
-      &lt;h1 id=&quot;ApiTestEngine-演化之路（0）开发未动，测试先行&quot;&gt;&lt;a href=&quot;#ApiTestEngine-演化之路（0）开发未动，测试先行&quot; class=&quot;headerlink&quot; title=&quot;ApiTestEngine 演化之路（0）开发未动，测试先行&quot;&gt;
+      &lt;p&gt;在&lt;a href=&quot;http://debugtalk.com/post/ApiTestEngine-api-test-best-practice/&quot;&gt;《接口自动化测试的最佳工程实践（ApiTestEngine）》&lt;/a&gt;一文中，我详细介绍了&lt;a href=&quot;https://
     
     </summary>
     
