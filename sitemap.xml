@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://debugtalk.com/post/ApiTestEngine-0-setup-CI-test/</loc>
+    
+    <lastmod>2017-06-20T14:58:58.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://debugtalk.com/post/WebService-Test-Based-On-HTTP/</loc>
     
     <lastmod>2017-06-19T14:43:02.000Z</lastmod>
@@ -107,14 +114,14 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/introduction-to-testing-engineer-daily-work/</loc>
+    <loc>http://debugtalk.com/post/use-pyenv-manage-multiple-python-virtualenvs/</loc>
     
     <lastmod>2017-06-15T07:51:23.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/use-pyenv-manage-multiple-python-virtualenvs/</loc>
+    <loc>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-backgroud-introduction/</loc>
     
     <lastmod>2017-06-15T07:51:23.000Z</lastmod>
     
@@ -184,49 +191,14 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-backgroud-introduction/</loc>
+    <loc>http://debugtalk.com/post/introduction-to-testing-engineer-daily-work/</loc>
     
     <lastmod>2017-06-15T07:51:23.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/make-Jenkins-Console-Output-Colorful/</loc>
-    
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/Android-CPU-lock-frequency/</loc>
-    
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/Android-performance-test-start-traffic-uid-stat/</loc>
-    
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-Appium-inspector-iOS-simulator/</loc>
-    
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/Android-performance-test-start-traffic-tcpdump-wireshark/</loc>
-    
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/Android-performance-test-UI-Automation-with-Python/</loc>
+    <loc>http://debugtalk.com/post/build-ideal-app-automation-test-framework/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
@@ -240,14 +212,42 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/python-functional-programming-getting-started/</loc>
+    <loc>http://debugtalk.com/post/Android-performance-test-start-traffic-uid-stat/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/render-multi-level-table-in-webpage/</loc>
+    <loc>http://debugtalk.com/post/Android-performance-test-start-traffic-tcpdump-wireshark/</loc>
+    
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/Android-CPU-lock-frequency/</loc>
+    
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-Appium-inspector-iOS-simulator/</loc>
+    
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/Android-performance-test-UI-Automation-with-Python/</loc>
+    
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/python-functional-programming-getting-started/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
@@ -275,7 +275,7 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/cheat-in-wechat-moments-voting-activity/</loc>
+    <loc>http://debugtalk.com/post/render-multi-level-table-in-webpage/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
@@ -283,6 +283,13 @@
   
   <url>
     <loc>http://debugtalk.com/post/iOS-Android-Packing-with-Jenkins/</loc>
+    
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/cheat-in-wechat-moments-voting-activity/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
@@ -303,14 +310,14 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/Jenkins-CI-Automation-Test/</loc>
+    <loc>http://debugtalk.com/post/make-Jenkins-Console-Output-Colorful/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/android-development-environment-device-configuration/</loc>
+    <loc>http://debugtalk.com/post/Jenkins-CI-Automation-Test/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
@@ -324,21 +331,14 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/switch-macOS-web-proxy-in-elegant-way/</loc>
-    
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/build-ideal-app-automation-test-framework/</loc>
-    
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://debugtalk.com/post/locustplus-talk-about-performance-test/</loc>
+    
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/switch-macOS-web-proxy-in-elegant-way/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
@@ -353,6 +353,13 @@
   
   <url>
     <loc>http://debugtalk.com/post/my-impression-on-italy-and-france/</loc>
+    
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/android-development-environment-device-configuration/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
@@ -380,7 +387,7 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/blackbox-testing-method-boundary-value-analysis/</loc>
+    <loc>http://debugtalk.com/post/blackbox-testing-method-equivalence-partitioning/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
@@ -394,14 +401,7 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/blackbox-testing-method-equivalence-partitioning/</loc>
-    
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/baidu_verify_YWTbeHDFZJ.html</loc>
+    <loc>http://debugtalk.com/post/blackbox-testing-method-boundary-value-analysis/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
@@ -409,6 +409,13 @@
   
   <url>
     <loc>http://debugtalk.com/google1a1d094208ae91a5.html</loc>
+    
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/baidu_verify_YWTbeHDFZJ.html</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
@@ -436,14 +443,14 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/tags/index.html</loc>
+    <loc>http://debugtalk.com/search/index.html</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://debugtalk.com/search/index.html</loc>
+    <loc>http://debugtalk.com/tags/index.html</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     

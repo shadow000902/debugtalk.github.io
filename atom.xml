@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://debugtalk.com/"/>
-  <updated>2017-06-18T15:10:14.000Z</updated>
+  <updated>2017-06-20T14:58:58.000Z</updated>
   <id>http://debugtalk.com/</id>
   
   <author>
@@ -14,6 +14,83 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>ApiTestEngine 演化之路（0）开发未动，测试先行</title>
+    <link href="http://debugtalk.com/post/ApiTestEngine-0-setup-CI-test/"/>
+    <id>http://debugtalk.com/post/ApiTestEngine-0-setup-CI-test/</id>
+    <published>2017-06-19T16:00:00.000Z</published>
+    <updated>2017-06-20T14:58:58.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="ApiTestEngine-演化之路（0）开发未动，测试先行"><a href="#ApiTestEngine-演化之路（0）开发未动，测试先行" class="headerlink" title="ApiTestEngine 演化之路（0）开发未动，测试先行"></a>ApiTestEngine 演化之路（0）开发未动，测试先行</h1><p>在<a href="http://debugtalk.com/post/ApiTestEngine-api-test-best-practice/">《接口自动化测试的最佳工程实践（ApiTestEngine）》</a>一文中，我详细介绍了<a href="https://github.com/debugtalk/ApiTestEngine" target="_blank" rel="external"><code>ApiTestEngine</code></a>诞生的背景，并对其核心特性进行了详尽的剖析。</p>
+<p>接下来，我将在《ApiTestEngine演化之路》系列文章中讲解<a href="https://github.com/debugtalk/ApiTestEngine" target="_blank" rel="external"><code>ApiTestEngine</code></a>是如何从第一行代码开始，逐步实现接口自动化测试框架的核心功能特性的。</p>
+<p>相信大家都有听说过<code>TDD</code>（<code>测试驱动开发</code>）这种开发模式，虽然网络上对该种开发模式存在异议，但我个人是非常推荐使用该种开发方式的。关于<code>TDD</code>的优势，我就不在此赘述了，我就只说下自己受益最深的两个方面。</p>
+<ul>
+<li>测试驱动，其实也是需求驱动。在开发正式代码之前，可以先将需求转换为单元测试用例，然后再逐步实现正式代码，直至将所有单元测试用例跑通。这可以帮助我们总是聚焦在要实现的功能特性上，避免跑偏。特别是像我们做测试开发的，通常没有需求文档和设计文档，如果没有清晰的思路，很可能做着做着就不知道自己做到哪儿了。</li>
+<li>高覆盖率的单元测试代码，对项目质量有充足的信心。因为是先写测试再写实现，所以正常情况下，所有的功能特性都应该能被单元测试覆盖到。再结合持续集成的手段，我们可以轻松保证每个版本都是高质量并且可用的。</li>
+</ul>
+<p>所以，<a href="https://github.com/debugtalk/ApiTestEngine" target="_blank" rel="external"><code>ApiTestEngine</code></a>项目也将采用<code>TDD</code>的开发模式。本篇文章就重点介绍下采用<code>TDD</code>之前需要做的一些准备工作。</p>
+<h2 id="搭建API接口服务（Mock-Server）"><a href="#搭建API接口服务（Mock-Server）" class="headerlink" title="搭建API接口服务（Mock Server）"></a>搭建API接口服务（Mock Server）</h2><p>接口测试框架要运行起来，必然需要有可用的API接口服务。因此，在开始构建我们的接口测试框架之前，最好先搭建一套简单的API接口服务，也就是<code>Mock Server</code>，然后我们在采用<code>TDD</code>开发模式的时候，就可以随时随地将框架代码跑起来，开发效率也会大幅提升。</p>
+<p>为什么不直接采用已有的业务系统API接口服务呢？</p>
+<p>这是因为通常业务系统的接口比较复杂，并且耦合了许多业务逻辑，甚至还可能涉及到和其它业务系统的交互，搭建或维护一套测试环境的成本可能会非常高。另一方面，接口测试框架需要具有一定的通用性，其功能特性很难在一个特定的业务系统中找到所有合适的接口。就拿最简单的接口请求方法来说，测试框架需要支持<code>GET/POST/HEAD/PUT/DELETE</code>方法，但是可能在我们已有的业务系统中只有<code>GET/POST</code>接口。</p>
+<p>自行搭建API接口服务的另一个好处在于，我们可以随时调整接口的实现方式，来满足接口测试框架特定的功能特性，从而使我们总是能将注意力集中在测试框架本身。比较好的做法是，先搭建最简单的接口服务，在此基础上将接口测试框架搭建起来，实现最基本的功能；后面在实现框架的高级功能特性时，我们再对该接口服务进行拓展升级，例如增加签名校验机制等，来适配测试框架的高级功能特性。</p>
+<p>幸运的是，使用<code>Python</code>搭建API接口服务十分简单，特别是在结合使用<a href="http://flask.pocoo.org/" target="_blank" rel="external"><code>Flask</code></a>框架的情况下。</p>
+<p>例如，我们想实现一套可以对用户账号进行增删改查（<code>CRUD</code>）功能的接口服务，用户账号的存储结构大致如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">users_dict = &#123;</div><div class="line">   'uid1': &#123;</div><div class="line">       'name': 'name1',</div><div class="line">       'password': 'pwd1'</div><div class="line">   &#125;,</div><div class="line">   'uid2': &#123;</div><div class="line">       'name': 'name2',</div><div class="line">       'password': 'pwd2'</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>那么，新增（Create）和更新（Update）功能的接口就可以通过如下方式实现。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> json</div><div class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</div><div class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> request, make_response</div><div class="line"></div><div class="line">app = Flask(__name__)</div><div class="line">users_dict = &#123;&#125;</div><div class="line"></div><div class="line"><span class="meta">@app.route('/api/users/&lt;int:uid&gt;', methods=['POST'])</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">create_user</span><span class="params">(uid)</span>:</span></div><div class="line">    user = request.get_json()</div><div class="line">    <span class="keyword">if</span> uid <span class="keyword">not</span> <span class="keyword">in</span> users_dict:</div><div class="line">        result = &#123;</div><div class="line">            <span class="string">'success'</span>: <span class="keyword">True</span>,</div><div class="line">            <span class="string">'msg'</span>: <span class="string">"user created successfully."</span></div><div class="line">        &#125;</div><div class="line">        status_code = <span class="number">201</span></div><div class="line">        users_dict[uid] = user</div><div class="line">    <span class="keyword">else</span>:</div><div class="line">        result = &#123;</div><div class="line">            <span class="string">'success'</span>: <span class="keyword">False</span>,</div><div class="line">            <span class="string">'msg'</span>: <span class="string">"user already existed."</span></div><div class="line">        &#125;</div><div class="line">        status_code = <span class="number">500</span></div><div class="line"></div><div class="line">    response = make_response(json.dumps(result), status_code)</div><div class="line">    response.headers[<span class="string">"Content-Type"</span>] = <span class="string">"application/json"</span></div><div class="line">    <span class="keyword">return</span> response</div><div class="line"></div><div class="line"><span class="meta">@app.route('/api/users/&lt;int:uid&gt;', methods=['PUT'])</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">update_user</span><span class="params">(uid)</span>:</span></div><div class="line">    user = users_dict.get(uid, &#123;&#125;)</div><div class="line">    <span class="keyword">if</span> user:</div><div class="line">        user = request.get_json()</div><div class="line">        success = <span class="keyword">True</span></div><div class="line">        status_code = <span class="number">200</span></div><div class="line">    <span class="keyword">else</span>:</div><div class="line">        success = <span class="keyword">False</span></div><div class="line">        status_code = <span class="number">404</span></div><div class="line"></div><div class="line">    result = &#123;</div><div class="line">        <span class="string">'success'</span>: success,</div><div class="line">        <span class="string">'data'</span>: user</div><div class="line">    &#125;</div><div class="line">    response = make_response(json.dumps(result), status_code)</div><div class="line">    response.headers[<span class="string">"Content-Type"</span>] = <span class="string">"application/json"</span></div><div class="line">    <span class="keyword">return</span> response</div></pre></td></tr></table></figure>
+<p>限于篇幅，其它类型的接口实现就不在此赘述，完整的接口实现可以参考<a href="https://github.com/debugtalk/ApiTestEngine/blob/master/test/api_server.py" target="_blank" rel="external">项目源码</a>。</p>
+<p>接口服务就绪后，按照<code>Flask</code>官方文档，可以通过如下方式进行启动：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ export FLASK_APP=test/api_server.py</div><div class="line">$ flask run</div><div class="line"> * Serving Flask app &quot;test.api_server&quot;</div><div class="line"> * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)</div></pre></td></tr></table></figure>
+<p>启动后，我们就可以通过请求接口来调用已经实现的接口功能了。例如，先创建一个用户，然后查看所有用户的信息，在<code>Python</code>终端中的调用方式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$ python</div><div class="line">Python 3.6.0 (default, Mar 24 2017, 16:58:25)</div><div class="line">&gt;&gt;&gt; import requests</div><div class="line">&gt;&gt;&gt; requests.post(&apos;http://127.0.0.1:5000/api/users/1000&apos;, json=&#123;&apos;name&apos;: &apos;user1&apos;, &apos;password&apos;: &apos;123456&apos;&#125;)</div><div class="line">&lt;Response [201]&gt;</div><div class="line">&gt;&gt;&gt; resp = requests.get(&apos;http://127.0.0.1:5000/api/users&apos;)</div><div class="line">&gt;&gt;&gt; resp.content</div><div class="line">b&apos;&#123;&quot;success&quot;: true, &quot;count&quot;: 1, &quot;items&quot;: [&#123;&quot;name&quot;: &quot;user1&quot;, &quot;password&quot;: &quot;123456&quot;&#125;]&#125;&apos;</div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure>
+<p>通过接口请求结果可见，接口服务运行正常。</p>
+<h2 id="在单元测试用例中使用-Mock-Server"><a href="#在单元测试用例中使用-Mock-Server" class="headerlink" title="在单元测试用例中使用 Mock Server"></a>在单元测试用例中使用 Mock Server</h2><p>API接口服务（<code>Mock Server</code>）已经有了，但是如果每次运行单元测试时都要先在外部手工启动API接口服务的话，做法实在是不够优雅。</p>
+<p>推荐的做法是，制作一个<code>ApiServerUnittest</code>基类，在其中添加<code>setUpClass</code>类方法，用于启动API接口服务（<code>Mock Server</code>）；添加<code>tearDownClass</code>类方法，用于停止API接口服务。由于<code>setUpClass</code>会在单元测试用例集初始化的时候执行一次，所以可以保证单元测试用例在运行的时候API服务处于可用状态；而<code>tearDownClass</code>会在单元测试用例集执行完毕后运行一次，停止API接口服务，从而避免对下一次启动产生影响。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># test/base.py</span></div><div class="line"><span class="keyword">import</span> multiprocessing</div><div class="line"><span class="keyword">import</span> time</div><div class="line"><span class="keyword">import</span> unittest</div><div class="line"><span class="keyword">from</span> . <span class="keyword">import</span> api_server</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ApiServerUnittest</span><span class="params">(unittest.TestCase)</span>:</span></div><div class="line">    <span class="string">"""</span></div><div class="line">    Test case class that sets up an HTTP server which can be used within the tests</div><div class="line">    """</div><div class="line"><span class="meta">    @classmethod</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setUpClass</span><span class="params">(cls)</span>:</span></div><div class="line">        cls.api_server_process = multiprocessing.Process(</div><div class="line">            target=api_server.app.run</div><div class="line">        )</div><div class="line">        cls.api_server_process.start()</div><div class="line">        time.sleep(<span class="number">0.1</span>)</div><div class="line"></div><div class="line"><span class="meta">    @classmethod</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">tearDownClass</span><span class="params">(cls)</span>:</span></div><div class="line">        cls.api_server_process.terminate()</div></pre></td></tr></table></figure>
+<p>这里采用的是多进程的方式（<code>multiprocessing</code>），所以我们的单元测试用例可以和API接口服务（<code>Mock Server</code>）同时运行。除了多进程的方式，我看到<code>locust</code>项目采用的是<a href="https://github.com/locustio/locust/blob/master/locust/test/test_web.py" target="_blank" rel="external"><code>gevent.pywsgi.WSGIServer</code></a>的方式，不过由于在<code>gevent</code>中要实现异步需要先<code>monkey.patch_all()</code>，感觉比较麻烦，而且还需要引入<code>gevent</code>这么一个第三方依赖库，所以还是决定采用<code>multiprocessing</code>的方式了。至于为什么没有选择多线程模型（<code>threading</code>），是因为线程至不支持显式终止的（<code>terminate</code>），要实现终止服务会比使用<code>multiprocessing</code>更为复杂。</p>
+<p>不过需要注意的是，由于启动<code>Server</code>存在一定的耗时，因此在启动完毕后必须要等待一段时间（本例中<code>0.1秒</code>就足够了），否则在执行单元测试用例时，调用的API接口可能还处于不可用状态。</p>
+<p><code>ApiServerUnittest</code>基类就绪后，对于需要用到<code>Mock Server</code>的单元测试用例集，只需要继承<code>ApiServerUnittest</code>即可；其它的写法跟普通的单元测试完全一致。</p>
+<p>例如，下例包含一个单元测试用例，测试“创建一个用户，该用户之前不存在”的场景。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># test/test_apiserver.py</span></div><div class="line"><span class="keyword">import</span> requests</div><div class="line"><span class="keyword">from</span> .base <span class="keyword">import</span> ApiServerUnittest</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestApiServer</span><span class="params">(ApiServerUnittest)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setUp</span><span class="params">(self)</span>:</span></div><div class="line">        super(TestApiServer, self).setUp()</div><div class="line">        self.host = <span class="string">"http://127.0.0.1:5000"</span></div><div class="line">        self.api_client = requests.Session()</div><div class="line">        self.clear_users()</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">tearDown</span><span class="params">(self)</span>:</span></div><div class="line">        super(TestApiServer, self).tearDown()</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_create_user_not_existed</span><span class="params">(self)</span>:</span></div><div class="line">        self.clear_users()</div><div class="line"></div><div class="line">        url = <span class="string">"%s/api/users/%d"</span> % (self.host, <span class="number">1000</span>)</div><div class="line">        data = &#123;</div><div class="line">            <span class="string">"name"</span>: <span class="string">"user1"</span>,</div><div class="line">            <span class="string">"password"</span>: <span class="string">"123456"</span></div><div class="line">        &#125;</div><div class="line">        resp = self.api_client.post(url, json=data)</div><div class="line"></div><div class="line">        self.assertEqual(<span class="number">201</span>, resp.status_code)</div><div class="line">        self.assertEqual(<span class="keyword">True</span>, resp.json()[<span class="string">"success"</span>])</div></pre></td></tr></table></figure>
+<h2 id="为项目添加持续集成构建检查（Travis-CI）"><a href="#为项目添加持续集成构建检查（Travis-CI）" class="headerlink" title="为项目添加持续集成构建检查（Travis CI）"></a>为项目添加持续集成构建检查（Travis CI）</h2><p>当我们的项目具有单元测试之后，我们就可以为项目添加持续集成构建检查，从而在每次提交代码至<code>GitHub</code>时都运行测试，确保我们每次提交的代码都是可正常部署及运行的。</p>
+<p>要实现这个功能，推荐使用<a href="https://travis-ci.org/" target="_blank" rel="external"><code>Travis CI</code></a>提供的服务，该服务对于GitHub公有仓库是免费的。要完成配置，操作也很简单，基本上只有三步：</p>
+<ul>
+<li>在<a href="https://travis-ci.org/" target="_blank" rel="external"><code>Travis CI</code></a>使用GitHub账号授权登录；</li>
+<li>在<a href="https://travis-ci.org/" target="_blank" rel="external"><code>Travis CI</code></a>的个人<code>profile</code>页面开启需要持续集成的项目；</li>
+<li>在<code>Github</code>项目的根目录下添加<code>.travis.yml</code>配置文件。</li>
+</ul>
+<p>大多数情况下，<code>.travis.yml</code>配置文件可以很简单，例如<a href="https://github.com/debugtalk/ApiTestEngine" target="_blank" rel="external"><code>ApiTestEngine</code></a>的配置就只有如下几行：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="attr">sudo:</span> <span class="literal">false</span></div><div class="line"><span class="attr">language:</span> python</div><div class="line"><span class="attr">python:</span></div><div class="line"><span class="bullet">  -</span> <span class="number">2.7</span></div><div class="line"><span class="bullet">  -</span> <span class="number">3.3</span></div><div class="line"><span class="bullet">  -</span> <span class="number">3.4</span></div><div class="line"><span class="bullet">  -</span> <span class="number">3.5</span></div><div class="line"><span class="bullet">  -</span> <span class="number">3.6</span></div><div class="line"><span class="attr">install:</span></div><div class="line"><span class="bullet">  -</span> pip install -r requirements.txt</div><div class="line"><span class="attr">script:</span></div><div class="line"><span class="bullet">  -</span> python -m unittest discover</div></pre></td></tr></table></figure>
+<p>具体含义不用解释也可以很容易看懂，其中<code>install</code>中包含我们项目的依赖库安装命令，<code>script</code>中包含执行构建测试的命令。</p>
+<p>配置完毕后，后续每次提交代码时，<code>GitHub</code>就会调用<code>Travis CI</code>实现构建检查；并且更赞的在于，构建检查可以同时在多个指定的<code>Python</code>版本环境中进行。</p>
+<p>下图是某次提交代码时的构建结果。</p>
+<p><img src="/images/travis-check-result.jpg" alt=""></p>
+<p>另外，我们还可以在<code>GitHub</code>项目的<code>README.md</code>中添加一个<code>Status Image</code>，实时显示项目的构建状态，就像下图显示的样子。</p>
+<p><img src="/images/github-readme-travis-status-image.jpg" alt=""></p>
+<p>配置方式也是很简单，只需要先在<code>Travis CI</code>中获取到项目<code>Status Image</code>的URL地址，然后添加到<code>README.md</code>即可。</p>
+<p><img src="/images/travis-status-image-url.jpg" alt=""></p>
+<h2 id="写在后面"><a href="#写在后面" class="headerlink" title="写在后面"></a>写在后面</h2><p>通过本文中的工作，我们就对项目搭建好了测试框架，并实现了持续集成构建检查机制。从下一篇开始，我们就将开始逐步实现接口自动化测试框架的核心功能特性了。</p>
+<h2 id="阅读更多"><a href="#阅读更多" class="headerlink" title="阅读更多"></a>阅读更多</h2><ul>
+<li><a href="http://debugtalk.com/post/ApiTestEngine-api-test-best-practice/">《接口自动化测试的最佳工程实践（ApiTestEngine）》</a></li>
+<li><a href="https://github.com/debugtalk/ApiTestEngine" target="_blank" rel="external"><code>ApiTestEngine</code> GitHub源码</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;ApiTestEngine-演化之路（0）开发未动，测试先行&quot;&gt;&lt;a href=&quot;#ApiTestEngine-演化之路（0）开发未动，测试先行&quot; class=&quot;headerlink&quot; title=&quot;ApiTestEngine 演化之路（0）开发未动，测试先行&quot;&gt;
+    
+    </summary>
+    
+    
+      <category term="自动化测试" scheme="http://debugtalk.com/tags/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/"/>
+    
+      <category term="测试框架" scheme="http://debugtalk.com/tags/%E6%B5%8B%E8%AF%95%E6%A1%86%E6%9E%B6/"/>
+    
+      <category term="Mock" scheme="http://debugtalk.com/tags/Mock/"/>
+    
+  </entry>
   
   <entry>
     <title>接口自动化测试的最佳工程实践（ApiTestEngine）</title>
@@ -145,11 +222,11 @@
     </summary>
     
     
-      <category term="接口测试" scheme="http://debugtalk.com/tags/%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95/"/>
-    
       <category term="自动化测试" scheme="http://debugtalk.com/tags/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/"/>
     
       <category term="测试框架" scheme="http://debugtalk.com/tags/%E6%B5%8B%E8%AF%95%E6%A1%86%E6%9E%B6/"/>
+    
+      <category term="接口测试" scheme="http://debugtalk.com/tags/%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95/"/>
     
   </entry>
   
@@ -809,13 +886,13 @@
     </summary>
     
     
+      <category term="Locust" scheme="http://debugtalk.com/tags/Locust/"/>
+    
       <category term="Web proxy" scheme="http://debugtalk.com/tags/Web-proxy/"/>
     
       <category term="Shuttle" scheme="http://debugtalk.com/tags/Shuttle/"/>
     
       <category term="mitmproxy" scheme="http://debugtalk.com/tags/mitmproxy/"/>
-    
-      <category term="Locust" scheme="http://debugtalk.com/tags/Locust/"/>
     
   </entry>
   
@@ -1285,9 +1362,9 @@
     
       <category term="Android" scheme="http://debugtalk.com/tags/Android/"/>
     
-      <category term="iOS" scheme="http://debugtalk.com/tags/iOS/"/>
-    
       <category term="Jenkins" scheme="http://debugtalk.com/tags/Jenkins/"/>
+    
+      <category term="iOS" scheme="http://debugtalk.com/tags/iOS/"/>
     
       <category term="CI" scheme="http://debugtalk.com/tags/CI/"/>
     
@@ -1360,9 +1437,9 @@
     
       <category term="Appium" scheme="http://debugtalk.com/tags/Appium/"/>
     
-      <category term="iOS" scheme="http://debugtalk.com/tags/iOS/"/>
-    
       <category term="F0T1" scheme="http://debugtalk.com/tags/F0T1/"/>
+    
+      <category term="iOS" scheme="http://debugtalk.com/tags/iOS/"/>
     
       <category term="Ruby" scheme="http://debugtalk.com/tags/Ruby/"/>
     
@@ -1522,9 +1599,9 @@
     
       <category term="Android" scheme="http://debugtalk.com/tags/Android/"/>
     
-      <category term="iOS" scheme="http://debugtalk.com/tags/iOS/"/>
-    
       <category term="Jenkins" scheme="http://debugtalk.com/tags/Jenkins/"/>
+    
+      <category term="iOS" scheme="http://debugtalk.com/tags/iOS/"/>
     
       <category term="CI" scheme="http://debugtalk.com/tags/CI/"/>
     
@@ -1703,9 +1780,9 @@
     
       <category term="Android" scheme="http://debugtalk.com/tags/Android/"/>
     
-      <category term="iOS" scheme="http://debugtalk.com/tags/iOS/"/>
-    
       <category term="Jenkins" scheme="http://debugtalk.com/tags/Jenkins/"/>
+    
+      <category term="iOS" scheme="http://debugtalk.com/tags/iOS/"/>
     
       <category term="CI" scheme="http://debugtalk.com/tags/CI/"/>
     
@@ -1893,64 +1970,6 @@
       <category term="SSH" scheme="http://debugtalk.com/tags/SSH/"/>
     
       <category term="HTTPS，权限校验" scheme="http://debugtalk.com/tags/HTTPS%EF%BC%8C%E6%9D%83%E9%99%90%E6%A0%A1%E9%AA%8C/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>关于促销活动页面测试的那些事儿</title>
-    <link href="http://debugtalk.com/post/promotion-page-test/"/>
-    <id>http://debugtalk.com/post/promotion-page-test/</id>
-    <published>2016-06-08T16:00:00.000Z</published>
-    <updated>2017-03-11T04:11:02.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>这篇文章来说说促销活动页面测试的那些事儿。</p>
-<h2 id="什么是促销活动页面？"><a href="#什么是促销活动页面？" class="headerlink" title="什么是促销活动页面？"></a>什么是促销活动页面？</h2><p>通常电商平台在节假日会做一些促销活动，而活动的宣传方式，主要会采用H5静态页面的形式，也就是本文中要讲的促销活动页面。</p>
-<p>这些活动页面的特点是元素构成很简单，在页面中只包含一些促销商品的图片及其价格，而且价格往往都是写死在页面中，不会涉及到从数据库中读取，完完全全的静态页面；当然，促销活动页面的目的是将用户流量导向电商平台，因此在页面的图片或购买按钮背后会配上URL链接，用户点击链接后会跳转至电商平台对应的购买页面，活动页面也就完成了使命，这往往就是活动页面的全部内容。</p>
-<p>这么看来，促销活动页面跟街上发的传单非常相似，只是传单是纸质的，而活动页面是网页的罢了。</p>
-<h2 id="促销活动页面为什么要这么做呢？"><a href="#促销活动页面为什么要这么做呢？" class="headerlink" title="促销活动页面为什么要这么做呢？"></a>促销活动页面为什么要这么做呢？</h2><p>四方面原因。</p>
-<p>第一，促销活动页面的目的性很强，就是为了主推几款特价商品，因此，商品和价格完全写死也不会有任何问题。</p>
-<p>第二，促销活动页面的时效性很强，为促销活动而生，生命周期就那么几天，促销活动结束后这个活动页面也就作废了，因此也不用考虑复用的问题。</p>
-<p>第三，从投入的人力成本和工作量考虑，促销活动页面的制作只需要设计师和前端工程师就能完成，无需后台开发人员进行配合，也无需对当前的电商平台进行任何功能调整。</p>
-<p>第四，电商平台在做促销活动时，往往会通过各种渠道进行推广，因此活动页面的访问流量是非常巨大的；而采用静态页面的形式，不仅可以极大地提高页面加载速度（图片等静态资源可以通过CDN存储），而且可以极大地减轻流量对电商平台服务器端的压力（用户在浏览活动页面的时候并不会与电商平台进行任何交互）。至于点击链接进入电商平台的流量嘛，毕竟转换率总是存在的，转换以后的流量会小很多，而这部分流量才是真正有效的。</p>
-<h2 id="如何对活动页面进行测试"><a href="#如何对活动页面进行测试" class="headerlink" title="如何对活动页面进行测试"></a>如何对活动页面进行测试</h2><p>那么，就这么简单的一个静态页面，还需要对它进行测试么？</p>
-<p>咋一看，貌似还真没有可测试的内容，因为页面中就找不到一个真正意义上的功能点。</p>
-<p>然而，历史经验表明，在软件工程中无论多简单的功能，都是有可能出现bug的。针对活动页面的形式，我们需要重点关注如下几点。</p>
-<h3 id="1、商品信息一致性"><a href="#1、商品信息一致性" class="headerlink" title="1、商品信息一致性"></a>1、商品信息一致性</h3><p>促销活动页面中的商品信息都是由前端工程师写死的，而非从电商平台的数据库中读取后进行展示。因此，在实际操作中，活动页面上的信息，特别是价格数据，有可能和电商平台中的商品不一致，这个是我们在测试的时候需要重点关注的。</p>
-<p>测试方式很简单，依次点击各个商品的链接，验证跳转的商品页面是否与促销活动页面中的商品信息一致即可。</p>
-<h3 id="2、页面跳转行为一致性"><a href="#2、页面跳转行为一致性" class="headerlink" title="2、页面跳转行为一致性"></a>2、页面跳转行为一致性</h3><p>点击链接跳转页面，应该算是活动页面中唯一具有动作行为的功能了。而对于链接跳转而言，会存在两种形式，一种是在当前页面中加载商品页面，另一种是在新窗口中加载商品页面。</p>
-<p>本来两种形式区别并不大，采用哪种形式都可以，但是从追求完美的角度出发，我们还是需要保证活动页面中的所有链接的跳转行为都是相同的。</p>
-<p>因此，在测试时，逐一点击所有的链接，验证所有链接跳转行为是否一致即可。</p>
-<h3 id="3、页面兼容性"><a href="#3、页面兼容性" class="headerlink" title="3、页面兼容性"></a>3、页面兼容性</h3><p>作为促销活动页面，虽然商品信息是最核心的内容，但是为了能吸引尽量多的用户，页面的设计往往花了很多功夫，力求精美。然而，用户访问活动页面的设备和浏览器五花八门，有可能是采用PC浏览器，有可能是采用iPhone设备，也可能是采用各种品牌和型号的Android设备，精心设计的活动页面在某些设备或浏览器上很有可能就出现样式混乱的情况。因此，促销活动页面的浏览器兼容性也是z在测试时需要重点关注的。</p>
-<p>差异在哪儿呢？差异就是不同的浏览器内核，不同的设备操作系统，不同的屏幕分辨率。</p>
-<p>当然，我们也不可能在所有类型的设备和浏览器上都测一遍，但是主流的浏览器内核和移动设备还是要尽量覆盖的。</p>
-<p>推荐的测试方式如下：</p>
-<ul>
-<li>针对不同浏览器内核的测试，在电脑上采用Chrome、IE、Firefox、Safari浏览器分别加载活动页面；</li>
-<li>针对不同移动设备类型的测试，在iPhone和Android设备上加载活动页面，iPhone和Android设备均只选一款即可；</li>
-<li>针对不同屏幕分辨率的测试，可以在PC浏览器中打开开发者工具，里面可以模拟不同分辨率的设备加载页面，前面提到的浏览器基本都支持这个功能。</li>
-</ul>
-<h3 id="4、文案准确性"><a href="#4、文案准确性" class="headerlink" title="4、文案准确性"></a>4、文案准确性</h3><p>对于促销活动而言，吸引眼球的文案肯定是必不可少的，这也是在测试时需要重点关注的。</p>
-<p>对于文案方面的测试，可以重点从以下几个方面进行考核。</p>
-<p>首先，由于文案通常是由需求方提供，而活动页面是由设计师或前端工程师制作，因此有可能在制作页面的过程中出现了偏差，这个需要测试时仔细核对。</p>
-<p>另外，文案中出现错别字的情况也比较多，这个也需要格外注意，尽量杜绝这样的低级错误。</p>
-<p>还有一种情况，活动促销页面是面向某个国家的用户，语言可能是非汉语也非英语，这个时候周围谁也看不懂文案里面到底写的是啥。这个时候，只能请需求方再三进行确认，文案描述正确是一方面，另一方面就是需要考虑到目标国家的地域文化，不要出现产生歧义和误解的情况。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>以上内容便是从促销活动页面进行展开，联想到的关于测试的一些内容。</p>
-<p>可以看出，即使是再简单的东西，也是需要进行测试的，而且测试需要考虑的因素也非常多。另一方面，这也说明测试并不应该仅仅局限于技术层面，只有当我们站在业务和质量保障的角度，才会有更开阔的视野。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;这篇文章来说说促销活动页面测试的那些事儿。&lt;/p&gt;
-&lt;h2 id=&quot;什么是促销活动页面？&quot;&gt;&lt;a href=&quot;#什么是促销活动页面？&quot; class=&quot;headerlink&quot; title=&quot;什么是促销活动页面？&quot;&gt;&lt;/a&gt;什么是促销活动页面？&lt;/h2&gt;&lt;p&gt;通常电商平台在节假
-    
-    </summary>
-    
-    
-      <category term="promotion" scheme="http://debugtalk.com/tags/promotion/"/>
-    
-      <category term="H5" scheme="http://debugtalk.com/tags/H5/"/>
-    
-      <category term="test" scheme="http://debugtalk.com/tags/test/"/>
     
   </entry>
   

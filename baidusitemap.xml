@@ -4,6 +4,27 @@
 
     
   <url>
+    <loc>http://debugtalk.com/post/ApiTestEngine-0-setup-CI-test/</loc>
+    <lastmod>2017-06-20T14:58:58.000Z</lastmod>
+    <data>
+        <display>
+        <title>ApiTestEngine 演化之路（0）开发未动，测试先行</title>
+        <pubTime>2017-06-19T16:00:00.000Z</pubTime>
+        
+        <tag>自动化测试</tag>
+         
+        <tag>测试框架</tag>
+         
+        <tag>Mock</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://debugtalk.com/post/WebService-Test-Based-On-HTTP/</loc>
     <lastmod>2017-06-19T14:43:02.000Z</lastmod>
     <data>
@@ -270,9 +291,9 @@
         <title>测试最大在线用户数</title>
         <pubTime>2013-08-21T16:00:00.000Z</pubTime>
         
-        <tag>性能指标</tag>
-         
         <tag>LoadRunner</tag>
+         
+        <tag>性能指标</tag>
          
         <tag>最大在线用户数</tag>
          
@@ -291,30 +312,11 @@
         <title>接口自动化测试的最佳工程实践（ApiTestEngine）</title>
         <pubTime>2017-06-17T16:00:00.000Z</pubTime>
         
-        <tag>接口测试</tag>
-         
         <tag>自动化测试</tag>
          
         <tag>测试框架</tag>
          
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/introduction-to-testing-engineer-daily-work/</loc>
-    <lastmod>2017-06-15T07:51:23.000Z</lastmod>
-    <data>
-        <display>
-        <title>【科普】互联网测试岗位的工作日常</title>
-        <pubTime>2017-06-14T16:00:00.000Z</pubTime>
-        
-        <tag>个人成长</tag>
-         
-        <tag>培训</tag>
+        <tag>接口测试</tag>
          
          
            
@@ -336,6 +338,27 @@
         <tag>pyenv</tag>
          
         <tag>virtualenv</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-backgroud-introduction/</loc>
+    <lastmod>2017-06-15T07:51:23.000Z</lastmod>
+    <data>
+        <display>
+        <title>从0到1搭建移动App功能自动化测试平台（0）：背景介绍和平台规划</title>
+        <pubTime>2016-05-19T16:00:00.000Z</pubTime>
+        
+        <tag>AutomationTest</tag>
+         
+        <tag>Appium</tag>
+         
+        <tag>F0T1</tag>
          
          
            
@@ -417,9 +440,9 @@
          
         <tag>Appium</tag>
          
-        <tag>iOS</tag>
-         
         <tag>F0T1</tag>
+         
+        <tag>iOS</tag>
          
         <tag>Ruby</tag>
          
@@ -442,9 +465,9 @@
         
         <tag>Android</tag>
          
-        <tag>iOS</tag>
-         
         <tag>Jenkins</tag>
+         
+        <tag>iOS</tag>
          
         <tag>CI</tag>
          
@@ -513,9 +536,9 @@
          
         <tag>Appium</tag>
          
-        <tag>iOS</tag>
-         
         <tag>F0T1</tag>
+         
+        <tag>iOS</tag>
          
         <tag>Ruby</tag>
          
@@ -538,11 +561,11 @@
          
         <tag>Appium</tag>
          
+        <tag>F0T1</tag>
+         
         <tag>iOS</tag>
          
         <tag>Simulator</tag>
-         
-        <tag>F0T1</tag>
          
         <tag>Ruby</tag>
          
@@ -554,18 +577,39 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-backgroud-introduction/</loc>
+    <loc>http://debugtalk.com/post/introduction-to-testing-engineer-daily-work/</loc>
     <lastmod>2017-06-15T07:51:23.000Z</lastmod>
     <data>
         <display>
-        <title>从0到1搭建移动App功能自动化测试平台（0）：背景介绍和平台规划</title>
-        <pubTime>2016-05-19T16:00:00.000Z</pubTime>
+        <title>【科普】互联网测试岗位的工作日常</title>
+        <pubTime>2017-06-14T16:00:00.000Z</pubTime>
+        
+        <tag>个人成长</tag>
+         
+        <tag>培训</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/build-ideal-app-automation-test-framework/</loc>
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    <data>
+        <display>
+        <title>打造心目中理想的自动化测试框架（AppiumBooster）</title>
+        <pubTime>2016-09-06T16:00:00.000Z</pubTime>
         
         <tag>AutomationTest</tag>
          
         <tag>Appium</tag>
          
-        <tag>F0T1</tag>
+        <tag>AppiumBooster</tag>
+         
+        <tag>UI Test</tag>
          
          
            
@@ -575,39 +619,14 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/make-Jenkins-Console-Output-Colorful/</loc>
+    <loc>http://debugtalk.com/post/manage-Jenkins-via-remote-api/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
         <display>
-        <title>Jenkins的输出日志也可以变得色色的</title>
-        <pubTime>2016-08-14T16:00:00.000Z</pubTime>
+        <title>通过API远程管理Jenkins</title>
+        <pubTime>2016-05-01T16:00:00.000Z</pubTime>
         
         <tag>Jenkins</tag>
-         
-        <tag>Console</tag>
-         
-        <tag>Plugin</tag>
-         
-        <tag>ANSI escape sequences</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/Android-CPU-lock-frequency/</loc>
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    <data>
-        <display>
-        <title>对Android设备CPU进行锁频</title>
-        <pubTime>2016-04-17T16:00:00.000Z</pubTime>
-        
-        <tag>Android</tag>
-         
-        <tag>CPU</tag>
          
          
            
@@ -627,31 +646,6 @@
         <tag>Android</tag>
          
         <tag>流量测试</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-Appium-inspector-iOS-simulator/</loc>
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    <data>
-        <display>
-        <title>从0到1搭建移动App功能自动化测试平台（1）：模拟器中运行iOS应用</title>
-        <pubTime>2016-05-20T16:00:00.000Z</pubTime>
-        
-        <tag>AutomationTest</tag>
-         
-        <tag>Appium</tag>
-         
-        <tag>iOS</tag>
-         
-        <tag>Simulator</tag>
-         
-        <tag>F0T1</tag>
          
          
            
@@ -684,6 +678,50 @@
 
     
   <url>
+    <loc>http://debugtalk.com/post/Android-CPU-lock-frequency/</loc>
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    <data>
+        <display>
+        <title>对Android设备CPU进行锁频</title>
+        <pubTime>2016-04-17T16:00:00.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>CPU</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-Appium-inspector-iOS-simulator/</loc>
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    <data>
+        <display>
+        <title>从0到1搭建移动App功能自动化测试平台（1）：模拟器中运行iOS应用</title>
+        <pubTime>2016-05-20T16:00:00.000Z</pubTime>
+        
+        <tag>AutomationTest</tag>
+         
+        <tag>Appium</tag>
+         
+        <tag>F0T1</tag>
+         
+        <tag>iOS</tag>
+         
+        <tag>Simulator</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://debugtalk.com/post/Android-performance-test-UI-Automation-with-Python/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
@@ -707,23 +745,6 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/manage-Jenkins-via-remote-api/</loc>
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    <data>
-        <display>
-        <title>通过API远程管理Jenkins</title>
-        <pubTime>2016-05-01T16:00:00.000Z</pubTime>
-        
-        <tag>Jenkins</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://debugtalk.com/post/python-functional-programming-getting-started/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
@@ -734,25 +755,6 @@
         <tag>Python</tag>
          
         <tag>函数式编程</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/render-multi-level-table-in-webpage/</loc>
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    <data>
-        <display>
-        <title>测试结果报表展现：Web页面绘制多层级表格</title>
-        <pubTime>2016-03-19T16:00:00.000Z</pubTime>
-        
-        <tag>报表</tag>
-         
-        <tag>Javascript</tag>
          
          
            
@@ -823,16 +825,16 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/cheat-in-wechat-moments-voting-activity/</loc>
+    <loc>http://debugtalk.com/post/render-multi-level-table-in-webpage/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
         <display>
-        <title>微信朋友圈投票活动的刷票案例分析</title>
-        <pubTime>2016-04-03T16:00:00.000Z</pubTime>
+        <title>测试结果报表展现：Web页面绘制多层级表格</title>
+        <pubTime>2016-03-19T16:00:00.000Z</pubTime>
         
-        <tag>案例分析</tag>
+        <tag>报表</tag>
          
-        <tag>security</tag>
+        <tag>Javascript</tag>
          
          
            
@@ -851,11 +853,30 @@
         
         <tag>Android</tag>
          
-        <tag>iOS</tag>
-         
         <tag>Jenkins</tag>
          
+        <tag>iOS</tag>
+         
         <tag>CI</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/cheat-in-wechat-moments-voting-activity/</loc>
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    <data>
+        <display>
+        <title>微信朋友圈投票活动的刷票案例分析</title>
+        <pubTime>2016-04-03T16:00:00.000Z</pubTime>
+        
+        <tag>案例分析</tag>
+         
+        <tag>security</tag>
          
          
            
@@ -901,22 +922,20 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/Jenkins-CI-Automation-Test/</loc>
+    <loc>http://debugtalk.com/post/make-Jenkins-Console-Output-Colorful/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
         <display>
-        <title>使用Jenkins实现持续集成构建检查</title>
-        <pubTime>2016-08-13T16:00:00.000Z</pubTime>
+        <title>Jenkins的输出日志也可以变得色色的</title>
+        <pubTime>2016-08-14T16:00:00.000Z</pubTime>
         
-        <tag>Android</tag>
-         
-        <tag>iOS</tag>
-         
         <tag>Jenkins</tag>
          
-        <tag>CI</tag>
+        <tag>Console</tag>
          
-        <tag>Automation</tag>
+        <tag>Plugin</tag>
+         
+        <tag>ANSI escape sequences</tag>
          
          
            
@@ -926,16 +945,22 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/android-development-environment-device-configuration/</loc>
+    <loc>http://debugtalk.com/post/Jenkins-CI-Automation-Test/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
         <display>
-        <title>Android开发环境配置4：配置Android设备</title>
-        <pubTime>2015-07-09T16:00:00.000Z</pubTime>
+        <title>使用Jenkins实现持续集成构建检查</title>
+        <pubTime>2016-08-13T16:00:00.000Z</pubTime>
         
         <tag>Android</tag>
          
-        <tag>环境搭建</tag>
+        <tag>Jenkins</tag>
+         
+        <tag>iOS</tag>
+         
+        <tag>CI</tag>
+         
+        <tag>Automation</tag>
          
          
            
@@ -962,52 +987,6 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/switch-macOS-web-proxy-in-elegant-way/</loc>
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    <data>
-        <display>
-        <title>如何优雅地一键实现macOS网络代理切换</title>
-        <pubTime>2016-11-23T16:00:00.000Z</pubTime>
-        
-        <tag>Web proxy</tag>
-         
-        <tag>Shuttle</tag>
-         
-        <tag>mitmproxy</tag>
-         
-        <tag>Locust</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/build-ideal-app-automation-test-framework/</loc>
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    <data>
-        <display>
-        <title>打造心目中理想的自动化测试框架（AppiumBooster）</title>
-        <pubTime>2016-09-06T16:00:00.000Z</pubTime>
-        
-        <tag>AutomationTest</tag>
-         
-        <tag>Appium</tag>
-         
-        <tag>AppiumBooster</tag>
-         
-        <tag>UI Test</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://debugtalk.com/post/locustplus-talk-about-performance-test/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
@@ -1018,6 +997,29 @@
         <tag>性能测试</tag>
          
         <tag>Locust</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/switch-macOS-web-proxy-in-elegant-way/</loc>
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    <data>
+        <display>
+        <title>如何优雅地一键实现macOS网络代理切换</title>
+        <pubTime>2016-11-23T16:00:00.000Z</pubTime>
+        
+        <tag>Locust</tag>
+         
+        <tag>Web proxy</tag>
+         
+        <tag>Shuttle</tag>
+         
+        <tag>mitmproxy</tag>
          
          
            
@@ -1056,6 +1058,25 @@
         <tag>个人成长</tag>
          
         <tag>旅行</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/android-development-environment-device-configuration/</loc>
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android开发环境配置4：配置Android设备</title>
+        <pubTime>2015-07-09T16:00:00.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>环境搭建</tag>
          
          
            
@@ -1128,12 +1149,12 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/blackbox-testing-method-boundary-value-analysis/</loc>
+    <loc>http://debugtalk.com/post/blackbox-testing-method-equivalence-partitioning/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
         <display>
-        <title>黑盒测试用例设计技术--边界值分析法</title>
-        <pubTime>2015-03-18T16:00:00.000Z</pubTime>
+        <title>黑盒测试用例设计技术--等价类划分法</title>
+        <pubTime>2015-03-17T16:00:00.000Z</pubTime>
         
         <tag>黑盒测试</tag>
          
@@ -1170,12 +1191,12 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/blackbox-testing-method-equivalence-partitioning/</loc>
+    <loc>http://debugtalk.com/post/blackbox-testing-method-boundary-value-analysis/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     <data>
         <display>
-        <title>黑盒测试用例设计技术--等价类划分法</title>
-        <pubTime>2015-03-17T16:00:00.000Z</pubTime>
+        <title>黑盒测试用例设计技术--边界值分析法</title>
+        <pubTime>2015-03-18T16:00:00.000Z</pubTime>
         
         <tag>黑盒测试</tag>
          
