@@ -4,6 +4,27 @@
 
     
   <url>
+    <loc>http://debugtalk.com/post/ApiTestEngine-0-setup-CI-test/</loc>
+    <lastmod>2017-06-27T14:09:43.000Z</lastmod>
+    <data>
+        <display>
+        <title>ApiTestEngine 演化之路（0）开发未动，测试先行</title>
+        <pubTime>2017-06-19T16:00:00.000Z</pubTime>
+        
+        <tag>自动化测试</tag>
+         
+        <tag>测试框架</tag>
+         
+        <tag>Mock</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://debugtalk.com/post/ApiTestEngine-1-setup-basic-framework/</loc>
     <lastmod>2017-06-22T17:18:03.000Z</lastmod>
     <data>
@@ -16,27 +37,6 @@
         <tag>自动化测试</tag>
          
         <tag>测试框架</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/ApiTestEngine-0-setup-CI-test/</loc>
-    <lastmod>2017-06-20T15:02:05.000Z</lastmod>
-    <data>
-        <display>
-        <title>ApiTestEngine 演化之路（0）开发未动，测试先行</title>
-        <pubTime>2017-06-19T16:00:00.000Z</pubTime>
-        
-        <tag>自动化测试</tag>
-         
-        <tag>测试框架</tag>
-         
-        <tag>Mock</tag>
          
          
            
