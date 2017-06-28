@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://debugtalk.com/"/>
-  <updated>2017-06-28T06:18:33.000Z</updated>
+  <updated>2017-06-28T06:23:58.000Z</updated>
   <id>http://debugtalk.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://debugtalk.com/post/300-lines-python-code-api-test-framework/"/>
     <id>http://debugtalk.com/post/300-lines-python-code-api-test-framework/</id>
     <published>2017-06-27T16:00:00.000Z</published>
-    <updated>2017-06-28T06:18:33.000Z</updated>
+    <updated>2017-06-28T06:23:58.000Z</updated>
     
     <content type="html"><![CDATA[<p>在刚开始实现<a href="https://github.com/debugtalk/ApiTestEngine" target="_blank" rel="external"><code>ApiTestEngine</code></a>的时候，<a href="https://testerhome.com/kasi" target="_blank" rel="external"><code>卡斯（kasi）</code></a>提议做一个Java版的。对于这样的建议，我当然是拒绝的，瞬即回复了他，“人生苦短，回头是岸啊”。</p>
 <p>当然，我没好意思跟他说的是，我不会Java啊。不过最主要的原因嘛，还是因为Python的语法简洁，可以采用很少的代码量实现丰富的功能。</p>
@@ -36,7 +36,7 @@
 <p>对比下<a href="http://debugtalk.com/post/ApiTestEngine-api-test-best-practice/">《接口自动化测试的最佳工程实践（ApiTestEngine）》</a>中规划的特性，已经实现了大半（前六项），至少已经算是一个有模有样的接口测试框架了。</p>
 <ul>
 <li>支持API接口的多种请求方法，包括 GET/POST/HEAD/PUT/DELETE 等</li>
-<li>测试用例与代码分离，测试用例维护方式简洁优雅，支持<code>YAML</code></li>
+<li>测试用例与代码分离，测试用例维护方式简洁优雅，支持<code>YAML/JSON</code></li>
 <li>测试用例描述方式具有表现力，可采用简洁的方式描述输入参数和预期输出结果</li>
 <li>接口测试用例具有可复用性，便于创建复杂测试场景</li>
 <li>测试执行方式简单灵活，支持单接口调用测试、批量接口调用测试、定时任务执行测试</li>
@@ -50,15 +50,15 @@
 <blockquote>
 <p>Life is short, go Pythonic!</p>
 </blockquote>
-<hr>
-<p>《ApiTestEngine 演进之路》系列文章还在继续写，只是前几天主要精力在编码实现上，博客方面没有同步更新，接下来我会整理好思路，继续完成余下的部分。</p>
-<p>另外，如果大家对Python编程感兴趣，给大家推荐一个专注Python原创技术分享的公众号，⎡Python之禅⎦（VTtalk），里面关于Python的干货非常多，讲解也很通俗易懂，现在我如果有理解得不够透彻的概念，基本都会先到这个公众号里面去搜索下。</p>
 <h2 id="阅读更多"><a href="#阅读更多" class="headerlink" title="阅读更多"></a>阅读更多</h2><ul>
 <li><a href="http://debugtalk.com/post/ApiTestEngine-api-test-best-practice/">《接口自动化测试的最佳工程实践（ApiTestEngine）》</a></li>
 <li><a href="http://debugtalk.com/post/ApiTestEngine-0-setup-CI-test/">《ApiTestEngine 演化之路（0）开发未动，测试先行》</a></li>
 <li><a href="http://debugtalk.com/post/ApiTestEngine-1-setup-basic-framework/">《ApiTestEngine 演进之路（1）搭建基础框架》</a></li>
 <li><a href="https://github.com/debugtalk/ApiTestEngine" target="_blank" rel="external"><code>ApiTestEngine</code> GitHub源码</a></li>
 </ul>
+<hr>
+<p><a href="http://debugtalk.com/tags/ApiTestEngine">《ApiTestEngine 演进之路》</a>系列文章还在继续写，只是前几天主要精力在编码实现上，博客方面没有同步更新，接下来我会整理好思路，继续完成余下的部分。</p>
+<p>另外，如果大家对Python编程感兴趣，给大家推荐一个专注Python原创技术分享的公众号，⎡Python之禅⎦（VTtalk），里面关于Python的干货非常多，讲解也很通俗易懂，现在我如果有理解得不够透彻的概念，基本都会先到这个公众号里面去搜索下。</p>
 ]]></content>
     
     <summary type="html">
@@ -74,6 +74,8 @@
     
       <category term="测试框架" scheme="http://debugtalk.com/tags/%E6%B5%8B%E8%AF%95%E6%A1%86%E6%9E%B6/"/>
     
+      <category term="ApiTestEngine" scheme="http://debugtalk.com/tags/ApiTestEngine/"/>
+    
   </entry>
   
   <entry>
@@ -81,7 +83,7 @@
     <link href="http://debugtalk.com/post/ApiTestEngine-1-setup-basic-framework/"/>
     <id>http://debugtalk.com/post/ApiTestEngine-1-setup-basic-framework/</id>
     <published>2017-06-21T16:00:00.000Z</published>
-    <updated>2017-06-22T17:18:03.000Z</updated>
+    <updated>2017-06-28T06:22:55.000Z</updated>
     
     <content type="html"><![CDATA[<p>在<a href="http://debugtalk.com/post/ApiTestEngine-0-setup-CI-test/">《ApiTestEngine 演化之路（0）开发未动，测试先行》</a>一文中，我对<a href="https://github.com/debugtalk/ApiTestEngine" target="_blank" rel="external"><code>ApiTestEngine</code></a>项目正式开始前的准备工作进行了介绍，包括构建API接口服务（<code>Mock Server</code>）、搭建项目单元测试框架、实现持续集成构建检查机制（<a href="https://travis-ci.org/" target="_blank" rel="external"><code>Travis CI</code></a>）等。</p>
 <p>接下来，我们就开始构建<a href="https://github.com/debugtalk/ApiTestEngine" target="_blank" rel="external"><code>ApiTestEngine</code></a>项目的基础框架，实现基本功能吧。</p>
@@ -162,6 +164,8 @@
     
       <category term="测试框架" scheme="http://debugtalk.com/tags/%E6%B5%8B%E8%AF%95%E6%A1%86%E6%9E%B6/"/>
     
+      <category term="ApiTestEngine" scheme="http://debugtalk.com/tags/ApiTestEngine/"/>
+    
   </entry>
   
   <entry>
@@ -169,7 +173,7 @@
     <link href="http://debugtalk.com/post/ApiTestEngine-0-setup-CI-test/"/>
     <id>http://debugtalk.com/post/ApiTestEngine-0-setup-CI-test/</id>
     <published>2017-06-19T16:00:00.000Z</published>
-    <updated>2017-06-27T14:16:29.000Z</updated>
+    <updated>2017-06-28T06:23:01.000Z</updated>
     
     <content type="html"><![CDATA[<p>在<a href="http://debugtalk.com/post/ApiTestEngine-api-test-best-practice/">《接口自动化测试的最佳工程实践（ApiTestEngine）》</a>一文中，我详细介绍了<a href="https://github.com/debugtalk/ApiTestEngine" target="_blank" rel="external"><code>ApiTestEngine</code></a>诞生的背景，并对其核心特性进行了详尽的剖析。</p>
 <p>接下来，我将在《ApiTestEngine演化之路》系列文章中讲解<a href="https://github.com/debugtalk/ApiTestEngine" target="_blank" rel="external"><code>ApiTestEngine</code></a>是如何从第一行代码开始，逐步实现接口自动化测试框架的核心功能特性的。</p>
@@ -268,6 +272,8 @@
     
       <category term="Mock" scheme="http://debugtalk.com/tags/Mock/"/>
     
+      <category term="ApiTestEngine" scheme="http://debugtalk.com/tags/ApiTestEngine/"/>
+    
   </entry>
   
   <entry>
@@ -275,7 +281,7 @@
     <link href="http://debugtalk.com/post/ApiTestEngine-api-test-best-practice/"/>
     <id>http://debugtalk.com/post/ApiTestEngine-api-test-best-practice/</id>
     <published>2017-06-17T16:00:00.000Z</published>
-    <updated>2017-06-18T15:10:14.000Z</updated>
+    <updated>2017-06-28T06:23:05.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>当前市面上存在的接口测试工具已经非常多，常见的如<code>Postman</code>、<code>JMeter</code>、<code>RobotFramework</code>等，相信大多数测试人员都有使用过，至少从接触到的大多数简历的描述上看是这样的。除了这些成熟的工具，也有很多有一定技术能力的测试（开发）人员自行开发了一些接口测试框架，质量也是参差不齐。</p>
 <p>但是，当我打算在项目组中推行接口自动化测试时，搜罗了一圈，也没有找到一款特别满意的工具或框架，总是与理想中的构想存在一定的差距。</p>
@@ -405,6 +411,8 @@
       <category term="自动化测试" scheme="http://debugtalk.com/tags/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/"/>
     
       <category term="测试框架" scheme="http://debugtalk.com/tags/%E6%B5%8B%E8%AF%95%E6%A1%86%E6%9E%B6/"/>
+    
+      <category term="ApiTestEngine" scheme="http://debugtalk.com/tags/ApiTestEngine/"/>
     
   </entry>
   

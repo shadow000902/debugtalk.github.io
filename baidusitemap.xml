@@ -5,7 +5,7 @@
     
   <url>
     <loc>http://debugtalk.com/post/300-lines-python-code-api-test-framework/</loc>
-    <lastmod>2017-06-28T06:18:33.000Z</lastmod>
+    <lastmod>2017-06-28T06:23:58.000Z</lastmod>
     <data>
         <display>
         <title>300行Python代码打造实用接口测试框架</title>
@@ -17,6 +17,31 @@
          
         <tag>测试框架</tag>
          
+        <tag>ApiTestEngine</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/ApiTestEngine-api-test-best-practice/</loc>
+    <lastmod>2017-06-28T06:23:05.000Z</lastmod>
+    <data>
+        <display>
+        <title>接口自动化测试的最佳工程实践（ApiTestEngine）</title>
+        <pubTime>2017-06-17T16:00:00.000Z</pubTime>
+        
+        <tag>接口测试</tag>
+         
+        <tag>自动化测试</tag>
+         
+        <tag>测试框架</tag>
+         
+        <tag>ApiTestEngine</tag>
+         
          
            
         </display>
@@ -26,7 +51,7 @@
     
   <url>
     <loc>http://debugtalk.com/post/ApiTestEngine-0-setup-CI-test/</loc>
-    <lastmod>2017-06-27T14:16:29.000Z</lastmod>
+    <lastmod>2017-06-28T06:23:01.000Z</lastmod>
     <data>
         <display>
         <title>ApiTestEngine 演化之路（0）开发未动，测试先行</title>
@@ -38,6 +63,8 @@
          
         <tag>Mock</tag>
          
+        <tag>ApiTestEngine</tag>
+         
          
            
         </display>
@@ -47,7 +74,7 @@
     
   <url>
     <loc>http://debugtalk.com/post/ApiTestEngine-1-setup-basic-framework/</loc>
-    <lastmod>2017-06-22T17:18:03.000Z</lastmod>
+    <lastmod>2017-06-28T06:22:55.000Z</lastmod>
     <data>
         <display>
         <title>ApiTestEngine 演化之路（1）搭建基础框架</title>
@@ -58,6 +85,8 @@
         <tag>自动化测试</tag>
          
         <tag>测试框架</tag>
+         
+        <tag>ApiTestEngine</tag>
          
          
            
@@ -347,39 +376,18 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/ApiTestEngine-api-test-best-practice/</loc>
-    <lastmod>2017-06-18T15:10:14.000Z</lastmod>
-    <data>
-        <display>
-        <title>接口自动化测试的最佳工程实践（ApiTestEngine）</title>
-        <pubTime>2017-06-17T16:00:00.000Z</pubTime>
-        
-        <tag>接口测试</tag>
-         
-        <tag>自动化测试</tag>
-         
-        <tag>测试框架</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/Introduction-to-AppiumBooster/</loc>
+    <loc>http://debugtalk.com/post/head-first-locust-advanced-script/</loc>
     <lastmod>2017-06-15T07:51:23.000Z</lastmod>
     <data>
         <display>
-        <title>Introduction to AppiumBooster</title>
-        <pubTime>2016-07-19T16:00:00.000Z</pubTime>
+        <title>深入浅出开源性能测试工具Locust（脚本增强）</title>
+        <pubTime>2017-02-21T16:00:00.000Z</pubTime>
         
-        <tag>AutomationTest</tag>
+        <tag>性能测试</tag>
          
-        <tag>Appium</tag>
+        <tag>Locust</tag>
          
-        <tag>AppiumBooster</tag>
+        <tag>开源项目</tag>
          
          
            
@@ -500,13 +508,15 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-Appium-interrogate-iOS-UI/</loc>
+    <loc>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-write-iOS-testcase-scripts/</loc>
     <lastmod>2017-06-15T07:51:23.000Z</lastmod>
     <data>
         <display>
-        <title>从0到1搭建移动App功能自动化测试平台（2）：操作iOS应用的控件</title>
-        <pubTime>2016-05-28T16:00:00.000Z</pubTime>
+        <title>从0到1搭建移动App功能自动化测试平台（3）：编写iOS自动化测试脚本</title>
+        <pubTime>2016-05-29T16:00:00.000Z</pubTime>
         
+        <tag>Python</tag>
+         
         <tag>AutomationTest</tag>
          
         <tag>Appium</tag>
@@ -514,8 +524,6 @@
         <tag>F0T1</tag>
          
         <tag>iOS</tag>
-         
-        <tag>Simulator</tag>
          
         <tag>Ruby</tag>
          
@@ -567,33 +575,6 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-write-iOS-testcase-scripts/</loc>
-    <lastmod>2017-06-15T07:51:23.000Z</lastmod>
-    <data>
-        <display>
-        <title>从0到1搭建移动App功能自动化测试平台（3）：编写iOS自动化测试脚本</title>
-        <pubTime>2016-05-29T16:00:00.000Z</pubTime>
-        
-        <tag>Python</tag>
-         
-        <tag>AutomationTest</tag>
-         
-        <tag>Appium</tag>
-         
-        <tag>F0T1</tag>
-         
-        <tag>iOS</tag>
-         
-        <tag>Ruby</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://debugtalk.com/post/head-first-git-authority-verification/</loc>
     <lastmod>2017-06-15T07:51:23.000Z</lastmod>
     <data>
@@ -617,18 +598,45 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/head-first-locust-advanced-script/</loc>
+    <loc>http://debugtalk.com/post/Introduction-to-AppiumBooster/</loc>
     <lastmod>2017-06-15T07:51:23.000Z</lastmod>
     <data>
         <display>
-        <title>深入浅出开源性能测试工具Locust（脚本增强）</title>
-        <pubTime>2017-02-21T16:00:00.000Z</pubTime>
+        <title>Introduction to AppiumBooster</title>
+        <pubTime>2016-07-19T16:00:00.000Z</pubTime>
         
-        <tag>性能测试</tag>
+        <tag>AutomationTest</tag>
          
-        <tag>Locust</tag>
+        <tag>Appium</tag>
          
-        <tag>开源项目</tag>
+        <tag>AppiumBooster</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-Appium-interrogate-iOS-UI/</loc>
+    <lastmod>2017-06-15T07:51:23.000Z</lastmod>
+    <data>
+        <display>
+        <title>从0到1搭建移动App功能自动化测试平台（2）：操作iOS应用的控件</title>
+        <pubTime>2016-05-28T16:00:00.000Z</pubTime>
+        
+        <tag>AutomationTest</tag>
+         
+        <tag>Appium</tag>
+         
+        <tag>F0T1</tag>
+         
+        <tag>iOS</tag>
+         
+        <tag>Simulator</tag>
+         
+        <tag>Ruby</tag>
          
          
            
