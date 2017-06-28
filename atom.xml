@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://debugtalk.com/"/>
-  <updated>2017-06-22T17:18:03.000Z</updated>
+  <updated>2017-06-28T06:18:33.000Z</updated>
   <id>http://debugtalk.com/</id>
   
   <author>
@@ -14,6 +14,67 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>300行Python代码打造实用接口测试框架</title>
+    <link href="http://debugtalk.com/post/300-lines-python-code-api-test-framework/"/>
+    <id>http://debugtalk.com/post/300-lines-python-code-api-test-framework/</id>
+    <published>2017-06-27T16:00:00.000Z</published>
+    <updated>2017-06-28T06:18:33.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>在刚开始实现<a href="https://github.com/debugtalk/ApiTestEngine" target="_blank" rel="external"><code>ApiTestEngine</code></a>的时候，<a href="https://testerhome.com/kasi" target="_blank" rel="external"><code>卡斯（kasi）</code></a>提议做一个Java版的。对于这样的建议，我当然是拒绝的，瞬即回复了他，“人生苦短，回头是岸啊”。</p>
+<p>当然，我没好意思跟他说的是，我不会Java啊。不过最主要的原因嘛，还是因为Python的语法简洁，可以采用很少的代码量实现丰富的功能。</p>
+<p>有多简洁呢？</p>
+<p>刚在<code>coveralls</code>上看了下<a href="https://github.com/debugtalk/ApiTestEngine" target="_blank" rel="external"><code>ApiTestEngine</code></a>框架的<a href="https://coveralls.io/github/debugtalk/ApiTestEngine?branch=master" target="_blank" rel="external">代码统计行数</a>，总行数只有268行，还不足300行。</p>
+<p><img src="/images/ApiTestEngine-stat-ate.jpg" alt=""></p>
+<p>当然，这个行数指的是框架本身的<code>Python</code>代码行数，不包括示例注释的行数。从上图可以看出来，<code>LINES</code>列是文件总行数，<code>RELEVANT</code>列是实际的<code>Python</code>代码行数。例如<code>ate/runner.py</code>文件，注释的行数是远多于实际代码行数的。</p>
+<p>最极端的一个例子是，<code>ate/testcase.py</code>文件中的<a href="https://github.com/debugtalk/ApiTestEngine/blob/master/ate/testcase.py" target="_blank" rel="external"><code>parse</code>函数</a>，示例注释行数35行，<code>Python</code>代码只有2行。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">parse</span><span class="params">(self, testcase_template)</span>:</span></div><div class="line">   <span class="string">""" parse testcase_template, replace all variables with bind value.</span></div><div class="line">   variables marker: $&#123;variable&#125;.</div><div class="line">   @param (dict) testcase_template</div><div class="line">       &#123;</div><div class="line">           "request": &#123;</div><div class="line">               "url": "http://127.0.0.1:5000/api/users/$&#123;uid&#125;",</div><div class="line">               "method": "POST",</div><div class="line">               "headers": &#123;</div><div class="line">                   "Content-Type": "application/json",</div><div class="line">                   "authorization": "$&#123;authorization&#125;",</div><div class="line">                   "random": "$&#123;random&#125;"</div><div class="line">               &#125;,</div><div class="line">               "body": "$&#123;data&#125;"</div><div class="line">           &#125;,</div><div class="line">           "response": &#123;</div><div class="line">               "status_code": "$&#123;expected_status&#125;"</div><div class="line">           &#125;</div><div class="line">       &#125;</div><div class="line">   @return (dict) parsed testcase with bind values</div><div class="line">       &#123;</div><div class="line">           "request": &#123;</div><div class="line">               "url": "http://127.0.0.1:5000/api/users/1000",</div><div class="line">               "method": "POST",</div><div class="line">               "headers": &#123;</div><div class="line">                   "Content-Type": "application/json",</div><div class="line">                   "authorization": "a83de0ff8d2e896dbd8efb81ba14e17d",</div><div class="line">                   "random": "A2dEx"</div><div class="line">               &#125;,</div><div class="line">               "body": '&#123;"name": "user", "password": "123456"&#125;'</div><div class="line">           &#125;,</div><div class="line">           "response": &#123;</div><div class="line">               "status_code": 201</div><div class="line">           &#125;</div><div class="line">       &#125;</div><div class="line">   """</div><div class="line">   <span class="keyword">return</span> self.substitute(testcase_template)</div></pre></td></tr></table></figure>
+<p>另外，如果算上单元测试用例的行数（731行），总的<code>Python</code>代码行数能达到1000行的样子。嗯，代码可以精简，但是单元测试覆盖率还是要保证的，不达到90%以上的单元测试覆盖率，真不好意思说自己做了开源项目啊。</p>
+<p><img src="/images/ApiTestEngine-stat-all.jpg" alt=""></p>
+<p>那这不足300行的Python代码，实际实现了哪些功能呢？</p>
+<p>对比下<a href="http://debugtalk.com/post/ApiTestEngine-api-test-best-practice/">《接口自动化测试的最佳工程实践（ApiTestEngine）》</a>中规划的特性，已经实现了大半（前六项），至少已经算是一个有模有样的接口测试框架了。</p>
+<ul>
+<li>支持API接口的多种请求方法，包括 GET/POST/HEAD/PUT/DELETE 等</li>
+<li>测试用例与代码分离，测试用例维护方式简洁优雅，支持<code>YAML</code></li>
+<li>测试用例描述方式具有表现力，可采用简洁的方式描述输入参数和预期输出结果</li>
+<li>接口测试用例具有可复用性，便于创建复杂测试场景</li>
+<li>测试执行方式简单灵活，支持单接口调用测试、批量接口调用测试、定时任务执行测试</li>
+<li>具有可扩展性，便于扩展实现Web平台化</li>
+<li>测试结果统计报告简洁清晰，附带详尽日志记录，包括接口请求耗时、请求响应数据等</li>
+<li>身兼多职，同时实现接口管理、接口自动化测试、接口性能测试（结合Locust）</li>
+</ul>
+<p>后面剩下的特性还在实现的过程中，但是可以预见得到，最后框架本身总的<code>Python</code>代码行数也不会超过500行。</p>
+<p>当然，单纯地比代码行数的确是没有什么意义，写得爽写得开心才是最重要的。</p>
+<p>最后引用下<code>Guido van Rossum</code>的语录：</p>
+<blockquote>
+<p>Life is short, go Pythonic!</p>
+</blockquote>
+<hr>
+<p>《ApiTestEngine 演进之路》系列文章还在继续写，只是前几天主要精力在编码实现上，博客方面没有同步更新，接下来我会整理好思路，继续完成余下的部分。</p>
+<p>另外，如果大家对Python编程感兴趣，给大家推荐一个专注Python原创技术分享的公众号，⎡Python之禅⎦（VTtalk），里面关于Python的干货非常多，讲解也很通俗易懂，现在我如果有理解得不够透彻的概念，基本都会先到这个公众号里面去搜索下。</p>
+<h2 id="阅读更多"><a href="#阅读更多" class="headerlink" title="阅读更多"></a>阅读更多</h2><ul>
+<li><a href="http://debugtalk.com/post/ApiTestEngine-api-test-best-practice/">《接口自动化测试的最佳工程实践（ApiTestEngine）》</a></li>
+<li><a href="http://debugtalk.com/post/ApiTestEngine-0-setup-CI-test/">《ApiTestEngine 演化之路（0）开发未动，测试先行》</a></li>
+<li><a href="http://debugtalk.com/post/ApiTestEngine-1-setup-basic-framework/">《ApiTestEngine 演进之路（1）搭建基础框架》</a></li>
+<li><a href="https://github.com/debugtalk/ApiTestEngine" target="_blank" rel="external"><code>ApiTestEngine</code> GitHub源码</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在刚开始实现&lt;a href=&quot;https://github.com/debugtalk/ApiTestEngine&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;&lt;code&gt;ApiTestEngine&lt;/code&gt;&lt;/a&gt;的时候，&lt;a href=&quot;http
+    
+    </summary>
+    
+    
+      <category term="Python" scheme="http://debugtalk.com/tags/Python/"/>
+    
+      <category term="接口测试" scheme="http://debugtalk.com/tags/%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95/"/>
+    
+      <category term="测试框架" scheme="http://debugtalk.com/tags/%E6%B5%8B%E8%AF%95%E6%A1%86%E6%9E%B6/"/>
+    
+  </entry>
   
   <entry>
     <title>ApiTestEngine 演化之路（1）搭建基础框架</title>
@@ -557,165 +618,6 @@
   </entry>
   
   <entry>
-    <title>深入浅出开源性能测试工具Locust（使用篇）</title>
-    <link href="http://debugtalk.com/post/head-first-locust-user-guide/"/>
-    <id>http://debugtalk.com/post/head-first-locust-user-guide/</id>
-    <published>2017-02-21T16:00:00.000Z</published>
-    <updated>2017-06-15T07:51:23.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>在<a href="/post/locustplus-talk-about-performance-test/">《【LocustPlus序】漫谈服务端性能测试》</a>中，我对服务端性能测试的基础概念和性能测试工具的基本原理进行了介绍，并且重点推荐了<code>Locust</code>这一款开源性能测试工具。然而，当前在网络上针对<code>Locust</code>的教程极少，不管是中文还是英文，基本都是介绍安装方法和简单的测试案例演示，但对于较复杂测试场景的案例演示却基本没有，因此很多测试人员都感觉难以将<code>Locust</code>应用到实际的性能测试工作当中。</p>
-<p>经过一段时间的摸索，包括通读<code>Locust</code>官方文档和项目源码，并且在多个性能测试项目中对<code>Locust</code>进行应用实践，事实证明，<code>Locust</code>完全能满足日常的性能测试需求，<code>LoadRunner</code>能实现的功能<code>Locust</code>也基本都能实现。</p>
-<p>本文将从<code>Locust</code>的功能特性出发，结合实例对<code>Locust</code>的使用方法进行介绍。考虑到大众普遍对<code>LoadRunner</code>比较熟悉，在讲解<code>Locust</code>时也会采用<code>LoadRunner</code>的一些概念进行类比。</p>
-<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>先从<code>Locust</code>的名字说起。<code>Locust</code>的原意是蝗虫，原作者之所以选择这个名字，估计也是听过这么一句俗语，“蝗虫过境，寸草不生”。我在网上找了张图片，大家可以感受下。</p>
-<p><img src="/images/14875962785342.jpg" alt=""></p>
-<p>而<code>Locust</code>工具生成的并发请求就跟一大群蝗虫一般，对我们的被测系统发起攻击，以此检测系统在高并发压力下是否能正常运转。</p>
-<p>在<a href="/post/locustplus-talk-about-performance-test/">《【LocustPlus序】漫谈服务端性能测试》</a>中说过，服务端性能测试工具最核心的部分是压力发生器，而压力发生器的核心要点有两个，一是真实模拟用户操作，二是模拟有效并发。</p>
-<p>在<code>Locust</code>测试框架中，测试场景是采用纯Python脚本进行描述的。对于最常见的<code>HTTP(S)</code>协议的系统，<code>Locust</code>采用Python的<code>requests</code>库作为客户端，使得脚本编写大大简化，富有表现力的同时且极具美感。而对于其它协议类型的系统，<code>Locust</code>也提供了接口，只要我们能采用Python编写对应的请求客户端，就能方便地采用<code>Locust</code>实现压力测试。从这个角度来说，<code>Locust</code>可以用于压测任意类型的系统。</p>
-<p>在模拟有效并发方面，<code>Locust</code>的优势在于其摒弃了进程和线程，完全基于事件驱动，使用<code>gevent</code>提供的<code>非阻塞IO</code>和<code>coroutine</code>来实现网络层的并发请求，因此即使是单台压力机也能产生数千并发请求数；再加上对分布式运行的支持，理论上来说，<code>Locust</code>能在使用较少压力机的前提下支持极高并发数的测试。</p>
-<h2 id="脚本编写"><a href="#脚本编写" class="headerlink" title="脚本编写"></a>脚本编写</h2><p>编写<code>Locust</code>脚本，是使用<code>Locust</code>的第一步，也是最为重要的一步。</p>
-<h3 id="简单示例"><a href="#简单示例" class="headerlink" title="简单示例"></a>简单示例</h3><p>先来看一个最简单的示例。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> locust <span class="keyword">import</span> HttpLocust, TaskSet, task</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WebsiteTasks</span><span class="params">(TaskSet)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_start</span><span class="params">(self)</span>:</span></div><div class="line">        self.client.post(<span class="string">"/login"</span>, &#123;</div><div class="line">            <span class="string">"username"</span>: <span class="string">"test"</span>,</div><div class="line">            <span class="string">"password"</span>: <span class="string">"123456"</span></div><div class="line">        &#125;)</div><div class="line"></div><div class="line"><span class="meta">    @task(2)</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">index</span><span class="params">(self)</span>:</span></div><div class="line">        self.client.get(<span class="string">"/"</span>)</div><div class="line"></div><div class="line"><span class="meta">    @task(1)</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">about</span><span class="params">(self)</span>:</span></div><div class="line">        self.client.get(<span class="string">"/about/"</span>)</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WebsiteUser</span><span class="params">(HttpLocust)</span>:</span></div><div class="line">    task_set = WebsiteTasks</div><div class="line">    host = <span class="string">"http://debugtalk.com"</span></div><div class="line">    min_wait = <span class="number">1000</span></div><div class="line">    max_wait = <span class="number">5000</span></div></pre></td></tr></table></figure>
-<p>在这个示例中，定义了针对<code>http://debugtalk.com</code>网站的测试场景：先模拟用户登录系统，然后随机地访问首页（<code>/</code>）和关于页面（<code>/about/</code>），请求比例为<code>2:1</code>；并且，在测试过程中，两次请求的间隔时间为<code>1~5</code>秒间的随机值。</p>
-<p>那么，如上Python脚本是如何表达出以上测试场景的呢？</p>
-<p>从脚本中可以看出，脚本主要包含两个类，一个是<code>WebsiteUser</code>（继承自<code>HttpLocust</code>，而<code>HttpLocust</code>继承自<code>Locust</code>），另一个是<code>WebsiteTasks</code>（继承自<code>TaskSet</code>）。事实上，在<code>Locust</code>的测试脚本中，所有业务测试场景都是在<code>Locust</code>和<code>TaskSet</code>两个类的继承子类中进行描述的。</p>
-<p>那如何理解<code>Locust</code>和<code>TaskSet</code>这两个类呢？</p>
-<p>简单地说，<code>Locust类</code>就好比是一群蝗虫，而每一只蝗虫就是一个类的实例。相应的，<code>TaskSet类</code>就好比是蝗虫的大脑，控制着蝗虫的具体行为，即实际业务场景测试对应的任务集。</p>
-<p>这个比喻可能不是很准确，接下来，我将分别对<code>Locust</code>和<code>TaskSet</code>两个类进行详细介绍。</p>
-<h3 id="class-HttpLocust-Locust"><a href="#class-HttpLocust-Locust" class="headerlink" title="class HttpLocust(Locust)"></a>class HttpLocust(Locust)</h3><p>在<code>Locust类</code>中，具有一个<code>client</code>属性，它对应着虚拟用户作为客户端所具备的请求能力，也就是我们常说的请求方法。通常情况下，我们不会直接使用<code>Locust</code>类，因为其<code>client</code>属性没有绑定任何方法。因此在使用<code>Locust</code>时，需要先继承<code>Locust类</code>，然后在继承子类中的<code>client</code>属性中绑定客户端的实现类。</p>
-<p>对于常见的<code>HTTP(S)</code>协议，<code>Locust</code>已经实现了<code>HttpLocust</code>类，其<code>client</code>属性绑定了<code>HttpSession</code>类，而<code>HttpSession</code>又继承自<code>requests.Session</code>。因此在测试<code>HTTP(S)</code>的<code>Locust脚本</code>中，我们可以通过<code>client</code>属性来使用<code>Python requests</code>库的所有方法，包括<code>GET/POST/HEAD/PUT/DELETE/PATCH</code>等，调用方式也与<code>requests</code>完全一致。另外，由于<code>requests.Session</code>的使用，因此<code>client</code>的方法调用之间就自动具有了状态记忆的功能。常见的场景就是，在登录系统后可以维持登录状态的<code>Session</code>，从而后续HTTP请求操作都能带上登录态。</p>
-<p>而对于<code>HTTP(S)</code>以外的协议，我们同样可以使用<code>Locust</code>进行测试，只是需要我们自行实现客户端。在客户端的具体实现上，可通过注册事件的方式，在请求成功时触发<code>events.request_success</code>，在请求失败时触发<code>events.request_failure</code>即可。然后创建一个继承自<code>Locust类</code>的类，对其设置一个<code>client</code>属性并与我们实现的客户端进行绑定。后续，我们就可以像使用<code>HttpLocust类</code>一样，测试其它协议类型的系统。</p>
-<p>原理就是这样简单！</p>
-<p>在<code>Locust类</code>中，除了<code>client</code>属性，还有几个属性需要关注下：</p>
-<ul>
-<li><code>task_set</code>: 指向一个<code>TaskSet</code>类，<code>TaskSet</code>类定义了用户的任务信息，该属性为必填；</li>
-<li><code>max_wait/min_wait</code>: 每个用户执行两个任务间隔时间的上下限（毫秒），具体数值在上下限中随机取值，若不指定则默认间隔时间固定为1秒；</li>
-<li><code>host</code>：被测系统的host，当在终端中启动<code>locust</code>时没有指定<code>--host</code>参数时才会用到；</li>
-<li><code>weight</code>：同时运行多个<code>Locust类</code>时会用到，用于控制不同类型任务的执行权重。</li>
-</ul>
-<p>测试开始后，每个虚拟用户（<code>Locust实例</code>）的运行逻辑都会遵循如下规律：</p>
-<ol>
-<li>先执行<code>WebsiteTasks</code>中的<code>on_start</code>（只执行一次），作为初始化；</li>
-<li>从<code>WebsiteTasks</code>中随机挑选（如果定义了任务间的权重关系，那么就是按照权重关系随机挑选）一个任务执行；</li>
-<li>根据<code>Locust类</code>中<code>min_wait</code>和<code>max_wait</code>定义的间隔时间范围（如果<code>TaskSet类</code>中也定义了<code>min_wait</code>或者<code>max_wait</code>，以<code>TaskSet</code>中的优先），在时间范围中随机取一个值，休眠等待；</li>
-<li>重复<code>2~3</code>步骤，直至测试任务终止。</li>
-</ol>
-<h3 id="class-TaskSet"><a href="#class-TaskSet" class="headerlink" title="class TaskSet"></a>class TaskSet</h3><p>再说下<code>TaskSet类</code>。</p>
-<p>性能测试工具要模拟用户的业务操作，就需要通过脚本模拟用户的行为。在前面的比喻中说到，<code>TaskSet类</code>好比蝗虫的大脑，控制着蝗虫的具体行为。</p>
-<p>具体地，<code>TaskSet类</code>实现了虚拟用户所执行任务的调度算法，包括规划任务执行顺序（<code>schedule_task</code>）、挑选下一个任务（<code>execute_next_task</code>）、执行任务（<code>execute_task</code>）、休眠等待（<code>wait</code>）、中断控制（<code>interrupt</code>）等等。在此基础上，我们就可以在<code>TaskSet</code>子类中采用非常简洁的方式来描述虚拟用户的业务测试场景，对虚拟用户的所有行为（任务）进行组织和描述，并可以对不同任务的权重进行配置。</p>
-<p>在<code>TaskSet</code>子类中定义任务信息时，可以采取两种方式，<code>@task装饰器</code>和<code>tasks属性</code>。</p>
-<p>采用<code>@task装饰器</code>定义任务信息时，描述形式如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> locust <span class="keyword">import</span> TaskSet, task</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserBehavior</span><span class="params">(TaskSet)</span>:</span></div><div class="line"><span class="meta">    @task(1)</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_job1</span><span class="params">(self)</span>:</span></div><div class="line">        self.client.get(<span class="string">'/job1'</span>)</div><div class="line"></div><div class="line"><span class="meta">    @task(2)</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_job2</span><span class="params">(self)</span>:</span></div><div class="line">        self.client.get(<span class="string">'/job2'</span>)</div></pre></td></tr></table></figure>
-<p>采用<code>tasks属性</code>定义任务信息时，描述形式如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> locust <span class="keyword">import</span> TaskSet</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_job1</span><span class="params">(obj)</span>:</span></div><div class="line">    obj.client.get(<span class="string">'/job1'</span>)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_job2</span><span class="params">(obj)</span>:</span></div><div class="line">    obj.client.get(<span class="string">'/job2'</span>)</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserBehavior</span><span class="params">(TaskSet)</span>:</span></div><div class="line">    tasks = &#123;test_job1:<span class="number">1</span>, test_job2:<span class="number">2</span>&#125;</div><div class="line">    <span class="comment"># tasks = [(test_job1,1), (test_job1,2)] # 两种方式等价</span></div></pre></td></tr></table></figure>
-<p>在如上两种定义任务信息的方式中，均设置了权重属性，即执行<code>test_job2</code>的频率是<code>test_job1</code>的两倍。</p>
-<p>若不指定执行任务的权重，则相当于比例为<code>1:1</code>。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> locust <span class="keyword">import</span> TaskSet, task</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserBehavior</span><span class="params">(TaskSet)</span>:</span></div><div class="line"><span class="meta">    @task</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_job1</span><span class="params">(self)</span>:</span></div><div class="line">        self.client.get(<span class="string">'/job1'</span>)</div><div class="line"></div><div class="line"><span class="meta">    @task</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_job2</span><span class="params">(self)</span>:</span></div><div class="line">        self.client.get(<span class="string">'/job2'</span>)</div></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> locust <span class="keyword">import</span> TaskSet</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_job1</span><span class="params">(obj)</span>:</span></div><div class="line">    obj.client.get(<span class="string">'/job1'</span>)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_job2</span><span class="params">(obj)</span>:</span></div><div class="line">    obj.client.get(<span class="string">'/job2'</span>)</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserBehavior</span><span class="params">(TaskSet)</span>:</span></div><div class="line">    tasks = [test_job1, test_job2]</div><div class="line">    <span class="comment"># tasks = &#123;test_job1:1, test_job2:1&#125; # 两种方式等价</span></div></pre></td></tr></table></figure>
-<p>在<code>TaskSet</code>子类中除了定义任务信息，还有一个是经常用到的，那就是<code>on_start</code>函数。这个和<code>LoadRunner</code>中的<code>vuser_init</code>功能相同，在正式执行测试前执行一次，主要用于完成一些初始化的工作。例如，当测试某个搜索功能，而该搜索功能又要求必须为登录态的时候，就可以先在<code>on_start</code>中进行登录操作；前面也提到，<code>HttpLocust</code>使用到了<code>requests.Session</code>，因此后续所有任务执行过程中就都具有登录态了。</p>
-<h3 id="脚本增强"><a href="#脚本增强" class="headerlink" title="脚本增强"></a>脚本增强</h3><p>掌握了<code>HttpLocust</code>和<code>TaskSet</code>，我们就基本具备了编写测试脚本的能力。此时再回过头来看前面的案例，相信大家都能很好的理解了。</p>
-<p>然而，当面对较复杂的测试场景，可能有的同学还是会感觉无从下手；例如，很多时候脚本需要做关联或参数化处理，这些在<code>LoadRunner</code>中集成的功能，换到<code>Locust</code>中就不知道怎么实现了。可能也是这方面的原因，造成很多测试人员都感觉难以将Locust应用到实际的性能测试工作当中。</p>
-<p>其实这也跟<code>Locust</code>的目标定位有关，<code>Locust</code>的定位就是<code>small and very hackable</code>。但是小巧并不意味着功能弱，我们完全可以通过Python脚本本身来实现各种各样的功能，如果大家有疑问，我们不妨逐项分解来看。</p>
-<p>在<code>LoadRunner</code>这款功能全面应用广泛的商业性能测试工具中，脚本增强无非就涉及到四个方面：</p>
-<ul>
-<li>关联</li>
-<li>参数化</li>
-<li>检查点</li>
-<li>集合点</li>
-</ul>
-<p>先说关联这一项。在某些请求中，需要携带之前从Server端返回的参数，因此在构造请求时需要先从之前请求的Response中提取出所需的参数，常见场景就是<code>session_id</code>。针对这种情况，<code>LoadRunner</code>虽然可能通过录制脚本进行自动关联，但是效果并不理想，在实际测试过程中也基本都是靠测试人员手动的来进行关联处理。</p>
-<p>在<code>LoadRunner</code>中手动进行关联处理时，主要是通过使用注册型函数，例如<code>web_reg_save_param</code>，对前一个请求的响应结果进行解析，根据左右边界或其它特征定位到参数值并将其保存到参数变量，然后在后续请求中使用该参数。采用同样的思想，我们在<code>Locust</code>脚本中也完全可以实现同样的功能，毕竟只是Python脚本，通过官方库函数<code>re.search</code>就能实现所有需求。甚至针对html页面，我们也可以采用<code>lxml</code>库，通过<code>etree.HTML(html).xpath</code>来更优雅地实现元素定位。</p>
-<p>然后再来看参数化这一项。这一项极其普遍，主要是用在测试数据方面。但通过归纳，发现其实也可以概括为三种类型。</p>
-<ul>
-<li>循环取数据，数据可重复使用：e.g. 模拟3用户并发请求网页，总共有100个URL地址，每个虚拟用户都会依次循环加载这100个URL地址；</li>
-<li>保证并发测试数据唯一性，不循环取数据：e.g. 模拟3用户并发注册账号，总共有90个账号，要求注册账号不重复，注册完毕后结束测试；</li>
-<li>保证并发测试数据唯一性，循环取数据：模拟3用户并发登录账号，总共有90个账号，要求并发登录账号不相同，但数据可循环使用。</li>
-</ul>
-<p>通过以上归纳，可以确信地说，以上三种类型基本上可以覆盖我们日常性能测试工作中的所有参数化场景。</p>
-<p>在<code>LoadRunner</code>中是有一个集成的参数化模块，可以直接配置参数化策略。那在<code>Locust</code>要怎样实现该需求呢？</p>
-<p>答案依旧很简单，使用Python的<code>list</code>和<code>queue</code>数据结构即可！具体做法是，在<code>WebsiteUser</code>定义一个数据集，然后所有虚拟用户在<code>WebsiteTasks</code>中就可以共享该数据集了。如果不要求数据唯一性，数据集选择<code>list</code>数据结构，从头到尾循环遍历即可；如果要求数据唯一性，数据集选择<code>queue</code>数据结构，取数据时进行<code>queue.get()</code>操作即可，并且这也不会循环取数据；至于涉及到需要循环取数据的情况，那也简单，每次取完数据后再将数据插入到队尾即可，<code>queue.put_nowait(data)</code>。</p>
-<p>最后再说下检查点。该功能在<code>LoadRunner</code>中通常是使用<code>web_reg_find</code>这类注册函数进行检查的。在<code>Locust</code>脚本中，处理就更方便了，只需要对响应的内容关键字进行<code>assert xxx in response</code>操作即可。</p>
-<p>针对如上各种脚本增强的场景，我也通过代码示例分别进行了演示。但考虑到文章中插入太多代码会影响到阅读，因此将代码示例部分剥离了出来，如有需要请点击查看<a href="/post/head-first-locust-advanced-script/">《深入浅出开源性能测试工具Locust（脚本增强）》</a>。</p>
-<h2 id="Locust运行模式"><a href="#Locust运行模式" class="headerlink" title="Locust运行模式"></a>Locust运行模式</h2><p>在开始运行<code>Locust</code>脚本之前，我们先来看下<code>Locust</code>支持的运行模式。</p>
-<p>运行<code>Locust</code>时，通常会使用到两种运行模式：单进程运行和多进程分布式运行。</p>
-<p>单进程运行模式的意思是，<code>Locust</code>所有的虚拟并发用户均运行在单个<code>Python</code>进程中，具体从使用形式上，又分为<code>no_web</code>和<code>web</code>两种形式。该种模式由于单进程的原因，并不能完全发挥压力机所有处理器的能力，因此主要用于调试脚本和小并发压测的情况。</p>
-<p>当并发压力要求较高时，就需要用到<code>Locust</code>的多进程分布式运行模式。从字面意思上看，大家可能第一反应就是多台压力机同时运行，每台压力机分担负载一部分的压力生成。的确，<code>Locust</code>支持任意多台压力机（一主多从）的分布式运行模式，但这里说到的多进程分布式运行模式还有另外一种情况，就是在同一台压力机上开启多个<code>slave</code>的情况。这是因为当前阶段大多数计算机的CPU都是多处理器（<code>multiple processor cores</code>），单进程运行模式下只能用到一个处理器的能力，而通过在一台压力机上运行多个<code>slave</code>，就能调用多个处理器的能力了。比较好的做法是，如果一台压力机有<code>N</code>个处理器内核，那么就在这台压力机上启动一个<code>master</code>，<code>N</code>个<code>slave</code>。当然，我们也可以启动<code>N</code>的倍数个<code>slave</code>，但是根据我的试验数据，效果跟<code>N</code>个差不多，因此只需要启动<code>N</code>个<code>slave</code>即可。</p>
-<h2 id="脚本调试"><a href="#脚本调试" class="headerlink" title="脚本调试"></a>脚本调试</h2><p><code>Locust</code>脚本编写完毕后，通常不会那么顺利，在正式开始性能测试之前还需要先调试运行下。</p>
-<p>不过，<code>Locust</code>脚本虽然为Python脚本，但却很难直接当做Python脚本运行起来，为什么呢？这主要还是因为<code>Locust</code>脚本中引用了<code>HttpLocust</code>和<code>TaskSet</code>这两个类，如果要想直接对其进行调用测试，会发现编写启动脚本是一个比较困难的事情。因为这个原因，刚接触<code>Locust</code>的同学可能就会觉得<code>Locust</code>脚本不好调试。</p>
-<p>但这个问题也能克服，那就是借助<code>Locust</code>的单进程<code>no_web</code>运行模式。</p>
-<p>在<code>Locust</code>的单进程<code>no_web</code>运行模式中，我们可以通过<code>--no_web</code>参数，指定并发数（<code>-c</code>）和总执行次数（<code>-n</code>），直接在<code>Terminal</code>中执行脚本。</p>
-<p>在此基础上，当我们想要调试<code>Locust</code>脚本时，就可以在脚本中需要调试的地方通过<code>print</code>打印日志，然后将并发数和总执行次数都指定为1，执行形式如下所示。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ locust <span class="_">-f</span> locustfile.py --no_web -c 1 -n 1</div></pre></td></tr></table></figure>
-<p>通过这种方式，我们就能很方便地对<code>Locust</code>脚本进行调试了。</p>
-<h2 id="执行测试"><a href="#执行测试" class="headerlink" title="执行测试"></a>执行测试</h2><p><code>Locust</code>脚本调试通过后，就算是完成了所有准备工作，可以开始进行压力测试了。</p>
-<p><code>Locust</code>是通过在<code>Terminal</code>中执行命令进行启动的，通用的参数有如下两个：</p>
-<ul>
-<li><code>-H, --host</code>：被测系统的<code>host</code>，若在<code>Terminal</code>中不进行指定，就需要在<code>Locust</code>子类中通过<code>host</code>参数进行指定；</li>
-<li><code>-f, --locustfile</code>：指定执行的<code>Locust</code>脚本文件；</li>
-</ul>
-<p>除了这两个通用的参数，我们还需要根据实际测试场景，选择不同的<code>Locust</code>运行模式，而模式的指定也是通过其它参数来进行控制的。</p>
-<h3 id="单进程运行"><a href="#单进程运行" class="headerlink" title="单进程运行"></a>单进程运行</h3><p><strong>no_web</strong></p>
-<p>如果采用<code>no_web</code>形式，则需使用<code>--no-web</code>参数，并会用到如下几个参数。</p>
-<ul>
-<li><code>-c, --clients</code>：指定并发用户数；</li>
-<li><code>-n, --num-request</code>：指定总执行测试；</li>
-<li><code>-r, --hatch-rate</code>：指定并发加压速率，默认值位1。</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">$ locust -H http://debugtalk.com <span class="_">-f</span> demo.py --no-web -c1 -n2</div><div class="line">[2017-02-21 21:27:26,522] Leos-MacBook-Air.local/INFO/locust.main: Starting Locust 0.8a2</div><div class="line">[2017-02-21 21:27:26,523] Leos-MacBook-Air.local/INFO/locust.runners: Hatching and swarming 1 clients at the rate 1 clients/s...</div><div class="line"> Name                                                          <span class="comment"># reqs      # fails     Avg     Min     Max  |  Median   req/s</span></div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line"> Total                                                              0     0(0.00%)                                       0.00</div><div class="line"></div><div class="line">[2017-02-21 21:27:27,526] Leos-MacBook-Air.local/INFO/locust.runners: All locusts hatched: WebsiteUser: 1</div><div class="line">[2017-02-21 21:27:27,527] Leos-MacBook-Air.local/INFO/locust.runners: Resetting stats</div><div class="line"></div><div class="line"> Name                                                          <span class="comment"># reqs      # fails     Avg     Min     Max  |  Median   req/s</span></div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line"> GET /about/                                                        0     0(0.00%)       0       0       0  |       0    0.00</div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line"> Total                                                              0     0(0.00%)                                       0.00</div><div class="line"></div><div class="line"> Name                                                          <span class="comment"># reqs      # fails     Avg     Min     Max  |  Median   req/s</span></div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line"> GET /about/                                                        1     0(0.00%)      17      17      17  |      17    0.00</div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line"> Total                                                              1     0(0.00%)                                       0.00</div><div class="line"></div><div class="line">[2017-02-21 21:27:32,420] Leos-MacBook-Air.local/INFO/locust.runners: All locusts dead</div><div class="line"></div><div class="line">[2017-02-21 21:27:32,421] Leos-MacBook-Air.local/INFO/locust.main: Shutting down (<span class="built_in">exit</span> code 0), bye.</div><div class="line"> Name                                                          <span class="comment"># reqs      # fails     Avg     Min     Max  |  Median   req/s</span></div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line"> GET /                                                              1     0(0.00%)      20      20      20  |      20    0.00</div><div class="line"> GET /about/                                                        1     0(0.00%)      17      17      17  |      17    0.00</div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line"> Total                                                              2     0(0.00%)                                       0.00</div><div class="line"></div><div class="line">Percentage of the requests completed within given <span class="built_in">times</span></div><div class="line"> Name                                                           <span class="comment"># reqs    50%    66%    75%    80%    90%    95%    98%    99%   100%</span></div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line"> GET /                                                               1     20     20     20     20     20     20     20     20     20</div><div class="line"> GET /about/                                                         1     17     17     17     17     17     17     17     17     17</div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div></pre></td></tr></table></figure>
-<p><strong>web</strong></p>
-<p>如果采用<code>web</code>形式，，则通常情况下无需指定其它额外参数，<code>Locust</code>默认采用<code>8089</code>端口启动<code>web</code>；如果要使用其它端口，就可以使用如下参数进行指定。</p>
-<ul>
-<li><code>-P, --port</code>：指定web端口，默认为<code>8089</code>.</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ locust -H http://debugtalk.com <span class="_">-f</span> demo.py</div><div class="line">[2017-02-21 21:31:26,334] Leos-MacBook-Air.local/INFO/locust.main: Starting web monitor at *:8089</div><div class="line">[2017-02-21 21:31:26,334] Leos-MacBook-Air.local/INFO/locust.main: Starting Locust 0.8a2</div></pre></td></tr></table></figure>
-<p>此时，<code>Locust</code>并没有开始执行测试，还需要在Web页面中配置参数后进行启动。</p>
-<p>如果<code>Locust</code>运行在本机，在浏览器中访问<code>http://localhost:8089</code>即可进入<code>Locust</code>的Web管理页面；如果<code>Locust</code>运行在其它机器上，那么在浏览器中访问<code>http://locust_machine_ip:8089</code>即可。</p>
-<p>在<code>Locust</code>的Web管理页面中，需要配置的参数只有两个：</p>
-<ul>
-<li><code>Number of users to simulate</code>: 设置并发用户数，对应中<code>no_web</code>模式的<code>-c, --clients</code>参数；</li>
-<li><code>Hatch rate (users spawned/second)</code>: 启动虚拟用户的速率，对应着<code>no_web</code>模式的<code>-r, --hatch-rate</code>参数。</li>
-</ul>
-<p>参数配置完毕后，点击【Start swarming】即可开始测试。</p>
-<h3 id="多进程分布式运行"><a href="#多进程分布式运行" class="headerlink" title="多进程分布式运行"></a>多进程分布式运行</h3><p>不管是<code>单机多进程</code>，还是<code>多机负载</code>模式，运行方式都是一样的，都是先运行一个<code>master</code>，再启动多个<code>slave</code>。</p>
-<p>启动<code>master</code>时，需要使用<code>--master</code>参数；同样的，如果要使用<code>8089</code>以外的端口，还需要使用<code>-P, --port</code>参数。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ locust -H http://debugtalk.com <span class="_">-f</span> demo.py --master --port=8088</div><div class="line">[2017-02-21 22:59:57,308] Leos-MacBook-Air.local/INFO/locust.main: Starting web monitor at *:8088</div><div class="line">[2017-02-21 22:59:57,310] Leos-MacBook-Air.local/INFO/locust.main: Starting Locust 0.8a2</div></pre></td></tr></table></figure>
-<p><code>master</code>启动后，还需要启动<code>slave</code>才能执行测试任务。</p>
-<p>启动<code>slave</code>时需要使用<code>--slave</code>参数；在<code>slave</code>中，就不需要再指定端口了。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ locust -H http://debugtalk.com <span class="_">-f</span> demo.py --slave</div><div class="line">[2017-02-21 23:07:58,696] Leos-MacBook-Air.local/INFO/locust.main: Starting Locust 0.8a2</div><div class="line">[2017-02-21 23:07:58,696] Leos-MacBook-Air.local/INFO/locust.runners: Client <span class="string">'Leos-MacBook-Air.local_980ab0eec2bca517d03feb60c31d6a3a'</span> reported as</div><div class="line"> ready. Currently 2 clients ready to swarm.</div></pre></td></tr></table></figure>
-<p>如果<code>slave</code>与<code>master</code>不在同一台机器上，还需要通过<code>--master-host</code>参数再指定<code>master</code>的IP地址。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ locust -H http://debugtalk.com <span class="_">-f</span> demo.py --slave --master-host=&lt;locust_machine_ip&gt;</div><div class="line">[2017-02-21 23:07:58,696] Leos-MacBook-Air.local/INFO/locust.main: Starting Locust 0.8a2</div><div class="line">[2017-02-21 23:07:58,696] Leos-MacBook-Air.local/INFO/locust.runners: Client <span class="string">'Leos-MacBook-Air.local_980ab0eec2bca517d03feb60c31d6a3a'</span> reported as</div><div class="line"> ready. Currently 2 clients ready to swarm.</div></pre></td></tr></table></figure>
-<p><code>master</code>和<code>slave</code>都启动完毕后，就可以在浏览器中通过<code>http://locust_machine_ip:8089</code>进入<code>Locust</code>的Web管理页面了。使用方式跟单进程<code>web</code>形式完全相同，只是此时是通过多进程负载来生成并发压力，在<code>web</code>管理界面中也能看到实际的<code>slave</code>数量。</p>
-<h2 id="测试结果展示"><a href="#测试结果展示" class="headerlink" title="测试结果展示"></a>测试结果展示</h2><p><code>Locust</code>在执行测试的过程中，我们可以在<code>web</code>界面中实时地看到结果运行情况。</p>
-<p>相比于<code>LoadRunner</code>，<code>Locust</code>的结果展示十分简单，主要就四个指标：<code>并发数</code>、<code>RPS</code>、<code>响应时间</code>、<code>异常率</code>。但对于大多数场景来说，这几个指标已经足够了。</p>
-<p><img src="/images/14877299635610.jpg" alt=""></p>
-<p>在上图中，<code>RPS</code>和<code>平均响应时间</code>这两个指标显示的值都是根据最近2秒请求响应数据计算得到的统计值，我们也可以理解为瞬时值。</p>
-<p>如果想看性能指标数据的走势，就可以在<code>Charts</code>栏查看。在这里，可以查看到<code>RPS</code>和<code>平均响应时间</code>在整个运行过程中的波动情况。这个功能之前在<code>Locust</code>中一直是缺失的，直到最近，这个坑才被我之前在<code>阿里移动</code>的同事（网络ID<a href="http://myzhan.github.io/" target="_blank" rel="external"><code>myzhan</code></a>）给填上了。当前该功能已经合并到<code>Locust</code>了，更新到最新版即可使用。</p>
-<p><img src="/images/14877300553617.jpg" alt=""></p>
-<p>除了以上数据，<code>Locust</code>还提供了整个运行过程数据的百分比统计值，例如我们常用的<code>90%响应时间</code>、<code>响应时间中位值</code>，该数据可以通过<code>Download response time distribution CSV</code>获得，数据展示效果如下所示。</p>
-<p><img src="/images/14877305222231.jpg" alt=""></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过前面对<code>Locust</code>全方位的讲解，相信大家对<code>Locust</code>的功能特性已经非常熟悉了，在实际项目中将<code>Locust</code>作为生产力工具应该也没啥问题了。</p>
-<p>不过，任何一款工具都不是完美的，必定都会存在一些不足之处。但是好在<code>Locust</code>具有极强的可定制型，当我们遇到一些特有的需求时，可以在<code>Locust</code>上很方便地实现扩展。</p>
-<p>还是前面提到的那位技术大牛（<code>myzhan</code>），他为了摆脱<code>CPython</code>的<code>GIL</code>和<code>gevent</code>的 <code>monkey_patch()</code>，将<code>Locust</code>的<code>slave</code>端采用<code>golang</code>进行了重写，采用<code>goroutine</code>取代了<code>gevent</code>。经过测试，相较于原生的<code>Python</code>实现，他的这套<code>golang</code>实现具有<code>5~10</code>倍以上的性能提升。当前，他已经将该实现开源，项目名称为<a href="https://github.com/myzhan/boomer" target="_blank" rel="external"><code>myzhan/boomer</code></a>，如果大家感兴趣，可以阅读他的博客文章进一步了解，<a href="http://myzhan.github.io/2016/03/01/write-a-load-testing-tool-in-golang/" target="_blank" rel="external">《用 golang 来编写压测工具》</a>。</p>
-<p>如果我们也想在<code>Locust</code>的基础上进行二次开发，那要怎么开始呢？</p>
-<p>毫无疑问，阅读<code>Locust</code>的项目源码是必不可少的第一步。可能对于很多人来说，阅读开源项目源码是一件十分困难的事情，不知道如何着手，在知乎上也看到好多关于如何阅读开源项目源码的提问。事实上，<code>Locust</code>项目的代码结构清晰，核心代码量也比较少，十分适合阅读学习。哪怕只是想体验下阅读开源项目源码，或者说想提升下自己的<code>Python</code>技能，<code>Locust</code>也是个不错的选择。</p>
-<p>在下一篇文章中，我将对<code>Locust</code>源码进行解析，《深入浅出开源性能测试工具Locust（源码篇）》，敬请期待！</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;在&lt;a href=&quot;/post/locustplus-talk-about-performance-test/&quot;&gt;《【LocustPlus序】漫谈服务端性能测试》&lt;/a&gt;中，我对服务端性能测试的基础概念和性能测试工具的基本原理进行了介绍，并且重点推荐了&lt;code&gt;Locus
-    
-    </summary>
-    
-    
-      <category term="性能测试" scheme="http://debugtalk.com/tags/%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/"/>
-    
-      <category term="Locust" scheme="http://debugtalk.com/tags/Locust/"/>
-    
-      <category term="开源项目" scheme="http://debugtalk.com/tags/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/"/>
-    
-  </entry>
-  
-  <entry>
     <title>深入浅出开源性能测试工具Locust（脚本增强）</title>
     <link href="http://debugtalk.com/post/head-first-locust-advanced-script/"/>
     <id>http://debugtalk.com/post/head-first-locust-advanced-script/</id>
@@ -864,6 +766,165 @@
     
       &lt;p&gt;在&lt;a href=&quot;/post/head-first-locust-user-guide/&quot;&gt;《深入浅出开源性能测试工具Locust（使用篇）》&lt;/a&gt;一文中，罗列了编写性能测试脚本时常用的几类脚本增强的场景，本文是对应的代码示例。&lt;/p&gt;
 &lt;h2 id=&quot;关联&quot;&gt;&lt;a h
+    
+    </summary>
+    
+    
+      <category term="性能测试" scheme="http://debugtalk.com/tags/%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/"/>
+    
+      <category term="Locust" scheme="http://debugtalk.com/tags/Locust/"/>
+    
+      <category term="开源项目" scheme="http://debugtalk.com/tags/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>深入浅出开源性能测试工具Locust（使用篇）</title>
+    <link href="http://debugtalk.com/post/head-first-locust-user-guide/"/>
+    <id>http://debugtalk.com/post/head-first-locust-user-guide/</id>
+    <published>2017-02-21T16:00:00.000Z</published>
+    <updated>2017-06-15T07:51:23.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>在<a href="/post/locustplus-talk-about-performance-test/">《【LocustPlus序】漫谈服务端性能测试》</a>中，我对服务端性能测试的基础概念和性能测试工具的基本原理进行了介绍，并且重点推荐了<code>Locust</code>这一款开源性能测试工具。然而，当前在网络上针对<code>Locust</code>的教程极少，不管是中文还是英文，基本都是介绍安装方法和简单的测试案例演示，但对于较复杂测试场景的案例演示却基本没有，因此很多测试人员都感觉难以将<code>Locust</code>应用到实际的性能测试工作当中。</p>
+<p>经过一段时间的摸索，包括通读<code>Locust</code>官方文档和项目源码，并且在多个性能测试项目中对<code>Locust</code>进行应用实践，事实证明，<code>Locust</code>完全能满足日常的性能测试需求，<code>LoadRunner</code>能实现的功能<code>Locust</code>也基本都能实现。</p>
+<p>本文将从<code>Locust</code>的功能特性出发，结合实例对<code>Locust</code>的使用方法进行介绍。考虑到大众普遍对<code>LoadRunner</code>比较熟悉，在讲解<code>Locust</code>时也会采用<code>LoadRunner</code>的一些概念进行类比。</p>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>先从<code>Locust</code>的名字说起。<code>Locust</code>的原意是蝗虫，原作者之所以选择这个名字，估计也是听过这么一句俗语，“蝗虫过境，寸草不生”。我在网上找了张图片，大家可以感受下。</p>
+<p><img src="/images/14875962785342.jpg" alt=""></p>
+<p>而<code>Locust</code>工具生成的并发请求就跟一大群蝗虫一般，对我们的被测系统发起攻击，以此检测系统在高并发压力下是否能正常运转。</p>
+<p>在<a href="/post/locustplus-talk-about-performance-test/">《【LocustPlus序】漫谈服务端性能测试》</a>中说过，服务端性能测试工具最核心的部分是压力发生器，而压力发生器的核心要点有两个，一是真实模拟用户操作，二是模拟有效并发。</p>
+<p>在<code>Locust</code>测试框架中，测试场景是采用纯Python脚本进行描述的。对于最常见的<code>HTTP(S)</code>协议的系统，<code>Locust</code>采用Python的<code>requests</code>库作为客户端，使得脚本编写大大简化，富有表现力的同时且极具美感。而对于其它协议类型的系统，<code>Locust</code>也提供了接口，只要我们能采用Python编写对应的请求客户端，就能方便地采用<code>Locust</code>实现压力测试。从这个角度来说，<code>Locust</code>可以用于压测任意类型的系统。</p>
+<p>在模拟有效并发方面，<code>Locust</code>的优势在于其摒弃了进程和线程，完全基于事件驱动，使用<code>gevent</code>提供的<code>非阻塞IO</code>和<code>coroutine</code>来实现网络层的并发请求，因此即使是单台压力机也能产生数千并发请求数；再加上对分布式运行的支持，理论上来说，<code>Locust</code>能在使用较少压力机的前提下支持极高并发数的测试。</p>
+<h2 id="脚本编写"><a href="#脚本编写" class="headerlink" title="脚本编写"></a>脚本编写</h2><p>编写<code>Locust</code>脚本，是使用<code>Locust</code>的第一步，也是最为重要的一步。</p>
+<h3 id="简单示例"><a href="#简单示例" class="headerlink" title="简单示例"></a>简单示例</h3><p>先来看一个最简单的示例。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> locust <span class="keyword">import</span> HttpLocust, TaskSet, task</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WebsiteTasks</span><span class="params">(TaskSet)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_start</span><span class="params">(self)</span>:</span></div><div class="line">        self.client.post(<span class="string">"/login"</span>, &#123;</div><div class="line">            <span class="string">"username"</span>: <span class="string">"test"</span>,</div><div class="line">            <span class="string">"password"</span>: <span class="string">"123456"</span></div><div class="line">        &#125;)</div><div class="line"></div><div class="line"><span class="meta">    @task(2)</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">index</span><span class="params">(self)</span>:</span></div><div class="line">        self.client.get(<span class="string">"/"</span>)</div><div class="line"></div><div class="line"><span class="meta">    @task(1)</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">about</span><span class="params">(self)</span>:</span></div><div class="line">        self.client.get(<span class="string">"/about/"</span>)</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WebsiteUser</span><span class="params">(HttpLocust)</span>:</span></div><div class="line">    task_set = WebsiteTasks</div><div class="line">    host = <span class="string">"http://debugtalk.com"</span></div><div class="line">    min_wait = <span class="number">1000</span></div><div class="line">    max_wait = <span class="number">5000</span></div></pre></td></tr></table></figure>
+<p>在这个示例中，定义了针对<code>http://debugtalk.com</code>网站的测试场景：先模拟用户登录系统，然后随机地访问首页（<code>/</code>）和关于页面（<code>/about/</code>），请求比例为<code>2:1</code>；并且，在测试过程中，两次请求的间隔时间为<code>1~5</code>秒间的随机值。</p>
+<p>那么，如上Python脚本是如何表达出以上测试场景的呢？</p>
+<p>从脚本中可以看出，脚本主要包含两个类，一个是<code>WebsiteUser</code>（继承自<code>HttpLocust</code>，而<code>HttpLocust</code>继承自<code>Locust</code>），另一个是<code>WebsiteTasks</code>（继承自<code>TaskSet</code>）。事实上，在<code>Locust</code>的测试脚本中，所有业务测试场景都是在<code>Locust</code>和<code>TaskSet</code>两个类的继承子类中进行描述的。</p>
+<p>那如何理解<code>Locust</code>和<code>TaskSet</code>这两个类呢？</p>
+<p>简单地说，<code>Locust类</code>就好比是一群蝗虫，而每一只蝗虫就是一个类的实例。相应的，<code>TaskSet类</code>就好比是蝗虫的大脑，控制着蝗虫的具体行为，即实际业务场景测试对应的任务集。</p>
+<p>这个比喻可能不是很准确，接下来，我将分别对<code>Locust</code>和<code>TaskSet</code>两个类进行详细介绍。</p>
+<h3 id="class-HttpLocust-Locust"><a href="#class-HttpLocust-Locust" class="headerlink" title="class HttpLocust(Locust)"></a>class HttpLocust(Locust)</h3><p>在<code>Locust类</code>中，具有一个<code>client</code>属性，它对应着虚拟用户作为客户端所具备的请求能力，也就是我们常说的请求方法。通常情况下，我们不会直接使用<code>Locust</code>类，因为其<code>client</code>属性没有绑定任何方法。因此在使用<code>Locust</code>时，需要先继承<code>Locust类</code>，然后在继承子类中的<code>client</code>属性中绑定客户端的实现类。</p>
+<p>对于常见的<code>HTTP(S)</code>协议，<code>Locust</code>已经实现了<code>HttpLocust</code>类，其<code>client</code>属性绑定了<code>HttpSession</code>类，而<code>HttpSession</code>又继承自<code>requests.Session</code>。因此在测试<code>HTTP(S)</code>的<code>Locust脚本</code>中，我们可以通过<code>client</code>属性来使用<code>Python requests</code>库的所有方法，包括<code>GET/POST/HEAD/PUT/DELETE/PATCH</code>等，调用方式也与<code>requests</code>完全一致。另外，由于<code>requests.Session</code>的使用，因此<code>client</code>的方法调用之间就自动具有了状态记忆的功能。常见的场景就是，在登录系统后可以维持登录状态的<code>Session</code>，从而后续HTTP请求操作都能带上登录态。</p>
+<p>而对于<code>HTTP(S)</code>以外的协议，我们同样可以使用<code>Locust</code>进行测试，只是需要我们自行实现客户端。在客户端的具体实现上，可通过注册事件的方式，在请求成功时触发<code>events.request_success</code>，在请求失败时触发<code>events.request_failure</code>即可。然后创建一个继承自<code>Locust类</code>的类，对其设置一个<code>client</code>属性并与我们实现的客户端进行绑定。后续，我们就可以像使用<code>HttpLocust类</code>一样，测试其它协议类型的系统。</p>
+<p>原理就是这样简单！</p>
+<p>在<code>Locust类</code>中，除了<code>client</code>属性，还有几个属性需要关注下：</p>
+<ul>
+<li><code>task_set</code>: 指向一个<code>TaskSet</code>类，<code>TaskSet</code>类定义了用户的任务信息，该属性为必填；</li>
+<li><code>max_wait/min_wait</code>: 每个用户执行两个任务间隔时间的上下限（毫秒），具体数值在上下限中随机取值，若不指定则默认间隔时间固定为1秒；</li>
+<li><code>host</code>：被测系统的host，当在终端中启动<code>locust</code>时没有指定<code>--host</code>参数时才会用到；</li>
+<li><code>weight</code>：同时运行多个<code>Locust类</code>时会用到，用于控制不同类型任务的执行权重。</li>
+</ul>
+<p>测试开始后，每个虚拟用户（<code>Locust实例</code>）的运行逻辑都会遵循如下规律：</p>
+<ol>
+<li>先执行<code>WebsiteTasks</code>中的<code>on_start</code>（只执行一次），作为初始化；</li>
+<li>从<code>WebsiteTasks</code>中随机挑选（如果定义了任务间的权重关系，那么就是按照权重关系随机挑选）一个任务执行；</li>
+<li>根据<code>Locust类</code>中<code>min_wait</code>和<code>max_wait</code>定义的间隔时间范围（如果<code>TaskSet类</code>中也定义了<code>min_wait</code>或者<code>max_wait</code>，以<code>TaskSet</code>中的优先），在时间范围中随机取一个值，休眠等待；</li>
+<li>重复<code>2~3</code>步骤，直至测试任务终止。</li>
+</ol>
+<h3 id="class-TaskSet"><a href="#class-TaskSet" class="headerlink" title="class TaskSet"></a>class TaskSet</h3><p>再说下<code>TaskSet类</code>。</p>
+<p>性能测试工具要模拟用户的业务操作，就需要通过脚本模拟用户的行为。在前面的比喻中说到，<code>TaskSet类</code>好比蝗虫的大脑，控制着蝗虫的具体行为。</p>
+<p>具体地，<code>TaskSet类</code>实现了虚拟用户所执行任务的调度算法，包括规划任务执行顺序（<code>schedule_task</code>）、挑选下一个任务（<code>execute_next_task</code>）、执行任务（<code>execute_task</code>）、休眠等待（<code>wait</code>）、中断控制（<code>interrupt</code>）等等。在此基础上，我们就可以在<code>TaskSet</code>子类中采用非常简洁的方式来描述虚拟用户的业务测试场景，对虚拟用户的所有行为（任务）进行组织和描述，并可以对不同任务的权重进行配置。</p>
+<p>在<code>TaskSet</code>子类中定义任务信息时，可以采取两种方式，<code>@task装饰器</code>和<code>tasks属性</code>。</p>
+<p>采用<code>@task装饰器</code>定义任务信息时，描述形式如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> locust <span class="keyword">import</span> TaskSet, task</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserBehavior</span><span class="params">(TaskSet)</span>:</span></div><div class="line"><span class="meta">    @task(1)</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_job1</span><span class="params">(self)</span>:</span></div><div class="line">        self.client.get(<span class="string">'/job1'</span>)</div><div class="line"></div><div class="line"><span class="meta">    @task(2)</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_job2</span><span class="params">(self)</span>:</span></div><div class="line">        self.client.get(<span class="string">'/job2'</span>)</div></pre></td></tr></table></figure>
+<p>采用<code>tasks属性</code>定义任务信息时，描述形式如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> locust <span class="keyword">import</span> TaskSet</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_job1</span><span class="params">(obj)</span>:</span></div><div class="line">    obj.client.get(<span class="string">'/job1'</span>)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_job2</span><span class="params">(obj)</span>:</span></div><div class="line">    obj.client.get(<span class="string">'/job2'</span>)</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserBehavior</span><span class="params">(TaskSet)</span>:</span></div><div class="line">    tasks = &#123;test_job1:<span class="number">1</span>, test_job2:<span class="number">2</span>&#125;</div><div class="line">    <span class="comment"># tasks = [(test_job1,1), (test_job1,2)] # 两种方式等价</span></div></pre></td></tr></table></figure>
+<p>在如上两种定义任务信息的方式中，均设置了权重属性，即执行<code>test_job2</code>的频率是<code>test_job1</code>的两倍。</p>
+<p>若不指定执行任务的权重，则相当于比例为<code>1:1</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> locust <span class="keyword">import</span> TaskSet, task</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserBehavior</span><span class="params">(TaskSet)</span>:</span></div><div class="line"><span class="meta">    @task</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_job1</span><span class="params">(self)</span>:</span></div><div class="line">        self.client.get(<span class="string">'/job1'</span>)</div><div class="line"></div><div class="line"><span class="meta">    @task</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_job2</span><span class="params">(self)</span>:</span></div><div class="line">        self.client.get(<span class="string">'/job2'</span>)</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> locust <span class="keyword">import</span> TaskSet</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_job1</span><span class="params">(obj)</span>:</span></div><div class="line">    obj.client.get(<span class="string">'/job1'</span>)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_job2</span><span class="params">(obj)</span>:</span></div><div class="line">    obj.client.get(<span class="string">'/job2'</span>)</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserBehavior</span><span class="params">(TaskSet)</span>:</span></div><div class="line">    tasks = [test_job1, test_job2]</div><div class="line">    <span class="comment"># tasks = &#123;test_job1:1, test_job2:1&#125; # 两种方式等价</span></div></pre></td></tr></table></figure>
+<p>在<code>TaskSet</code>子类中除了定义任务信息，还有一个是经常用到的，那就是<code>on_start</code>函数。这个和<code>LoadRunner</code>中的<code>vuser_init</code>功能相同，在正式执行测试前执行一次，主要用于完成一些初始化的工作。例如，当测试某个搜索功能，而该搜索功能又要求必须为登录态的时候，就可以先在<code>on_start</code>中进行登录操作；前面也提到，<code>HttpLocust</code>使用到了<code>requests.Session</code>，因此后续所有任务执行过程中就都具有登录态了。</p>
+<h3 id="脚本增强"><a href="#脚本增强" class="headerlink" title="脚本增强"></a>脚本增强</h3><p>掌握了<code>HttpLocust</code>和<code>TaskSet</code>，我们就基本具备了编写测试脚本的能力。此时再回过头来看前面的案例，相信大家都能很好的理解了。</p>
+<p>然而，当面对较复杂的测试场景，可能有的同学还是会感觉无从下手；例如，很多时候脚本需要做关联或参数化处理，这些在<code>LoadRunner</code>中集成的功能，换到<code>Locust</code>中就不知道怎么实现了。可能也是这方面的原因，造成很多测试人员都感觉难以将Locust应用到实际的性能测试工作当中。</p>
+<p>其实这也跟<code>Locust</code>的目标定位有关，<code>Locust</code>的定位就是<code>small and very hackable</code>。但是小巧并不意味着功能弱，我们完全可以通过Python脚本本身来实现各种各样的功能，如果大家有疑问，我们不妨逐项分解来看。</p>
+<p>在<code>LoadRunner</code>这款功能全面应用广泛的商业性能测试工具中，脚本增强无非就涉及到四个方面：</p>
+<ul>
+<li>关联</li>
+<li>参数化</li>
+<li>检查点</li>
+<li>集合点</li>
+</ul>
+<p>先说关联这一项。在某些请求中，需要携带之前从Server端返回的参数，因此在构造请求时需要先从之前请求的Response中提取出所需的参数，常见场景就是<code>session_id</code>。针对这种情况，<code>LoadRunner</code>虽然可能通过录制脚本进行自动关联，但是效果并不理想，在实际测试过程中也基本都是靠测试人员手动的来进行关联处理。</p>
+<p>在<code>LoadRunner</code>中手动进行关联处理时，主要是通过使用注册型函数，例如<code>web_reg_save_param</code>，对前一个请求的响应结果进行解析，根据左右边界或其它特征定位到参数值并将其保存到参数变量，然后在后续请求中使用该参数。采用同样的思想，我们在<code>Locust</code>脚本中也完全可以实现同样的功能，毕竟只是Python脚本，通过官方库函数<code>re.search</code>就能实现所有需求。甚至针对html页面，我们也可以采用<code>lxml</code>库，通过<code>etree.HTML(html).xpath</code>来更优雅地实现元素定位。</p>
+<p>然后再来看参数化这一项。这一项极其普遍，主要是用在测试数据方面。但通过归纳，发现其实也可以概括为三种类型。</p>
+<ul>
+<li>循环取数据，数据可重复使用：e.g. 模拟3用户并发请求网页，总共有100个URL地址，每个虚拟用户都会依次循环加载这100个URL地址；</li>
+<li>保证并发测试数据唯一性，不循环取数据：e.g. 模拟3用户并发注册账号，总共有90个账号，要求注册账号不重复，注册完毕后结束测试；</li>
+<li>保证并发测试数据唯一性，循环取数据：模拟3用户并发登录账号，总共有90个账号，要求并发登录账号不相同，但数据可循环使用。</li>
+</ul>
+<p>通过以上归纳，可以确信地说，以上三种类型基本上可以覆盖我们日常性能测试工作中的所有参数化场景。</p>
+<p>在<code>LoadRunner</code>中是有一个集成的参数化模块，可以直接配置参数化策略。那在<code>Locust</code>要怎样实现该需求呢？</p>
+<p>答案依旧很简单，使用Python的<code>list</code>和<code>queue</code>数据结构即可！具体做法是，在<code>WebsiteUser</code>定义一个数据集，然后所有虚拟用户在<code>WebsiteTasks</code>中就可以共享该数据集了。如果不要求数据唯一性，数据集选择<code>list</code>数据结构，从头到尾循环遍历即可；如果要求数据唯一性，数据集选择<code>queue</code>数据结构，取数据时进行<code>queue.get()</code>操作即可，并且这也不会循环取数据；至于涉及到需要循环取数据的情况，那也简单，每次取完数据后再将数据插入到队尾即可，<code>queue.put_nowait(data)</code>。</p>
+<p>最后再说下检查点。该功能在<code>LoadRunner</code>中通常是使用<code>web_reg_find</code>这类注册函数进行检查的。在<code>Locust</code>脚本中，处理就更方便了，只需要对响应的内容关键字进行<code>assert xxx in response</code>操作即可。</p>
+<p>针对如上各种脚本增强的场景，我也通过代码示例分别进行了演示。但考虑到文章中插入太多代码会影响到阅读，因此将代码示例部分剥离了出来，如有需要请点击查看<a href="/post/head-first-locust-advanced-script/">《深入浅出开源性能测试工具Locust（脚本增强）》</a>。</p>
+<h2 id="Locust运行模式"><a href="#Locust运行模式" class="headerlink" title="Locust运行模式"></a>Locust运行模式</h2><p>在开始运行<code>Locust</code>脚本之前，我们先来看下<code>Locust</code>支持的运行模式。</p>
+<p>运行<code>Locust</code>时，通常会使用到两种运行模式：单进程运行和多进程分布式运行。</p>
+<p>单进程运行模式的意思是，<code>Locust</code>所有的虚拟并发用户均运行在单个<code>Python</code>进程中，具体从使用形式上，又分为<code>no_web</code>和<code>web</code>两种形式。该种模式由于单进程的原因，并不能完全发挥压力机所有处理器的能力，因此主要用于调试脚本和小并发压测的情况。</p>
+<p>当并发压力要求较高时，就需要用到<code>Locust</code>的多进程分布式运行模式。从字面意思上看，大家可能第一反应就是多台压力机同时运行，每台压力机分担负载一部分的压力生成。的确，<code>Locust</code>支持任意多台压力机（一主多从）的分布式运行模式，但这里说到的多进程分布式运行模式还有另外一种情况，就是在同一台压力机上开启多个<code>slave</code>的情况。这是因为当前阶段大多数计算机的CPU都是多处理器（<code>multiple processor cores</code>），单进程运行模式下只能用到一个处理器的能力，而通过在一台压力机上运行多个<code>slave</code>，就能调用多个处理器的能力了。比较好的做法是，如果一台压力机有<code>N</code>个处理器内核，那么就在这台压力机上启动一个<code>master</code>，<code>N</code>个<code>slave</code>。当然，我们也可以启动<code>N</code>的倍数个<code>slave</code>，但是根据我的试验数据，效果跟<code>N</code>个差不多，因此只需要启动<code>N</code>个<code>slave</code>即可。</p>
+<h2 id="脚本调试"><a href="#脚本调试" class="headerlink" title="脚本调试"></a>脚本调试</h2><p><code>Locust</code>脚本编写完毕后，通常不会那么顺利，在正式开始性能测试之前还需要先调试运行下。</p>
+<p>不过，<code>Locust</code>脚本虽然为Python脚本，但却很难直接当做Python脚本运行起来，为什么呢？这主要还是因为<code>Locust</code>脚本中引用了<code>HttpLocust</code>和<code>TaskSet</code>这两个类，如果要想直接对其进行调用测试，会发现编写启动脚本是一个比较困难的事情。因为这个原因，刚接触<code>Locust</code>的同学可能就会觉得<code>Locust</code>脚本不好调试。</p>
+<p>但这个问题也能克服，那就是借助<code>Locust</code>的单进程<code>no_web</code>运行模式。</p>
+<p>在<code>Locust</code>的单进程<code>no_web</code>运行模式中，我们可以通过<code>--no_web</code>参数，指定并发数（<code>-c</code>）和总执行次数（<code>-n</code>），直接在<code>Terminal</code>中执行脚本。</p>
+<p>在此基础上，当我们想要调试<code>Locust</code>脚本时，就可以在脚本中需要调试的地方通过<code>print</code>打印日志，然后将并发数和总执行次数都指定为1，执行形式如下所示。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ locust <span class="_">-f</span> locustfile.py --no_web -c 1 -n 1</div></pre></td></tr></table></figure>
+<p>通过这种方式，我们就能很方便地对<code>Locust</code>脚本进行调试了。</p>
+<h2 id="执行测试"><a href="#执行测试" class="headerlink" title="执行测试"></a>执行测试</h2><p><code>Locust</code>脚本调试通过后，就算是完成了所有准备工作，可以开始进行压力测试了。</p>
+<p><code>Locust</code>是通过在<code>Terminal</code>中执行命令进行启动的，通用的参数有如下两个：</p>
+<ul>
+<li><code>-H, --host</code>：被测系统的<code>host</code>，若在<code>Terminal</code>中不进行指定，就需要在<code>Locust</code>子类中通过<code>host</code>参数进行指定；</li>
+<li><code>-f, --locustfile</code>：指定执行的<code>Locust</code>脚本文件；</li>
+</ul>
+<p>除了这两个通用的参数，我们还需要根据实际测试场景，选择不同的<code>Locust</code>运行模式，而模式的指定也是通过其它参数来进行控制的。</p>
+<h3 id="单进程运行"><a href="#单进程运行" class="headerlink" title="单进程运行"></a>单进程运行</h3><p><strong>no_web</strong></p>
+<p>如果采用<code>no_web</code>形式，则需使用<code>--no-web</code>参数，并会用到如下几个参数。</p>
+<ul>
+<li><code>-c, --clients</code>：指定并发用户数；</li>
+<li><code>-n, --num-request</code>：指定总执行测试；</li>
+<li><code>-r, --hatch-rate</code>：指定并发加压速率，默认值位1。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">$ locust -H http://debugtalk.com <span class="_">-f</span> demo.py --no-web -c1 -n2</div><div class="line">[2017-02-21 21:27:26,522] Leos-MacBook-Air.local/INFO/locust.main: Starting Locust 0.8a2</div><div class="line">[2017-02-21 21:27:26,523] Leos-MacBook-Air.local/INFO/locust.runners: Hatching and swarming 1 clients at the rate 1 clients/s...</div><div class="line"> Name                                                          <span class="comment"># reqs      # fails     Avg     Min     Max  |  Median   req/s</span></div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line"> Total                                                              0     0(0.00%)                                       0.00</div><div class="line"></div><div class="line">[2017-02-21 21:27:27,526] Leos-MacBook-Air.local/INFO/locust.runners: All locusts hatched: WebsiteUser: 1</div><div class="line">[2017-02-21 21:27:27,527] Leos-MacBook-Air.local/INFO/locust.runners: Resetting stats</div><div class="line"></div><div class="line"> Name                                                          <span class="comment"># reqs      # fails     Avg     Min     Max  |  Median   req/s</span></div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line"> GET /about/                                                        0     0(0.00%)       0       0       0  |       0    0.00</div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line"> Total                                                              0     0(0.00%)                                       0.00</div><div class="line"></div><div class="line"> Name                                                          <span class="comment"># reqs      # fails     Avg     Min     Max  |  Median   req/s</span></div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line"> GET /about/                                                        1     0(0.00%)      17      17      17  |      17    0.00</div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line"> Total                                                              1     0(0.00%)                                       0.00</div><div class="line"></div><div class="line">[2017-02-21 21:27:32,420] Leos-MacBook-Air.local/INFO/locust.runners: All locusts dead</div><div class="line"></div><div class="line">[2017-02-21 21:27:32,421] Leos-MacBook-Air.local/INFO/locust.main: Shutting down (<span class="built_in">exit</span> code 0), bye.</div><div class="line"> Name                                                          <span class="comment"># reqs      # fails     Avg     Min     Max  |  Median   req/s</span></div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line"> GET /                                                              1     0(0.00%)      20      20      20  |      20    0.00</div><div class="line"> GET /about/                                                        1     0(0.00%)      17      17      17  |      17    0.00</div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line"> Total                                                              2     0(0.00%)                                       0.00</div><div class="line"></div><div class="line">Percentage of the requests completed within given <span class="built_in">times</span></div><div class="line"> Name                                                           <span class="comment"># reqs    50%    66%    75%    80%    90%    95%    98%    99%   100%</span></div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div><div class="line"> GET /                                                               1     20     20     20     20     20     20     20     20     20</div><div class="line"> GET /about/                                                         1     17     17     17     17     17     17     17     17     17</div><div class="line">--------------------------------------------------------------------------------------------------------------------------------------</div></pre></td></tr></table></figure>
+<p><strong>web</strong></p>
+<p>如果采用<code>web</code>形式，，则通常情况下无需指定其它额外参数，<code>Locust</code>默认采用<code>8089</code>端口启动<code>web</code>；如果要使用其它端口，就可以使用如下参数进行指定。</p>
+<ul>
+<li><code>-P, --port</code>：指定web端口，默认为<code>8089</code>.</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ locust -H http://debugtalk.com <span class="_">-f</span> demo.py</div><div class="line">[2017-02-21 21:31:26,334] Leos-MacBook-Air.local/INFO/locust.main: Starting web monitor at *:8089</div><div class="line">[2017-02-21 21:31:26,334] Leos-MacBook-Air.local/INFO/locust.main: Starting Locust 0.8a2</div></pre></td></tr></table></figure>
+<p>此时，<code>Locust</code>并没有开始执行测试，还需要在Web页面中配置参数后进行启动。</p>
+<p>如果<code>Locust</code>运行在本机，在浏览器中访问<code>http://localhost:8089</code>即可进入<code>Locust</code>的Web管理页面；如果<code>Locust</code>运行在其它机器上，那么在浏览器中访问<code>http://locust_machine_ip:8089</code>即可。</p>
+<p>在<code>Locust</code>的Web管理页面中，需要配置的参数只有两个：</p>
+<ul>
+<li><code>Number of users to simulate</code>: 设置并发用户数，对应中<code>no_web</code>模式的<code>-c, --clients</code>参数；</li>
+<li><code>Hatch rate (users spawned/second)</code>: 启动虚拟用户的速率，对应着<code>no_web</code>模式的<code>-r, --hatch-rate</code>参数。</li>
+</ul>
+<p>参数配置完毕后，点击【Start swarming】即可开始测试。</p>
+<h3 id="多进程分布式运行"><a href="#多进程分布式运行" class="headerlink" title="多进程分布式运行"></a>多进程分布式运行</h3><p>不管是<code>单机多进程</code>，还是<code>多机负载</code>模式，运行方式都是一样的，都是先运行一个<code>master</code>，再启动多个<code>slave</code>。</p>
+<p>启动<code>master</code>时，需要使用<code>--master</code>参数；同样的，如果要使用<code>8089</code>以外的端口，还需要使用<code>-P, --port</code>参数。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ locust -H http://debugtalk.com <span class="_">-f</span> demo.py --master --port=8088</div><div class="line">[2017-02-21 22:59:57,308] Leos-MacBook-Air.local/INFO/locust.main: Starting web monitor at *:8088</div><div class="line">[2017-02-21 22:59:57,310] Leos-MacBook-Air.local/INFO/locust.main: Starting Locust 0.8a2</div></pre></td></tr></table></figure>
+<p><code>master</code>启动后，还需要启动<code>slave</code>才能执行测试任务。</p>
+<p>启动<code>slave</code>时需要使用<code>--slave</code>参数；在<code>slave</code>中，就不需要再指定端口了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ locust -H http://debugtalk.com <span class="_">-f</span> demo.py --slave</div><div class="line">[2017-02-21 23:07:58,696] Leos-MacBook-Air.local/INFO/locust.main: Starting Locust 0.8a2</div><div class="line">[2017-02-21 23:07:58,696] Leos-MacBook-Air.local/INFO/locust.runners: Client <span class="string">'Leos-MacBook-Air.local_980ab0eec2bca517d03feb60c31d6a3a'</span> reported as</div><div class="line"> ready. Currently 2 clients ready to swarm.</div></pre></td></tr></table></figure>
+<p>如果<code>slave</code>与<code>master</code>不在同一台机器上，还需要通过<code>--master-host</code>参数再指定<code>master</code>的IP地址。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ locust -H http://debugtalk.com <span class="_">-f</span> demo.py --slave --master-host=&lt;locust_machine_ip&gt;</div><div class="line">[2017-02-21 23:07:58,696] Leos-MacBook-Air.local/INFO/locust.main: Starting Locust 0.8a2</div><div class="line">[2017-02-21 23:07:58,696] Leos-MacBook-Air.local/INFO/locust.runners: Client <span class="string">'Leos-MacBook-Air.local_980ab0eec2bca517d03feb60c31d6a3a'</span> reported as</div><div class="line"> ready. Currently 2 clients ready to swarm.</div></pre></td></tr></table></figure>
+<p><code>master</code>和<code>slave</code>都启动完毕后，就可以在浏览器中通过<code>http://locust_machine_ip:8089</code>进入<code>Locust</code>的Web管理页面了。使用方式跟单进程<code>web</code>形式完全相同，只是此时是通过多进程负载来生成并发压力，在<code>web</code>管理界面中也能看到实际的<code>slave</code>数量。</p>
+<h2 id="测试结果展示"><a href="#测试结果展示" class="headerlink" title="测试结果展示"></a>测试结果展示</h2><p><code>Locust</code>在执行测试的过程中，我们可以在<code>web</code>界面中实时地看到结果运行情况。</p>
+<p>相比于<code>LoadRunner</code>，<code>Locust</code>的结果展示十分简单，主要就四个指标：<code>并发数</code>、<code>RPS</code>、<code>响应时间</code>、<code>异常率</code>。但对于大多数场景来说，这几个指标已经足够了。</p>
+<p><img src="/images/14877299635610.jpg" alt=""></p>
+<p>在上图中，<code>RPS</code>和<code>平均响应时间</code>这两个指标显示的值都是根据最近2秒请求响应数据计算得到的统计值，我们也可以理解为瞬时值。</p>
+<p>如果想看性能指标数据的走势，就可以在<code>Charts</code>栏查看。在这里，可以查看到<code>RPS</code>和<code>平均响应时间</code>在整个运行过程中的波动情况。这个功能之前在<code>Locust</code>中一直是缺失的，直到最近，这个坑才被我之前在<code>阿里移动</code>的同事（网络ID<a href="http://myzhan.github.io/" target="_blank" rel="external"><code>myzhan</code></a>）给填上了。当前该功能已经合并到<code>Locust</code>了，更新到最新版即可使用。</p>
+<p><img src="/images/14877300553617.jpg" alt=""></p>
+<p>除了以上数据，<code>Locust</code>还提供了整个运行过程数据的百分比统计值，例如我们常用的<code>90%响应时间</code>、<code>响应时间中位值</code>，该数据可以通过<code>Download response time distribution CSV</code>获得，数据展示效果如下所示。</p>
+<p><img src="/images/14877305222231.jpg" alt=""></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过前面对<code>Locust</code>全方位的讲解，相信大家对<code>Locust</code>的功能特性已经非常熟悉了，在实际项目中将<code>Locust</code>作为生产力工具应该也没啥问题了。</p>
+<p>不过，任何一款工具都不是完美的，必定都会存在一些不足之处。但是好在<code>Locust</code>具有极强的可定制型，当我们遇到一些特有的需求时，可以在<code>Locust</code>上很方便地实现扩展。</p>
+<p>还是前面提到的那位技术大牛（<code>myzhan</code>），他为了摆脱<code>CPython</code>的<code>GIL</code>和<code>gevent</code>的 <code>monkey_patch()</code>，将<code>Locust</code>的<code>slave</code>端采用<code>golang</code>进行了重写，采用<code>goroutine</code>取代了<code>gevent</code>。经过测试，相较于原生的<code>Python</code>实现，他的这套<code>golang</code>实现具有<code>5~10</code>倍以上的性能提升。当前，他已经将该实现开源，项目名称为<a href="https://github.com/myzhan/boomer" target="_blank" rel="external"><code>myzhan/boomer</code></a>，如果大家感兴趣，可以阅读他的博客文章进一步了解，<a href="http://myzhan.github.io/2016/03/01/write-a-load-testing-tool-in-golang/" target="_blank" rel="external">《用 golang 来编写压测工具》</a>。</p>
+<p>如果我们也想在<code>Locust</code>的基础上进行二次开发，那要怎么开始呢？</p>
+<p>毫无疑问，阅读<code>Locust</code>的项目源码是必不可少的第一步。可能对于很多人来说，阅读开源项目源码是一件十分困难的事情，不知道如何着手，在知乎上也看到好多关于如何阅读开源项目源码的提问。事实上，<code>Locust</code>项目的代码结构清晰，核心代码量也比较少，十分适合阅读学习。哪怕只是想体验下阅读开源项目源码，或者说想提升下自己的<code>Python</code>技能，<code>Locust</code>也是个不错的选择。</p>
+<p>在下一篇文章中，我将对<code>Locust</code>源码进行解析，《深入浅出开源性能测试工具Locust（源码篇）》，敬请期待！</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在&lt;a href=&quot;/post/locustplus-talk-about-performance-test/&quot;&gt;《【LocustPlus序】漫谈服务端性能测试》&lt;/a&gt;中，我对服务端性能测试的基础概念和性能测试工具的基本原理进行了介绍，并且重点推荐了&lt;code&gt;Locus
     
     </summary>
     
@@ -1902,120 +1963,6 @@
       <category term="iOS" scheme="http://debugtalk.com/tags/iOS/"/>
     
       <category term="CI" scheme="http://debugtalk.com/tags/CI/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>深入浅出Git权限校验</title>
-    <link href="http://debugtalk.com/post/head-first-git-authority-verification/"/>
-    <id>http://debugtalk.com/post/head-first-git-authority-verification/</id>
-    <published>2016-06-14T16:00:00.000Z</published>
-    <updated>2017-06-15T07:51:23.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>借助上次“掉坑”的经历，我对Git权限校验的两种方式重头进行了梳理，形成了这篇总结记录。</p>
-<p>在本地计算机与GitHub（或GitLab）进行通信时，传输主要基于两种协议，<code>HTTPS</code>和<code>SSH</code>，对应的仓库地址就是<code>HTTPS URLs</code>和<code>SSH URLs</code>。</p>
-<p>首先需要强调的是，<code>HTTPS URLs</code>和<code>SSH URLs</code>对应的是两套完全独立的权限校验方式，主要的区别就是<code>HTTPS URLs</code>采用账号密码进行校验，<code>SSH URLs</code>采用<code>SSH</code>秘钥对进行校验。平时使用的时候我们可以根据实际情况，选择一种即可。</p>
-<h2 id="HTTPS-URLs"><a href="#HTTPS-URLs" class="headerlink" title="HTTPS URLs"></a>HTTPS URLs</h2><p>GitHub官方推荐采用<code>HTTPS URLs</code>的方式，因为该种方式适用面更广（即使在有防火墙或代理的情况下也同样适用），使用更方便（配置更简单）。</p>
-<p>采用<code>HTTPS URLs</code>地址<code>clone</code>/<code>fetch</code>/<code>pull</code>/<code>push</code>仓库时，事先无需对本地系统进行任何配置，只需要输入GitHub的账号和密码即可。不过如果每次都要手动输入账号密码，也是一件很繁琐的事情。</p>
-<p>好在已经有多个机制可以让操作不用这么麻烦。</p>
-<p>在Mac系统中，在启用<code>Keychain</code>机制的情况下，首次输入GitHub账号密码后，认证信息就会自动保存到系统的<code>Keychain</code>中，下次再次访问仓库时就会自动读取<code>Keychain</code>中保存的认证信息。</p>
-<p>在非Mac系统中，虽然没有<code>Keychain</code>机制，但是Git提供了<code>credential helper</code>机制，可以将账号密码以cache的形式在内存中缓存一段时间（默认15分钟），或者以文件的形式存储起来（<code>~/.git-credentials</code>）。当然，Mac系统如果不启用<code>Keychain</code>机制，也可以采用这种方式。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># cache credential in memory</span></div><div class="line">$ git config --global credential.helper cache</div><div class="line"><span class="comment"># store credential in ~/.git-credential</span></div><div class="line">$ git config --global credential.helper store</div></pre></td></tr></table></figure>
-<p>在<code>credential.helper</code>设置为<code>store</code>的情况下，首次输入GitHub账号密码后，就会自动保存到<code>~/.git-credentials</code>文件中，保存形式为<code>https://user:pass@github.com</code>；下次再次访问仓库时就会自动读取<code>~/.git-credentials</code>中保存的认证信息。</p>
-<p>另一个需要说明的情况是，如果在GitHub中开启了<code>2FA（two-factor authentication）</code>，那么在本地系统中输入GitHub账号密码时，不能输入原始的密码（即GitHub网站的登录密码），而是需要事先在GitHub网站中创建一个<code>Personal access token</code>，后续在访问代码仓库需要进行权限校验的时候，采用<code>access token</code>作为密码进行输入。</p>
-<h2 id="SSH-URLs"><a href="#SSH-URLs" class="headerlink" title="SSH URLs"></a>SSH URLs</h2><p>除了<code>HTTPS URLs</code>，还可以采用<code>SSH URLs</code>的方式访问GitHub代码仓库。</p>
-<p>采用<code>SSH URLs</code>方式之前，需要先在本地计算机中生成<code>SSH keypair</code>（秘钥对，包括私钥和公钥）。默认情况下，生成的秘钥位于<code>$HOME/.ssh/</code>目录中，文件名称分别为<code>id_rsa</code>和<code>id_rsa.pub</code>，通常无需修改，保持默认即可。不过，如果一台计算机中存在多个秘钥对，就需要修改秘钥文件名，名称没有强制的命名规范，便于自己辨识即可。</p>
-<p>如下是创建秘钥对的过程。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">➜ ssh-keygen -t rsa -b 4096 -C <span class="string">"mail@debugtalk.com"</span></div><div class="line">Generating public/private rsa key pair.</div><div class="line">Enter file <span class="keyword">in</span> <span class="built_in">which</span> to save the key (/Users/Leo/.ssh/id_rsa): /Users/Leo/.ssh/debugtalk_id_rsa</div><div class="line">Enter passphrase (empty <span class="keyword">for</span> no passphrase): &lt;myPassphrase&gt;</div><div class="line">Enter same passphrase again: &lt;myPassphrase&gt;</div><div class="line">Your identification has been saved <span class="keyword">in</span> /Users/Leo/.ssh/debugtalk_id_rsa.</div><div class="line">Your public key has been saved <span class="keyword">in</span> /Users/Leo/.ssh/debugtalk_id_rsa.pub.</div><div class="line">The key fingerprint is:</div><div class="line">SHA256:jCyEEKjlCU1klROnuBg+UH08GJ1u252rQMADdD9kYMo mail@debugtalk.com</div><div class="line">The key<span class="string">'s randomart image is:</span></div><div class="line">+---[RSA 4096]----+</div><div class="line">|+*BoBO+.         |</div><div class="line">|o=oO=**          |</div><div class="line">|++E.*+o.         |</div><div class="line">|+ooo +o+         |</div><div class="line">|.o. ..+oS. .     |</div><div class="line">|  .  o. . o      |</div><div class="line">|      .    .     |</div><div class="line">|       .  .      |</div><div class="line">|        ..       |</div><div class="line">+----[SHA256]-----+</div></pre></td></tr></table></figure>
-<p>在创建秘钥的过程中，系统还建议创建一个名为<code>passphrase</code>的东西，这是用来干嘛的呢？</p>
-<blockquote>
-<p>首先，单独采用密码肯定是不够安全的。如果密码太简单，那么就很容易被暴力破解，如果密码太复杂，那么用户就很难记忆，记录到小本子里面更不安全。</p>
-<p>因此，<code>SSH keys</code>诞生了。<code>SSH</code>秘钥对的可靠性非常高，被暴力破解的可能性基本没有。不过，这要求用户非常谨慎地保管好私钥，如果别人使用你的计算机时偷偷地将你的私钥拷走了，那么就好比是别人拿到了你家里的钥匙，也能随时打开你家的门。</p>
-<p>基于以上情况，解决办法就是在<code>SSH keys</code>之外再增加一个密码，即<code>passphrase</code>。只有同时具备<code>SSH private key</code>和<code>passphrase</code>的情况下，才能通过<code>SSH</code>的权限校验，这就大大地增加了安全性。当然，这个<code>passphrase</code>也不是必须的，在创建秘钥对时也可以不设置<code>passphrase</code>。</p>
-<p>另外，如果每次权限校验时都要输入<code>passphrase</code>，这也是挺麻烦的。好在我们不用再担心这个问题，因为<code>ssh-agent</code>可以帮我们记住<code>passphrase</code>，Mac系统的Keychain也可以记住<code>passphrase</code>，这样我们在同一台计算机中就不用重新输入密码了。</p>
-</blockquote>
-<p>秘钥对创建好以后，私钥存放于本地计算机（<code>~/.ssh/id_rsa</code>），将公钥（<code>~/.ssh/id_rsa.pub</code>）中的内容添加至GitHub账户。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># copy the contents of id_rsa.pub to the clipboard</span></div><div class="line">➜ pbcopy &lt; ~/.ssh/id_rsa.pub</div><div class="line"></div><div class="line"><span class="comment"># paste to GitHub</span></div><div class="line"><span class="comment"># Login GitHub, 【Settings】-&gt;【SSH and GPG keys】-&gt;【New SSH Key】</span></div></pre></td></tr></table></figure>
-<p>不过，如果此时检测本地计算机与GitHub的连接状态，会发现系统仍提示权限校验失败。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">➜ ssh -T git@github.com</div><div class="line">Permission denied (publickey).</div></pre></td></tr></table></figure>
-<p>这是因为在本地计算机与GitHub建立连接的时候，实际上是本机计算机的<code>ssh-agent</code>与GitHub服务器进行通信。虽然本地计算机有了私钥，但是<code>ssh-agent</code>并不知道私钥存储在哪儿。因此，要想正常使用秘钥对，需要先将私钥加入到本地计算机的<code>ssh-agent</code>中（添加过程中需要输入<code>passphrase</code>）。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># start ssh-agent in the background</span></div><div class="line">➜ <span class="built_in">eval</span> <span class="string">"<span class="variable">$(ssh-agent -s)</span>"</span></div><div class="line">Agent pid 78370</div><div class="line"></div><div class="line">➜ ssh-add ~/.ssh/id_rsa</div><div class="line">Enter passphrase <span class="keyword">for</span> /Users/Leo/.ssh/id_rsa: &lt;myPassphrase&gt;</div><div class="line">Identity added: /Users/Leo/.ssh/id_rsa (/Users/Leo/.ssh/id_rsa)</div></pre></td></tr></table></figure>
-<p>添加完成后，就可以查看到当前计算机中存储的密钥。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">➜ ssh-add <span class="_">-l</span></div><div class="line">4096 SHA256:xRg49AgTxxxxxxxx8q2SPPOfxxxxxxxxRlBY /Users/Leo/.ssh/id_rsa (RSA)</div></pre></td></tr></table></figure>
-<p>再次检测本地计算机与GitHub的连接状态，校验就正常通过了。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">➜ ssh -T git@github.com</div><div class="line">Hi leolee! You<span class="string">'ve successfully authenticated, but GitHub does not provide shell access.</span></div></pre></td></tr></table></figure>
-<p>后续再进行<code>clone</code>/<code>fetch</code>/<code>pull</code>/<code>push</code>操作时，就可以正常访问GitHub代码仓库了，并且也不需要再重新输入账号密码。</p>
-<p>而且，将私钥加入<code>ssh-agent</code>后，即使删除私钥文件，本地计算机仍可以正常访问GitHub代码仓库。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">➜ rm -rf ~/.ssh</div><div class="line">➜ ssh-add <span class="_">-l</span></div><div class="line">4096 SHA256:xRg49AgTxxxxxxxx8q2SPPOfxxxxxxxxRlBY /Users/Leo/.ssh/id_rsa (RSA)</div><div class="line">➜ ssh -T git@github.com</div><div class="line">The authenticity of host <span class="string">'github.com (192.30.252.130)'</span> can<span class="string">'t be established.</span></div><div class="line">RSA key fingerprint is SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8.</div><div class="line">Are you sure you want to continue connecting (yes/no)? yes</div><div class="line">Warning: Permanently added 'github.com,192.30.252.130<span class="string">' (RSA) to the list of known hosts.</span></div><div class="line">Hi leolee! You've successfully authenticated, but GitHub does not provide shell access.</div></pre></td></tr></table></figure>
-<p>只有执行<code>ssh-add -D</code>或<code>ssh-add -d pub_key</code>命令，将私钥从<code>ssh-agent</code>删除后，认证信息才会失效。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">➜ ssh-add <span class="_">-d</span> ~/.ssh/id_rsa.pub</div><div class="line">Identity removed: /Users/Leo/.ssh/id_rsa.pub (mail@debugtalk.com)</div><div class="line">➜ ssh-add <span class="_">-l</span></div><div class="line">The agent has no identities.</div><div class="line">➜ ssh -T git@github.com</div><div class="line">Permission denied (publickey).</div></pre></td></tr></table></figure>
-<h2 id="同时使用多个GitHub账号"><a href="#同时使用多个GitHub账号" class="headerlink" title="同时使用多个GitHub账号"></a>同时使用多个GitHub账号</h2><p>熟悉了<code>HTTPS URLs</code>和<code>SSH URLs</code>这两种校验方式之后，我们再来看之前遇到的问题。要想在一台计算机上同时使用多个GitHub账号访问不同的仓库，需要怎么做呢？</p>
-<p>为了更好地演示，现假设有两个GitHub账号，<code>debugtalk</code>和<code>leolee</code>，在两个账号中各自有一个仓库，<code>debugtalk/DroidMeter</code>和<code>DebugTalk/MobileStore</code>（公司私有库）。</p>
-<p>前面已经说过，<code>HTTPS URLs</code>和<code>SSH URLs</code>对应着两套独立的权限校验方式，因此这两套方式应该是都能单独实现我们的需求的。</p>
-<p>不过在详细讲解Git权限校验的问题之前，我们先来回顾下Git配置文件的优先级。</p>
-<h3 id="Git配置存储位置及其优先级"><a href="#Git配置存储位置及其优先级" class="headerlink" title="Git配置存储位置及其优先级"></a>Git配置存储位置及其优先级</h3><p><code>Unix-like</code>系统中，保存Git用户信息的主要有3个地方（Mac系统多一个<code>Keychain</code>）：</p>
-<ul>
-<li><code>/etc/gitconfig</code>：存储当前系统所有用户的git配置信息，使用带有<code>--system</code>选项的<code>git config</code>时，配置信息会写入该文件；</li>
-<li><code>~/.gitconfig</code>或<code>~/.config/git/config</code>：存储当前用户的git配置信息，使用带有<code>--global</code>选项的<code>git config</code>时，配置信息会写入该文件；</li>
-<li><code>Keychain Access</code>：在开启<code>Keychain</code>机制的情况下，进行权限校验后会自动将账号密码保存至<code>Keychain Access</code>。</li>
-<li>仓库的Git目录中的config文件（即<code>repo/.git/config</code>）：存储当前仓库的git配置信息，在仓库中使用带有<code>--local</code>选项的<code>git config</code>时，配置信息会写入该文件；</li>
-</ul>
-<p>在优先级方面，以上4个配置项的优先级从上往下依次上升，即<code>repo/.git/config</code>的优先级最高，然后<code>Keychain Access</code>会覆盖<code>~/.gitconfig</code>中的配置，<code>~/.gitconfig</code>会覆盖<code>/etc/gitconfig</code>中的配置。</p>
-<h3 id="基于SSH协议实现多账号共存"><a href="#基于SSH协议实现多账号共存" class="headerlink" title="基于SSH协议实现多账号共存"></a>基于<code>SSH</code>协议实现多账号共存</h3><p>先来看下如何采用<code>SSH URLs</code>实现我们的需求。</p>
-<p>在处理多账号共存问题之前，两个账号均已分别创建<code>SSH</code>秘钥对，并且<code>SSH-key</code>均已加入本地计算机的<code>ssh-agent</code>。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">➜ ssh-add <span class="_">-l</span></div><div class="line">4096 SHA256:lqujbjkWM1xxxxxxxxxxG6ERK6DNYj9tXExxxxxx8ew /Users/Leo/.ssh/debugtalk_id_rsa (RSA)</div><div class="line">4096 SHA256:II2O9vZutdQr8xxxxxxxxxxD7EYvxxxxxxbynx2hHtg /Users/Leo/.ssh/id_rsa (RSA)</div></pre></td></tr></table></figure>
-<p>在详细讲解多账号共存的问题之前，我们先来回想下平时在Terminal中与GitHub仓库进行交互的场景。</p>
-<figure class="highlight zsh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">➜  DroidMeter git:(master) git pull</div><div class="line">Already up-to-date.</div><div class="line">➜  DroidMeter git:(master) touch README.md</div><div class="line">➜  DroidMeter git:(master) ✗ git add .</div><div class="line">➜  DroidMeter git:(master) ✗ git commit -m <span class="string">"add README"</span></div><div class="line">➜  DroidMeter git:(master) git push</div><div class="line">Counting objects: 3, done.</div><div class="line">Delta compression using up to 4 threads.</div><div class="line">Compressing objects: 100% (2/2), done.</div><div class="line">Writing objects: 100% (3/3), 310 bytes | 0 bytes/s, done.</div><div class="line">Total 3 (delta 0), reused 0 (delta 0)</div><div class="line">To git@debugtalk:debugtalk/DroidMeter.git</div><div class="line">   7df6839..68d085b  master -&gt; master</div></pre></td></tr></table></figure>
-<p>在操作过程中，本地计算机的<code>ssh-agent</code>与GitHub服务器建立了连接，并进行了账号权限校验。</p>
-<p>当本地计算机只有一个GitHub账号时，这个行为并不难理解，系统应该会采用这个唯一的GitHub账号进行操作。那如果本地计算机中有多个Github账号时，系统是根据什么来判断应该选择哪个账号呢？</p>
-<p>实际情况是，系统没法进行判断。系统只会有一个默认的账号，然后采用这个默认的账号去操作所有的代码仓库，当账号与仓库不匹配时，就会报权限校验失败的错误。</p>
-<p>那要怎样才能让系统正确区分账号呢？这就需要我们手动进行配置，配置文件即是<code>~/.ssh/config</code>。</p>
-<p>创建<code>~/.ssh/config</code>文件，在其中填写如下内容。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># debugtalk</span></div><div class="line">Host debugtalk</div><div class="line">    HostName github.com</div><div class="line">    User git</div><div class="line">    IdentityFile ~/.ssh/id_rsa</div><div class="line"></div><div class="line"><span class="comment"># DT</span></div><div class="line">Host leolee</div><div class="line">    HostName github.com</div><div class="line">    User git</div><div class="line">    IdentityFile ~/.ssh/dt_id_rsa</div></pre></td></tr></table></figure>
-<p>要理解以上配置文件的含义并不难，我们可以对比看下两个项目的<code>SSH URLs</code>：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git@github.com:debugtalk/DroidMeter.git</div><div class="line">git@github.com:DTSZ/Store_Android.git</div></pre></td></tr></table></figure>
-<p>其中，<code>git</code>是本地<code>ssh-agent</code>与GitHub服务器建立<code>SSH</code>连接采用的用户名（即<code>User</code>），<code>github.com</code>是GitHub服务器的主机（即<code>HostName</code>）。</p>
-<p>可以看出，如果采用原始的<code>SSH URLs</code>，由于<code>User</code>和<code>HostName</code>都相同，本地计算机并不知道应该采用哪个<code>SSH-key</code>去建立连接。</p>
-<p>因此，通过创建<code>~/.ssh/config</code>文件，在<code>Host</code>中进行区分，然后经过<code>CNAME</code>映射到<code>HostName</code>，然后分别指向不同的<code>SSH-key</code>，即<code>IdentityFile</code>。由于<code>HostName</code>才是真正指定GitHub服务器主机的字段，因此这么配置不会对本地<code>ssh-agent</code>连接GitHub主机产生影响，再加上<code>Host</code>别名指向了不同的<code>SSH-key</code>，从而实现了对两个GitHub账号的分离。</p>
-<p>配置完毕后，两个GitHub账号就可以通过<code>Host</code>别名来进行区分了。后续再与GitHub服务器进行通信时，就可以采用<code>Host</code>别名代替原先的<code>github.com</code>。例如，测试本地<code>ssh-agent</code>与GitHub服务器的连通性时，可采用如下方式：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">➜ ssh -T git@debugtalk</div><div class="line">Hi debugtalk! You have successfully authenticated, but GitHub does not provide shell access.</div><div class="line">➜ ssh -T git@leolee</div><div class="line">Hi leolee! You have successfully authenticated, but GitHub does not provide shell access.</div></pre></td></tr></table></figure>
-<p>可以看出，此时两个账号各司其职，不会再出现混淆的情况。</p>
-<p>不过，我们还遗漏了很重要的一点。在本地代码仓库中执行<code>push</code>/<code>pull</code>/<code>fetch</code>等操作的时候，命令中并不会包含<code>Host</code>信息，那系统怎么知道我们要采用哪个GitHub账号进行操作呢？</p>
-<p>答案是，系统还是没法判断，需要我们进行配置指定。</p>
-<p>显然，不同的仓库可能对应着不同的GitHub账号，因此这个配置不能配置成全局的，而只能在各个项目中分别进行配置，即<code>repo/.git/config</code>文件。</p>
-<p>配置的方式如下：</p>
-<p>在<code>debugtalk/DroidMeter</code>仓库中：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">➜ git remote add origin git@debugtalk:debugtalk/DroidMeter.git</div></pre></td></tr></table></figure>
-<p>在<code>DebugTalk/MobileStore.git</code>仓库中：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">➜ git remote add origin git@leolee:DebugTalk/MobileStore.git</div></pre></td></tr></table></figure>
-<p>配置的原理也很容易理解，就是将仓库的<code>Host</code>更换为之前设置的别名。添加完毕后，后续再在两个仓库中执行任何<code>git</code>操作时，系统就可以选择正确的<code>SSH-key</code>与GitHub服务器进行交互了。</p>
-<h3 id="基于HTTPS协议实现多账号共存"><a href="#基于HTTPS协议实现多账号共存" class="headerlink" title="基于HTTPS协议实现多账号共存"></a>基于<code>HTTPS</code>协议实现多账号共存</h3><p>再来看下如何采用<code>HTTPS URLs</code>实现我们的需求。</p>
-<p>有了前面的经验，我们的思路就清晰了许多。采用<code>HTTPS URLs</code>的方式进行Git权限校验后，系统会将GitHub账号密码存储到<code>Keychain</code>中（Mac系统），或者存储到<code>~/.git-credentials</code>文件中（<code>Git credential helper</code>）。</p>
-<p>不管是存储到哪里，我们面临的问题都是相同的，即如何在代码仓库中区分采用哪个GitHub账号。</p>
-<p>配置的方式其实也很简单：</p>
-<p>在<code>debugtalk/DroidMeter</code>仓库中：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">➜ git remote add origin https://debugtalk@github.com/debugtalk/DroidMeter.git</div></pre></td></tr></table></figure>
-<p>在<code>DebugTalk/MobileStore.git</code>仓库中：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">➜ git remote add origin https://leolee@github.com/DebugTalk/MobileStore.git</div></pre></td></tr></table></figure>
-<p>配置的原理也很容易理解，将GitHub用户名添加到仓库的Git地址中，这样在执行git命令的时候，系统就会采用指定的GitHub用户名去<code>Keychain</code>或<code>~/.git-credentials</code>中寻找对应的认证信息，账号使用错乱的问题也就不复存在了。</p>
-<p><code>Done!</code></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;借助上次“掉坑”的经历，我对Git权限校验的两种方式重头进行了梳理，形成了这篇总结记录。&lt;/p&gt;
-&lt;p&gt;在本地计算机与GitHub（或GitLab）进行通信时，传输主要基于两种协议，&lt;code&gt;HTTPS&lt;/code&gt;和&lt;code&gt;SSH&lt;/code&gt;，对应的仓库地址就是&lt;
-    
-    </summary>
-    
-    
-      <category term="Git" scheme="http://debugtalk.com/tags/Git/"/>
-    
-      <category term="SSH" scheme="http://debugtalk.com/tags/SSH/"/>
-    
-      <category term="HTTPS" scheme="http://debugtalk.com/tags/HTTPS/"/>
-    
-      <category term="权限校验" scheme="http://debugtalk.com/tags/%E6%9D%83%E9%99%90%E6%A0%A1%E9%AA%8C/"/>
     
   </entry>
   
