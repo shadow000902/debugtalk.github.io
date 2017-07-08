@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>ApiTestEngine 演化之路（0）开发未动，测试先行 | DebugTalk</title>
+    <title>ApiTestEngine 演进之路（0）开发未动，测试先行 | DebugTalk</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="九毫">
@@ -12,14 +12,14 @@
 
     
     <meta name="description" content="在《接口自动化测试的最佳工程实践（ApiTestEngine）》一文中，我详细介绍了ApiTestEngine诞生的背景，并对其核心特性进行了详尽的剖析。
-接下来，我将在《ApiTestEngine演化之路》系列文章中讲解ApiTestEngine是如何从第一行代码开始，逐步实现接口自动化测试框架的核心功能特性的。
+接下来，我将在《ApiTestEngine演进之路》系列文章中讲解ApiTestEngine是如何从第一行代码开始，逐步实现接口自动化测试框架的核心功能特性的。
 相信大家都有听说过TDD（测试驱动开发）这种开发模式，虽然网络上对该种开发模式存在">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ApiTestEngine 演化之路（0）开发未动，测试先行">
+<meta property="og:title" content="ApiTestEngine 演进之路（0）开发未动，测试先行">
 <meta property="og:url" content="http://debugtalk.com/post/ApiTestEngine-0-setup-CI-test/index.html">
 <meta property="og:site_name" content="DebugTalk">
 <meta property="og:description" content="在《接口自动化测试的最佳工程实践（ApiTestEngine）》一文中，我详细介绍了ApiTestEngine诞生的背景，并对其核心特性进行了详尽的剖析。
-接下来，我将在《ApiTestEngine演化之路》系列文章中讲解ApiTestEngine是如何从第一行代码开始，逐步实现接口自动化测试框架的核心功能特性的。
+接下来，我将在《ApiTestEngine演进之路》系列文章中讲解ApiTestEngine是如何从第一行代码开始，逐步实现接口自动化测试框架的核心功能特性的。
 相信大家都有听说过TDD（测试驱动开发）这种开发模式，虽然网络上对该种开发模式存在">
 <meta property="og:image" content="http://debugtalk.com/images/travis-check-result.jpg">
 <meta property="og:image" content="http://debugtalk.com/images/github-readme-travis-status-image.jpg">
@@ -27,11 +27,11 @@
 <meta property="og:image" content="http://debugtalk.com/images/coveralls-result.jpg">
 <meta property="og:image" content="http://debugtalk.com/images/github-coveralls-badge.jpg">
 <meta property="og:image" content="http://debugtalk.com/images/coveralls-image-url.jpg">
-<meta property="og:updated_time" content="2017-06-28T06:23:01.000Z">
+<meta property="og:updated_time" content="2017-07-07T15:38:42.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ApiTestEngine 演化之路（0）开发未动，测试先行">
+<meta name="twitter:title" content="ApiTestEngine 演进之路（0）开发未动，测试先行">
 <meta name="twitter:description" content="在《接口自动化测试的最佳工程实践（ApiTestEngine）》一文中，我详细介绍了ApiTestEngine诞生的背景，并对其核心特性进行了详尽的剖析。
-接下来，我将在《ApiTestEngine演化之路》系列文章中讲解ApiTestEngine是如何从第一行代码开始，逐步实现接口自动化测试框架的核心功能特性的。
+接下来，我将在《ApiTestEngine演进之路》系列文章中讲解ApiTestEngine是如何从第一行代码开始，逐步实现接口自动化测试框架的核心功能特性的。
 相信大家都有听说过TDD（测试驱动开发）这种开发模式，虽然网络上对该种开发模式存在">
 <meta name="twitter:image" content="http://debugtalk.com/images/travis-check-result.jpg">
 
@@ -93,7 +93,7 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/post/ApiTestEngine-0-setup-CI-test/" title="ApiTestEngine 演化之路（0）开发未动，测试先行" itemprop="url">ApiTestEngine 演化之路（0）开发未动，测试先行</a>
+      <a href="/post/ApiTestEngine-0-setup-CI-test/" title="ApiTestEngine 演进之路（0）开发未动，测试先行" itemprop="url">ApiTestEngine 演进之路（0）开发未动，测试先行</a>
   </h1>
   <!-- <p class="article-author">By
        
@@ -119,7 +119,7 @@
 		</div>
 		
 		<p>在<a href="http://debugtalk.com/post/ApiTestEngine-api-test-best-practice/">《接口自动化测试的最佳工程实践（ApiTestEngine）》</a>一文中，我详细介绍了<a href="https://github.com/debugtalk/ApiTestEngine" target="_blank" rel="external"><code>ApiTestEngine</code></a>诞生的背景，并对其核心特性进行了详尽的剖析。</p>
-<p>接下来，我将在《ApiTestEngine演化之路》系列文章中讲解<a href="https://github.com/debugtalk/ApiTestEngine" target="_blank" rel="external"><code>ApiTestEngine</code></a>是如何从第一行代码开始，逐步实现接口自动化测试框架的核心功能特性的。</p>
+<p>接下来，我将在《ApiTestEngine演进之路》系列文章中讲解<a href="https://github.com/debugtalk/ApiTestEngine" target="_blank" rel="external"><code>ApiTestEngine</code></a>是如何从第一行代码开始，逐步实现接口自动化测试框架的核心功能特性的。</p>
 <p>相信大家都有听说过<code>TDD</code>（<code>测试驱动开发</code>）这种开发模式，虽然网络上对该种开发模式存在异议，但我个人是非常推荐使用该种开发方式的。关于<code>TDD</code>的优势，我就不在此赘述了，我就只说下自己受益最深的两个方面。</p>
 <ul>
 <li>测试驱动，其实也是需求驱动。在开发正式代码之前，可以先将需求转换为单元测试用例，然后再逐步实现正式代码，直至将所有单元测试用例跑通。这可以帮助我们总是聚焦在要实现的功能特性上，避免跑偏。特别是像我们做测试开发的，通常没有需求文档和设计文档，如果没有清晰的思路，很可能做着做着就不知道自己做到哪儿了。</li>
@@ -217,7 +217,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://debugtalk.com/post/ApiTestEngine-0-setup-CI-test/" data-title="ApiTestEngine 演化之路（0）开发未动，测试先行 | DebugTalk" data-tsina="undefined" class="share clearfix">
+	  <div data-url="http://debugtalk.com/post/ApiTestEngine-0-setup-CI-test/" data-title="ApiTestEngine 演进之路（0）开发未动，测试先行 | DebugTalk" data-tsina="undefined" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -231,10 +231,10 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/post/ApiTestEngine-1-setup-basic-framework/" title="ApiTestEngine 演化之路（1）搭建基础框架">
+ <a href="/post/ApiTestEngine-1-setup-basic-framework/" title="ApiTestEngine 演进之路（1）搭建基础框架">
   <strong>上一篇：</strong><br/>
   <span>
-  ApiTestEngine 演化之路（1）搭建基础框架</span>
+  ApiTestEngine 演进之路（1）搭建基础框架</span>
 </a>
 </div>
 
@@ -313,11 +313,7 @@
 			
 		
 			
-				<li><a href="/tags/WebService/" title="WebService">WebService<sup>5</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/F0T1/" title="F0T1">F0T1<sup>5</sup></a></li>
+				<li><a href="/tags/ApiTestEngine/" title="ApiTestEngine">ApiTestEngine<sup>5</sup></a></li>
 			
 		
 			
@@ -325,15 +321,23 @@
 			
 		
 			
+				<li><a href="/tags/测试框架/" title="测试框架">测试框架<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/WebService/" title="WebService">WebService<sup>5</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/环境搭建/" title="环境搭建">环境搭建<sup>5</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/ApiTestEngine/" title="ApiTestEngine">ApiTestEngine<sup>4</sup></a></li>
+				<li><a href="/tags/F0T1/" title="F0T1">F0T1<sup>5</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/测试框架/" title="测试框架">测试框架<sup>4</sup></a></li>
+				<li><a href="/tags/性能测试/" title="性能测试">性能测试<sup>4</sup></a></li>
 			
 		
 			
@@ -341,7 +345,7 @@
 			
 		
 			
-				<li><a href="/tags/性能测试/" title="性能测试">性能测试<sup>4</sup></a></li>
+				<li><a href="/tags/自动化测试/" title="自动化测试">自动化测试<sup>4</sup></a></li>
 			
 		
 			
@@ -362,10 +366,6 @@
 		
 			
 				<li><a href="/tags/CI/" title="CI">CI<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/个人成长/" title="个人成长">个人成长<sup>3</sup></a></li>
 			
 		
 		</ul>

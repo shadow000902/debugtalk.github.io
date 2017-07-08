@@ -4,27 +4,27 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>ApiTestEngine 演化之路（1）搭建基础框架 | DebugTalk</title>
+    <title>ApiTestEngine 演进之路（1）搭建基础框架 | DebugTalk</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="九毫">
     
 
     
-    <meta name="description" content="在《ApiTestEngine 演化之路（0）开发未动，测试先行》一文中，我对ApiTestEngine项目正式开始前的准备工作进行了介绍，包括构建API接口服务（Mock Server）、搭建项目单元测试框架、实现持续集成构建检查机制（Travis CI）等。
+    <meta name="description" content="在《ApiTestEngine 演进之路（0）开发未动，测试先行》一文中，我对ApiTestEngine项目正式开始前的准备工作进行了介绍，包括构建API接口服务（Mock Server）、搭建项目单元测试框架、实现持续集成构建检查机制（Travis CI）等。
 接下来，我们就开始构建ApiTestEngine项目的基础框架，实现基本功能吧。
 接口测试的核心要素既然是从零开始，那我们不妨先想下，对">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ApiTestEngine 演化之路（1）搭建基础框架">
+<meta property="og:title" content="ApiTestEngine 演进之路（1）搭建基础框架">
 <meta property="og:url" content="http://debugtalk.com/post/ApiTestEngine-1-setup-basic-framework/index.html">
 <meta property="og:site_name" content="DebugTalk">
-<meta property="og:description" content="在《ApiTestEngine 演化之路（0）开发未动，测试先行》一文中，我对ApiTestEngine项目正式开始前的准备工作进行了介绍，包括构建API接口服务（Mock Server）、搭建项目单元测试框架、实现持续集成构建检查机制（Travis CI）等。
+<meta property="og:description" content="在《ApiTestEngine 演进之路（0）开发未动，测试先行》一文中，我对ApiTestEngine项目正式开始前的准备工作进行了介绍，包括构建API接口服务（Mock Server）、搭建项目单元测试框架、实现持续集成构建检查机制（Travis CI）等。
 接下来，我们就开始构建ApiTestEngine项目的基础框架，实现基本功能吧。
 接口测试的核心要素既然是从零开始，那我们不妨先想下，对">
-<meta property="og:updated_time" content="2017-06-28T06:22:55.000Z">
+<meta property="og:updated_time" content="2017-07-07T15:38:25.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ApiTestEngine 演化之路（1）搭建基础框架">
-<meta name="twitter:description" content="在《ApiTestEngine 演化之路（0）开发未动，测试先行》一文中，我对ApiTestEngine项目正式开始前的准备工作进行了介绍，包括构建API接口服务（Mock Server）、搭建项目单元测试框架、实现持续集成构建检查机制（Travis CI）等。
+<meta name="twitter:title" content="ApiTestEngine 演进之路（1）搭建基础框架">
+<meta name="twitter:description" content="在《ApiTestEngine 演进之路（0）开发未动，测试先行》一文中，我对ApiTestEngine项目正式开始前的准备工作进行了介绍，包括构建API接口服务（Mock Server）、搭建项目单元测试框架、实现持续集成构建检查机制（Travis CI）等。
 接下来，我们就开始构建ApiTestEngine项目的基础框架，实现基本功能吧。
 接口测试的核心要素既然是从零开始，那我们不妨先想下，对">
 
@@ -86,7 +86,7 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/post/ApiTestEngine-1-setup-basic-framework/" title="ApiTestEngine 演化之路（1）搭建基础框架" itemprop="url">ApiTestEngine 演化之路（1）搭建基础框架</a>
+      <a href="/post/ApiTestEngine-1-setup-basic-framework/" title="ApiTestEngine 演进之路（1）搭建基础框架" itemprop="url">ApiTestEngine 演进之路（1）搭建基础框架</a>
   </h1>
   <!-- <p class="article-author">By
        
@@ -111,7 +111,7 @@
 		
 		</div>
 		
-		<p>在<a href="http://debugtalk.com/post/ApiTestEngine-0-setup-CI-test/">《ApiTestEngine 演化之路（0）开发未动，测试先行》</a>一文中，我对<a href="https://github.com/debugtalk/ApiTestEngine" target="_blank" rel="external"><code>ApiTestEngine</code></a>项目正式开始前的准备工作进行了介绍，包括构建API接口服务（<code>Mock Server</code>）、搭建项目单元测试框架、实现持续集成构建检查机制（<a href="https://travis-ci.org/" target="_blank" rel="external"><code>Travis CI</code></a>）等。</p>
+		<p>在<a href="http://debugtalk.com/post/ApiTestEngine-0-setup-CI-test/">《ApiTestEngine 演进之路（0）开发未动，测试先行》</a>一文中，我对<a href="https://github.com/debugtalk/ApiTestEngine" target="_blank" rel="external"><code>ApiTestEngine</code></a>项目正式开始前的准备工作进行了介绍，包括构建API接口服务（<code>Mock Server</code>）、搭建项目单元测试框架、实现持续集成构建检查机制（<a href="https://travis-ci.org/" target="_blank" rel="external"><code>Travis CI</code></a>）等。</p>
 <p>接下来，我们就开始构建<a href="https://github.com/debugtalk/ApiTestEngine" target="_blank" rel="external"><code>ApiTestEngine</code></a>项目的基础框架，实现基本功能吧。</p>
 <h2 id="接口测试的核心要素"><a href="#接口测试的核心要素" class="headerlink" title="接口测试的核心要素"></a>接口测试的核心要素</h2><p>既然是从零开始，那我们不妨先想下，对于接口测试来说，最基本最核心的要素有哪些？</p>
 <p>事实上，不管是手工进行接口测试，还是自动化测试平台执行接口测试，接口测试的核心要素都可以概括为如下三点：</p>
@@ -172,7 +172,7 @@
 <p>在下一篇文章中，我们将着手解决这个问题，通过对框架增加模板配置功能，实现接口业务参数和技术细节的分离。</p>
 <h2 id="阅读更多"><a href="#阅读更多" class="headerlink" title="阅读更多"></a>阅读更多</h2><ul>
 <li><a href="http://debugtalk.com/post/ApiTestEngine-api-test-best-practice/">《接口自动化测试的最佳工程实践（ApiTestEngine）》</a></li>
-<li><a href="http://debugtalk.com/post/ApiTestEngine-0-setup-CI-test/">《ApiTestEngine 演化之路（0）开发未动，测试先行》</a></li>
+<li><a href="http://debugtalk.com/post/ApiTestEngine-0-setup-CI-test/">《ApiTestEngine 演进之路（0）开发未动，测试先行》</a></li>
 <li><a href="https://github.com/debugtalk/ApiTestEngine" target="_blank" rel="external"><code>ApiTestEngine</code> GitHub源码</a></li>
 </ul>
   
@@ -192,7 +192,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://debugtalk.com/post/ApiTestEngine-1-setup-basic-framework/" data-title="ApiTestEngine 演化之路（1）搭建基础框架 | DebugTalk" data-tsina="undefined" class="share clearfix">
+	  <div data-url="http://debugtalk.com/post/ApiTestEngine-1-setup-basic-framework/" data-title="ApiTestEngine 演进之路（1）搭建基础框架 | DebugTalk" data-tsina="undefined" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -215,9 +215,9 @@
 
 
 <div class="next">
-<a href="/post/ApiTestEngine-0-setup-CI-test/"  title="ApiTestEngine 演化之路（0）开发未动，测试先行">
+<a href="/post/ApiTestEngine-0-setup-CI-test/"  title="ApiTestEngine 演进之路（0）开发未动，测试先行">
  <strong>下一篇：</strong><br/> 
- <span>ApiTestEngine 演化之路（0）开发未动，测试先行
+ <span>ApiTestEngine 演进之路（0）开发未动，测试先行
 </span>
 </a>
 </div>
@@ -288,11 +288,7 @@
 			
 		
 			
-				<li><a href="/tags/WebService/" title="WebService">WebService<sup>5</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/F0T1/" title="F0T1">F0T1<sup>5</sup></a></li>
+				<li><a href="/tags/ApiTestEngine/" title="ApiTestEngine">ApiTestEngine<sup>5</sup></a></li>
 			
 		
 			
@@ -300,15 +296,23 @@
 			
 		
 			
+				<li><a href="/tags/测试框架/" title="测试框架">测试框架<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/WebService/" title="WebService">WebService<sup>5</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/环境搭建/" title="环境搭建">环境搭建<sup>5</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/ApiTestEngine/" title="ApiTestEngine">ApiTestEngine<sup>4</sup></a></li>
+				<li><a href="/tags/F0T1/" title="F0T1">F0T1<sup>5</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/测试框架/" title="测试框架">测试框架<sup>4</sup></a></li>
+				<li><a href="/tags/性能测试/" title="性能测试">性能测试<sup>4</sup></a></li>
 			
 		
 			
@@ -316,7 +320,7 @@
 			
 		
 			
-				<li><a href="/tags/性能测试/" title="性能测试">性能测试<sup>4</sup></a></li>
+				<li><a href="/tags/自动化测试/" title="自动化测试">自动化测试<sup>4</sup></a></li>
 			
 		
 			
@@ -337,10 +341,6 @@
 		
 			
 				<li><a href="/tags/CI/" title="CI">CI<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/个人成长/" title="个人成长">个人成长<sup>3</sup></a></li>
 			
 		
 		</ul>
