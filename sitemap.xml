@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://debugtalk.com//about/index.html</loc>
+    
+    <lastmod>2017-07-11T09:30:12.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://debugtalk.com/post/ApiTestEngine-3-define-functions-in-yaml-testcases/</loc>
     
     <lastmod>2017-07-11T04:09:15.000Z</lastmod>
@@ -142,14 +149,7 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-refactor-testcase-scripts/</loc>
-    
-    <lastmod>2017-06-15T07:51:23.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/head-first-locust-user-guide/</loc>
+    <loc>http://debugtalk.com/post/introduction-to-testing-engineer-daily-work/</loc>
     
     <lastmod>2017-06-15T07:51:23.000Z</lastmod>
     
@@ -170,14 +170,21 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/Introduction-to-AppiumBooster/</loc>
+    <loc>http://debugtalk.com/post/use-pyenv-manage-multiple-python-virtualenvs/</loc>
     
     <lastmod>2017-06-15T07:51:23.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/introduction-to-testing-engineer-daily-work/</loc>
+    <loc>http://debugtalk.com/post/head-first-git-authority-verification/</loc>
+    
+    <lastmod>2017-06-15T07:51:23.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/Introduction-to-AppiumBooster/</loc>
     
     <lastmod>2017-06-15T07:51:23.000Z</lastmod>
     
@@ -198,20 +205,6 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-Appium-interrogate-iOS-UI/</loc>
-    
-    <lastmod>2017-06-15T07:51:23.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://debugtalk.com/post/head-first-git-authority-verification/</loc>
-    
-    <lastmod>2017-06-15T07:51:23.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://debugtalk.com/post/iOS-Android-Packing-with-Jenkins-details/</loc>
     
     <lastmod>2017-06-15T07:51:23.000Z</lastmod>
@@ -219,16 +212,23 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/use-pyenv-manage-multiple-python-virtualenvs/</loc>
+    <loc>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-refactor-testcase-scripts/</loc>
     
     <lastmod>2017-06-15T07:51:23.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/Android-performance-test-start-traffic-tcpdump-wireshark/</loc>
+    <loc>http://debugtalk.com/post/head-first-locust-user-guide/</loc>
     
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    <lastmod>2017-06-15T07:51:23.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-Appium-interrogate-iOS-UI/</loc>
+    
+    <lastmod>2017-06-15T07:51:23.000Z</lastmod>
     
   </url>
   
@@ -457,7 +457,7 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com//about/index.html</loc>
+    <loc>http://debugtalk.com/post/Android-performance-test-start-traffic-tcpdump-wireshark/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
