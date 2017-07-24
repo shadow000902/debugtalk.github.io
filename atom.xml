@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://debugtalk.com/"/>
-  <updated>2017-07-23T14:13:35.000Z</updated>
+  <updated>2017-07-24T10:54:52.000Z</updated>
   <id>http://debugtalk.com/</id>
   
   <author>
@@ -14,6 +14,94 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>解决Jenkins中无法展示HTML样式的问题</title>
+    <link href="http://debugtalk.com/post/solve-Jenkins-can-not-show-html-css/"/>
+    <id>http://debugtalk.com/post/solve-Jenkins-can-not-show-html-css/</id>
+    <published>2017-07-23T16:00:00.000Z</published>
+    <updated>2017-07-24T10:54:52.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>对于测试报告来说，除了内容的简洁精炼，样式的美观也很重要。常用的做法是，采用<code>HTML</code>格式的文档，并搭配<code>CSS</code>和<code>JS</code>，实现自定义的样式和动画效果（例如展开、折叠等）。</p>
+<p>在<code>Jenkins</code>中要展示<code>HTML</code>文档，通常采用的方式有两种：</p>
+<ul>
+<li>使用<a href="https://wiki.jenkins.io/display/JENKINS/HTML+Publisher+Plugin" target="_blank" rel="external"><code>HTML Publisher Plugin</code></a>；</li>
+<li>使用<code>Files to archive</code>功能，在<code>Build Artifacts</code>中显示<code>HTML</code>文档链接。</li>
+</ul>
+<p>第一种方式配合插件，可以通过图形化操作实现简易配置，并且展示效果也不错；而第二种方式的优势在于使用<code>Jenkins</code>自带的功能，不依赖插件也能实现基本的需求。</p>
+<p>然而，不管是采用哪种方式，都有可能会遇到一种情况，就是展示出来的<code>HTML</code>报告样式全无。在浏览器的<code>Network</code>中查看资源加载情况，会发现相关的<code>CSS</code>和<code>JS</code>都没法正常加载。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Refused to load the stylesheet &apos;https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css&apos; because it violates the following Content Security Policy directive: &quot;style-src &apos;self&apos;&quot;.</div><div class="line">Refused to apply inline style because it violates the following Content Security Policy directive: &quot;style-src &apos;self&apos;&quot;. Either the &apos;unsafe-inline&apos; keyword, a hash (&apos;sha256-0EZqoz+oBhx7gF4nvY2bSqoGyy4zLjNF+SDQXGp/ZrY=&apos;), or a nonce (&apos;nonce-...&apos;) is required to enable inline execution.</div><div class="line">Blocked script execution in &apos;http://10.13.0.146:8888/job/SkyPixel-SmokeTest/34/artifact/reports/SkyPixel-smoketest/34.html&apos; because the document&apos;s frame is sandboxed and the &apos;allow-scripts&apos; permission is not set.</div><div class="line">Refused to load the stylesheet &apos;https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css&apos; because it violates the following Content Security Policy directive: &quot;style-src &apos;self&apos;&quot;.</div></pre></td></tr></table></figure>
+<h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>出现该现象的原因在于<code>Jenkins</code>中配置的<code>CSP</code>（<code>Content Security Policy</code>）。</p>
+<p>简单地说，这是<code>Jenkins</code>的一个安全策略，默认会设置为一个非常严格的权限集，以防止Jenkins用户在<code>workspace</code>、<code>/userContent</code>、<code>archived artifacts</code>中受到恶意<code>HTML/JS</code>文件的攻击。</p>
+<p>默认地，该权限集会设置为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sandbox; default-src &apos;none&apos;; img-src &apos;self&apos;; style-src &apos;self&apos;;</div></pre></td></tr></table></figure>
+<p>在该配置下，只允许加载：</p>
+<ul>
+<li>Jenkins服务器上托管的<code>CSS</code>文件</li>
+<li>Jenkins服务器上托管的图片文件</li>
+</ul>
+<p>而如下形式的内容都会被禁止：</p>
+<ul>
+<li>JavaScript</li>
+<li>plugins (object/embed)</li>
+<li>HTML中的内联样式表（<code>Inline style sheets</code>），以及引用的外站CSS文件</li>
+<li>HTML中的内联图片（<code>Inline image definitions</code>），以及外站引用的图片文件</li>
+<li>frames</li>
+<li>web fonts</li>
+<li>XHR/AJAX</li>
+<li>etc.</li>
+</ul>
+<p>可以看出，这个限制非常严格，在此限制下也就不难理解为什么我们的<code>HTML</code>没法正常展示样式了。</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><h3 id="临时解决方案"><a href="#临时解决方案" class="headerlink" title="临时解决方案"></a>临时解决方案</h3><p>要解决该问题，方式也比较简单，就是修改<code>Content Security Policy</code>的默认配置。</p>
+<p>修改方式为，进入<code>Manage Jenkins</code>-&gt;<code>Script console</code>，输入如下命令并进行执行。</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">System.setProperty(<span class="string">"hudson.model.DirectoryBrowserSupport.CSP"</span>, <span class="string">""</span>)</div></pre></td></tr></table></figure>
+<p>当看到如下结果后，则说明配置修改已经生效。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Result</div><div class="line">Result:</div></pre></td></tr></table></figure>
+<p>再次进行构建，新生成的<code>HTML</code>就可以正常展示样式了。需要说明的是，该操作对之前构建生成的<code>HTML</code>报告无效。</p>
+<h3 id="永久解决方案"><a href="#永久解决方案" class="headerlink" title="永久解决方案"></a>永久解决方案</h3><p>不过，该方法还存在一个问题：该配置只是临时生效，当重启<code>Jenkins</code>后，<code>Content Security Policy</code>又会恢复为默认值，从而<code>HTML</code>样式又没法展示了。</p>
+<p>当前，<code>Jenkins</code>官方还没有相应的解决方法，我们只能在每次启动或重启<code>Jenkins</code>时，重新修改该安全策略。</p>
+<p>如果手工地来重复这项工作，也是可行，但并不是一个好的解决方案。</p>
+<p>回到刚才的<code>Script console</code>，会发现我们执行的命令其实就是一段<code>Groovy</code>代码；那么，如果我们可以实现在<code>Jenkins</code>每次启动时自动地执行该<code>Groovy</code>代码，那么也就同样能解决我们的问题了。</p>
+<p>好在<code>Jenkins</code>已经有相应的插件：</p>
+<ul>
+<li><a href="https://wiki.jenkins.io/display/JENKINS/Startup+Trigger" target="_blank" rel="external"><code>Startup Trigger</code></a>: 可实现在<code>Jenkins</code>节点(master/slave)启动时触发构建；</li>
+<li><a href="https://wiki.jenkins.io/display/JENKINS/Groovy+plugin" target="_blank" rel="external"><code>Groovy plugin</code></a>: 可实现直接执行<code>Groovy</code>代码。</li>
+</ul>
+<p>搜索安装<code>startup-trigger-plugin</code>和<code>Groovy</code>插件后，我们就可以进行配置了。</p>
+<p>配置方式如下：</p>
+<ul>
+<li>新建一个job，该job专门用于<code>Jenkins</code>启动时执行的配置命令；</li>
+<li>在<code>Build Triggers</code>模块下，勾选<code>Build when job nodes start</code>；</li>
+<li>在<code>Build</code>模块下，<code>Add build step</code>-&gt;<code>Execute system Groovy script</code>，在<code>Groovy Script</code>中输入配置命令，<code>System.setProperty(&quot;hudson.model.DirectoryBrowserSupport.CSP&quot;, &quot;&quot;)</code>。</li>
+</ul>
+<p>需要注意的是，添加构建步骤的时候，应该选择<code>Execute system Groovy script</code>，而不是<code>Execute Groovy script</code>。关于这两者之间的差异，简单地说，<code>Groovy Script</code>相当于是运行在<code>master/slave</code>系统<code>JVM</code>环境中，而<code>system groovy script</code>，则是运行在<code>Jenkins master</code>的<code>JVM</code>环境中，与前面提到的<code>Jenkins Script Console</code>功能相同。如需了解更多信息，可查看<a href="https://wiki.jenkins.io/display/JENKINS/Groovy+plugin" target="_blank" rel="external"><code>Groovy plugin</code>的详细说明</a>。</p>
+<p>至此，我们就彻底解决<code>HTML</code>样式展示异常的问题了。</p>
+<p>但还有一点需要格外注意，在本文的演示中，我们修改<code>CSP</code>（<code>Content Security Policy</code>）配置时关闭了的所有安全保护策略，即将<code>hudson.model.DirectoryBrowserSupport.CSP</code>设置为空，其实这是存在很大的安全隐患的。</p>
+<p>正确的做法，我们应该是结合项目的实际情况，选择对应的安全策略。例如，如果我们需要开启脚本文件加载，但是只限于Jenkins服务器上托管的<code>CSS</code>文件，那么就可以采用如下配置。</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">System.setProperty(<span class="string">"hudson.model.DirectoryBrowserSupport.CSP"</span>, <span class="string">"sandbox; style-src 'self';"</span>)</div></pre></td></tr></table></figure>
+<p>除此之外，<code>CSP</code>可以实现非常精细的权限配置，详细配置可参考<a href="https://content-security-policy.com/" target="_blank" rel="external"><code>Content Security Policy Reference</code></a>。</p>
+<h2 id="阅读更多"><a href="#阅读更多" class="headerlink" title="阅读更多"></a>阅读更多</h2><ul>
+<li><a href="https://wiki.jenkins.io/display/JENKINS/Configuring+Content+Security+Policy" target="_blank" rel="external">Configuring Content Security Policy</a></li>
+<li><a href="https://content-security-policy.com/" target="_blank" rel="external">Content Security Policy Reference</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;问题描述&quot;&gt;&lt;a href=&quot;#问题描述&quot; class=&quot;headerlink&quot; title=&quot;问题描述&quot;&gt;&lt;/a&gt;问题描述&lt;/h2&gt;&lt;p&gt;对于测试报告来说，除了内容的简洁精炼，样式的美观也很重要。常用的做法是，采用&lt;code&gt;HTML&lt;/code&gt;格式的文档，并
+    
+    </summary>
+    
+    
+      <category term="Jenkins" scheme="http://debugtalk.com/tags/Jenkins/"/>
+    
+      <category term="Plugin" scheme="http://debugtalk.com/tags/Plugin/"/>
+    
+      <category term="测试报告" scheme="http://debugtalk.com/tags/%E6%B5%8B%E8%AF%95%E6%8A%A5%E5%91%8A/"/>
+    
+      <category term="持续集成" scheme="http://debugtalk.com/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/"/>
+    
+  </entry>
   
   <entry>
     <title>ApiTestEngine 演进之路（4）测试用例中实现 Python 函数的调用</title>
@@ -1887,81 +1975,6 @@
       <category term="CI" scheme="http://debugtalk.com/tags/CI/"/>
     
       <category term="Automation" scheme="http://debugtalk.com/tags/Automation/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>从0到1搭建移动App功能自动化测试平台 (4)：自动化测试代码⎡工程化⎦</title>
-    <link href="http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-refactor-testcase-scripts/"/>
-    <id>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-refactor-testcase-scripts/</id>
-    <published>2016-07-27T16:00:00.000Z</published>
-    <updated>2017-06-15T07:51:23.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>在本系列的<a href="http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-write-iOS-testcase-scripts/">上一篇文章</a>中，我通过系统登录这一典型功能点，演示了编写自动化测试脚本的整个流程，并对测试脚本进行了初步优化。</p>
-<p>在本文中，我将重点介绍如何对自动化测试脚本实现⎡工程化⎦的组织和管理。</p>
-<h2 id="测试脚本⎡工程化⎦"><a href="#测试脚本⎡工程化⎦" class="headerlink" title="测试脚本⎡工程化⎦"></a>测试脚本⎡工程化⎦</h2><p>首先说下什么是测试脚本的工程化。</p>
-<p>通过之前的工作，我们已经可以让单个自动化测试用例正常运行起来了。然而，这还只算是一个<a href="https://github.com/debugtalk/AppiumBooster/tree/0.RawScript/" target="_blank" rel="external"><code>demo</code></a>，一切才刚刚开始。</p>
-<p>试想，一个项目的自动化测试用例少则数百，多则成千上万。如何将这些自动化测试用例组织起来？如何实现更好的可重用机制？如何实现更好的可拓展机制？这些都还是我们当前的demo所不具备的，也是我们需要通过“工程化”手段进行改造的原因。</p>
-<h2 id="引入Minitest-RSpec"><a href="#引入Minitest-RSpec" class="headerlink" title="引入Minitest/RSpec"></a>引入Minitest/RSpec</h2><p>在Ruby中，说到测试首先就会想到Minitest或RSpec，这是Ruby中用的最多的两个测试框架。通过这些框架，我们可以很好地实现对Ruby测试用例的管理。</p>
-<p>同样地，由于我们的自动化测试脚本是采用Ruby编写的，因此我们也可以使用Minitest/RSpec来管理我们的自动化测试用例。</p>
-<p>基于该想法，我们采用RSpec对之前的系统登录测试用例进行工程结构初始化。对于熟悉Ruby编程，或者有一定代码基础的同学而言，很自然地，可以将测试用例框架初始化为如下结构。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">├── Gemfile</div><div class="line">├── android</div><div class="line">│   └── appium.txt</div><div class="line">├── common</div><div class="line">│   ├── requires.rb</div><div class="line">│   └── spec_helper.rb</div><div class="line">└── ios</div><div class="line">    ├── appium.txt</div><div class="line">    └── spec</div><div class="line">        └── login_spec.rb</div></pre></td></tr></table></figure>
-<p>在<code>Gemfile</code>中，指定了项目依赖的库。</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># filename: Gemfile</span></div><div class="line">source <span class="string">'https://gems.ruby-china.org'</span></div><div class="line"></div><div class="line">gem <span class="string">'rspec'</span></div><div class="line">gem <span class="string">'appium_lib'</span></div><div class="line">gem <span class="string">'appium_console'</span></div></pre></td></tr></table></figure>
-<p>在<code>common/spec_helper.rb</code>中，定义了模拟器和RSpec初始化相关的代码。</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># filename: common/spec_helper.rb</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">setup_driver</span></span></div><div class="line">  <span class="keyword">return</span> <span class="keyword">if</span> $driver</div><div class="line">  appium_txt = File.join(Dir.pwd, <span class="string">'ios'</span>, <span class="string">'appium.txt'</span>)</div><div class="line">  caps = Appium.load_appium_txt <span class="symbol">file:</span> appium_txt</div><div class="line">  Appium::Driver.new caps</div><div class="line"><span class="keyword">end</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">promote_methods</span></span></div><div class="line">  Appium.promote_appium_methods RSpec::Core::ExampleGroup</div><div class="line"><span class="keyword">end</span></div><div class="line"></div><div class="line">setup_driver</div><div class="line">promote_methods</div><div class="line"></div><div class="line">RSpec.configure <span class="keyword">do</span> <span class="params">|config|</span></div><div class="line"></div><div class="line">  config.before(<span class="symbol">:each</span>) <span class="keyword">do</span></div><div class="line">    $driver.start_driver</div><div class="line">    wait &#123; alert_accept &#125;</div><div class="line">  <span class="keyword">end</span></div><div class="line"></div><div class="line">  config.after(<span class="symbol">:each</span>) <span class="keyword">do</span></div><div class="line">    driver_quit</div><div class="line">  <span class="keyword">end</span></div><div class="line"></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
-<p>在<code>common/requires.rb</code>中，实现了对相关库文件的引用。</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># filename: common/requires.rb</span></div><div class="line"></div><div class="line"><span class="comment"># load lib</span></div><div class="line"><span class="keyword">require</span> <span class="string">'rspec'</span></div><div class="line"><span class="keyword">require</span> <span class="string">'appium_lib'</span></div><div class="line"></div><div class="line"><span class="comment"># setup rspec</span></div><div class="line">require_relative <span class="string">'spec_helper'</span></div></pre></td></tr></table></figure>
-<p>在<code>ios/appium.txt</code>中，对iOS模拟器信息和测试包路径进行了配置。</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[caps]</div><div class="line">platformName = <span class="string">"ios"</span></div><div class="line">deviceName = <span class="string">"iPhone 6s"</span></div><div class="line">platformVersion = <span class="string">"9.3"</span></div><div class="line">app = <span class="string">"/Users/Leo/MyProjects/AppiumBooster/ios/app/test.app"</span></div></pre></td></tr></table></figure>
-<p>在<code>ios/spec/</code>目录中，则是测试用例的内容。例如，<code>ios/spec/login_spec.rb</code>对应的就是系统登录的测试用例。</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># filename: ios/spec/login_spec.rb</span></div><div class="line">require_relative <span class="string">'../../common/requires'</span></div><div class="line"></div><div class="line">describe <span class="string">'Login'</span> <span class="keyword">do</span></div><div class="line"></div><div class="line">  it <span class="string">'with valid account'</span> <span class="keyword">do</span></div><div class="line">    wait &#123; id(<span class="string">'btnMenuMyAccount'</span>).click &#125;</div><div class="line">    wait &#123; id <span class="string">'uiviewMyAccount'</span> &#125;</div><div class="line"></div><div class="line">    wait &#123; id(<span class="string">'tablecellMyAccountLogin'</span>).click &#125;</div><div class="line">    wait &#123; id <span class="string">'uiviewLogIn'</span> &#125;</div><div class="line"></div><div class="line">    wait &#123; id(<span class="string">'txtfieldEmailAddress'</span>).type <span class="string">'leo.lee@debugtalk.com'</span> &#125;</div><div class="line">    wait &#123; id(<span class="string">'sectxtfieldPassword'</span>).type <span class="string">'123321'</span> &#125;</div><div class="line">    wait &#123; id(<span class="string">'btnLogin'</span>).click &#125;</div><div class="line">    wait &#123; id <span class="string">'tablecellMyMessage'</span> &#125;</div><div class="line">  <span class="keyword">end</span></div><div class="line"></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
-<p>通过以上代码结构初始化，我们的测试用例框架的雏形就形成了。接下来，在Terminal中切换到项目根目录，然后通过<code>rspec ios</code>命令就可以执行ios目录中的测试用例了。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">➜ rspec ios</div><div class="line">.</div><div class="line"></div><div class="line">Finished <span class="keyword">in</span> 2 minutes 7.2 seconds (files took 1.76 seconds to load)</div><div class="line">1 example, 0 failures</div></pre></td></tr></table></figure>
-<p>完整的代码请参考<code>debugtalk/AppiumBooster</code>的<a href="https://github.com/debugtalk/AppiumBooster/tree/1.FirstTest" target="_blank" rel="external"><code>1.FirstTest</code>分支</a>。</p>
-<h2 id="添加第二条测试用例"><a href="#添加第二条测试用例" class="headerlink" title="添加第二条测试用例"></a>添加第二条测试用例</h2><p>现在，我们尝试往当前的测试框架中添加第二条测试用例。</p>
-<p>例如，第二条测试用例要实现启动后从当前地区切换至中国。那么，就可以新增<code>ios/spec/change_country_spec.rb</code>。</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># filename: ios/spec/change_country_spec.rb</span></div><div class="line">require_relative <span class="string">'../../common/requires'</span></div><div class="line"></div><div class="line">describe <span class="string">'Change country'</span> <span class="keyword">do</span></div><div class="line"></div><div class="line">  it <span class="string">'from Hong Kong to China'</span> <span class="keyword">do</span></div><div class="line">    wait &#123; id(<span class="string">'btnMenuMyAccount'</span>).click &#125;</div><div class="line">    wait &#123; id <span class="string">'uiviewMyAccount'</span> &#125;</div><div class="line"></div><div class="line">    wait &#123; id(<span class="string">'tablecellMyAccountSystemSettings'</span>).click &#125;</div><div class="line">    wait &#123; id <span class="string">'txtCountryDistrict'</span> &#125;</div><div class="line"></div><div class="line">    wait &#123; id(<span class="string">'txtCountryDistrict'</span>).click &#125;</div><div class="line">    wait &#123; id <span class="string">'uiviewSelectCountry'</span> &#125;</div><div class="line"></div><div class="line">    wait &#123; id(<span class="string">'tablecellSelectCN'</span>).click &#125;</div><div class="line"></div><div class="line">    wait &#123; id(<span class="string">'btnArrowLeft'</span>).click &#125;</div><div class="line">    wait &#123; id <span class="string">'uiviewMyAccount'</span> &#125;</div><div class="line">  <span class="keyword">end</span></div><div class="line"></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
-<p>完整的代码请参考<code>debugtalk/AppiumBooster</code>的<a href="https://github.com/debugtalk/AppiumBooster/tree/2.SecondTest" target="_blank" rel="external"><code>2.SecondTest</code>分支</a>。</p>
-<p>现在我们凝视已经添加的<a href="https://github.com/debugtalk/AppiumBooster/tree/2.SecondTest/ios/spec" target="_blank" rel="external">两个测试用例</a>，有发现什么问题么？</p>
-<p>是的，重复代码太多。在每一步操作中，都要用<code>id</code>来定位控件，还要用<code>wait</code>来实现等待机制。</p>
-<p>除此之外，当前代码最大的问题就是测试用例与控件映射杂糅在一起。造成的后果就是，不管是控件映射发生变动，还是测试用例需要修改，都要来修改这一份代码，维护难度较大。</p>
-<h2 id="重构：测试用例与控件映射分离"><a href="#重构：测试用例与控件映射分离" class="headerlink" title="重构：测试用例与控件映射分离"></a>重构：测试用例与控件映射分离</h2><p>基于以上问题，我们首要的改造任务就是将测试用例与控件映射进行分离。</p>
-<p>考虑到常用的控件操作方法就只有几个（<code>click</code>，<code>type</code>），因此我们可以将控件操作方法单独封装为一个模块，作为公共模块。</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">module</span> <span class="title">Actions</span></span></div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">click</span></span></div><div class="line">    wait &#123; @found_cell.click &#125;</div><div class="line">  <span class="keyword">end</span></div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">type</span><span class="params">(text)</span></span></div><div class="line">    wait &#123; @found_cell.type text &#125;</div><div class="line">  <span class="keyword">end</span></div><div class="line"></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
-<p>然后，将APP中每一个页面封装为一个模块（<code>module</code>），将页面中的控件映射为模块的静态方法（<code>method</code>），并通过<code>include</code>机制引入方法模块。</p>
-<p>例如，登录页面就可以封装为如下代码。</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">module</span> <span class="title">Pages</span></span></div><div class="line">  <span class="class"><span class="keyword">module</span> <span class="title">Login</span></span></div><div class="line">    <span class="class"><span class="keyword">class</span> &lt;&lt; self</span></div><div class="line"></div><div class="line">      <span class="keyword">include</span> Actions</div><div class="line"></div><div class="line">      <span class="function"><span class="keyword">def</span> <span class="title">field_Email_Address</span></span></div><div class="line">        @found_cell = wait &#123; id <span class="string">'txtfieldEmailAddress'</span> &#125;</div><div class="line">        <span class="keyword">self</span></div><div class="line">      <span class="keyword">end</span></div><div class="line"></div><div class="line">      <span class="function"><span class="keyword">def</span> <span class="title">field_Password</span></span></div><div class="line">        @found_cell = wait &#123; id <span class="string">'sectxtfieldPassword'</span> &#125;</div><div class="line">        <span class="keyword">self</span></div><div class="line">      <span class="keyword">end</span></div><div class="line"></div><div class="line">      <span class="function"><span class="keyword">def</span> <span class="title">button_Login</span></span></div><div class="line">        @found_cell = wait &#123; id <span class="string">'btnLogin'</span> &#125;</div><div class="line">        <span class="keyword">self</span></div><div class="line">      <span class="keyword">end</span></div><div class="line"></div><div class="line">    <span class="keyword">end</span></div><div class="line">  <span class="keyword">end</span></div><div class="line"><span class="keyword">end</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">module</span> <span class="title">Kernel</span></span></div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">login</span></span></div><div class="line">    Pages::Login</div><div class="line">  <span class="keyword">end</span></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
-<p>这里还用到了一点Ruby元编程技巧，就是将页面模块封装为一个方法，并加入到<code>Kernel</code>模块下。这样做的好处就是，我们可以在项目的任意地方直接通过<code>login.button_Login.click</code>这样的形式来对控件进行操作了。</p>
-<p>完成以上改造后，系统登录测试用例就可以采用如下形式进行编写了。</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">describe <span class="string">'Login'</span> <span class="keyword">do</span></div><div class="line"></div><div class="line">  it <span class="string">'with valid account'</span> <span class="keyword">do</span></div><div class="line">    <span class="comment"># switch to My Account page</span></div><div class="line">    my_account.button_My_Account.click</div><div class="line">    inner_screen.has_control <span class="string">'uiviewMyAccount'</span></div><div class="line"></div><div class="line">    <span class="comment"># enter login page</span></div><div class="line">    my_account.button_Login.click</div><div class="line">    inner_screen.has_control <span class="string">'uiviewLogIn'</span></div><div class="line"></div><div class="line">    <span class="comment"># login</span></div><div class="line">    login.field_Email_Address.type <span class="string">'leo.lee@debugtalk.com'</span></div><div class="line">    login.field_Password.type <span class="string">'123321'</span></div><div class="line">    login.button_Login.click</div><div class="line">    inner_screen.has_control <span class="string">'tablecellMyMessage'</span></div><div class="line">  <span class="keyword">end</span></div><div class="line"></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
-<p>完整的代码请参考<code>debugtalk/AppiumBooster</code>的<a href="https://github.com/debugtalk/AppiumBooster/tree/3.RefactorV1" target="_blank" rel="external"><code>3.RefactorV1</code>分支</a>。</p>
-<h2 id="To-be-continued-…"><a href="#To-be-continued-…" class="headerlink" title="To be continued …"></a>To be continued …</h2><p>经过这一轮重构，我们的测试用例与控件映射已经实现了分离，测试用例的可重用性与可扩展性也得到了极大的提升。</p>
-<p>然而，在当前模式下，所有的测试用例仍然是以代码形式存在的，新增和修改测试用例时都需要到工程目录下编辑Ruby文件。</p>
-<p>那有没有一种可能，我们只需要在表格中维护自动化测试用例（如下图），然后由代码来读取表格内容就可以自动执行测试呢？</p>
-<p><img src="/images/testcase_login_and_logout.png" alt="AppiumBooster overview testcase examples"></p>
-<p>是的，这就是我们对测试框架进行⎡工程化⎦改造的下一个形态，也就是<a href="https://github.com/debugtalk/AppiumBooster" target="_blank" rel="external"><code>AppiumBooster</code></a>现在的样子。</p>
-<p>在下一篇文章中，我们再进行详细探讨。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;在本系列的&lt;a href=&quot;http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-write-iOS-testcase-scripts/&quot;&gt;上一篇文章&lt;/a&gt;中，我通过系统登录这一典型
-    
-    </summary>
-    
-    
-      <category term="AutomationTest" scheme="http://debugtalk.com/tags/AutomationTest/"/>
-    
-      <category term="Appium" scheme="http://debugtalk.com/tags/Appium/"/>
-    
-      <category term="F0T1" scheme="http://debugtalk.com/tags/F0T1/"/>
-    
-      <category term="iOS" scheme="http://debugtalk.com/tags/iOS/"/>
-    
-      <category term="Ruby" scheme="http://debugtalk.com/tags/Ruby/"/>
-    
-      <category term="RSpec" scheme="http://debugtalk.com/tags/RSpec/"/>
     
   </entry>
   
