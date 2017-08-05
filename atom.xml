@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://debugtalk.com/"/>
-  <updated>2017-07-24T10:54:52.000Z</updated>
+  <updated>2017-08-05T10:58:00.000Z</updated>
   <id>http://debugtalk.com/</id>
   
   <author>
@@ -14,6 +14,91 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>How to install a package from Github that has other github dependencies ?</title>
+    <link href="http://debugtalk.com/post/How-to-install-a-package-from-Github-that-has-other-github-dependencies/"/>
+    <id>http://debugtalk.com/post/How-to-install-a-package-from-Github-that-has-other-github-dependencies/</id>
+    <published>2017-08-04T16:00:00.000Z</published>
+    <updated>2017-08-05T10:58:00.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>最近在开发<code>ApiTestEngine</code>时遇到一个安装包依赖的问题，耗费了不少时间寻找解决方案，考虑到还算比较有普遍性，因此总结形成这篇文章。</p>
+<h2 id="从pip的安装说起"><a href="#从pip的安装说起" class="headerlink" title="从pip的安装说起"></a>从pip的安装说起</h2><p>先不那么简单地描述下背景。</p>
+<p><a href="https://github.com/debugtalk/ApiTestEngine" target="_blank" rel="external"><code>ApiTestEngine</code></a>作为一款接口测试工具，需要具有灵活的命令行调用方式，因此最好能在系统中进行安装并注册为一个<code>CLI</code>命令。</p>
+<p>在Python中，安装依赖库的最佳方式是采用<a href="https://pip.pypa.io/en/stable/" target="_blank" rel="external"><code>pip</code></a>，例如安装<a href="http://locust.io/" target="_blank" rel="external"><code>Locust</code></a>时，就可以采用如下命令搞定。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ pip install locustio</div><div class="line">Collecting locustio</div><div class="line">  Using cached locustio-0.7.5.tar.gz</div><div class="line">[...]</div><div class="line">Successfully installed locustio-0.7.5</div></pre></td></tr></table></figure>
+<p>但要想采用<code>pip install SomePackage</code>的方式，前提是<code>SomePackage</code>已经托管在<code>PyPI</code>。关于<code>PyPI</code>，可以理解为<code>Python</code>语言的第三方库的仓库索引，当前绝大多数流行的<code>Python</code>第三方库都托管在<code>PyPI</code>上。</p>
+<p>但是，这里存在一个问题。在<code>PyPI</code>当中，所有的包都是由其作者自行上传的。如果作者比较懒，那么可能托管在<code>PyPI</code>上的最新版本相较于最新代码就会比较滞后。</p>
+<p><code>Locust</code>就是一个典型的例子。从上面的安装过程可以看出，我们采用<code>pip install locustio</code>安装的<code>Locust</code>版本是<code>v0.7.5</code>，而在<code>Locust</code>的<code>Github</code>仓库中，<code>v0.7.5</code>已经是一年之前的版本了。也是因为这个原因，之前在我的博客里面介绍<code>Locust</code>的<a href="http://debugtalk.com/post/head-first-locust-user-guide/">图表展示功能</a>后，已经有不下5个人向我咨询为啥他们看不到这个图表模块。这是因为<code>Locust</code>的图表模块是在今年（2017）年初时添加的功能，master分支的代码版本也已经升级到<code>v0.8a2</code>了，但<code>PyPI</code>上的版本却一直没有更新。</p>
+<p>而要想使用到项目最新的功能，就只能采用源码进行安装。</p>
+<p>大多数编程语言在使用源码进行安装时，都需要先将源码下载到本地，然后通过命令进行编译，例如<code>Linux</code>中常见的<code>make &amp;&amp; make install</code>。对于<code>Python</code>项目来说，也可以采用类似的模式，先将项目<code>clone</code>到本地，然后进入到项目的根目录，执行<code>python setup.py install</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ git clone https://github.com/locustio/locust.git</div><div class="line">$ cd locust</div><div class="line">$ python setup.py install</div><div class="line">[...]</div><div class="line">Finished processing dependencies for locustio==0.8a2</div></pre></td></tr></table></figure>
+<p>不过，要想采用这种方式进行安装也是有前提的，那就是项目必须已经实现了基于<code>setuptools</code>的安装方式，并在项目的根目录下存在<code>setup.py</code>。</p>
+<p>可以看出，这种安装方式还是比较繁琐的，需要好几步才能完成安装。而且，对于大多数使用者来说，他们并不需要阅读项目源码，因此<code>clone</code>操作也实属多余。</p>
+<p>可喜的是，<code>pip</code>不仅支持安装<code>PyPI</code>上的包，也可以直接通过项目的<code>git</code>地址进行安装。还是以<code>Locust</code>项目为例，我们通过<code>pip</code>命令也可以实现一条命令安装<code>Github</code>项目源码。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ pip install git+https://github.com/locustio/locust.git@master#egg=locustio</div><div class="line">Collecting locustio from git+https://github.com/locustio/locust.git@master#egg=locustio</div><div class="line">[...]</div><div class="line">Successfully installed locustio-0.8a2</div></pre></td></tr></table></figure>
+<p>对于项目地址来说，完整的描述应该是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install vcs+protocol://repo_url/#egg=pkg&amp;subdirectory=pkg_dir</div></pre></td></tr></table></figure>
+<p>这里的<code>vcs</code>也不仅限于<code>git</code>，<code>svn</code>和<code>hg</code>也是一样的，而<code>protocol</code>除了采用<code>SSH</code>形式的项目地址，也可以采用<code>HTTPS</code>的地址，在此不再展开。</p>
+<p>通过这种方式，我们就总是可以使用到项目的最新功能特性了。当然，前提条件也是一样的，需要项目中已经实现了<code>setup.py</code>。</p>
+<p>考虑到<code>ApiTestEngine</code>还处于频繁的新特性开发阶段，因此这种途径无疑是让用户安装使用最新代码的最佳方式。</p>
+<h2 id="问题缘由"><a href="#问题缘由" class="headerlink" title="问题缘由"></a>问题缘由</h2><p>在<a href="https://github.com/debugtalk/ApiTestEngine" target="_blank" rel="external"><code>ApiTestEngine</code></a>中，存在测试结果报告展示这一部分的功能，而这部分的功能是需要依赖于另外一个托管在GitHub上的项目，<a href="https://github.com/debugtalk/PyUnitReport" target="_blank" rel="external"><code>PyUnitReport</code></a>。</p>
+<p>于是，问题就变为：如何构造<code>ApiTestEngine</code>项目的<code>setup.py</code>，可以实现用户在安装<code>ApiTestEngine</code>时自动安装<code>PyUnitReport</code>依赖。</p>
+<p>对于这个需求，已经确定可行的办法：先通过<code>pip</code>安装依赖的库（<code>PyUnitReport</code>），然后再安装当前项目（<code>ApiTestEngine</code>）。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ pip install git+https://github.com/debugtalk/PyUnitReport.git#egg=PyUnitReport</div><div class="line">$ pip install git+https://github.com/debugtalk/ApiTestEngine.git#egg=ApiTestEngine</div></pre></td></tr></table></figure>
+<p>这种方式虽然可行，但是需要执行两条命令，显然不是我们想要的效果。</p>
+<p>经过搜索，发现针对该需求，可以在<code>setuptools.setup()</code>中通过<code>install_requires</code>和<code>dependency_links</code>这两个配置项组合实现。</p>
+<p>具体地，配置方式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">install_requires=[</div><div class="line">   &quot;requests&quot;,</div><div class="line">   &quot;flask&quot;,</div><div class="line">   &quot;PyYAML&quot;,</div><div class="line">   &quot;coveralls&quot;,</div><div class="line">   &quot;coverage&quot;,</div><div class="line">   &quot;PyUnitReport&quot;</div><div class="line">],</div><div class="line">dependency_links=[</div><div class="line">   &quot;git+https://github.com/debugtalk/PyUnitReport.git#egg=PyUnitReport&quot;</div><div class="line">],</div></pre></td></tr></table></figure>
+<p>这里有一点需要格外注意，那就是指定的依赖包如果存在于<code>PyPI</code>，那么只需要在<code>install_requires</code>中指定包名和版本号即可（不指定版本号时，默认安装最新版本）；而对于以仓库URL地址存在的依赖包，那么不仅需要在<code>dependency_links</code>中指定，同时也要在<code>install_requires</code>中指定。</p>
+<p>然后，就可以直接通过<code>ApiTestEngine</code>项目的git地址一键进行安装了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ pip install git+https://github.com/debugtalk/ApiTestEngine.git#egg=ApiTestEngine</div></pre></td></tr></table></figure>
+<p>虽然在寻找解决办法的过程中，看到大家都在说<code>dependency_links</code>由于安全性的问题，即将被弃用，而且在<code>setuptools</code>的官方文章中的确也没有看到<code>dependency_links</code>的描述。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">DEPRECATION: Dependency Links processing has been deprecated and will be removed in a future release.</div></pre></td></tr></table></figure>
+<p>不过在我本地的<code>macOS</code>系统上尝试发现，该种方式的确是可行的，因此就采用这种方式进行发布了。</p>
+<p>但是当我后续在<code>Linux</code>服务器上安装时，却无法成功，总是在安装<code>PyUnitReport</code>依赖库的时候报错：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ pip install git+https://github.com/debugtalk/ApiTestEngine.git#egg=ApiTestEngine</div><div class="line">[...]</div><div class="line">Collecting PyUnitReport (from ApiTestEngine)</div><div class="line">  Could not find a version that satisfies the requirement PyUnitReport (from ApiTestEngine) (from versions: )</div><div class="line">No matching distribution found for PyUnitReport (from ApiTestEngine)</div></pre></td></tr></table></figure>
+<p>另外，同时也有多个用户反馈了同样的问题，这才发现这种方式在<code>Linux</code>和<code>Windows</code>下是不行的。</p>
+<p>然后，再次经过大量的搜索，却始终没有特别明确的答案，搞得我也在怀疑，<code>dependency_links</code>到底是不是真的已经弃用了，但是就算是弃用了，也应该有新的替代方案啊，但也并没有找到。</p>
+<p>这个问题就这么放了差不多一个星期的样子。</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>今天周末在家，想来想去，不解决始终不爽，虽然只是多执行一条命令的问题。</p>
+<p>于是又是经过大量搜索，幸运的是终于从<code>pypa/pip</code>的<code>issues</code>中找到一条<a href="https://github.com/pypa/pip/issues/3610" target="_blank" rel="external"><code>issue</code></a>，作者是<a href="https://github.com/pypa/pip/issues/3610#issue-147115114" target="_blank" rel="external"><code>Dominik Neise</code></a>，他详细描述了他遇到的问题和尝试过的方法，看到他的描述我真是惊呆了，跟我的情况完全一模一样不说，连尝试的思路也完全一致。</p>
+<p>然后，在下面的回复中，看到了<a href="https://github.com/pypa/pip/issues/3610#issuecomment-283578756" target="_blank" rel="external"><code>Gary Wu</code></a>和<a href="https://github.com/pypa/pip/issues/3610#issuecomment-317281367" target="_blank" rel="external"><code>kbuilds</code></a>的解答，总算是找到了问题的原因和解决方案。</p>
+<p>问题在于，在<code>dependency_links</code>中指定仓库URL地址的时候，在指定<code>egg</code>信息时，<code>pip</code>还同时需要一个版本号（<code>version number</code>），并且以短横线<code>-</code>分隔，然后执行的时候再加上<code>--process-dependency-links</code>参数。</p>
+<p>回到之前的<code>dependency_links</code>，我们应该写成如下形式。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">dependency_links=[</div><div class="line">   &quot;git+https://github.com/debugtalk/PyUnitReport.git#egg=PyUnitReport-0&quot;</div><div class="line">]</div></pre></td></tr></table></figure>
+<p>在这里，短横线<code>-</code>后面我并没有填写<code>PyUnitReport</code>实际的版本号，因为经过尝试发现，这里填写任意数值都是成功的，因此我就填写为<code>0</code>了，省得后续在升级<code>PyUnitReport</code>以后还要来修改这个地方。</p>
+<p>然后，就可以通过如下命令进行安装了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ pip install --process-dependency-links git+https://github.com/debugtalk/ApiTestEngine.git#egg=ApiTestEngine</div></pre></td></tr></table></figure>
+<p>至此，问题总算解决了。</p>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>那么，<code>dependency_links</code>到底是不是要废弃了呢？</p>
+<p>从<code>pip</code>的<code>GitHub</code>项目中看到这么一个<a href="https://github.com/pypa/pip/issues/4187" target="_blank" rel="external"><code>issue</code></a>，<code>--process-dependency-links</code>之前废弃了一段时间，但是又给加回来了，因为当前还没有更好的可替代的方案。因此，在出现替代方案之前，<code>dependency_links</code>应该是最好的方式了吧。</p>
+<p>最后再感叹下，老外提问时描述问题的专业性和细致程度真是令人佩服，大家可以再仔细看下这个<a href="https://github.com/pypa/pip/issues/3610#issue-147115114" target="_blank" rel="external"><code>issue</code></a>好好感受下。</p>
+<h2 id="阅读更多"><a href="#阅读更多" class="headerlink" title="阅读更多"></a>阅读更多</h2><ul>
+<li><a href="http://setuptools.readthedocs.io/en/latest/setuptools.html#dependencies-that-aren-t-in-pypi" target="_blank" rel="external">http://setuptools.readthedocs.io/en/latest/setuptools.html#dependencies-that-aren-t-in-pypi</a></li>
+<li><a href="https://pip.pypa.io/en/stable/reference/pip_install/" target="_blank" rel="external">https://pip.pypa.io/en/stable/reference/pip_install/</a></li>
+<li><a href="https://github.com/pypa/pip/issues/3610" target="_blank" rel="external">https://github.com/pypa/pip/issues/3610</a></li>
+<li><a href="https://github.com/pypa/pip/issues/4187" target="_blank" rel="external">https://github.com/pypa/pip/issues/4187</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;最近在开发&lt;code&gt;ApiTestEngine&lt;/code&gt;时遇到一个安装包依赖的问题，耗费了不少时间寻找解决方案，考虑到还算比较有普遍性，因此总结形成这篇文章。&lt;/p&gt;
+&lt;h2 id=&quot;从pip的安装说起&quot;&gt;&lt;a href=&quot;#从pip的安装说起&quot; class=&quot;hea
+    
+    </summary>
+    
+    
+      <category term="Locust" scheme="http://debugtalk.com/tags/Locust/"/>
+    
+      <category term="ApiTestEngine" scheme="http://debugtalk.com/tags/ApiTestEngine/"/>
+    
+      <category term="setuptools" scheme="http://debugtalk.com/tags/setuptools/"/>
+    
+      <category term="pip" scheme="http://debugtalk.com/tags/pip/"/>
+    
+  </entry>
   
   <entry>
     <title>解决Jenkins中无法展示HTML样式的问题</title>
@@ -490,11 +575,11 @@
     
       <category term="Python" scheme="http://debugtalk.com/tags/Python/"/>
     
-      <category term="接口测试" scheme="http://debugtalk.com/tags/%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95/"/>
-    
       <category term="测试框架" scheme="http://debugtalk.com/tags/%E6%B5%8B%E8%AF%95%E6%A1%86%E6%9E%B6/"/>
     
       <category term="ApiTestEngine" scheme="http://debugtalk.com/tags/ApiTestEngine/"/>
+    
+      <category term="接口测试" scheme="http://debugtalk.com/tags/%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95/"/>
     
   </entry>
   
@@ -690,9 +775,9 @@
     
       <category term="测试框架" scheme="http://debugtalk.com/tags/%E6%B5%8B%E8%AF%95%E6%A1%86%E6%9E%B6/"/>
     
-      <category term="ApiTestEngine" scheme="http://debugtalk.com/tags/ApiTestEngine/"/>
-    
       <category term="Mock" scheme="http://debugtalk.com/tags/Mock/"/>
+    
+      <category term="ApiTestEngine" scheme="http://debugtalk.com/tags/ApiTestEngine/"/>
     
   </entry>
   
@@ -826,13 +911,13 @@
     </summary>
     
     
-      <category term="接口测试" scheme="http://debugtalk.com/tags/%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95/"/>
-    
       <category term="自动化测试" scheme="http://debugtalk.com/tags/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/"/>
     
       <category term="测试框架" scheme="http://debugtalk.com/tags/%E6%B5%8B%E8%AF%95%E6%A1%86%E6%9E%B6/"/>
     
       <category term="ApiTestEngine" scheme="http://debugtalk.com/tags/ApiTestEngine/"/>
+    
+      <category term="接口测试" scheme="http://debugtalk.com/tags/%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95/"/>
     
   </entry>
   
@@ -1909,72 +1994,6 @@
       <category term="Plugin" scheme="http://debugtalk.com/tags/Plugin/"/>
     
       <category term="ANSI escape sequences" scheme="http://debugtalk.com/tags/ANSI-escape-sequences/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>使用Jenkins实现持续集成构建检查</title>
-    <link href="http://debugtalk.com/post/Jenkins-CI-Automation-Test/"/>
-    <id>http://debugtalk.com/post/Jenkins-CI-Automation-Test/</id>
-    <published>2016-08-13T16:00:00.000Z</published>
-    <updated>2017-03-11T04:11:02.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>通过<a href="/post/iOS-Android-Packing-with-Jenkins/">《使用Jenkins搭建iOS/Android持续集成打包平台》</a>和<a href="/post/iOS-Android-Packing-with-Jenkins-details/">《关于持续集成打包平台的Jenkins配置和构建脚本实现细节》</a>两篇文章，我们已经在原理概念和实践操作两个层面掌握了如何搭建一个完整的持续集成打包平台。</p>
-<p>不过，在实际使用过程中，发现有时候还会存在一个问题。研发同学提交新的代码后，Jenkins端可以成功执行构建，并生成安装包；然而在将安装包安装至移动设备时，却发现有时候会出现无法成功安装，或者安装后出现启动闪退的情况。</p>
-<p>为了及时发现该类问题，我们还需要对每次构建生成的安装包进行检查。本文便是对构建检查涉及到的方法进行介绍。</p>
-<h2 id="构建生成-app"><a href="#构建生成-app" class="headerlink" title="构建生成.app"></a>构建生成<code>.app</code></h2><p>为了降低问题的复杂度，我们可以选择在模拟器中运行构建生成的安装包。之前在<a href="/post/build-app-automated-test-platform-from-0-to-1-Appium-inspector-iOS-simulator/">《从0到1搭建移动App功能自动化测试平台（1）：模拟器中运行iOS应用》</a>也讲解过，要在模拟器中运行iOS应用，需要在Xcode中编译时选择模拟器类型，并且编译生成的文件后缀为<code>.app</code>。</p>
-<p>对应的，构建生成<code>.app</code>的命令如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># build .app file from source code</span></div><div class="line">xcodebuild \    <span class="comment"># xctool</span></div><div class="line">  -workspace <span class="variable">$&#123;WORKSPACE_PATH&#125;</span> \</div><div class="line">  -scheme <span class="variable">$&#123;SCHEME&#125;</span> \</div><div class="line">  -configuration <span class="variable">$&#123;CONFIGURATION&#125;</span> \</div><div class="line">  -sdk <span class="variable">$&#123;SDK&#125;</span> \</div><div class="line">  -derivedDataPath <span class="variable">$&#123;OUTPUT_FOLDER&#125;</span></div></pre></td></tr></table></figure>
-<p><strong>xcodebuild/xctool参数说明</strong>：</p>
-<ul>
-<li><code>-workspace</code>：需要打包的workspace，后面接的文件一定要是<code>.xcworkspace</code>结尾的；</li>
-<li><code>-scheme</code>：需要打包的Scheme，一般与<code>$project_name</code>相同；</li>
-<li><code>-sdk</code>：区分iphone device和Simulator，可通过<code>xcodebuild -showsdks</code>获取，例如<code>iphonesimulator9.3</code>。</li>
-<li><code>-configuration</code>：需要打包的配置文件，我们一般在项目中添加多个配置，适合不同的环境，Release/Debug；</li>
-<li><code>-derivedDataPath</code>：指定编译结果文件的存储路径；例如，指定<code>-derivedDataPath build_outputs</code>时，将在项目根目录下创建一个<code>build_outputs</code>文件夹，生成的<code>.app</code>文件将位于<code>build_outputs/Build/Products/${CONFIGURATION}-iphoneos</code>中。</li>
-</ul>
-<p>同样地，这里也可以使用<code>xctool</code>代替<code>xcodebuild</code>。</p>
-<p>这里使用到的命令和参数基本上和<a href="/post/iOS-Android-Packing-with-Jenkins-details/">《关于持续集成打包平台的Jenkins配置和构建脚本实现细节》</a>一文中的大致相同，唯一需要特别注意的是<code>-sdk</code>参数。因为是要在模拟器中运行，因此<code>-sdk</code>参数要设置为<code>iphonesimulator</code>，而非<code>iphoneos</code>。</p>
-<p>命令成功执行后，就会在指定的<code>${OUTPUT_FOLDER}</code>目录中生成<code>${SCHEME}.app</code>文件，这也就是我们构建生成的产物。另外，熟悉<code>iOS</code>的同学都知道，<code>.app</code>文件其实是一个文件夹，为了实现更好的存储，我们也可以额外地再做一步操作，将<code>.app</code>文件夹压缩转换为<code>.zip</code>格式，而且Appium也是支持读取<code>.zip</code>格式的安装包的。</p>
-<p>至此，适用于iOS模拟器运行的构建产物已准备就绪。这里涉及到的脚本实现已更新至<a href="https://github.com/debugtalk/JenkinsTemplateForApp" target="_blank" rel="external">【debugtalk/JenkinsTemplateForApp】</a>。</p>
-<h2 id="实现构建检查"><a href="#实现构建检查" class="headerlink" title="实现构建检查"></a>实现构建检查</h2><p>那要怎样对构建生成的产物进行检查呢？</p>
-<p>最简单的方式，就是在iOS模拟器中运行构建生成的<code>.app</code>，并执行一组基本的自动化测试用例。在执行过程中，如果出现无法成功安装，或者安装成功后启动出现闪退，或者自动化测试用例执行失败等异常情况，则说明我们最新提交的代码存在问题，需要通知研发同学及时进行修复。</p>
-<p>而这些实现方式，其实我在<a href="/tags/F0T1/">《从0到1搭建移动App功能自动化测试平台》</a>系列文章中都已经进行了详细讲解，并形成了一套较为成熟的自动化测试框架，【<a href="https://github.com/debugtalk/AppiumBooster" target="_blank" rel="external">debugtalk/AppiumBooster</a>】。</p>
-<p>在此基础上，我们无需再做其它工作，只需要按照<code>debugtalk/AppiumBooster</code>的要求在表格中编写一组基本的自动化测试用例，即可采用如下方式执行构建检查。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">cd</span> <span class="variable">$&#123;AppiumBooster_Folder&#125;</span></div><div class="line">$ ruby run.rb -p <span class="string">"<span class="variable">$&#123;OUTPUT_FOLDER&#125;</span>/<span class="variable">$&#123;SCHEME&#125;</span>.app.zip"</span> --disable_output_color &gt; <span class="built_in">test</span>_result.log</div></pre></td></tr></table></figure>
-<p>在如上命令中，通过<code>-p</code>参数指定构建生成的安装包，然后就可以在iOS模拟器中运行事先编写好的自动化测试用例，从而实现构建检查。</p>
-<p>在这里，我们还可以通过<code>--disable_output_color</code>开关将输出日志的颜色关闭。<del>之所以实现这么一个功能，是因为在Jenkins中本来也无法显示颜色，但是如果还将Terminal中有颜色的日志内容输出到Jenkins中，就会出现一些额外的字符，比较影响日志的美观。</del></p>
-<p>现在，我们已经分别实现了代码构建和构建检查这两个核心的操作环节，而要执行最终的持续集成，我们还需要做最后一项工作，即在Jenkins中将这两个环节串联起来。</p>
-<h2 id="Jenkins配置"><a href="#Jenkins配置" class="headerlink" title="Jenkins配置"></a>Jenkins配置</h2><p>关于Jenkins的相关基础概念、实施流程和配置细节，我在<a href="/tags/Jenkins/">之前的文章</a>中已经讲解得非常详细了。在此我就只进行一点补充。</p>
-<p>要实现在构建完成后再运行一些额外的脚本，例如我们的构建检查命令，需要使用到Jenkins的一个插件，<code>Post-Build Script Plug-in</code>。</p>
-<p>安装完该插件后，在Jenkins配置界面的<code>Post-build Actions</code>栏目中，<code>Add post-build action</code>选项列表中就会多出<code>Execute a set of scripts</code>选项。选择该项后，会出现如下配置界面。</p>
-<p><img src="/images/Jenkins_Post_build_Actions_Execute_shell_menu.jpg" alt="Jenkins Post_build_Actions Execute_shell menu"></p>
-<p>选择<code>Execute shell</code>后，会出现一个文本框，然后我们就可以将构建检查的命令填写到里面。</p>
-<p><img src="/images/Jenkins_Post_build_Actions_Execute_shell.jpg" alt="Jenkins Post_build_Actions Execute_shell"></p>
-<p>在这里我们用到了<code>${AppiumBooster_Folder}</code>参数，该参数也需要通过<code>String Parameter</code>来进行定义，用于指定<code>AppiumBooster</code>项目的路径。</p>
-<p><img src="/images/Jenkins_String_Parameter.jpg" alt="Jenkins String Parameter"></p>
-<p>最后，为了便于将执行自动化测试用例的日志和执行构建的日志分开，我们将执行自动化测试用例的日志写入到了<code>test_result.log</code>文件中。然后，在<code>Archives build artifacts</code>中就可以通过<code>${AppiumBooster_Folder}/test_result.log</code>将执行构建检查的日志收集起来，并展示到每次构建的页面中。</p>
-<p>延续一贯的<code>开箱即用</code>原则，我将使用Jenkins实现持续集成构建检查涉及到的Jenkins配置也做成了一套模板，并更新到【<a href="https://github.com/debugtalk/JenkinsTemplateForApp" target="_blank" rel="external">debugtalk/JenkinsTemplateForApp</a>】中了，供大家参考。</p>
-<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>至此，通过<a href="/tags/Jenkins/">本系列的几篇文章</a>，关于如何使用Jenkins实现移动APP持续集成的相关内容应该都已经覆盖得差不多了。</p>
-<p>不过，由于我个人的近期工作主要集中在iOS部分，因此在讲解的过程中都是以iOS为主。后续在将工作重心移到Android部分后，我会再在<code>DebugTalk</code>的这几篇文章中更新Android部分的内容。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;通过&lt;a href=&quot;/post/iOS-Android-Packing-with-Jenkins/&quot;&gt;《使用Jenkins搭建iOS/Android持续集成打包平台》&lt;/a&gt;和&lt;a href=&quot;/post/iOS-Android-Packing-with-Jenkins-
-    
-    </summary>
-    
-    
-      <category term="Android" scheme="http://debugtalk.com/tags/Android/"/>
-    
-      <category term="Jenkins" scheme="http://debugtalk.com/tags/Jenkins/"/>
-    
-      <category term="iOS" scheme="http://debugtalk.com/tags/iOS/"/>
-    
-      <category term="CI" scheme="http://debugtalk.com/tags/CI/"/>
-    
-      <category term="Automation" scheme="http://debugtalk.com/tags/Automation/"/>
     
   </entry>
   
