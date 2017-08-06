@@ -12,24 +12,24 @@
 
     
     <meta name="description" content="最近在开发ApiTestEngine时遇到一个安装包依赖的问题，耗费了不少时间寻找解决方案，考虑到还算比较有普遍性，因此总结形成这篇文章。
-从pip的安装说起先不那么简单地描述下背景。
+从 pip install 说起先不那么简单地描述下背景。
 ApiTestEngine作为一款接口测试工具，需要具有灵活的命令行调用方式，因此最好能在系统中进行安装并注册为一个CLI命令。
-在Python中，安装依赖库的最佳方式是采用pip，例如安装Locust时，就可以采">
+在Python中，安装依赖库的最佳方式是采用pip，例如安装Locus">
 <meta property="og:type" content="article">
 <meta property="og:title" content="How to install a package from Github that has other github dependencies ?">
 <meta property="og:url" content="http://debugtalk.com/post/How-to-install-a-package-from-Github-that-has-other-github-dependencies/index.html">
 <meta property="og:site_name" content="DebugTalk">
 <meta property="og:description" content="最近在开发ApiTestEngine时遇到一个安装包依赖的问题，耗费了不少时间寻找解决方案，考虑到还算比较有普遍性，因此总结形成这篇文章。
-从pip的安装说起先不那么简单地描述下背景。
+从 pip install 说起先不那么简单地描述下背景。
 ApiTestEngine作为一款接口测试工具，需要具有灵活的命令行调用方式，因此最好能在系统中进行安装并注册为一个CLI命令。
-在Python中，安装依赖库的最佳方式是采用pip，例如安装Locust时，就可以采">
-<meta property="og:updated_time" content="2017-08-05T10:58:00.000Z">
+在Python中，安装依赖库的最佳方式是采用pip，例如安装Locus">
+<meta property="og:updated_time" content="2017-08-06T03:21:11.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="How to install a package from Github that has other github dependencies ?">
 <meta name="twitter:description" content="最近在开发ApiTestEngine时遇到一个安装包依赖的问题，耗费了不少时间寻找解决方案，考虑到还算比较有普遍性，因此总结形成这篇文章。
-从pip的安装说起先不那么简单地描述下背景。
+从 pip install 说起先不那么简单地描述下背景。
 ApiTestEngine作为一款接口测试工具，需要具有灵活的命令行调用方式，因此最好能在系统中进行安装并注册为一个CLI命令。
-在Python中，安装依赖库的最佳方式是采用pip，例如安装Locust时，就可以采">
+在Python中，安装依赖库的最佳方式是采用pip，例如安装Locus">
 
     
     <link rel="alternative" href="/atom.xml" title="DebugTalk" type="application/atom+xml">
@@ -110,12 +110,12 @@ ApiTestEngine作为一款接口测试工具，需要具有灵活的命令行调�
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#从pip的安装说起"><span class="toc-number">1.</span> <span class="toc-text">从pip的安装说起</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#问题缘由"><span class="toc-number">2.</span> <span class="toc-text">问题缘由</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决方案"><span class="toc-number">3.</span> <span class="toc-text">解决方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#后记"><span class="toc-number">4.</span> <span class="toc-text">后记</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#阅读更多"><span class="toc-number">5.</span> <span class="toc-text">阅读更多</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#从-pip-install-说起"><span class="toc-number">1.</span> <span class="toc-text">从 pip install 说起</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#问题缘由"><span class="toc-number">2.</span> <span class="toc-text">问题缘由</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决方案"><span class="toc-number">3.</span> <span class="toc-text">解决方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#后记"><span class="toc-number">4.</span> <span class="toc-text">后记</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#阅读更多"><span class="toc-number">5.</span> <span class="toc-text">阅读更多</span></a></li></ol>
 		
 		</div>
 		
 		<p>最近在开发<code>ApiTestEngine</code>时遇到一个安装包依赖的问题，耗费了不少时间寻找解决方案，考虑到还算比较有普遍性，因此总结形成这篇文章。</p>
-<h2 id="从pip的安装说起"><a href="#从pip的安装说起" class="headerlink" title="从pip的安装说起"></a>从pip的安装说起</h2><p>先不那么简单地描述下背景。</p>
+<h2 id="从-pip-install-说起"><a href="#从-pip-install-说起" class="headerlink" title="从 pip install 说起"></a>从 pip install 说起</h2><p>先不那么简单地描述下背景。</p>
 <p><a href="https://github.com/debugtalk/ApiTestEngine" target="_blank" rel="external"><code>ApiTestEngine</code></a>作为一款接口测试工具，需要具有灵活的命令行调用方式，因此最好能在系统中进行安装并注册为一个<code>CLI</code>命令。</p>
 <p>在Python中，安装依赖库的最佳方式是采用<a href="https://pip.pypa.io/en/stable/" target="_blank" rel="external"><code>pip</code></a>，例如安装<a href="http://locust.io/" target="_blank" rel="external"><code>Locust</code></a>时，就可以采用如下命令搞定。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ pip install locustio</div><div class="line">Collecting locustio</div><div class="line">  Using cached locustio-0.7.5.tar.gz</div><div class="line">[...]</div><div class="line">Successfully installed locustio-0.7.5</div></pre></td></tr></table></figure>
@@ -227,7 +227,7 @@ ApiTestEngine作为一款接口测试工具，需要具有灵活的命令行调�
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#从pip的安装说起"><span class="toc-number">1.</span> <span class="toc-text">从pip的安装说起</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#问题缘由"><span class="toc-number">2.</span> <span class="toc-text">问题缘由</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决方案"><span class="toc-number">3.</span> <span class="toc-text">解决方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#后记"><span class="toc-number">4.</span> <span class="toc-text">后记</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#阅读更多"><span class="toc-number">5.</span> <span class="toc-text">阅读更多</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#从-pip-install-说起"><span class="toc-number">1.</span> <span class="toc-text">从 pip install 说起</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#问题缘由"><span class="toc-number">2.</span> <span class="toc-text">问题缘由</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决方案"><span class="toc-number">3.</span> <span class="toc-text">解决方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#后记"><span class="toc-number">4.</span> <span class="toc-text">后记</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#阅读更多"><span class="toc-number">5.</span> <span class="toc-text">阅读更多</span></a></li></ol>
  
   </div>
 
