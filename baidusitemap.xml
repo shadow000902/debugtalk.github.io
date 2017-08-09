@@ -4,6 +4,25 @@
 
     
   <url>
+    <loc>http://debugtalk.com/post/dji-hire-info/</loc>
+    <lastmod>2017-08-09T05:34:52.000Z</lastmod>
+    <data>
+        <display>
+        <title>【大疆内推】岗位描述我只想这么写</title>
+        <pubTime>2017-08-08T16:00:00.000Z</pubTime>
+        
+        <tag>招聘</tag>
+         
+        <tag>大疆</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://debugtalk.com/post/How-to-install-a-package-from-Github-that-has-other-github-dependencies/</loc>
     <lastmod>2017-08-06T03:21:11.000Z</lastmod>
     <data>
@@ -517,29 +536,6 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/iOS-Android-Packing-with-Jenkins-details/</loc>
-    <lastmod>2017-06-15T07:51:23.000Z</lastmod>
-    <data>
-        <display>
-        <title>关于持续集成打包平台的Jenkins配置和构建脚本实现细节</title>
-        <pubTime>2016-07-25T16:00:00.000Z</pubTime>
-        
-        <tag>Android</tag>
-         
-        <tag>Jenkins</tag>
-         
-        <tag>iOS</tag>
-         
-        <tag>CI</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://debugtalk.com/post/introduction-to-testing-engineer-daily-work/</loc>
     <lastmod>2017-06-15T07:51:23.000Z</lastmod>
     <data>
@@ -577,6 +573,27 @@
         <tag>Ruby</tag>
          
         <tag>RSpec</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://debugtalk.com/post/head-first-locust-user-guide/</loc>
+    <lastmod>2017-06-15T07:51:23.000Z</lastmod>
+    <data>
+        <display>
+        <title>深入浅出开源性能测试工具Locust（使用篇）</title>
+        <pubTime>2017-02-21T16:00:00.000Z</pubTime>
+        
+        <tag>性能测试</tag>
+         
+        <tag>Locust</tag>
+         
+        <tag>开源项目</tag>
          
          
            
@@ -661,27 +678,6 @@
 
     
   <url>
-    <loc>http://debugtalk.com/post/head-first-locust-user-guide/</loc>
-    <lastmod>2017-06-15T07:51:23.000Z</lastmod>
-    <data>
-        <display>
-        <title>深入浅出开源性能测试工具Locust（使用篇）</title>
-        <pubTime>2017-02-21T16:00:00.000Z</pubTime>
-        
-        <tag>性能测试</tag>
-         
-        <tag>Locust</tag>
-         
-        <tag>开源项目</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://debugtalk.com/post/head-first-locust-advanced-script/</loc>
     <lastmod>2017-06-15T07:51:23.000Z</lastmod>
     <data>
@@ -743,6 +739,29 @@
 
     
   <url>
+    <loc>http://debugtalk.com/post/iOS-Android-Packing-with-Jenkins-details/</loc>
+    <lastmod>2017-06-15T07:51:23.000Z</lastmod>
+    <data>
+        <display>
+        <title>关于持续集成打包平台的Jenkins配置和构建脚本实现细节</title>
+        <pubTime>2016-07-25T16:00:00.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>Jenkins</tag>
+         
+        <tag>iOS</tag>
+         
+        <tag>CI</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://debugtalk.com/post/Introduction-to-AppiumBooster/</loc>
     <lastmod>2017-06-15T07:51:23.000Z</lastmod>
     <data>
@@ -755,29 +774,6 @@
         <tag>Appium</tag>
          
         <tag>AppiumBooster</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://debugtalk.com/post/android-development-environment-adb-and-fastboot/</loc>
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
-    <data>
-        <display>
-        <title>Android开发环境配置0：adb和fastboot</title>
-        <pubTime>2015-07-01T16:00:00.000Z</pubTime>
-        
-        <tag>Android</tag>
-         
-        <tag>adb</tag>
-         
-        <tag>fastboot</tag>
-         
-        <tag>环境搭建</tag>
          
          
            
@@ -1334,10 +1330,6 @@
     </url>
 
     
-    
-    
-    
-    
   <url>
     <loc>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-Appium-inspector-iOS-simulator/</loc>
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
@@ -1355,6 +1347,33 @@
         <tag>iOS</tag>
          
         <tag>Simulator</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+    
+    
+    
+    
+  <url>
+    <loc>http://debugtalk.com/post/android-development-environment-adb-and-fastboot/</loc>
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android开发环境配置0：adb和fastboot</title>
+        <pubTime>2015-07-01T16:00:00.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>adb</tag>
+         
+        <tag>fastboot</tag>
+         
+        <tag>环境搭建</tag>
          
          
            

@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://debugtalk.com/post/dji-hire-info/</loc>
+    
+    <lastmod>2017-08-09T05:34:52.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://debugtalk.com/post/How-to-install-a-package-from-Github-that-has-other-github-dependencies/</loc>
     
     <lastmod>2017-08-06T03:21:11.000Z</lastmod>
@@ -177,13 +184,6 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/iOS-Android-Packing-with-Jenkins-details/</loc>
-    
-    <lastmod>2017-06-15T07:51:23.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://debugtalk.com/post/introduction-to-testing-engineer-daily-work/</loc>
     
     <lastmod>2017-06-15T07:51:23.000Z</lastmod>
@@ -192,6 +192,13 @@
   
   <url>
     <loc>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-refactor-testcase-scripts/</loc>
+    
+    <lastmod>2017-06-15T07:51:23.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://debugtalk.com/post/head-first-locust-user-guide/</loc>
     
     <lastmod>2017-06-15T07:51:23.000Z</lastmod>
     
@@ -219,13 +226,6 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/head-first-locust-user-guide/</loc>
-    
-    <lastmod>2017-06-15T07:51:23.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://debugtalk.com/post/head-first-locust-advanced-script/</loc>
     
     <lastmod>2017-06-15T07:51:23.000Z</lastmod>
@@ -247,16 +247,16 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/Introduction-to-AppiumBooster/</loc>
+    <loc>http://debugtalk.com/post/iOS-Android-Packing-with-Jenkins-details/</loc>
     
     <lastmod>2017-06-15T07:51:23.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/android-development-environment-adb-and-fastboot/</loc>
+    <loc>http://debugtalk.com/post/Introduction-to-AppiumBooster/</loc>
     
-    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    <lastmod>2017-06-15T07:51:23.000Z</lastmod>
     
   </url>
   
@@ -457,6 +457,13 @@
   </url>
   
   <url>
+    <loc>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-Appium-inspector-iOS-simulator/</loc>
+    
+    <lastmod>2017-03-11T04:11:02.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://debugtalk.com/baidu_verify_YWTbeHDFZJ.html</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
@@ -485,7 +492,7 @@
   </url>
   
   <url>
-    <loc>http://debugtalk.com/post/build-app-automated-test-platform-from-0-to-1-Appium-inspector-iOS-simulator/</loc>
+    <loc>http://debugtalk.com/post/android-development-environment-adb-and-fastboot/</loc>
     
     <lastmod>2017-03-11T04:11:02.000Z</lastmod>
     
